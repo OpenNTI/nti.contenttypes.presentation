@@ -118,7 +118,7 @@ class INTITranscript(interface.Interface):
 	srcjsonp = Variant((ValidTextLine(title="Transcript source jsonp"),
 						ValidURI(title="Transcript source uri jsonp") ), required=False)
 	lang = ValidTextLine(title="Transcript language", required=True, default='en')
-	type = Choice(vocabulary=TRANSCRIPT_MIMETYPES, title='Transcript mimetype',
+	type = Choice(vocabulary=TRANSCRIPT_MIMETYPE_VOCABULARY, title='Transcript mimetype',
 				  required=True, default=VTT_TRANSCRIPT_MIMETYPE)
 	purpose = ValidTextLine(title="Transcript purpose", required=True, default='normal')
 
@@ -129,8 +129,8 @@ class INTIMediaSource(interface.Interface):
 class INTIMedia(IDCDescriptiveProperties, ICreated):
 	ntiid = ValidNTIID(title="Media NTIID", required=True)
 	creator = ValidTextLine(title="Media creator", required=True)
-	title = ValidTextLine(title="Media title", required=False, default='')
-	description = ValidTextLine(title="Media description", required=False, default='')
+	title = ValidTextLine(title="Media title", required=False, default=u'')
+	description = ValidTextLine(title="Media description", required=False, default=u'')
 	
 class INTIVideoSource(INTIMediaSource):
 	width = Int(title="Video width", required=False)
@@ -138,32 +138,38 @@ class INTIVideoSource(INTIMediaSource):
 	poster = ValidTextLine(title="Video poster", required=False)
 	service = Choice(vocabulary=VIDEO_SERVICES_VOCABULARY, title='Video service',
 					 required=True, default=HTML5_VIDEO_SERVICE)
-	sources = ListOrTuple(Choice(vocabulary=VIDEO_SOURCES_VOCABULARY), 
-						  title='Video source', required=True, min=1)
-	types = ListOrTuple(Choice(vocabulary=VIDEO_SERVICE_TYPES),
-						title='Video service types', required=True, min=1)
+	
+	source = ListOrTuple(Variant((Choice(vocabulary=VIDEO_SOURCES_VOCABULARY), 
+								  ValidTextLine())),
+						 title='Video source', required=True, min_length=1)
+
+	type = ListOrTuple(	Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
+						title='Video service types', required=True, min_length=1)
 
 class INTIVideo(INTIMedia):
 	subtitle = Bool(title="Subtitle flag", required=False, default=None)
+	
 	closed_caption = Bool(title="Close caption flag", required=False, default=None)
 
 	sources = ListOrTuple(value_type=Object(INTIVideoSource), 
-						  title="The video sources", required=False, min=1)
+						  title="The video sources", required=False, min_length=1)
 
 	transcripts = ListOrTuple(value_type=Object(INTITranscript), 
-							  title="The transcripts", required=False, min=0)
+							  title="The transcripts", required=False, min_length=0)
 
 class INTIAudioSource(INTIMediaSource):
 	service = Choice(vocabulary=AUDIO_SERVICES_VOCABULARY, title='Audio service',
 					 required=True, default=HTML5_AUDIO_SERVICE)
-	sources = ListOrTuple(Choice(vocabulary=AUDIO_SOURCES_VOCABULARY), 
-						  title='Audio source', required=True, min=1)
-	types = ListOrTuple(Choice(vocabulary=AUDIO_SERVICE_TYPES),
-						title='Audio service types', required=True, min=1)
+	
+	source = ListOrTuple(Choice(vocabulary=AUDIO_SOURCES_VOCABULARY), 
+						 title='Audio source', required=True, min_length=1)
+	
+	type = ListOrTuple(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
+					   title='Audio service types', required=True, min_length=1)
 
 class INTIAudio(INTIMedia):
 	sources = ListOrTuple(value_type=Object(INTIAudioSource), 
-						  title="The audio sources", required=False, min=1)
+						  title="The audio sources", required=False, min_length=1)
 
 	transcripts = ListOrTuple(value_type=Object(INTITranscript), 
-							  title="The transcripts", required=False)
+							  title="The transcripts", required=False, min_length=0)

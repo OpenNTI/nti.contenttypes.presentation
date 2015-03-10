@@ -42,7 +42,8 @@ setup(
 	tests_require=TESTS_REQUIRE,
 	install_requires=[
 		'setuptools',
-        'persistent',
+		'six',
+		'persistent',
 		'zope.component',
 		'zope.dublincore',
 		'zope.interface',
@@ -51,7 +52,8 @@ setup(
 		'nti.common',
 		'nti.externalization',
 		'nti.ntiids',
-		'nti.schema'
+		'nti.schema',
+		'nti.zodb'
 	],
 	extras_require={
 		'test': TESTS_REQUIRE,
