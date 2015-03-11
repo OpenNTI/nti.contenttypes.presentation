@@ -51,6 +51,7 @@ setup(
 		'zope.security',
 		'nti.common',
 		'nti.externalization',
+		'nti.mimetype',
 		'nti.ntiids',
 		'nti.schema',
 		'nti.zodb'
