@@ -15,7 +15,7 @@ import zope.testing.cleanup
 class SharedConfiguringTestLayer(ZopeComponentLayer,
                                  ConfiguringLayerMixin):
 
-    set_up_packages = ('nti.contenttypes.media',)
+    set_up_packages = ('nti.contenttypes.presentation',)
 
     @classmethod
     def setUp(cls):

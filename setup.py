@@ -20,14 +20,14 @@ TESTS_REQUIRE = [
 ]
 
 setup(
-	name='nti.contenttypes.media',
+	name='nti.contenttypes.presentation',
 	version=VERSION,
 	author='Jason Madden',
 	author_email='jason@nextthought.com',
-	description="NTI Media Content Types",
+	description="NTI Presentation Content Types",
 	long_description=codecs.open('README.rst', encoding='utf-8').read(),
 	license='Proprietary',
-	keywords='Content Types Media',
+	keywords='Content Presentation',
 	classifiers=[
 		'Intended Audience :: Developers',
 		'Natural Language :: English',
