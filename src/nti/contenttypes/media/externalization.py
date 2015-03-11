@@ -20,6 +20,9 @@ from nti.externalization.externalization import toExternalObject
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 
+CLASS = StandardExternalFields.CLASS
+NTIID = StandardExternalFields.NTIID
+CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
 
 @interface.implementer( IExternalObject )
@@ -30,8 +33,13 @@ class _NTIMediaRenderExternalObject(object):
 
     def _do_toExternalObject( self, extDict ):
         if MIMETYPE in extDict:
-            extDict[StandardExternalFields.CTA_MIMETYPE] = extDict[MIMETYPE]
-        extDict.pop(StandardExternalFields.CLASS, None)
+            extDict[StandardExternalFields.CTA_MIMETYPE] = extDict.pop(MIMETYPE)
+            
+        if CREATOR in extDict:
+            extDict['creator'] = extDict.pop(CREATOR)
+        
+        for name in (CLASS, u'DCDescription', u'DCTitle', NTIID):
+            extDict.pop(name, None)
      
         for source in extDict.get('sources') or ():
             source.pop(MIMETYPE, None)
@@ -40,11 +48,11 @@ class _NTIMediaRenderExternalObject(object):
         for transcript in extDict.get('transcripts') or ():
             transcript.pop(MIMETYPE, None)
             transcript.pop(StandardExternalFields.CLASS, None)
-            
+        
         return extDict
 
     def toExternalObject( self, *args, **kwargs ):
-        extDict = toExternalObject( self.media )
+        extDict = toExternalObject( self.media, name='')
         self._do_toExternalObject( extDict )
         return extDict
 
@@ -53,7 +61,9 @@ class _NTIVideoRenderExternalObject(_NTIMediaRenderExternalObject):
     def _do_toExternalObject( self, extDict ):
         extDict = super(_NTIVideoRenderExternalObject, self)._do_toExternalObject(extDict)
         if 'closed_caption' in extDict:
-            extDict['closedCaption'] = extDict['closed_caption']
+            extDict['closedCaptions'] = extDict.pop('closed_caption')
+        if 'subtitle' in extDict and extDict['subtitle'] is None:
+            del extDict['subtitle']
         return extDict
 
 @component.adapter( INTIAudio )
