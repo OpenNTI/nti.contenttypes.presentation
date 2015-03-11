@@ -14,6 +14,8 @@ import six
 from zope import interface
 from zope import component
 
+from persistent.list import PersistentList
+
 from nti.common.string import map_string_adjuster
 
 from nti.externalization.datastructures import InterfaceObjectIO
@@ -27,6 +29,7 @@ from nti.externalization.internalization import update_from_external_object
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
+from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
 
 CREATOR = StandardExternalFields.CREATOR
@@ -143,4 +146,40 @@ class _NTISlideVideoUpdater(InterfaceObjectIO):
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(map_string_adjuster(parsed))
 		result = super(_NTISlideVideoUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+@component.adapter(INTISlideDeck)
+@interface.implementer(IInternalObjectUpdater)
+class _NTISlideDeckUpdater(InterfaceObjectIO):
+	
+	_ext_iface_upper_bound = INTISlideDeck
+	
+	def fixAll(self, parsed):
+		if 'creator' in parsed:
+			parsed[CREATOR] = parsed.pop('creator')
+
+		if 'slidedeckid' in parsed and not parsed.get('ntiid'):
+			parsed['ntiid'] = parsed['slidedeckid']
+
+		if 'ntiid' in parsed and not parsed.get('slidedeckid'):
+			parsed['slidedeckid'] = parsed['ntiid']
+
+		return self
+		
+	def parseSlides(self, parsed):
+		slides = PersistentList(parsed.get('Slides') or ())
+		if slides:
+			parsed['Slides'] = slides
+		return self
+
+	def parseVideos(self, parsed):
+		videos = PersistentList(parsed.get('Videos') or ())
+		if videos:
+			parsed['Videos'] = videos
+		return self
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		map_string_adjuster(parsed, recur=False)
+		self.fixAll(parsed).parseSlides(parsed).parseVideos(parsed)
+		result = super(_NTISlideDeckUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result

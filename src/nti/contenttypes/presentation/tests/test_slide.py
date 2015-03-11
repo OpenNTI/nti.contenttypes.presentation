@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from hamcrest.library.object.haslength import has_length
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -52,7 +53,7 @@ class TestSlide(unittest.TestCase):
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
 
-	def test_slide_video(self):
+	def test_ntislidevideo(self):
 		path = os.path.join(os.path.dirname(__file__), 'ntislidevideo.json')
 		with open(path, "r") as fp:
 			source = simplejson.load(fp, encoding="UTF-8")
@@ -74,4 +75,29 @@ class TestSlide(unittest.TestCase):
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
 
+	def test_ntislidedeck(self):
+		path = os.path.join(os.path.dirname(__file__), 'ntislidedeck.json')
+		with open(path, "r") as fp:
+			source = simplejson.load(fp, encoding="UTF-8")
+			
+		factory = find_factory_for(source)
+		assert_that(factory, is_not(none()))
+		slide = factory()
+		update_from_external_object(slide, source)
+		assert_that(slide, has_property('creator', is_("Deborah Trytten")))
+		assert_that(slide, has_property('title', is_("Install Software on a Macintosh")))
+		assert_that(slide, has_property("id",    is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
+		assert_that(slide, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
+		assert_that(slide, has_property('mimeType', is_(u"application/vnd.nextthought.ntislidedeck")))
+		assert_that(slide, has_property('videos', has_length(1)))
+		assert_that(slide, has_property('slides', has_length(19)))
 
+		ext_obj = to_external_object(slide, name="render")
+		assert_that(ext_obj, has_entry('creator', is_("Deborah Trytten")))
+		assert_that(ext_obj, has_entry('title', is_("Install Software on a Macintosh")))
+		assert_that(ext_obj, has_entry('MimeType', is_(u"application/vnd.nextthought.ntislidedeck")))
+		assert_that(ext_obj, has_entry('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
+		assert_that(ext_obj, has_entry('slidedeckid', is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
+		assert_that(ext_obj, has_entry('Videos', has_length(1)))
+		assert_that(ext_obj, has_entry('Slides', has_length(19)))
+		

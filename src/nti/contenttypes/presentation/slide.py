@@ -26,6 +26,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 from nti.zodb.persistentproperty import PersistentPropertyHolder
 
 from .interfaces import INTISlide
+from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
 
 @interface.implementer(INTISlide, IContentTypeAware)
@@ -69,15 +70,23 @@ class NTISlideVideo(SchemaConfigured,
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
 		PersistentPropertyHolder.__init__(self, *args, **kwargs)
-		
-#  {
-#                     "MimeType": "application/vnd.nextthought.ntislidevideo",
-#                     "video-ntiid": "tag:nextthought.com,2011-10:OU-NTIVideo-CS1323_S_2015_Intro_to_Computer_Programming.ntivideo.video_01.01.02_Mac",
-#                     "title": "Install Software on Macintosh",
-#                     "creator": "Deborah Trytten",
-#                     "slidedeckid": "tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac",
-#                     "thumbnail": "//www.kaltura.com/p/1500101/thumbnail/entry_id/0_06h42bu6/width/640/",
-#                     "ntiid": "tag:nextthought.com,2011-10:OU-NTISlideVideo-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac_video",
-#                     "class": "ntislidevideo"
-#                 }
-#             ],
+
+@interface.implementer(INTISlideDeck, IContentTypeAware)
+@WithRepr
+@EqHash('ntiid')
+class NTISlideDeck( SchemaConfigured,
+					PersistentPropertyHolder,
+					Contained):
+	createDirectFieldProperties(INTISlideDeck)
+
+	__external_class_name__ = u"NTISlideDeck"
+	mime_type = mimeType = u'application/vnd.nextthought.ntislidedeck'
+
+	slides = alias('Slides')
+	videos = alias('Videos')
+	Creator = alias('creator')
+	id = alias('slidedeckid')
+	
+	def __init__(self, *args, **kwargs):
+		SchemaConfigured.__init__(self, *args, **kwargs)
+		PersistentPropertyHolder.__init__(self, *args, **kwargs)

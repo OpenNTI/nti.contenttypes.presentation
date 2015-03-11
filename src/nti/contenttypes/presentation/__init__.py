@@ -10,3 +10,6 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 NTIVIDEO = NTIVideo = u'NTIVideo'
+NTISLIDE = NTISlide = u'NTISlide'
+NTISLIDEDECK = NTISlideDeck = u'NTISlideDeck'
+NTISLIDEVIDEO = NTISlideVideo = u'NTISlideVideo'

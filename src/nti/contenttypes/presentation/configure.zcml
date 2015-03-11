@@ -22,6 +22,7 @@
 						 .interfaces.INTIVideoSource
 						 .interfaces.INTITranscript
 						 .interfaces.INTISlide
+						 .interfaces.INTISlideDeck
 						 .interfaces.INTISlideVideo"
 		modules=".media .slide" />
 
@@ -41,7 +42,11 @@
 	<adapter factory=".internalization._NTISlideVideoUpdater"
 			 for=".interfaces.INTISlideVideo"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-			 
+			
+	<adapter factory=".internalization._NTISlideDeckUpdater"
+			 for=".interfaces.INTISlideDeck"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
 	<!-- Externalization -->
 	<adapter factory=".externalization._NTIAudioRenderExternalObject"
 			 for=".interfaces.INTIAudio"
@@ -57,6 +62,10 @@
 
 	<adapter factory=".externalization._NTISlideVideoRenderExternalObject"
 			 for=".interfaces.INTISlideVideo"
+			 name="render" />
+
+	<adapter factory=".externalization._NTISlideDeckRenderExternalObject"
+			 for=".interfaces.INTISlideDeck"
 			 name="render" />
 
 </configure>

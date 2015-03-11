@@ -26,6 +26,7 @@ from nti.schema.field import Variant
 from nti.schema.field import ValidURI
 from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
+from nti.schema.field import IndexedIterable
 
 ## Transcript types (file extensions)
 
@@ -192,3 +193,17 @@ class INTISlideVideo(IDCDescriptiveProperties):
 	thumbnail = ValidTextLine(title="Slide video thumbnail", required=False)
 	ntiid = ValidNTIID(title="Slide Video NTIID", required=True)
 	description = ValidTextLine(title="Slide video description", required=False)
+
+class INTISlideDeck(IDCDescriptiveProperties):
+	Slides = IndexedIterable(value_type=Object(INTISlide), 
+						 	 title="The slides", required=False, min_length=1)
+
+	Videos = IndexedIterable(value_type=Object(INTISlideVideo), 
+						 	 title="The slide videos", required=False, min_length=1)
+
+	ntiid = ValidNTIID(title="Slide deck NTIID", required=True)
+	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
+	
+	creator = ValidTextLine(title="Slide deck creator", required=True)
+	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
+	description = ValidTextLine(title="Slide deck description", required=False)
