@@ -59,8 +59,8 @@ class NTISlideVideo(SchemaConfigured,
 					Contained):
 	createDirectFieldProperties(INTISlideVideo)
 
-	__external_class_name__ = u"Slide"
-	mime_type = mimeType = u'application/vnd.nextthought.slide'
+	__external_class_name__ = u"NTISlideVideo"
+	mime_type = mimeType = u'application/vnd.nextthought.ntislidevideo'
 
 	Creator = alias('creator')
 	video = alias('video_ntiid')

@@ -26,7 +26,7 @@ from nti.externalization.internalization import update_from_external_object
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
-class TestModel(unittest.TestCase):
+class TestSlide(unittest.TestCase):
 
 	layer = SharedConfiguringTestLayer
 
@@ -51,3 +51,27 @@ class TestModel(unittest.TestCase):
 		ext_obj = to_external_object(slide, name="render")
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
+
+	def test_slide_video(self):
+		path = os.path.join(os.path.dirname(__file__), 'ntislidevideo.json')
+		with open(path, "r") as fp:
+			source = simplejson.load(fp, encoding="UTF-8")
+			original = copy.deepcopy(source)
+			
+		factory = find_factory_for(source)
+		assert_that(factory, is_not(none()))
+		slide = factory()
+		update_from_external_object(slide, source)
+		assert_that(slide, has_property('thumbnail', is_("//www.kaltura.com/p/1500101/thumbnail/entry_id/0_06h42bu6/width/640/")))
+		assert_that(slide, has_property('creator', is_("Deborah Trytten")))
+		assert_that(slide, has_property('title', is_("Install Software on Macintosh")))
+		assert_that(slide, has_property("deck", "tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac"))
+		assert_that(slide, has_property('mimeType', is_(u"application/vnd.nextthought.ntislidevideo")))
+		assert_that(slide, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NTISlideVideo-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac_video")))
+		assert_that(slide, has_property('video', is_(u"tag:nextthought.com,2011-10:OU-NTIVideo-CS1323_S_2015_Intro_to_Computer_Programming.ntivideo.video_01.01.02_Mac")))
+	
+		ext_obj = to_external_object(slide, name="render")
+		for k, v in original.items():
+			assert_that(ext_obj, has_entry(k, is_(v)))
+
+

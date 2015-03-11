@@ -22,6 +22,7 @@ from nti.externalization.externalization import toExternalObject
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
+from .interfaces import INTISlideVideo
 
 CLASS = StandardExternalFields.CLASS
 NTIID = StandardExternalFields.NTIID
@@ -89,6 +90,33 @@ class _NTISlideRenderExternalObject(object):
             if value is not None and not isinstance(value, six.string_types):
                 extDict[name] = str(value)
 
+        return extDict
+
+    def toExternalObject( self, *args, **kwargs ):
+        extDict = toExternalObject( self.slide, name='')
+        self._do_toExternalObject( extDict )
+        return extDict
+
+@component.adapter( INTISlideVideo )
+@interface.implementer( IExternalObject )
+class _NTISlideVideoRenderExternalObject(object):
+
+    def __init__( self, slide ):
+        self.slide = slide
+
+    def _do_toExternalObject( self, extDict ):
+        if CLASS in extDict:
+            extDict['class'] = (extDict.pop(CLASS) or u'').lower()
+        
+        if CREATOR in extDict:
+            extDict['creator'] = extDict.pop(CREATOR)
+            
+        if 'video_ntiid' in extDict:
+            extDict['video-ntiid'] = extDict.pop('video_ntiid') 
+            
+        if 'description' in extDict and not extDict['description']:
+            extDict.pop('description') 
+       
         return extDict
 
     def toExternalObject( self, *args, **kwargs ):

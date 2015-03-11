@@ -27,6 +27,7 @@ from nti.externalization.internalization import update_from_external_object
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
+from .interfaces import INTISlideVideo
 
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
@@ -122,4 +123,24 @@ class _NTISlideUpdater(InterfaceObjectIO):
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(map_string_adjuster(parsed))
 		result = super(_NTISlideUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+@component.adapter(INTISlideVideo)
+@interface.implementer(IInternalObjectUpdater)
+class _NTISlideVideoUpdater(InterfaceObjectIO):
+	
+	_ext_iface_upper_bound = INTISlideVideo
+	
+	def fixAll(self, parsed):
+		if 'creator' in parsed:
+			parsed[CREATOR] = parsed.pop('creator')
+		
+		if 'video-ntiid' in parsed:
+			parsed['video_ntiid'] = parsed.pop('video-ntiid')
+
+		return self
+		
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed))
+		result = super(_NTISlideVideoUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result

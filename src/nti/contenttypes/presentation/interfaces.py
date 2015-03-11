@@ -191,3 +191,4 @@ class INTISlideVideo(IDCDescriptiveProperties):
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 	thumbnail = ValidTextLine(title="Slide video thumbnail", required=False)
 	ntiid = ValidNTIID(title="Slide Video NTIID", required=True)
+	description = ValidTextLine(title="Slide video description", required=False)
