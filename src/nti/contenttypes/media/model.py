@@ -92,7 +92,7 @@ class NTIVideo(NTIMedia):
 	__external_class_name__ = u"Video"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideo'
 
-	closedCaption = alias('closed_caption')
+	closedCaption = closedCaptions = alias('closed_caption')
 
 @interface.implementer(INTIAudio, IContentTypeAware)
 @WithRepr
