@@ -16,10 +16,23 @@
 	<include package="nti.externalization" />
 		
 	<ext:registerAutoPackageIO
-		root_interfaces=".interfaces.INTISlide"
-		modules=".model" />
+		root_interfaces=".interfaces.INTIAudio
+						 .interfaces.INTIVideo
+						 .interfaces.INTIAudioSource
+						 .interfaces.INTIVideoSource
+						 .interfaces.INTITranscript
+						 .interfaces.INTISlide"
+		modules=".media .slide" />
 
 	<!-- Internalization -->
+	<adapter factory=".internalization._NTIVideoUpdater"
+			 for=".interfaces.INTIVideo"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
+	<adapter factory=".internalization._NTIAudioUpdater"
+			 for=".interfaces.INTIAudio"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
 	<adapter factory=".internalization._NTISlideUpdater"
 			 for=".interfaces.INTISlide"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -27,6 +40,14 @@
 	<!-- Externalization -->
 	<adapter factory=".externalization._NTISlideRenderExternalObject"
 			 for=".interfaces.INTISlide"
+			 name="render" />
+
+	<adapter factory=".externalization._NTIAudioRenderExternalObject"
+			 for=".interfaces.INTIAudio"
+			 name="render" />
+
+	<adapter factory=".externalization._NTIVideoRenderExternalObject"
+			 for=".interfaces.INTIVideo"
 			 name="render" />
 
 </configure>
