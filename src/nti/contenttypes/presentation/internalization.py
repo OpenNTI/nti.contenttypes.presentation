@@ -272,6 +272,11 @@ class _NTIAssignmentRefUpdater(InterfaceObjectIO):
 		elif not parsed.get('ntiid') and parsed.get('target'):
 			parsed['ntiid'] = parsed['target']
 			
+		if not parsed.get('title') and parsed.get('label'):
+			parsed['title'] = parsed['label']
+		elif not parsed.get('label') and parsed.get('title'):
+			parsed['label'] = parsed['title']
+			
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
