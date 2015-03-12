@@ -32,6 +32,7 @@ from .interfaces import INTISlide
 from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
+from .interfaces import INTIRelatedWork
 
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
@@ -200,3 +201,24 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 		self.fixAll(map_string_adjuster(parsed))
 		result = super(_NTITimelineUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
+
+@component.adapter(INTIRelatedWork)
+@interface.implementer(IInternalObjectUpdater)
+class _NTIRelatedWorkUpdater(InterfaceObjectIO):
+	
+	_ext_iface_upper_bound = INTIRelatedWork
+	
+	def fixAll(self, parsed):
+		if 'creator' in parsed:
+			parsed[CREATOR] = parsed.pop('creator')
+		if 'desc' in parsed:
+			parsed['description'] = parsed.pop('desc')
+		if 'target-ntiid' in parsed:
+			parsed['target'] = parsed.pop('target-ntiid')
+		return self
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed))
+		result = super(_NTIRelatedWorkUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+_NTIRelatedWorkRefUpdater = _NTIRelatedWorkUpdater

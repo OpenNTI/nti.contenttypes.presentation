@@ -185,7 +185,7 @@ class INTISlide(interface.Interface):
 	slideimage = ValidTextLine(title="Slide image source", required=False)
 	slidenumber = Int(title="Slide number", required=True, default=1)
 
-class INTISlideVideo(IDCDescriptiveProperties):
+class INTISlideVideo(IDCDescriptiveProperties, ICreated):
 	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
 	creator = ValidTextLine(title="Slide video creator", required=True)
 	title = ValidTextLine(title="Slide video title", required=False, default=u'')
@@ -194,7 +194,7 @@ class INTISlideVideo(IDCDescriptiveProperties):
 	ntiid = ValidNTIID(title="Slide Video NTIID", required=True)
 	description = ValidTextLine(title="Slide video description", required=False)
 
-class INTISlideDeck(IDCDescriptiveProperties):
+class INTISlideDeck(IDCDescriptiveProperties, ICreated):
 	Slides = IndexedIterable(value_type=Object(INTISlide), 
 						 	 title="The slides", required=False, min_length=1)
 
@@ -214,3 +214,14 @@ class INTITimeline(interface.Interface):
 	href = ValidTextLine(title="Resource href", required=False, default=u'')
 	icon = ValidTextLine(title="Icon href", required=False)
 	description = ValidTextLine(title="Timeline description", required=False)
+
+class INTIRelatedWork(ICreated):
+	ntiid = ValidNTIID(title="Related work NTIID", required=True)
+	href = ValidTextLine(title="Related work href", required=False, default=u'')
+	target = ValidNTIID(title="Target NTIID", required=False)
+	creator = ValidTextLine(title="The creator", required=False)
+	description = ValidTextLine(title="Slide video description", required=False)
+	icon = ValidTextLine(title="Related work icon href", required=False)
+	type = ValidTextLine(title="The target mimetype", required=False)
+	label = ValidTextLine(title="The label", required=False, default=u'')
+INTIRelatedWorkRef = INTIRelatedWork

@@ -26,7 +26,7 @@ from nti.externalization.internalization import update_from_external_object
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
-class TestModel(unittest.TestCase):
+class TestTimeline(unittest.TestCase):
 
 	layer = SharedConfiguringTestLayer
 

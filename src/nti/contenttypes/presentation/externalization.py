@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttypes.presentation.interfaces import INTITimeline
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -25,10 +24,12 @@ from nti.externalization.interfaces import StandardExternalFields
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
+from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
-
-from . import NTISLIDEDECK
+from .interfaces import INTIRelatedWork
+	
+from . import NTI_SLIDE_DECK
 
 CLASS = StandardExternalFields.CLASS
 NTIID = StandardExternalFields.NTIID
@@ -138,7 +139,7 @@ class _NTISlideDeckRenderExternalObject(_NTIBaseSlideExternalObject):
 		extDict['ntiid'] = self.slide.ntiid
 		extDict['creator'] = self.slide.creator
 		extDict[MIMETYPE] = self.slide.mimeType
-		extDict['class'] = NTISLIDEDECK.lower()
+		extDict['class'] = NTI_SLIDE_DECK.lower()
 		extDict['slidedeckid'] = self.slide.slidedeckid
 		extDict['Slides'] = [toExternalObject(x, name='render') for x in self.slide.slides]
 		extDict['Videos'] = [toExternalObject(x, name='render') for x in self.slide.videos]
@@ -156,3 +157,19 @@ class _NTITimelineRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict['desc'] = extDict.pop('description')
 		return extDict
 		
+@component.adapter( INTIRelatedWork )
+class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	related = alias('obj')
+
+	def _do_toExternalObject( self, extDict ):
+		if CLASS in extDict:
+			extDict.pop(CLASS)
+		if CREATOR in extDict:
+			extDict['creator'] = extDict.pop(CREATOR)
+		if 'description' in extDict:
+			extDict['desc'] = extDict.pop('description')
+		if 'target' in extDict:
+			extDict['target-ntiid'] = extDict.pop('target')
+		extDict["visibility"] = "everyone"
+		return extDict

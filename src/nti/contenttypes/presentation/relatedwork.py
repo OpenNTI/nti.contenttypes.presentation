@@ -25,20 +25,22 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.zodb.persistentproperty import PersistentPropertyHolder
 
-from .interfaces import INTITimeline
+from .interfaces import INTIRelatedWork
 
-@interface.implementer(INTITimeline, IContentTypeAware)
+@interface.implementer(INTIRelatedWork, IContentTypeAware)
 @WithRepr
 @EqHash('ntiid')
-class NTITimeLine(SchemaConfigured,
-				  PersistentPropertyHolder,
-				  Contained):
-	createDirectFieldProperties(INTITimeline)
+class NTIRelatedWork(SchemaConfigured,
+				  	 PersistentPropertyHolder,
+				  	 Contained):
+	createDirectFieldProperties(INTIRelatedWork)
 
-	__external_class_name__ = u"Timeline"
-	mime_type = mimeType = u'application/vnd.nextthought.timeline'
+	__external_class_name__ = u"RelatedWork"
+	mime_type = mimeType = u'application/vnd.nextthought.relatedworkref'
 
+	Creator = alias('creator')
 	desc = alias('description')
+	target_ntiid =  alias('target')
 	
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
