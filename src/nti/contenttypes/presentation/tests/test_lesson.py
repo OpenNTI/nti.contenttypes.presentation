@@ -11,6 +11,8 @@ from hamcrest import is_
 from hamcrest import none
 from hamcrest import is_not
 from hamcrest import has_entry
+from hamcrest import has_length
+from hamcrest import has_entries
 from hamcrest import assert_that
 from hamcrest import has_property
 
@@ -19,6 +21,7 @@ import copy
 import unittest
 import simplejson
 
+from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.externalization import to_external_object
 
 from nti.externalization.internalization import find_factory_for
@@ -26,26 +29,33 @@ from nti.externalization.internalization import update_from_external_object
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
-class TestDiscussion(unittest.TestCase):
+ITEMS = StandardExternalFields.ITEMS
+
+class TestRelatedWork(unittest.TestCase):
 
 	layer = SharedConfiguringTestLayer
 
-	def test_related(self):
-		path = os.path.join(os.path.dirname(__file__), 'discussion.json')
+	def test_nticourseoverviewgroup(self):
+		path = os.path.join(os.path.dirname(__file__), 'nticourseoverviewgroup.json')
 		with open(path, "r") as fp:
 			source = simplejson.load(fp, encoding="UTF-8")
 			original = copy.deepcopy(source)
-			
+
 		factory = find_factory_for(source)
 		assert_that(factory, is_not(none()))
-		related = factory()
-		update_from_external_object(related, source)
-		assert_that(related, has_property('label', is_(u'')))
-		assert_that(related, has_property('title', is_(u'11.6 Perspectives')))
-		assert_that(related, has_property('icon', is_(u"resources/LSTD1153_S_2015_History_United_States_1865_to_Present/8c9c6e901a7884087d71ccf46941ad258121abce/fd35e23767020999111e1f49239199b4c5eff23e.jpg")))
-		assert_that(related, has_property('mimeType', is_(u"application/vnd.nextthought.discussion")))
-		assert_that(related, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:LSTD_1153-Topic:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
+		group = factory()
+		update_from_external_object(group, source)
+		assert_that(group, has_property('ntiid', is_not(none())))
+		assert_that(group, has_property('color', is_(u'f11824e')))
+		assert_that(group, has_property('title', is_(u'Required Resources')))
+		assert_that(group, has_property('Items', has_length(2)))
+		assert_that(group, has_property('mimeType', is_(u"application/vnd.nextthought.nticourseoverviewgroup")))
 		
-		ext_obj = to_external_object(related, name="render")
+		ext_obj = to_external_object(group, name="render")
 		for k, v in original.items():
-			assert_that(ext_obj, has_entry(k, is_(v)))
+			if k != ITEMS:
+				assert_that(ext_obj, has_entry(k, is_(v)))
+			else:
+				for idx, org_item in enumerate(v):
+					ext_item = ext_obj[ITEMS][idx]
+					assert_that(ext_item, has_entries(**org_item))

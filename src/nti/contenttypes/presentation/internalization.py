@@ -10,6 +10,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 import six
+from collections import Mapping
 
 from zope import interface
 from zope import component
@@ -35,7 +36,10 @@ from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
 from .interfaces import INTIAssignmentRef
+from .interfaces import INTICourseOverviewGroup
 
+ITEMS = StandardExternalFields.ITEMS
+NTIID = StandardExternalFields.NTIID
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
 
@@ -213,6 +217,9 @@ class _NTIRelatedWorkUpdater(InterfaceObjectIO):
 	def fixAll(self, parsed):
 		if 'creator' in parsed:
 			parsed[CREATOR] = parsed.pop('creator')
+			
+		if NTIID in parsed:
+			parsed['ntiid'] = parsed.pop(NTIID)
 
 		if 'desc' in parsed:
 			parsed['description'] = parsed.pop('desc')
@@ -240,8 +247,8 @@ class _NTIDiscussionUpdater(InterfaceObjectIO):
 	_ext_iface_upper_bound = INTIDiscussion
 	
 	def fixAll(self, parsed):
-		if 'NTIID' in parsed:
-			parsed['ntiid'] = parsed['NTIID']
+		if NTIID in parsed:
+			parsed['ntiid'] = parsed[NTIID]
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -256,8 +263,8 @@ class _NTIAssignmentRefUpdater(InterfaceObjectIO):
 	_ext_iface_upper_bound = INTIAssignmentRef
 	
 	def fixAll(self, parsed):
-		if 'NTIID' in parsed:
-			parsed['ntiid'] = parsed['NTIID']
+		if NTIID in parsed:
+			parsed['ntiid'] = parsed[NTIID]
 		
 		if 'ContainerId' in parsed:
 			parsed['containerId'] = parsed['ContainerId']
@@ -282,4 +289,35 @@ class _NTIAssignmentRefUpdater(InterfaceObjectIO):
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(map_string_adjuster(parsed))
 		result = super(_NTIAssignmentRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+@component.adapter(INTICourseOverviewGroup)
+@interface.implementer(IInternalObjectUpdater)
+class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
+
+	_ext_iface_upper_bound = INTICourseOverviewGroup
+	
+	def fixMimeTypes(self, parsed):
+		items = PersistentList(parsed.get(ITEMS) or ())
+		for idx, item in enumerate(items):
+			if not isinstance(item, Mapping):
+				continue
+
+			# change legacy assignment references 
+			mt = item.get(MIMETYPE)
+			if mt == "application/vnd.nextthought.assessment.assignment":
+				item[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
+				obj = find_factory_for(item)()
+				items[idx] = update_from_external_object(obj, item)
+
+		parsed[ITEMS] = items	
+		return self
+	
+	def fixAll(self, parsed):
+		self.fixMimeTypes(parsed)
+		return parsed
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed, recur=False))
+		result = super(_NTICourseOverviewGroupUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result

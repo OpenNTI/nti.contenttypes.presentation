@@ -31,7 +31,7 @@ from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
 MIMETYPE = StandardExternalFields.MIMETYPE
 
-class TestRelatedWork(unittest.TestCase):
+class TestAssignment(unittest.TestCase):
 
 	layer = SharedConfiguringTestLayer
 
@@ -57,14 +57,3 @@ class TestRelatedWork(unittest.TestCase):
 		ext_obj = to_external_object(assignment, name="render")
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
-
-
-
-{
-	"MimeType": "application/vnd.nextthought.assessment.assignment",
-	"ContainerId": "tag:nextthought.com,2011-10:OU-HTML-LSTD1153_S_2015_History_United_States_1865_to_Present.discussions:_the_liberal_hour",
-	"title": "Discussions: The Liberal Hour",
-	"label": "Discussions: The Liberal Hour",
-	"NTIID": "tag:nextthought.com,2011-10:OU-NAQ-LSTD1153_S_2015_History_United_States_1865_to_Present.naq.asg.assignment:11.6_discussions",
-	"Target-NTIID": "tag:nextthought.com,2011-10:OU-NAQ-LSTD1153_S_2015_History_United_States_1865_to_Present.naq.asg.assignment:11.6_discussions"
-}

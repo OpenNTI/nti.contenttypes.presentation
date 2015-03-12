@@ -115,6 +115,11 @@ AUDIO_SOURCES = (MP3_AUDIO_SOURCE, WAV_AUDIO_SOURCE, OTHER_AUDIO_SOURCE)
 AUDIO_SOURCES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
 
+class IGroupOverViewable(interface.Interface):
+	"""
+	marker interface for things that can be part of a course overview group
+	"""
+
 class INTITranscript(interface.Interface):
 	src = Variant((	ValidTextLine(title="Transcript source"),
 					ValidURI(title="Transcript source uri") ), required=True)
@@ -216,7 +221,7 @@ class INTITimeline(interface.Interface):
 	icon = ValidTextLine(title="Icon href", required=False)
 	description = ValidTextLine(title="Timeline description", required=False)
 
-class INTIRelatedWork(ICreated):
+class INTIRelatedWork(IGroupOverViewable, ICreated):
 	ntiid = ValidNTIID(title="Related work NTIID", required=True)
 	href = ValidTextLine(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
@@ -228,16 +233,29 @@ class INTIRelatedWork(ICreated):
 	label = ValidTextLine(title="The label", required=False, default=u'')
 INTIRelatedWorkRef = INTIRelatedWork
 
-class INTIDiscussion(ITitled):
+class INTIDiscussion(IGroupOverViewable, ITitled):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
 	title = ValidTextLine(title="Discussion title", required=True)
 	icon = ValidTextLine(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 
-class INTIAssignmentRef(ITitled):
+class INTIAssignmentRef(IGroupOverViewable, ITitled):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
 	containerId = ValidNTIID(title="Container NTIID", required=True)
 	title = ValidTextLine(title="Assignment title", required=False)
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
+
+class INTICourseOverviewGroup(ITitled):
+	ntiid = ValidNTIID(title="Overview NTIID", required=False)
+	Items = IndexedIterable(value_type=Object(IGroupOverViewable), 
+						 	title="The overview items", required=False, min_length=0)
+	title = ValidTextLine(title="Overview title", required=False)
+	accentColor = ValidTextLine(title="Overview color", required=False)
+
+class INTILessonOverview(ITitled):
+	ntiid = ValidNTIID(title="Overview NTIID", required=False)
+	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup), 
+						 	title="The overview items", required=False, min_length=0)
+	title = ValidTextLine(title="Overview title", required=False)

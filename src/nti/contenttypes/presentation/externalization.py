@@ -30,11 +30,13 @@ from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
 from .interfaces import INTIAssignmentRef
+from .interfaces import INTICourseOverviewGroup
 
 from . import NTI_SLIDE_DECK
 
 CLASS = StandardExternalFields.CLASS
 NTIID = StandardExternalFields.NTIID
+ITEMS = StandardExternalFields.ITEMS
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
 
@@ -172,7 +174,7 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 		if 'description' in extDict:
 			extDict['desc'] = extDict.pop('description')
 		if 'target' in extDict:
-			extDict['target-ntiid'] = extDict.pop('target')
+			extDict['target-NTIID'] = extDict['target-ntiid'] = extDict.pop('target')
 		if 'type' in extDict:
 			extDict['targetMimeType'] = extDict['type']
 		extDict["visibility"] = "everyone"
@@ -204,4 +206,17 @@ class _NTIAssignmentRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict['Target-NTIID'] = extDict.pop('target')
 		if 'containerId' in extDict:
 			extDict['ContainerId'] = extDict.pop('containerId')
+		return extDict
+
+@component.adapter( INTICourseOverviewGroup )
+class _NTICourseOverviewGroupRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	course = alias('obj')
+
+	def toExternalObject( self, *args, **kwargs ):
+		extDict = LocatedExternalDict()
+		extDict[MIMETYPE] = self.course.mimeType
+		extDict['title'] = self.course.title
+		extDict['accentColor'] = self.course.color
+		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.course.items]
 		return extDict
