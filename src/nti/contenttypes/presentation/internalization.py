@@ -31,6 +31,7 @@ from .interfaces import INTIVideo
 from .interfaces import INTISlide
 from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
+from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
 
@@ -211,10 +212,18 @@ class _NTIRelatedWorkUpdater(InterfaceObjectIO):
 	def fixAll(self, parsed):
 		if 'creator' in parsed:
 			parsed[CREATOR] = parsed.pop('creator')
+
 		if 'desc' in parsed:
 			parsed['description'] = parsed.pop('desc')
-		if 'target-ntiid' in parsed:
-			parsed['target'] = parsed.pop('target-ntiid')
+			
+		for name in ('target-NTIID', 'target-ntiid', 'Target-NTIID'):
+			if name in parsed:
+				parsed['target'] = parsed.pop(name)
+				break
+		
+		if 'targetMimeType' in parsed:
+			parsed['type'] = parsed.pop('targetMimeType')
+			
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -222,3 +231,19 @@ class _NTIRelatedWorkUpdater(InterfaceObjectIO):
 		result = super(_NTIRelatedWorkUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 _NTIRelatedWorkRefUpdater = _NTIRelatedWorkUpdater
+
+@component.adapter(INTIDiscussion)
+@interface.implementer(IInternalObjectUpdater)
+class _NTIDiscussionUpdater(InterfaceObjectIO):
+	
+	_ext_iface_upper_bound = INTIDiscussion
+	
+	def fixAll(self, parsed):
+		if 'NTIID' in parsed:
+			parsed['ntiid'] = parsed['NTIID']
+		return self
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed))
+		result = super(_NTIDiscussionUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result

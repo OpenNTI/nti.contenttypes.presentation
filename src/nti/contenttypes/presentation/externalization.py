@@ -26,9 +26,10 @@ from .interfaces import INTIVideo
 from .interfaces import INTISlide
 from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
+from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
-	
+
 from . import NTI_SLIDE_DECK
 
 CLASS = StandardExternalFields.CLASS
@@ -171,5 +172,19 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict['desc'] = extDict.pop('description')
 		if 'target' in extDict:
 			extDict['target-ntiid'] = extDict.pop('target')
+		if 'type' in extDict:
+			extDict['targetMimeType'] = extDict['type']
 		extDict["visibility"] = "everyone"
+		return extDict
+
+@component.adapter( INTIDiscussion )
+class _NTIDiscussionRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	related = alias('obj')
+
+	def _do_toExternalObject( self, extDict ):
+		if CLASS in extDict:
+			extDict.pop(CLASS)
+		if 'ntiid' in extDict:
+			extDict[NTIID] = extDict.pop('ntiid')
 		return extDict

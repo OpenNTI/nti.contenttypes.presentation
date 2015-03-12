@@ -15,8 +15,6 @@ from zope.container.contained import Contained
 
 from zope.mimetype.interfaces import IContentTypeAware
 
-from nti.common.property import alias
-
 from nti.externalization.representation import WithRepr
 
 from nti.schema.schema import EqHash 
@@ -25,23 +23,18 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.zodb.persistentproperty import PersistentPropertyHolder
 
-from .interfaces import INTIRelatedWork
+from .interfaces import INTIDiscussion
 
-@interface.implementer(INTIRelatedWork, IContentTypeAware)
+@interface.implementer(INTIDiscussion, IContentTypeAware)
 @WithRepr
 @EqHash('ntiid')
-class NTIRelatedWork(SchemaConfigured,
-				  	 PersistentPropertyHolder,
-				  	 Contained):
-	createDirectFieldProperties(INTIRelatedWork)
+class NTIDiscussion(SchemaConfigured,
+					PersistentPropertyHolder,
+				 	Contained):
+	createDirectFieldProperties(INTIDiscussion)
 
-	__external_class_name__ = u"RelatedWork"
-	mime_type = mimeType = u'application/vnd.nextthought.relatedworkref'
-
-	Creator = alias('creator')
-	desc = alias('description')
-	target_ntiid =  alias('target')
-	targetMimeType = target_mime_type = alias('type')
+	__external_class_name__ = u"Discussion"
+	mime_type = mimeType = u'application/vnd.nextthought.discussion'
 	
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)

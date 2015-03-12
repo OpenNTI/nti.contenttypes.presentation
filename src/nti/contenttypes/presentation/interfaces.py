@@ -13,6 +13,7 @@ from zope.dublincore.interfaces import IDCDescriptiveProperties
 
 from zope.schema import vocabulary
 
+from nti.coremetadata.interfaces import ITitled
 from nti.coremetadata.interfaces import ICreated
 
 from nti.ntiids.schema import ValidNTIID
@@ -128,7 +129,7 @@ class INTIMediaSource(interface.Interface):
 	service = ValidTextLine(title="Source service", required=True)
 	thumbnail = ValidTextLine(title="Source thumbnail", required=False)
 
-class INTIMedia(IDCDescriptiveProperties, ICreated):
+class INTIMedia(IDCDescriptiveProperties, ICreated, ITitled):
 	ntiid = ValidNTIID(title="Media NTIID", required=True)
 	creator = ValidTextLine(title="Media creator", required=True)
 	title = ValidTextLine(title="Media title", required=False, default=u'')
@@ -185,7 +186,7 @@ class INTISlide(interface.Interface):
 	slideimage = ValidTextLine(title="Slide image source", required=False)
 	slidenumber = Int(title="Slide number", required=True, default=1)
 
-class INTISlideVideo(IDCDescriptiveProperties, ICreated):
+class INTISlideVideo(IDCDescriptiveProperties, ICreated, ITitled):
 	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
 	creator = ValidTextLine(title="Slide video creator", required=True)
 	title = ValidTextLine(title="Slide video title", required=False, default=u'')
@@ -194,7 +195,7 @@ class INTISlideVideo(IDCDescriptiveProperties, ICreated):
 	ntiid = ValidNTIID(title="Slide Video NTIID", required=True)
 	description = ValidTextLine(title="Slide video description", required=False)
 
-class INTISlideDeck(IDCDescriptiveProperties, ICreated):
+class INTISlideDeck(IDCDescriptiveProperties, ICreated, ITitled):
 	Slides = IndexedIterable(value_type=Object(INTISlide), 
 						 	 title="The slides", required=False, min_length=1)
 
@@ -220,8 +221,15 @@ class INTIRelatedWork(ICreated):
 	href = ValidTextLine(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
 	creator = ValidTextLine(title="The creator", required=False)
+	section = ValidTextLine(title="Section", required=False)
 	description = ValidTextLine(title="Slide video description", required=False)
 	icon = ValidTextLine(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 INTIRelatedWorkRef = INTIRelatedWork
+
+class INTIDiscussion(ICreated, ITitled):
+	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
+	title = ValidTextLine(title="Discussion title", required=True)
+	icon = ValidTextLine(title="Discussion icon href", required=False)
+	label = ValidTextLine(title="The label", required=False, default=u'')
