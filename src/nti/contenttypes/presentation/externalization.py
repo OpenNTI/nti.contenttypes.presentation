@@ -29,6 +29,7 @@ from .interfaces import INTISlideDeck
 from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
+from .interfaces import INTIAssignmentRef
 
 from . import NTI_SLIDE_DECK
 
@@ -187,4 +188,20 @@ class _NTIDiscussionRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict.pop(CLASS)
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
+		return extDict
+
+@component.adapter( INTIAssignmentRef )
+class _NTIAssignmentRefRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	assignment = alias('obj')
+
+	def _do_toExternalObject( self, extDict ):
+		extDict[CLASS] = 'Assignment' # for legacy iPad
+		extDict[MIMETYPE] = 'application/vnd.nextthought.assessment.assignment'  # for legacy iPad
+		if 'ntiid' in extDict:
+			extDict[NTIID] = extDict.pop('ntiid')
+		if 'target' in extDict:
+			extDict['Target-NTIID'] = extDict.pop('target')
+		if 'containerId' in extDict:
+			extDict['ContainerId'] = extDict.pop('containerId')
 		return extDict

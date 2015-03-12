@@ -34,6 +34,7 @@ from .interfaces import INTISlideDeck
 from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
+from .interfaces import INTIAssignmentRef
 
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
@@ -246,4 +247,34 @@ class _NTIDiscussionUpdater(InterfaceObjectIO):
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(map_string_adjuster(parsed))
 		result = super(_NTIDiscussionUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+@component.adapter(INTIAssignmentRef)
+@interface.implementer(IInternalObjectUpdater)
+class _NTIAssignmentRefUpdater(InterfaceObjectIO):
+	
+	_ext_iface_upper_bound = INTIAssignmentRef
+	
+	def fixAll(self, parsed):
+		if 'NTIID' in parsed:
+			parsed['ntiid'] = parsed['NTIID']
+		
+		if 'ContainerId' in parsed:
+			parsed['containerId'] = parsed['ContainerId']
+
+		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid'):
+			if name in parsed:
+				parsed['target'] = parsed.pop(name)
+				break
+
+		if not parsed.get('target') and parsed.get('ntiid'):
+			parsed['target'] = parsed['ntiid']
+		elif not parsed.get('ntiid') and parsed.get('target'):
+			parsed['ntiid'] = parsed['target']
+			
+		return self
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed))
+		result = super(_NTIAssignmentRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result

@@ -228,8 +228,16 @@ class INTIRelatedWork(ICreated):
 	label = ValidTextLine(title="The label", required=False, default=u'')
 INTIRelatedWorkRef = INTIRelatedWork
 
-class INTIDiscussion(ICreated, ITitled):
+class INTIDiscussion(ITitled):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
 	title = ValidTextLine(title="Discussion title", required=True)
 	icon = ValidTextLine(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
+
+class INTIAssignmentRef(ITitled):
+	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
+	containerId = ValidNTIID(title="Container NTIID", required=True)
+	title = ValidTextLine(title="Assignment title", required=False)
+	target = ValidNTIID(title="Target NTIID", required=True)
+	label = ValidTextLine(title="The label", required=False, default=u'')
+IAssignmentRef = INTIAssignment = INTIAssignmentRef
