@@ -29,6 +29,7 @@ from nti.externalization.internalization import update_from_external_object
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
+from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
 
@@ -182,4 +183,20 @@ class _NTISlideDeckUpdater(InterfaceObjectIO):
 		map_string_adjuster(parsed, recur=False)
 		self.fixAll(parsed).parseSlides(parsed).parseVideos(parsed)
 		result = super(_NTISlideDeckUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+@component.adapter(INTITimeline)
+@interface.implementer(IInternalObjectUpdater)
+class _NTITimelineUpdater(InterfaceObjectIO):
+	
+	_ext_iface_upper_bound = INTITimeline
+	
+	def fixAll(self, parsed):
+		if 'desc' in parsed:
+			parsed['description'] = parsed.pop('desc')
+		return self
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed))
+		result = super(_NTITimelineUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result

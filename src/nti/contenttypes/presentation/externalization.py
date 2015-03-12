@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttypes.presentation.interfaces import INTITimeline
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -13,6 +14,8 @@ import six
 
 from zope import component
 from zope import interface
+
+from nti.common.property import alias
 
 from nti.externalization.interfaces import IExternalObject
 from nti.externalization.interfaces import LocatedExternalDict
@@ -33,11 +36,24 @@ CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
 
 @interface.implementer( IExternalObject )
-class _NTIMediaRenderExternalObject(object):
+class _NTIBaseRenderExternalObject(object):
 
-	def __init__( self, media ):
-		self.media = media
+	def __init__( self, obj ):
+		self.obj = obj
 
+	def _do_toExternalObject( self, extDict ):
+		return extDict
+
+	def toExternalObject( self, *args, **kwargs ):
+		extDict = toExternalObject( self.obj, name='')
+		self._do_toExternalObject( extDict )
+		return extDict
+
+@interface.implementer( IExternalObject )
+class _NTIMediaRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	media = alias('obj')
+	
 	def _do_toExternalObject( self, extDict ):
 		if MIMETYPE in extDict:
 			extDict[StandardExternalFields.CTA_MIMETYPE] = extDict.pop(MIMETYPE)
@@ -54,13 +70,7 @@ class _NTIMediaRenderExternalObject(object):
 		
 		for transcript in extDict.get('transcripts') or ():
 			transcript.pop(MIMETYPE, None)
-			transcript.pop(StandardExternalFields.CLASS, None)
-		
-		return extDict
-
-	def toExternalObject( self, *args, **kwargs ):
-		extDict = toExternalObject( self.media, name='')
-		self._do_toExternalObject( extDict )
+			transcript.pop(StandardExternalFields.CLASS, None)		
 		return extDict
 
 @component.adapter( INTIVideo )
@@ -79,11 +89,10 @@ class _NTIAudioRenderExternalObject(_NTIMediaRenderExternalObject):
 	pass
 
 @interface.implementer( IExternalObject )
-class _NTIBaseSlideExternalObject(object):
+class _NTIBaseSlideExternalObject(_NTIBaseRenderExternalObject):
 
-	def __init__( self, slide ):
-		self.slide = slide
-
+	slide = alias('obj')
+	
 	def _do_toExternalObject( self, extDict ):
 		if CLASS in extDict:
 			extDict['class'] = (extDict.pop(CLASS) or u'').lower()
@@ -94,11 +103,6 @@ class _NTIBaseSlideExternalObject(object):
 		if 'description' in extDict and not extDict['description']:
 			extDict.pop('description') 
 
-		return extDict
-
-	def toExternalObject( self, *args, **kwargs ):
-		extDict = toExternalObject( self.slide, name='')
-		self._do_toExternalObject( extDict )
 		return extDict
 
 @component.adapter( INTISlide )
@@ -116,9 +120,6 @@ class _NTISlideRenderExternalObject(_NTIBaseSlideExternalObject):
 
 @component.adapter( INTISlideVideo )
 class _NTISlideVideoRenderExternalObject(_NTIBaseSlideExternalObject):
-
-	def __init__( self, slide ):
-		self.slide = slide
 
 	def _do_toExternalObject( self, extDict ):
 		super(_NTISlideVideoRenderExternalObject, self)._do_toExternalObject(extDict)
@@ -142,3 +143,16 @@ class _NTISlideDeckRenderExternalObject(_NTIBaseSlideExternalObject):
 		extDict['Slides'] = [toExternalObject(x, name='render') for x in self.slide.slides]
 		extDict['Videos'] = [toExternalObject(x, name='render') for x in self.slide.videos]
 		return extDict
+
+@component.adapter( INTITimeline )
+class _NTITimelineRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	timeline = alias('obj')
+
+	def _do_toExternalObject( self, extDict ):
+		if CLASS in extDict:
+			extDict.pop(CLASS)
+		if 'description' in extDict:
+			extDict['desc'] = extDict.pop('description')
+		return extDict
+		

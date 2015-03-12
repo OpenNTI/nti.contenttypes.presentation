@@ -207,3 +207,10 @@ class INTISlideDeck(IDCDescriptiveProperties):
 	creator = ValidTextLine(title="Slide deck creator", required=True)
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
+
+class INTITimeline(interface.Interface):
+	label = ValidTextLine(title="The label", required=True, default=u'')
+	ntiid = ValidNTIID(title="Time line NTIID", required=True)
+	href = ValidTextLine(title="Resource href", required=False, default=u'')
+	icon = ValidTextLine(title="Icon href", required=False)
+	description = ValidTextLine(title="Timeline description", required=False)
