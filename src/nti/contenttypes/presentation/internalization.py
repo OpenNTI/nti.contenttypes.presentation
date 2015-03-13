@@ -11,6 +11,7 @@ logger = __import__('logging').getLogger(__name__)
 
 import six
 from collections import Mapping
+from collections import MutableSequence
 
 from zope import interface
 from zope import component
@@ -31,6 +32,7 @@ from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
 from .interfaces import INTITimeline
+from .interfaces import INTIVideoRef
 from .interfaces import INTISlideDeck
 from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
@@ -292,30 +294,28 @@ class _NTIAssignmentRefUpdater(InterfaceObjectIO):
 		result = super(_NTIAssignmentRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
+def course_overview_pre_hook(k, x):
+	if not k==ITEMS or not isinstance(x, MutableSequence):
+		return
+	
+	for item in x:
+		if not isinstance(item, Mapping):
+			continue
+		mt = item.get(MIMETYPE)
+		if mt == "application/vnd.nextthought.assessment.assignment": 
+			item[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
+		elif mt == "application/vnd.nextthought.ntivideo":
+			item[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
+	
 @component.adapter(INTICourseOverviewGroup)
 @interface.implementer(IInternalObjectUpdater)
 class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
 
 	_ext_iface_upper_bound = INTICourseOverviewGroup
-	
-	def fixMimeTypes(self, parsed):
-		items = PersistentList(parsed.get(ITEMS) or ())
-		for idx, item in enumerate(items):
-			if not isinstance(item, Mapping):
-				continue
 
-			# change legacy assignment references 
-			mt = item.get(MIMETYPE)
-			if mt == "application/vnd.nextthought.assessment.assignment":
-				item[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
-				obj = find_factory_for(item)()
-				items[idx] = update_from_external_object(obj, item)
-
-		parsed[ITEMS] = items	
-		return self
-	
 	def fixAll(self, parsed):
-		self.fixMimeTypes(parsed)
+		items = PersistentList(parsed.get(ITEMS) or ())
+		parsed[ITEMS] = items	
 		return parsed
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -329,6 +329,15 @@ class _NTILessonOverviewUpdater(InterfaceObjectIO):
 
 	_ext_iface_upper_bound = INTILessonOverview
 
+	def fixItems(self, parsed):
+		items = PersistentList(parsed.get(ITEMS) or ())
+		for idx, item in enumerate(items):
+			if not INTIVideo.providedBy(item) or item.sources or item.transcripts:
+				continue
+			items[idx] = INTIVideoRef(item)
+		parsed[ITEMS] = items	
+		return self
+	
 	def fixAll(self, parsed):
 		if NTIID in parsed:
 			parsed['ntiid'] = parsed[NTIID]

@@ -136,7 +136,7 @@ class INTIMediaSource(interface.Interface):
 
 class INTIMedia(IDCDescriptiveProperties, ICreated, ITitled):
 	ntiid = ValidNTIID(title="Media NTIID", required=True)
-	creator = ValidTextLine(title="Media creator", required=True)
+	creator = ValidTextLine(title="Media creator", required=False)
 	title = ValidTextLine(title="Media title", required=False, default=u'')
 	description = ValidTextLine(title="Media description", required=False, default=u'')
 	
@@ -154,13 +154,18 @@ class INTIVideoSource(INTIMediaSource):
 	type = ListOrTuple(	Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
 						title='Video service types', required=True, min_length=1)
 
-class INTIVideo(INTIMedia):
+class INTIVideoRef(interface.Interface):
+	ntiid = ValidNTIID(title="Media NTIID", required=True)
+	label = ValidTextLine(title="Video label", required=False)
+	poster = ValidTextLine(title="Video poster", required=False)
+	
+class INTIVideo(INTIMedia, INTIVideoRef):	
 	subtitle = Bool(title="Subtitle flag", required=False, default=None)
 	
 	closed_caption = Bool(title="Close caption flag", required=False, default=None)
 
 	sources = ListOrTuple(value_type=Object(INTIVideoSource), 
-						  title="The video sources", required=False, min_length=1)
+						  title="The video sources", required=False, min_length=0)
 
 	transcripts = ListOrTuple(value_type=Object(INTITranscript), 
 							  title="The transcripts", required=False, min_length=0)

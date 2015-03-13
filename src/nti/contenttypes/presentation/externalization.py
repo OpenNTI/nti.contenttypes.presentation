@@ -86,8 +86,11 @@ class _NTIVideoRenderExternalObject(_NTIMediaRenderExternalObject):
 		extDict = super(_NTIVideoRenderExternalObject, self)._do_toExternalObject(extDict)
 		if 'closed_caption' in extDict:
 			extDict['closedCaptions'] = extDict.pop('closed_caption')
-		if 'subtitle' in extDict and extDict['subtitle'] is None:
-			del extDict['subtitle']
+			
+		for name in ('poster', 'label', 'subtitle'):
+			if name in extDict and not extDict[name]:
+				del extDict[name]	
+
 		return extDict
 
 @component.adapter( INTIAudio )

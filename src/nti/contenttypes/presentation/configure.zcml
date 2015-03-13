@@ -11,6 +11,11 @@
 
 	<include package="nti.mimetype" />
 
+	<!-- Adapters -->
+	<adapter factory=".adapters.ntivideo_to_ntivideoref"
+			 for=".interfaces.INTIVideo"
+			 provides=".interfaces.INTIVideoRef" /> 
+			 
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />
 	<include package="nti.externalization" />
@@ -18,6 +23,7 @@
 	<ext:registerAutoPackageIO
 		root_interfaces=".interfaces.INTIAudio
 						 .interfaces.INTIVideo
+						 .interfaces.INTIVideoRef
 						 .interfaces.INTIAudioSource
 						 .interfaces.INTIVideoSource
 						 .interfaces.INTITranscript
