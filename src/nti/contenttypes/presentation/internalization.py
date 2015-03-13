@@ -28,6 +28,8 @@ from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.internalization import find_factory_for
 from nti.externalization.internalization import update_from_external_object
 
+from nti.ntiids.ntiids import is_ntiid_of_types
+
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
@@ -41,6 +43,9 @@ from .interfaces import INTIRelatedWork
 from .interfaces import INTIAssignmentRef
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
+
+from . import RELATED_WORK
+from . import RELATED_WORK_REF
 
 ITEMS = StandardExternalFields.ITEMS
 NTIID = StandardExternalFields.NTIID
@@ -316,22 +321,24 @@ class _NTIAssignmentRefUpdater(InterfaceObjectIO):
 		result = super(_NTIAssignmentRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
-def course_overview_pre_hook(k, x):
-	if not k==ITEMS or not isinstance(x, MutableSequence):
-		return
-	
-	for item in x:
-		if not isinstance(item, Mapping):
-			continue
-		mt = item.get(MIMETYPE)
-		if mt == "application/vnd.nextthought.assessment.assignment": 
-			item[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
-		elif mt == "application/vnd.nextthought.ntivideo":
-			item[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
-		elif mt == "application/vnd.nextthought.ntiaudio":
-			item[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
-
-lesson_overview_pre_hook = course_overview_pre_hook # alias
+def internalization_pre_hook(k, x):
+	if k==ITEMS and isinstance(x, MutableSequence):
+		for item in x:
+			if not isinstance(item, Mapping):
+				continue
+			mimeType = item.get(MIMETYPE)
+			if mimeType == "application/vnd.nextthought.assessment.assignment": 
+				item[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
+			elif mimeType == "application/vnd.nextthought.ntivideo":
+				item[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
+			elif mimeType == "application/vnd.nextthought.ntiaudio":
+				item[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
+	elif isinstance(x, Mapping):
+		mimeType = x.get(MIMETYPE)
+		ntiid = x.get('ntiid') or x.get(NTIID)
+		if 	not mimeType and ntiid and \
+			is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF)):
+			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
 
 @component.adapter(INTICourseOverviewGroup)
 @interface.implementer(IInternalObjectUpdater)
