@@ -15,13 +15,18 @@
 	<adapter factory=".adapters.ntivideo_to_ntivideoref"
 			 for=".interfaces.INTIVideo"
 			 provides=".interfaces.INTIVideoRef" /> 
-			 
+
+	<adapter factory=".adapters.ntiaudio_to_ntiaudioref"
+			 for=".interfaces.INTIAudio"
+			 provides=".interfaces.INTIAudioRef" /> 
+	 
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />
 	<include package="nti.externalization" />
 		
 	<ext:registerAutoPackageIO
 		root_interfaces=".interfaces.INTIAudio
+						 .interfaces.INTIAudioRef
 						 .interfaces.INTIVideo
 						 .interfaces.INTIVideoRef
 						 .interfaces.INTIAudioSource
@@ -43,10 +48,18 @@
 			 for=".interfaces.INTIVideo"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
+	<adapter factory=".internalization._NTIVideoRefUpdater"
+			 for=".interfaces.INTIVideoRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+			 
 	<adapter factory=".internalization._NTIAudioUpdater"
 			 for=".interfaces.INTIAudio"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
+	<adapter factory=".internalization._NTIAudioRefUpdater"
+			 for=".interfaces.INTIAudioRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+			 
 	<adapter factory=".internalization._NTISlideUpdater"
 			 for=".interfaces.INTISlide"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -88,10 +101,18 @@
 			 for=".interfaces.INTIAudio"
 			 name="render" />
 
+	<adapter factory=".externalization._NTIAudioRefRenderExternalObject"
+			 for=".interfaces.INTIAudioRef"
+			 name="render" />
+			 
 	<adapter factory=".externalization._NTIVideoRenderExternalObject"
 			 for=".interfaces.INTIVideo"
 			 name="render" />
-
+			 
+	<adapter factory=".externalization._NTIVideoRefRenderExternalObject"
+			 for=".interfaces.INTIVideoRef"
+			 name="render" />
+			 
 	<adapter factory=".externalization._NTISlideRenderExternalObject"
 			 for=".interfaces.INTISlide"
 			 name="render" />

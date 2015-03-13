@@ -12,9 +12,12 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from .interfaces import INTIAudio
 from .interfaces import INTIVideo
+from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
 
+from .media import NTIAudioRef
 from .media import NTIVideoRef
 
 @component.adapter(INTIVideoRef)
@@ -23,4 +26,10 @@ def ntivideo_to_ntivideoref(video):
     result = NTIVideoRef(ntiid=video.ntiid,
                          poster=video.poster,
                          label=video.label)
+    return result
+
+@component.adapter(INTIAudioRef)
+@interface.implementer(INTIAudio)
+def ntiaudio_to_ntiaudioref(video):
+    result = NTIAudioRef(ntiid=video.ntiid)
     return result

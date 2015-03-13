@@ -28,6 +28,7 @@ from nti.zodb.persistentproperty import PersistentPropertyHolder
 from .interfaces import INTIAudio
 from .interfaces import INTIMedia
 from .interfaces import INTIVideo
+from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
 from .interfaces import INTITranscript
 from .interfaces import INTIAudioSource
@@ -103,7 +104,7 @@ class NTIVideo(NTIMedia):
 class NTIVideoRef(SchemaConfigured,
 				  PersistentPropertyHolder,
 				  Contained):
-	createDirectFieldProperties(INTIVideo)
+	createDirectFieldProperties(INTIVideoRef)
 
 	__external_class_name__ = u"Video"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
@@ -115,3 +116,13 @@ class NTIAudio(NTIMedia):
 
 	__external_class_name__ = u"Audio"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
+
+@interface.implementer(INTIAudioRef, IContentTypeAware)
+@WithRepr
+class NTIAudioRef(SchemaConfigured,
+				  PersistentPropertyHolder,
+				  Contained):
+	createDirectFieldProperties(INTIAudioRef)
+
+	__external_class_name__ = u"Audio"
+	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
