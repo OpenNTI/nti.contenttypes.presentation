@@ -36,6 +36,7 @@ from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
 from .interfaces import INTIAssignmentRef
+from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
 
 ITEMS = StandardExternalFields.ITEMS
@@ -320,4 +321,20 @@ class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(map_string_adjuster(parsed, recur=False))
 		result = super(_NTICourseOverviewGroupUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+@component.adapter(INTILessonOverview)
+@interface.implementer(IInternalObjectUpdater)
+class _NTILessonOverviewUpdater(InterfaceObjectIO):
+
+	_ext_iface_upper_bound = INTILessonOverview
+
+	def fixAll(self, parsed):
+		if NTIID in parsed:
+			parsed['ntiid'] = parsed[NTIID]
+		return parsed
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed, recur=False))
+		result = super(_NTILessonOverviewUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result

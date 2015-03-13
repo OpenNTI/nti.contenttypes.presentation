@@ -30,6 +30,7 @@ from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
 from .interfaces import INTIAssignmentRef
+from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
 
 from . import NTI_SLIDE_DECK
@@ -215,8 +216,22 @@ class _NTICourseOverviewGroupRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def toExternalObject( self, *args, **kwargs ):
 		extDict = LocatedExternalDict()
+		extDict[NTIID] = self.course.ntiid
 		extDict[MIMETYPE] = self.course.mimeType
 		extDict['title'] = self.course.title
 		extDict['accentColor'] = self.course.color
-		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.course.items]
+		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.course.items or ()]
+		return extDict
+
+@component.adapter( INTILessonOverview )
+class _NTILessonOverviewRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	lesson = alias('obj')
+
+	def toExternalObject( self, *args, **kwargs ):
+		extDict = LocatedExternalDict()
+		extDict[NTIID] = self.lesson.ntiid
+		extDict[MIMETYPE] = self.lesson.mimeType
+		extDict['title'] = self.lesson.title
+		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.lesson.items or ()]
 		return extDict

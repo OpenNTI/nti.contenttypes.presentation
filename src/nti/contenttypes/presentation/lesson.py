@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttypes.presentation.interfaces import INTILessonOverview
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -73,16 +74,18 @@ class NTICourseOverViewGroup(SchemaConfigured,
 		for item in self.items or ():
 			yield item
 
-@interface.implementer(INTICourseOverviewGroup, IContentTypeAware)
+@interface.implementer(INTILessonOverview, IContentTypeAware)
 @WithRepr
 @EqHash('ntiid')
 class NTILessonOverView(SchemaConfigured,
 						PersistentPropertyHolder,
 				 		Contained):
-	createDirectFieldProperties(INTICourseOverviewGroup)
+	createDirectFieldProperties(INTILessonOverview)
 
 	__external_class_name__ = u"LessonOverView"
 	mime_type = mimeType = u"application/vnd.nextthought.ntilessonoverview"
+	
+	items = alias('Items')
 	
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)

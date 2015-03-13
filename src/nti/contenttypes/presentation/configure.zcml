@@ -28,6 +28,7 @@
 						 .interfaces.INTIRelatedWork
 						 .interfaces.INTIDiscussion
 						 .interfaces.INTIAssignmentRef
+						 .interfaces.INTILessonOverview
 						 .interfaces.INTICourseOverviewGroup"
 		modules=".media .slide .timeline .relatedwork .discussion .assignment .lesson" />
 
@@ -71,7 +72,11 @@
 	<adapter factory=".internalization._NTICourseOverviewGroupUpdater"
 			 for=".interfaces.INTICourseOverviewGroup"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-			 		 
+		
+	<adapter factory=".internalization._NTILessonOverviewUpdater"
+			 for=".interfaces.INTILessonOverview"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+	 		 
 	<!-- Externalization -->
 	<adapter factory=".externalization._NTIAudioRenderExternalObject"
 			 for=".interfaces.INTIAudio"
@@ -111,6 +116,10 @@
 			 
 	<adapter factory=".externalization._NTICourseOverviewGroupRenderExternalObject"
 			 for=".interfaces.INTICourseOverviewGroup"
+			 name="render" />
+
+	<adapter factory=".externalization._NTILessonOverviewRenderExternalObject"
+			 for=".interfaces.INTILessonOverview"
 			 name="render" />
 
 </configure>
