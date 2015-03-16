@@ -34,7 +34,7 @@ class NTIDiscussion(SchemaConfigured,
 	createDirectFieldProperties(INTIDiscussion)
 
 	__external_class_name__ = u"Discussion"
-	mime_type = mimeType = u'application/vnd.nextthought.discussion'
+	mime_type = mimeType = u'application/vnd.nextthought.discussionref'
 	
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)

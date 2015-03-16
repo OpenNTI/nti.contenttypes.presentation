@@ -244,6 +244,8 @@ class INTIDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled):
 	title = ValidTextLine(title="Discussion title", required=True)
 	icon = ValidTextLine(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
+	target = ValidNTIID(title="Target NTIID", required=True)
+INTIDiscussionRef = INTIDiscussion
 
 class INTIAssignmentRef(IGroupOverViewable, ITitled):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)

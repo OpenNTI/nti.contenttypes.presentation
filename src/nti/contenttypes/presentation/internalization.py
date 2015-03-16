@@ -28,6 +28,8 @@ from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.internalization import find_factory_for
 from nti.externalization.internalization import update_from_external_object
 
+from nti.ntiids.ntiids import get_type
+from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import is_ntiid_of_types
 
 from .interfaces import INTIAudio
@@ -46,6 +48,8 @@ from .interfaces import INTICourseOverviewGroup
 
 from . import RELATED_WORK
 from . import RELATED_WORK_REF
+
+from . import DISCUSSION_REF
 
 ITEMS = StandardExternalFields.ITEMS
 NTIID = StandardExternalFields.NTIID
@@ -238,9 +242,28 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 		result = super(_NTITimelineUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
-@component.adapter(INTIRelatedWork)
 @interface.implementer(IInternalObjectUpdater)
-class _NTIRelatedWorkUpdater(InterfaceObjectIO):
+class _TargetNTIIDUpdater(InterfaceObjectIO):
+	
+	def fixTarget(self, parsed, transfer=True):
+		if NTIID in parsed:
+			parsed[u'ntiid'] = parsed[NTIID]
+		
+		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid'):
+			if name in parsed:
+				parsed['target'] = parsed.pop(name)
+				break
+
+		if transfer:
+			if not parsed.get('target') and parsed.get('ntiid'):
+				parsed[u'target'] = parsed['ntiid']
+			elif not parsed.get('ntiid') and parsed.get('target'):
+				parsed[u'ntiid'] = parsed['target']
+
+		return self
+
+@component.adapter(INTIRelatedWork)
+class _NTIRelatedWorkUpdater(_TargetNTIIDUpdater):
 	
 	_ext_iface_upper_bound = INTIRelatedWork
 	
@@ -248,16 +271,10 @@ class _NTIRelatedWorkUpdater(InterfaceObjectIO):
 		if 'creator' in parsed:
 			parsed[CREATOR] = parsed.pop('creator')
 			
-		if NTIID in parsed:
-			parsed[u'ntiid'] = parsed.pop(NTIID)
-
 		if 'desc' in parsed:
 			parsed[u'description'] = parsed.pop('desc')
-			
-		for name in ('target-NTIID', 'target-ntiid', 'Target-NTIID'):
-			if name in parsed:
-				parsed[u'target'] = parsed.pop(name)
-				break
+		
+		self.fixTarget(parsed, transfer=False)	
 		
 		if 'targetMimeType' in parsed:
 			parsed[u'type'] = parsed.pop('targetMimeType')
@@ -271,14 +288,21 @@ class _NTIRelatedWorkUpdater(InterfaceObjectIO):
 _NTIRelatedWorkRefUpdater = _NTIRelatedWorkUpdater
 
 @component.adapter(INTIDiscussion)
-@interface.implementer(IInternalObjectUpdater)
-class _NTIDiscussionUpdater(InterfaceObjectIO):
+class _NTIDiscussionUpdater(_TargetNTIIDUpdater):
 	
 	_ext_iface_upper_bound = INTIDiscussion
 	
 	def fixAll(self, parsed):
-		if NTIID in parsed:
-			parsed[u'ntiid'] = parsed[NTIID]
+		self.fixTarget(parsed, transfer=True)	
+		ntiid = parsed.get('ntiid')
+		if parsed.get('target') and ntiid == parsed.get('target'):
+			nttype = get_type(ntiid)
+			if ':' in nttype:
+				nttype = DISCUSSION_REF + nttype[nttype.index(':'):]
+			else:
+				nttype = DISCUSSION_REF
+			ntiid = make_ntiid(nttype=nttype, base=ntiid)
+			parsed['ntiid'] = ntiid
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -287,27 +311,12 @@ class _NTIDiscussionUpdater(InterfaceObjectIO):
 		return result
 
 @component.adapter(INTIAssignmentRef)
-@interface.implementer(IInternalObjectUpdater)
-class _NTIAssignmentRefUpdater(InterfaceObjectIO):
+class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 	
 	_ext_iface_upper_bound = INTIAssignmentRef
 	
 	def fixAll(self, parsed):
-		if NTIID in parsed:
-			parsed[u'ntiid'] = parsed[NTIID]
-		
-		if 'ContainerId' in parsed:
-			parsed[u'containerId'] = parsed['ContainerId']
-
-		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid'):
-			if name in parsed:
-				parsed['target'] = parsed.pop(name)
-				break
-
-		if not parsed.get('target') and parsed.get('ntiid'):
-			parsed[u'target'] = parsed['ntiid']
-		elif not parsed.get('ntiid') and parsed.get('target'):
-			parsed[u'ntiid'] = parsed['target']
+		self.fixTarget(parsed, transfer=True)
 			
 		if not parsed.get('title') and parsed.get('label'):
 			parsed[u'title'] = parsed['label']
@@ -333,6 +342,9 @@ def internalization_pre_hook(k, x):
 				item[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
 			elif mimeType == "application/vnd.nextthought.ntiaudio":
 				item[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
+			elif mimeType == "application/vnd.nextthought.discussion":
+				item[MIMETYPE] = u"application/vnd.nextthought.discussionref"
+				
 	elif isinstance(x, Mapping):
 		mimeType = x.get(MIMETYPE)
 		ntiid = x.get('ntiid') or x.get(NTIID)

@@ -213,6 +213,9 @@ class _NTIDiscussionRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict.pop(CLASS)
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
+		if 'target' in extDict:
+			extDict[NTIID] = extDict.pop('target')
+		extDict[MIMETYPE] = 'application/vnd.nextthought.discussion'  #legacy
 		return extDict
 
 @component.adapter( INTIAssignmentRef )
