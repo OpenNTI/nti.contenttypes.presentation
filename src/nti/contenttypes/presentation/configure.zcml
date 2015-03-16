@@ -38,10 +38,12 @@
 						 .interfaces.INTITimeline
 						 .interfaces.INTIRelatedWork
 						 .interfaces.INTIDiscussion
+						 .interfaces.INTIQuestionRef
 						 .interfaces.INTIAssignmentRef
+						 .interfaces.INTIQuestionSetRef
 						 .interfaces.INTILessonOverview
 						 .interfaces.INTICourseOverviewGroup"
-		modules=".media .slide .timeline .relatedwork .discussion .assignment .lesson" />
+		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 
 	<!-- Internalization -->
 	<adapter factory=".internalization._NTIVideoUpdater"
@@ -87,7 +89,15 @@
 	<adapter factory=".internalization._NTIAssignmentRefUpdater"
 			 for=".interfaces.INTIAssignmentRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-	 		 
+	 
+	<adapter factory=".internalization._NTIQuestionSetRefUpdater"
+			 for=".interfaces.INTIQuestionSetRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
+	<adapter factory=".internalization._NTIQuestionRefUpdater"
+			 for=".interfaces.INTIQuestionRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+		 
 	<adapter factory=".internalization._NTICourseOverviewGroupUpdater"
 			 for=".interfaces.INTICourseOverviewGroup"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -135,6 +145,14 @@
 
 	<adapter factory=".externalization._NTIDiscussionRenderExternalObject"
 			 for=".interfaces.INTIDiscussion"
+			 name="render" />
+
+	<adapter factory=".externalization._NTIQuestionRefRenderExternalObject"
+			 for=".interfaces.INTIQuestionRef"
+			 name="render" />
+
+	<adapter factory=".externalization._NTIQuestionSetRefRenderExternalObject"
+			 for=".interfaces.INTIQuestionSetRef"
 			 name="render" />
 
 	<adapter factory=".externalization._NTIAssignmentRefRenderExternalObject"

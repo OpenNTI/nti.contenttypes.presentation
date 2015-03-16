@@ -25,22 +25,42 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.zodb.persistentproperty import PersistentPropertyHolder
 
+from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
+from .interfaces import INTIQuestionSetRef
 
-@interface.implementer(INTIAssignmentRef, IContentTypeAware)
+@interface.implementer(IContentTypeAware)
 @WithRepr
 @EqHash('ntiid')
-class NTIAssignmentRef(	SchemaConfigured,
+class NTIAssessmentRef(	SchemaConfigured,
 						PersistentPropertyHolder,
 				 		Contained):
-	createDirectFieldProperties(INTIAssignmentRef)
-
-	__external_class_name__ = u"AssignmentRef"
-	mime_type = mimeType = u"application/vnd.nextthought.assignmentref"
 	
 	target_ntiid = alias('target')
-	ContainerId = alias('containerId')
 		
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
 		PersistentPropertyHolder.__init__(self, *args, **kwargs)
+		
+@interface.implementer(INTIAssignmentRef)
+class NTIAssignmentRef(NTIAssessmentRef):
+	createDirectFieldProperties(INTIAssignmentRef)
+
+	__external_class_name__ = u"Assignment"
+	mime_type = mimeType = u"application/vnd.nextthought.assignmentref"
+	
+	ContainerId = alias('containerId')
+
+@interface.implementer(INTIQuestionSetRef)
+class NTQuestionSetRef(NTIAssessmentRef):
+	createDirectFieldProperties(INTIQuestionSetRef)
+
+	__external_class_name__ = u"QuestionSet"
+	mime_type = mimeType = u"application/vnd.nextthought.questionsetref"
+
+@interface.implementer(INTIQuestionRef)
+class NTQuestionRef(NTIAssessmentRef):
+	createDirectFieldProperties(INTIQuestionRef)
+
+	__external_class_name__ = u"Question"
+	mime_type = mimeType = u"application/vnd.nextthought.questionref"

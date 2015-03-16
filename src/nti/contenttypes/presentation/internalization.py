@@ -42,7 +42,9 @@ from .interfaces import INTISlideDeck
 from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
+from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
+from .interfaces import INTIQuestionSetRef
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
 
@@ -330,6 +332,36 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 		result = super(_NTIAssignmentRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
+@component.adapter(INTIQuestionSetRef)
+class _NTIQuestionSetRefUpdater(_TargetNTIIDUpdater):
+	
+	_ext_iface_upper_bound = INTIQuestionSetRef
+	
+	def fixAll(self, parsed):
+		self.fixTarget(parsed, transfer=True)
+		if 'question-count' in parsed:
+			parsed[u'question_count'] = int(parsed.pop('question-count'))	
+		return self
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed))
+		result = super(_NTIQuestionSetRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+	
+@component.adapter(INTIQuestionRef)
+class _NTIQuestionRefUpdater(_TargetNTIIDUpdater):
+	
+	_ext_iface_upper_bound = INTIQuestionRef
+	
+	def fixAll(self, parsed):
+		self.fixTarget(parsed, transfer=True)			
+		return self
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(map_string_adjuster(parsed))
+		result = super(_NTIQuestionRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
 def internalization_ntivideo_pre_hook(k, x):
 	if isinstance(x, Mapping) and 'mimeType' in x:
 		x[MIMETYPE] = x.pop('mimeType')
@@ -339,7 +371,17 @@ def internalization_assignmentref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if mimeType == "application/vnd.nextthought.assessment.assignment": 
 		x[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
-		
+	
+def internalization_questionsetref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.naquestionset": 
+		x[MIMETYPE] = u"application/vnd.nextthought.questionsetref"
+	
+def internalization_questionref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.naquestion": 
+		x[MIMETYPE] = u"application/vnd.nextthought.questionref"
+				
 def internalization_ntivideoref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if mimeType == "application/vnd.nextthought.ntivideo": 
@@ -368,8 +410,10 @@ def internalization_courseoverview_pre_hook(k, x):
 		for item in x:
 			internalization_ntiaudioref_pre_hook(None, item)
 			internalization_ntivideoref_pre_hook(None, item)
+			internalization_questionref_pre_hook(None, item)
 			internalization_discussionref_pre_hook(None, item)
 			internalization_assignmentref_pre_hook(None, item)
+			internalization_questionsetref_pre_hook(None, item)
 			internalization_relatedworkref_pre_hook(None, item)
 
 def internalization_lessonoverview_pre_hook(k, x):

@@ -247,12 +247,23 @@ class INTIDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled):
 	target = ValidNTIID(title="Target NTIID", required=True)
 INTIDiscussionRef = INTIDiscussion
 
-class INTIAssignmentRef(IGroupOverViewable, ITitled):
+class INTIAssessmentRef(IGroupOverViewable):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
-	containerId = ValidNTIID(title="Container NTIID", required=True)
-	title = ValidTextLine(title="Assignment title", required=False)
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
+IAssessmentRef = INTIAssessmentRef
+
+class INTIQuestionSetRef(INTIAssessmentRef):
+	question_count = Int(title="Question count", required=False)
+IQuestionSetRef = INTIQuestionSetRef
+
+class INTIQuestionRef(INTIAssessmentRef):
+	pass
+IQuestionRef = INTIQuestionRef
+
+class INTIAssignmentRef(INTIAssessmentRef, ITitled):
+	containerId = ValidNTIID(title="Container NTIID", required=True)
+	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
 
 class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable):

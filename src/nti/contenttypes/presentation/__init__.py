@@ -15,6 +15,7 @@ import inspect
 from zope import interface
 
 from .interfaces import IMediaRef
+from .interfaces import INTIAssessmentRef
 from .interfaces import IGroupOverViewable
 
 NTI_VIDEO = NTIVideo = u'NTIVideo'
@@ -56,7 +57,7 @@ def _set_ifaces():
 		result = bool(type(item) == interface.interface.InterfaceClass and \
 					  issubclass(item, IGroupOverViewable) and \
 					  item != IGroupOverViewable and \
-					  item != IMediaRef)
+					  item not in (IMediaRef, INTIAssessmentRef))
 		return result
 
 	for _, item in inspect.getmembers(m, _item_predicate):

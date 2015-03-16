@@ -31,7 +31,9 @@ from .interfaces import INTISlideDeck
 from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
+from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
+from .interfaces import INTIQuestionSetRef
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
 
@@ -232,6 +234,36 @@ class _NTIAssignmentRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[u'Target-NTIID'] = extDict.pop('target')
 		if 'containerId' in extDict:
 			extDict[u'ContainerId'] = extDict.pop('containerId')
+		return extDict
+
+@component.adapter( INTIQuestionSetRef )
+class _NTIQuestionSetRefRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	question_set = alias('obj')
+
+	def _do_toExternalObject( self, extDict ):
+		extDict[CLASS] = 'QuestionSet' # for legacy iPad
+		extDict[MIMETYPE] = 'application/vnd.nextthought.naquestionset'  # for legacy iPad
+		if 'ntiid' in extDict:
+			extDict[NTIID] = extDict.pop('ntiid')
+		if 'target' in extDict:
+			extDict[u'Target-NTIID'] = extDict.pop('target')
+		if 'question_count' in extDict:
+			extDict[u'question-count'] = str(extDict.pop('question_count'))
+		return extDict
+
+@component.adapter( INTIQuestionRef )
+class _NTIQuestionRefRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	question = alias('obj')
+
+	def _do_toExternalObject( self, extDict ):
+		extDict[CLASS] = 'Question' # for legacy iPad
+		extDict[MIMETYPE] = 'application/vnd.nextthought.naquestion'  # for legacy iPad
+		if 'ntiid' in extDict:
+			extDict[NTIID] = extDict.pop('ntiid')
+		if 'target' in extDict:
+			extDict[u'Target-NTIID'] = extDict.pop('target')
 		return extDict
 
 @component.adapter( INTICourseOverviewGroup )
