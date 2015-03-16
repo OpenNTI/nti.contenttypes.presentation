@@ -342,7 +342,7 @@ def internalization_pre_hook(k, x):
 				item[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
 			elif mimeType == "application/vnd.nextthought.ntiaudio":
 				item[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
-			elif mimeType == "application/vnd.nextthought.discussion":
+			elif mimeType == "application/vnd.nextthought.discussion": #TODO: Is this fully  modeled
 				item[MIMETYPE] = u"application/vnd.nextthought.discussionref"
 				
 	elif isinstance(x, Mapping):
