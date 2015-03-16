@@ -9,6 +9,14 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import sys
+import inspect
+
+from zope import interface
+
+from .interfaces import IMediaRef
+from .interfaces import IGroupOverViewable
+
 NTI_VIDEO = NTIVideo = u'NTIVideo'
 
 NTI_SLIDE = NTISlide = u'NTISlide'
@@ -25,3 +33,27 @@ DISCUSSION = NTI_DISCUSSION = 'discussion'
 COURSE_OVERVIEW_GROUP = NTI_COURSE_OVERVIEW_GROUP = 'NTICourseOverviewGroup'
 
 LESSON_OVERVIEW = NTI_LESSON_OVERVIEW = 'NTILessonOverview'
+
+GROUP_OVERVIEWABLE_INTERFACES = None
+
+def _set_ifaces():
+	global GROUP_OVERVIEWABLE_INTERFACES
+	
+	GROUP_OVERVIEWABLE_INTERFACES = set()
+	m = sys.modules[IGroupOverViewable.__module__]
+	
+	def _item_predicate(item):
+		result = bool(type(item) == interface.interface.InterfaceClass and \
+					  issubclass(item, IGroupOverViewable) and \
+					  item != IGroupOverViewable and \
+					  item != IMediaRef)
+		return result
+
+	for _, item in inspect.getmembers(m, _item_predicate):
+		print(item)
+		GROUP_OVERVIEWABLE_INTERFACES.add(item)
+	
+	GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
+
+_set_ifaces()
+del _set_ifaces
