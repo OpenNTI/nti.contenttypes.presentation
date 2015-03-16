@@ -8,8 +8,6 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
-from hamcrest import none
-from hamcrest import is_not
 from hamcrest import has_entry
 from hamcrest import assert_that
 from hamcrest import has_property
@@ -19,10 +17,9 @@ import copy
 import unittest
 import simplejson
 
-from nti.externalization.externalization import to_external_object
+from nti.contenttypes.presentation.utils import create_discussionref_from_external
 
-from nti.externalization.internalization import find_factory_for
-from nti.externalization.internalization import update_from_external_object
+from nti.externalization.externalization import to_external_object
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
@@ -36,12 +33,7 @@ class TestDiscussion(unittest.TestCase):
 			source = simplejson.load(fp, encoding="UTF-8")
 			original = copy.deepcopy(source)
 			
-		source['MimeType'] = u'application/vnd.nextthought.discussionref'
-	
-		factory = find_factory_for(source)
-		assert_that(factory, is_not(none()))
-		discussion = factory()
-		update_from_external_object(discussion, source)
+		discussion = create_discussionref_from_external(source)
 		assert_that(discussion, has_property('label', is_(u'')))
 		assert_that(discussion, has_property('title', is_(u'11.6 Perspectives')))
 		assert_that(discussion, has_property('icon', is_(u"resources/LSTD1153_S_2015_History_United_States_1865_to_Present/8c9c6e901a7884087d71ccf46941ad258121abce/fd35e23767020999111e1f49239199b4c5eff23e.jpg")))

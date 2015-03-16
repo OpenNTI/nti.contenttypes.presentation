@@ -8,8 +8,6 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
-from hamcrest import none
-from hamcrest import is_not
 from hamcrest import has_entry
 from hamcrest import assert_that
 from hamcrest import has_property
@@ -19,10 +17,9 @@ import copy
 import unittest
 import simplejson
 
-from nti.externalization.externalization import to_external_object
+from nti.contenttypes.presentation.utils import create_object_from_external
 
-from nti.externalization.internalization import find_factory_for
-from nti.externalization.internalization import update_from_external_object
+from nti.externalization.externalization import to_external_object
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
@@ -36,10 +33,7 @@ class TestTimeline(unittest.TestCase):
 			source = simplejson.load(fp, encoding="UTF-8")
 			original = copy.deepcopy(source)
 			
-		factory = find_factory_for(source)
-		assert_that(factory, is_not(none()))
-		timeline = factory()
-		update_from_external_object(timeline, source)
+		timeline = create_object_from_external(source)
 		assert_that(timeline, has_property('label', is_(u"Heading West")))
 		assert_that(timeline, has_property('mimeType', is_(u"application/vnd.nextthought.timeline")))
 		assert_that(timeline, has_property('description', is_(u"An overview of key dates and events")))

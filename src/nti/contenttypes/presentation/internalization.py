@@ -330,27 +330,52 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 		result = super(_NTIAssignmentRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
-def internalization_pre_hook(k, x):
+def internalization_ntivideo_pre_hook(k, x):
+	if isinstance(x, Mapping) and 'mimeType' in x:
+		x[MIMETYPE] = x.pop('mimeType')
+
+def internalization_assignmentref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.assessment.assignment": 
+		x[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
+		
+def internalization_ntivideoref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.ntivideo": 
+		x[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
+	
+def internalization_ntiaudioref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.ntiaudio": 
+		x[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
+	
+def internalization_discussionref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.discussion": 
+		x[MIMETYPE] = u"application/vnd.nextthought.discussionref"  #TODO: Is this fully  modeled
+	
+def internalization_relatedworkref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
+	if 	not mimeType and ntiid and \
+		is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF)):
+			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
+		
+def internalization_courseoverview_pre_hook(k, x):
 	if k==ITEMS and isinstance(x, MutableSequence):
 		for item in x:
-			if not isinstance(item, Mapping):
-				continue
-			mimeType = item.get(MIMETYPE)
-			if mimeType == "application/vnd.nextthought.assessment.assignment": 
-				item[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
-			elif mimeType == "application/vnd.nextthought.ntivideo":
-				item[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
-			elif mimeType == "application/vnd.nextthought.ntiaudio":
-				item[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
-			elif mimeType == "application/vnd.nextthought.discussion": #TODO: Is this fully  modeled
-				item[MIMETYPE] = u"application/vnd.nextthought.discussionref"
-				
-	elif isinstance(x, Mapping):
-		mimeType = x.get(MIMETYPE)
-		ntiid = x.get('ntiid') or x.get(NTIID)
-		if 	not mimeType and ntiid and \
-			is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF)):
-			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
+			internalization_ntiaudioref_pre_hook(None, item)
+			internalization_ntivideoref_pre_hook(None, item)
+			internalization_discussionref_pre_hook(None, item)
+			internalization_assignmentref_pre_hook(None, item)
+			internalization_relatedworkref_pre_hook(None, item)
+
+def internalization_lessonoverview_pre_hook(k, x):
+	if k==ITEMS and isinstance(x, MutableSequence):
+		for item in x:
+			items = item.get(ITEMS) if isinstance(item, Mapping) else None
+			if items is not None:
+				internalization_courseoverview_pre_hook(ITEMS, items)
 
 @component.adapter(INTICourseOverviewGroup)
 @interface.implementer(IInternalObjectUpdater)

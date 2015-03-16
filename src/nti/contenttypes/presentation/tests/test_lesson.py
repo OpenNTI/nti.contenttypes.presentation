@@ -26,7 +26,8 @@ from nti.contenttypes.presentation.interfaces import INTIRelatedWork
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
-from nti.contenttypes.presentation.utils import create_object_from_external
+from nti.contenttypes.presentation.utils import create_courseoverview_from_external
+from nti.contenttypes.presentation.utils import create_lessonoverview_from_external
 
 from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.externalization import to_external_object
@@ -48,7 +49,7 @@ class TestLesson(unittest.TestCase):
 			source = simplejson.load(fp, encoding="UTF-8")
 			original = copy.deepcopy(source)
 
-		group = create_object_from_external(source)
+		group = create_courseoverview_from_external(source)
 		assert_that(group, has_property('ntiid', is_not(none())))
 		assert_that(group, has_property('color', is_(u'f11824e')))
 		assert_that(group, has_property('title', is_(u'Required Resources')))
@@ -74,7 +75,7 @@ class TestLesson(unittest.TestCase):
 		with open(path, "r") as fp:
 			source = simplejson.load(fp, encoding="UTF-8")
 
-		lesson = create_object_from_external(source)
+		lesson = create_lessonoverview_from_external(source)
 		assert_that(lesson, has_property('ntiid', is_(u'tag:nextthought.com,2011-10:OU-HTML-LSTD1153_S_2015_History_United_States_1865_to_Present.lec:11.06_LESSON')))
 		assert_that(lesson, has_property('Items', has_length(4)))
 		assert_that(lesson, has_property('mimeType', is_(u"application/vnd.nextthought.ntilessonoverview")))

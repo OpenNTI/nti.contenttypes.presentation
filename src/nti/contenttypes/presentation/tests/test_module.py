@@ -16,8 +16,12 @@ import unittest
 
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 
+from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
+
 class TestModule(unittest.TestCase):
 
+	layer = SharedConfiguringTestLayer
+	
 	def test_ifaces(self):
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(5))
