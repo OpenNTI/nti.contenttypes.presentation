@@ -333,6 +333,7 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 def internalization_ntivideo_pre_hook(k, x):
 	if isinstance(x, Mapping) and 'mimeType' in x:
 		x[MIMETYPE] = x.pop('mimeType')
+internalization_ntiaudio_pre_hook = internalization_ntivideo_pre_hook
 
 def internalization_assignmentref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
