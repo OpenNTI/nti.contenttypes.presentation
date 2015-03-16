@@ -80,6 +80,20 @@
                 }
             ],
             "title": "Additional Resources"
+        },
+		{
+            "MimeType": "application/vnd.nextthought.nticourseoverviewgroup",
+            "accentColor": "f5d420",
+            "Items": [
+                {
+                    "MimeType": "application/vnd.nextthought.discussion",
+                    "NTIID": "",
+                    "label": "",
+                    "title": "10.1 Help on Algorithms: Functions",
+                    "icon": "resources/CS1303_S_2015_Power_and_Elegance_of_Computational_Thinking/471b848d64d66bc38b0ed6f6e8690f8cc1f683d4/fd35e23767020999111e1f49239199b4c5eff23e.png"
+                }
+            ],
+            "title": "Extra Discussions"
         }
     ],
     "title": "11.6 Apply Your Knowledge"

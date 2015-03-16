@@ -10,6 +10,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 import six
+import copy
 from collections import Mapping
 from collections import MutableSequence
 
@@ -407,14 +408,34 @@ def internalization_relatedworkref_pre_hook(k, x):
 		
 def internalization_courseoverview_pre_hook(k, x):
 	if k==ITEMS and isinstance(x, MutableSequence):
-		for item in x:
+		idx = 0
+		while idx < len(x):
+			item = x[idx]
 			internalization_ntiaudioref_pre_hook(None, item)
 			internalization_ntivideoref_pre_hook(None, item)
 			internalization_questionref_pre_hook(None, item)
-			internalization_discussionref_pre_hook(None, item)
 			internalization_assignmentref_pre_hook(None, item)
 			internalization_questionsetref_pre_hook(None, item)
 			internalization_relatedworkref_pre_hook(None, item)
+			
+			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
+			if mimeType == "application/vnd.nextthought.discussion": 
+				s = item.get(NTIID) or item.get('ntiid')
+				ntiids = s.split(' ') if s else ()
+				if len(ntiids) > 1:
+					for c, ntiid in enumerate(ntiids):
+						if c > 0:
+							idx += 1
+							item = copy.deepcopy(item)
+							x.insert(idx, item)
+						item[NTIID] = ntiid
+						internalization_discussionref_pre_hook(None, item)
+				elif not ntiids:# not yet ready
+					del x[idx]
+					continue
+				else:
+					internalization_discussionref_pre_hook(None, item)
+			idx +=1
 
 def internalization_lessonoverview_pre_hook(k, x):
 	if k==ITEMS and isinstance(x, MutableSequence):
