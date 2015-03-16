@@ -50,7 +50,6 @@ def _set_ifaces():
 		return result
 
 	for _, item in inspect.getmembers(m, _item_predicate):
-		print(item)
 		GROUP_OVERVIEWABLE_INTERFACES.add(item)
 	
 	GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
