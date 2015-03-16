@@ -20,7 +20,7 @@ def create_object_from_external(ext_obj, pre_hook=internalization_pre_hook, _exe
 	pre_hook(None, ext_obj)
 	## find factory
 	factory = find_factory_for(ext_obj)
-	if not _exec:
+	if _exec:
 		assert factory is not None, "Could not find factory for external object"
 	## create and update
 	result = factory()
