@@ -15,6 +15,7 @@ from hamcrest import assert_that
 import unittest
 
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
+from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
@@ -25,3 +26,6 @@ class TestModule(unittest.TestCase):
 	def test_ifaces(self):
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(8))
+
+		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
+		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(18))
