@@ -9,7 +9,11 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from zope import interface
+
 from zope.container.contained import Contained
+
+from zope.mimetype.interfaces import IContentTypeAware
 
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
@@ -17,8 +21,8 @@ from nti.externalization.representation import WithRepr
 
 from nti.schema.field import SchemaConfigured
 
+from .interfaces import IPresentationAsset
 
-@WithRepr
 class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject,
 					  Contained):
@@ -26,3 +30,8 @@ class PersistentMixin(SchemaConfigured,
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
 		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
+
+@interface.implementer(IPresentationAsset, IContentTypeAware)
+@WithRepr
+class PersistentPresentationAsset(PersistentMixin):
+	parameters = {}

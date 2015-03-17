@@ -14,8 +14,6 @@ from hashlib import md5
 
 from zope import interface
 
-from zope.mimetype.interfaces import IContentTypeAware
-
 from nti.common.property import alias
 from nti.common.property import readproperty
 
@@ -24,16 +22,16 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from ._base import PersistentMixin
+from ._base import PersistentPresentationAsset
 
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
 
 from . import NTI_COURSE_OVERVIEW_GROUP
 
-@interface.implementer(INTICourseOverviewGroup, IContentTypeAware)
+@interface.implementer(INTICourseOverviewGroup)
 @EqHash('ntiid')
-class NTICourseOverViewGroup(PersistentMixin):
+class NTICourseOverViewGroup(PersistentPresentationAsset):
 	createDirectFieldProperties(INTICourseOverviewGroup)
 
 	__external_class_name__ = u"CourseOverviewGroup"
@@ -62,9 +60,9 @@ class NTICourseOverViewGroup(PersistentMixin):
 		for item in self.items or ():
 			yield item
 
-@interface.implementer(INTILessonOverview, IContentTypeAware)
+@interface.implementer(INTILessonOverview)
 @EqHash('ntiid')
-class NTILessonOverView(PersistentMixin):
+class NTILessonOverView(PersistentPresentationAsset):
 	createDirectFieldProperties(INTILessonOverview)
 
 	__external_class_name__ = u"LessonOverView"

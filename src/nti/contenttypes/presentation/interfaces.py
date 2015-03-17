@@ -15,6 +15,7 @@ from zope.schema import vocabulary
 
 from nti.coremetadata.interfaces import ITitled
 from nti.coremetadata.interfaces import ICreated
+from nti.coremetadata.interfaces import ILastModified
 
 from nti.ntiids.schema import ValidNTIID
 
@@ -115,12 +116,17 @@ AUDIO_SOURCES = (MP3_AUDIO_SOURCE, WAV_AUDIO_SOURCE, OTHER_AUDIO_SOURCE)
 AUDIO_SOURCES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
 
+class IPresentationAsset(ILastModified):
+	"""
+	marker interface for all presentation assests
+	"""
+
 class IGroupOverViewable(interface.Interface):
 	"""
 	marker interface for things that can be part of a course overview group
 	"""
 
-class INTITranscript(interface.Interface):
+class INTITranscript(IPresentationAsset):
 	src = Variant((	ValidTextLine(title="Transcript source"),
 					ValidURI(title="Transcript source uri") ), required=True)
 	srcjsonp = Variant((ValidTextLine(title="Transcript source jsonp"),
@@ -133,14 +139,14 @@ class INTITranscript(interface.Interface):
 class INTIIDIdentifiable(interface.Interface):
 	ntiid = ValidNTIID(title="Media NTIID", required=True)
 	
-class INTIMediaSource(interface.Interface):
+class INTIMediaSource(IPresentationAsset):
 	service = ValidTextLine(title="Source service", required=True)
 	thumbnail = ValidTextLine(title="Source thumbnail", required=False)
 
-class IMediaRef(IGroupOverViewable, INTIIDIdentifiable):
+class IMediaRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	pass
 
-class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled):
+class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
 	creator = ValidTextLine(title="Media creator", required=False)
 	title = ValidTextLine(title="Media title", required=False, default=u'')
 	description = ValidTextLine(title="Media description", required=False, default=u'')
@@ -194,7 +200,7 @@ class INTIAudio(INTIMedia):
 class INTIAudioRef(IMediaRef):
 	pass
 	
-class INTISlide(INTIIDIdentifiable):
+class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 	slidevideostart = Number(title="Video start", required=False, default=0)
@@ -202,7 +208,7 @@ class INTISlide(INTIIDIdentifiable):
 	slideimage = ValidTextLine(title="Slide image source", required=False)
 	slidenumber = Int(title="Slide number", required=True, default=1)
 
-class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled):
+class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
 	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
 	creator = ValidTextLine(title="Slide video creator", required=True)
 	title = ValidTextLine(title="Slide video title", required=False, default=u'')
@@ -210,7 +216,7 @@ class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITi
 	thumbnail = ValidTextLine(title="Slide video thumbnail", required=False)
 	description = ValidTextLine(title="Slide video description", required=False)
 
-class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled):
+class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
 	Slides = IndexedIterable(value_type=Object(INTISlide), 
 						 	 title="The slides", required=False, min_length=1)
 
@@ -223,14 +229,14 @@ class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITit
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
 
-class INTITimeline(IGroupOverViewable, INTIIDIdentifiable):
+class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	label = ValidTextLine(title="The label", required=True, default=u'')
 	href = ValidTextLine(title="Resource href", required=False, default=u'')
 	icon = ValidTextLine(title="Icon href", required=False)
 	description = ValidTextLine(title="Timeline description", required=False)
 	suggested_inline = Bool("Suggested inline flag", required=False, default=None)
 
-class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated):
+class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset):
 	href = ValidTextLine(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
 	creator = ValidTextLine(title="The creator", required=False)
@@ -241,14 +247,14 @@ class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated):
 	label = ValidTextLine(title="The label", required=False, default=u'')
 INTIRelatedWorkRef = INTIRelatedWork
 
-class INTIDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled):
+class INTIDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=True)
 	icon = ValidTextLine(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=True)
 INTIDiscussionRef = INTIDiscussion
 
-class INTIAssessmentRef(IGroupOverViewable):
+class INTIAssessmentRef(IGroupOverViewable, IPresentationAsset):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
@@ -267,14 +273,14 @@ class INTIAssignmentRef(INTIAssessmentRef, ITitled):
 	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
 
-class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable):
+class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset):
 	ntiid = ValidNTIID(title="Overview NTIID", required=False)
 	Items = IndexedIterable(value_type=Object(IGroupOverViewable), 
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
 	accentColor = ValidTextLine(title="Overview color", required=False)
 
-class INTILessonOverview(ITitled, INTIIDIdentifiable):
+class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset):
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup), 
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)

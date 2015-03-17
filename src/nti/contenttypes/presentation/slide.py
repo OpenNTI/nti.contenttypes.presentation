@@ -11,22 +11,20 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from zope.mimetype.interfaces import IContentTypeAware
-
 from nti.common.property import alias
 
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from ._base import PersistentMixin
+from ._base import PersistentPresentationAsset
 
 from .interfaces import INTISlide
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
 
-@interface.implementer(INTISlide, IContentTypeAware)
+@interface.implementer(INTISlide)
 @EqHash('ntiid')
-class NTISlide(PersistentMixin):
+class NTISlide(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlide)
 
 	__external_class_name__ = u"Slide"
@@ -39,9 +37,9 @@ class NTISlide(PersistentMixin):
 	end = video_end = alias('slidevideoend')
 	start = video_start = alias('slidevideostart')
 
-@interface.implementer(INTISlideVideo, IContentTypeAware)
+@interface.implementer(INTISlideVideo)
 @EqHash('ntiid')
-class NTISlideVideo(PersistentMixin):
+class NTISlideVideo(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlideVideo)
 
 	__external_class_name__ = u"NTISlideVideo"
@@ -51,9 +49,9 @@ class NTISlideVideo(PersistentMixin):
 	video = alias('video_ntiid')
 	slide_deck = deck = alias('slidedeckid')
 
-@interface.implementer(INTISlideDeck, IContentTypeAware)
+@interface.implementer(INTISlideDeck)
 @EqHash('ntiid')
-class NTISlideDeck(PersistentMixin):
+class NTISlideDeck(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlideDeck)
 
 	__external_class_name__ = u"NTISlideDeck"

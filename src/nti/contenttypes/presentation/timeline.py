@@ -11,20 +11,18 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from zope.mimetype.interfaces import IContentTypeAware
-
 from nti.common.property import alias
 
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from ._base import PersistentMixin
+from ._base import PersistentPresentationAsset
 
 from .interfaces import INTITimeline
 
-@interface.implementer(INTITimeline, IContentTypeAware)
+@interface.implementer(INTITimeline)
 @EqHash('ntiid')
-class NTITimeLine(PersistentMixin):
+class NTITimeLine(PersistentPresentationAsset):
 	createDirectFieldProperties(INTITimeline)
 
 	__external_class_name__ = u"Timeline"

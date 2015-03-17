@@ -11,8 +11,6 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from zope.mimetype.interfaces import IContentTypeAware
-
 from nti.common.property import alias
 
 from nti.schema.schema import EqHash 
@@ -22,11 +20,10 @@ from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
 from .interfaces import INTIQuestionSetRef
 
-from ._base import PersistentMixin
+from ._base import PersistentPresentationAsset
 
-@interface.implementer(IContentTypeAware)
 @EqHash('ntiid')
-class NTIAssessmentRef(PersistentMixin):
+class NTIAssessmentRef(PersistentPresentationAsset):
 	
 	target_ntiid = alias('target')
 		

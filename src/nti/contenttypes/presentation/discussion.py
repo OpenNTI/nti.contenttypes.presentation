@@ -11,18 +11,16 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from zope.mimetype.interfaces import IContentTypeAware
-
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from .interfaces import INTIDiscussion
 
-from ._base import PersistentMixin
+from ._base import PersistentPresentationAsset
 
-@interface.implementer(INTIDiscussion, IContentTypeAware)
+@interface.implementer(INTIDiscussion)
 @EqHash('ntiid')
-class NTIDiscussion(PersistentMixin):
+class NTIDiscussion(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIDiscussion)
 
 	__external_class_name__ = u"Discussion"
