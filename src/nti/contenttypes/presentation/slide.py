@@ -11,30 +11,22 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from zope.container.contained import Contained
-
 from zope.mimetype.interfaces import IContentTypeAware
 
 from nti.common.property import alias
 
-from nti.externalization.representation import WithRepr
-
 from nti.schema.schema import EqHash 
-from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.zodb.persistentproperty import PersistentPropertyHolder
+from ._base import PersistentMixin
 
 from .interfaces import INTISlide
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
 
 @interface.implementer(INTISlide, IContentTypeAware)
-@WithRepr
 @EqHash('ntiid')
-class NTISlide(	SchemaConfigured,
-				PersistentPropertyHolder,
-				Contained):
+class NTISlide(PersistentMixin):
 	createDirectFieldProperties(INTISlide)
 
 	__external_class_name__ = u"Slide"
@@ -46,18 +38,10 @@ class NTISlide(	SchemaConfigured,
 	slide_deck = deck = alias('slidedeckid')
 	end = video_end = alias('slidevideoend')
 	start = video_start = alias('slidevideostart')
-	
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)
-
 
 @interface.implementer(INTISlideVideo, IContentTypeAware)
-@WithRepr
 @EqHash('ntiid')
-class NTISlideVideo(SchemaConfigured,
-					PersistentPropertyHolder,
-					Contained):
+class NTISlideVideo(PersistentMixin):
 	createDirectFieldProperties(INTISlideVideo)
 
 	__external_class_name__ = u"NTISlideVideo"
@@ -66,17 +50,10 @@ class NTISlideVideo(SchemaConfigured,
 	Creator = alias('creator')
 	video = alias('video_ntiid')
 	slide_deck = deck = alias('slidedeckid')
-	
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)
 
 @interface.implementer(INTISlideDeck, IContentTypeAware)
-@WithRepr
 @EqHash('ntiid')
-class NTISlideDeck( SchemaConfigured,
-					PersistentPropertyHolder,
-					Contained):
+class NTISlideDeck(PersistentMixin):
 	createDirectFieldProperties(INTISlideDeck)
 
 	__external_class_name__ = u"NTISlideDeck"
@@ -86,7 +63,3 @@ class NTISlideDeck( SchemaConfigured,
 	videos = alias('Videos')
 	Creator = alias('creator')
 	id = alias('slidedeckid')
-	
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)

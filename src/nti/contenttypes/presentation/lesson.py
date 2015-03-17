@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttypes.presentation.interfaces import INTILessonOverview
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -15,33 +14,26 @@ from hashlib import md5
 
 from zope import interface
 
-from zope.container.contained import Contained
-
 from zope.mimetype.interfaces import IContentTypeAware
 
 from nti.common.property import alias
 from nti.common.property import readproperty
 
-from nti.externalization.representation import WithRepr
-
 from nti.ntiids.ntiids import make_ntiid
 
 from nti.schema.schema import EqHash 
-from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.zodb.persistentproperty import PersistentPropertyHolder
+from ._base import PersistentMixin
 
+from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
 
 from . import NTI_COURSE_OVERVIEW_GROUP
 
 @interface.implementer(INTICourseOverviewGroup, IContentTypeAware)
-@WithRepr
 @EqHash('ntiid')
-class NTICourseOverViewGroup(SchemaConfigured,
-							 PersistentPropertyHolder,
-				 			 Contained):
+class NTICourseOverViewGroup(PersistentMixin):
 	createDirectFieldProperties(INTICourseOverviewGroup)
 
 	__external_class_name__ = u"CourseOverviewGroup"
@@ -49,11 +41,7 @@ class NTICourseOverViewGroup(SchemaConfigured,
 	
 	color = alias('accentColor')
 	items = alias('Items')
-		
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)
-	
+
 	@readproperty
 	def ntiid(self):
 		result = make_ntiid(provider='NTI',
@@ -75,21 +63,14 @@ class NTICourseOverViewGroup(SchemaConfigured,
 			yield item
 
 @interface.implementer(INTILessonOverview, IContentTypeAware)
-@WithRepr
 @EqHash('ntiid')
-class NTILessonOverView(SchemaConfigured,
-						PersistentPropertyHolder,
-				 		Contained):
+class NTILessonOverView(PersistentMixin):
 	createDirectFieldProperties(INTILessonOverview)
 
 	__external_class_name__ = u"LessonOverView"
 	mime_type = mimeType = u"application/vnd.nextthought.ntilessonoverview"
 	
 	items = alias('Items')
-	
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)
 
 	def __getitem__(self, index):
 		return self.items[index]

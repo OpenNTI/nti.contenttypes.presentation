@@ -11,28 +11,20 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from zope.container.contained import Contained
-
 from zope.mimetype.interfaces import IContentTypeAware
 
 from nti.common.property import alias
 
-from nti.externalization.representation import WithRepr
-
 from nti.schema.schema import EqHash 
-from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.zodb.persistentproperty import PersistentPropertyHolder
+from ._base import PersistentMixin
 
 from .interfaces import INTIRelatedWork
 
 @interface.implementer(INTIRelatedWork, IContentTypeAware)
-@WithRepr
 @EqHash('ntiid')
-class NTIRelatedWork(SchemaConfigured,
-				  	 PersistentPropertyHolder,
-				  	 Contained):
+class NTIRelatedWork(PersistentMixin):
 	createDirectFieldProperties(INTIRelatedWork)
 
 	__external_class_name__ = u"RelatedWork"
@@ -42,7 +34,3 @@ class NTIRelatedWork(SchemaConfigured,
 	desc = alias('description')
 	target_ntiid =  alias('target')
 	targetMimeType = target_mime_type = alias('type')
-	
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)

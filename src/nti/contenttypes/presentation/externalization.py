@@ -44,6 +44,8 @@ NTIID = StandardExternalFields.NTIID
 ITEMS = StandardExternalFields.ITEMS
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
+CREATED_TIME = StandardExternalFields.CREATED_TIME
+LAST_MODIFIED = StandardExternalFields.LAST_MODIFIED
 
 @interface.implementer( IExternalObject )
 class _NTIBaseRenderExternalObject(object):
@@ -67,7 +69,10 @@ class _NTIMediaRenderExternalObject(_NTIBaseRenderExternalObject):
 	def _do_toExternalObject( self, extDict ):
 		if MIMETYPE in extDict:
 			extDict[StandardExternalFields.CTA_MIMETYPE] = extDict.pop(MIMETYPE)
-			
+		
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
+				
 		if CREATOR in extDict:
 			extDict[u'creator'] = extDict.pop(CREATOR)
 		
@@ -76,10 +81,14 @@ class _NTIMediaRenderExternalObject(_NTIBaseRenderExternalObject):
 
 		for source in extDict.get('sources') or ():
 			source.pop(MIMETYPE, None)
+			source.pop(CREATED_TIME, None)
+			source.pop(LAST_MODIFIED, None)
 			source.pop(StandardExternalFields.CLASS, None)
-		
+
 		for transcript in extDict.get('transcripts') or ():
 			transcript.pop(MIMETYPE, None)
+			transcript.pop(CREATED_TIME, None)
+			transcript.pop(LAST_MODIFIED, None)
 			transcript.pop(StandardExternalFields.CLASS, None)		
 		return extDict
 
@@ -109,6 +118,8 @@ class _NTIVideoRefRenderExternalObject(_NTIBaseRenderExternalObject):
 		if MIMETYPE in extDict:
 			extDict[MIMETYPE] = u"application/vnd.nextthought.ntivideo"
 		extDict[u"visibility"] = u"everyone"
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 
 @component.adapter( INTIAudioRef )
 class _NTIAudioRefRenderExternalObject(_NTIBaseRenderExternalObject):
@@ -117,6 +128,8 @@ class _NTIAudioRefRenderExternalObject(_NTIBaseRenderExternalObject):
 		if MIMETYPE in extDict:
 			extDict[MIMETYPE] = u"application/vnd.nextthought.ntiaudio"
 		extDict[u"visibility"] = u"everyone"
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 
 @interface.implementer( IExternalObject )
 class _NTIBaseSlideExternalObject(_NTIBaseRenderExternalObject):
@@ -133,6 +146,8 @@ class _NTIBaseSlideExternalObject(_NTIBaseRenderExternalObject):
 		if 'description' in extDict and not extDict['description']:
 			extDict.pop('description') 
 
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTISlide )
@@ -208,6 +223,8 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 		if 'type' in extDict:
 			extDict[u'targetMimeType'] = extDict['type']
 		extDict[u"visibility"] = u"everyone"
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTIDiscussion )
@@ -223,6 +240,8 @@ class _NTIDiscussionRenderExternalObject(_NTIBaseRenderExternalObject):
 		if 'target' in extDict:
 			extDict[NTIID] = extDict.pop('target')
 		extDict[MIMETYPE] = 'application/vnd.nextthought.discussion'  #legacy
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTIAssignmentRef )
@@ -239,6 +258,8 @@ class _NTIAssignmentRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[u'Target-NTIID'] = extDict.pop('target')
 		if 'containerId' in extDict:
 			extDict[u'ContainerId'] = extDict.pop('containerId')
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTIQuestionSetRef )
@@ -255,6 +276,8 @@ class _NTIQuestionSetRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[u'Target-NTIID'] = extDict.pop('target')
 		if 'question_count' in extDict:
 			extDict[u'question-count'] = str(extDict.pop('question_count'))
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTIQuestionRef )
@@ -269,6 +292,8 @@ class _NTIQuestionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
 			extDict[u'Target-NTIID'] = extDict.pop('target')
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTICourseOverviewGroup )

@@ -11,19 +11,14 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
-from zope.container.contained import Contained
-
 from zope.mimetype.interfaces import IContentTypeAware
 
 from nti.common.property import alias
 
-from nti.externalization.representation import WithRepr
-
 from nti.schema.schema import EqHash
-from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.zodb.persistentproperty import PersistentPropertyHolder
+from ._base import PersistentMixin
 
 from .interfaces import INTIAudio
 from .interfaces import INTIMedia
@@ -35,62 +30,33 @@ from .interfaces import INTIAudioSource
 from .interfaces import INTIVideoSource
 
 @interface.implementer(INTITranscript, IContentTypeAware)
-@WithRepr
-class NTITranscript(SchemaConfigured,
-					PersistentPropertyHolder,
-					Contained):
+class NTITranscript(PersistentMixin):
 	createDirectFieldProperties(INTITranscript)
 
 	__external_class_name__ = u"Transcript"
 	mime_type = mimeType = u'application/vnd.nextthought.ntitranscript'
-
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)
 	
 @interface.implementer(INTIAudioSource, IContentTypeAware)
-@WithRepr
-class NTIAudioSource(SchemaConfigured,
-					 PersistentPropertyHolder,
-					 Contained):
+class NTIAudioSource(PersistentMixin):
 	createDirectFieldProperties(INTIAudioSource)
 
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiosource'
-
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)
 					
 @interface.implementer(INTIVideoSource, IContentTypeAware)
-@WithRepr
-class NTIVideoSource(SchemaConfigured,
-					 PersistentPropertyHolder,
-					 Contained):
+class NTIVideoSource(PersistentMixin):
 	createDirectFieldProperties(INTIVideoSource)
 
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
 
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)
-
 @interface.implementer(INTIMedia, IContentTypeAware)
-@WithRepr
 @EqHash('ntiid')
-class NTIMedia(SchemaConfigured,
-			   PersistentPropertyHolder,
-			   Contained):
+class NTIMedia(PersistentMixin):
 	
 	Creator = alias('creator')
-	
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentPropertyHolder.__init__(self, *args, **kwargs)
 		
 @interface.implementer(INTIVideo)
-@WithRepr
 class NTIVideo(NTIMedia):
 	createDirectFieldProperties(INTIVideo)
 
@@ -100,17 +66,13 @@ class NTIVideo(NTIMedia):
 	closedCaption = closedCaptions = alias('closed_caption')
 
 @interface.implementer(INTIVideoRef, IContentTypeAware)
-@WithRepr
-class NTIVideoRef(SchemaConfigured,
-				  PersistentPropertyHolder,
-				  Contained):
+class NTIVideoRef(PersistentMixin):
 	createDirectFieldProperties(INTIVideoRef)
 
 	__external_class_name__ = u"Video"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
 
 @interface.implementer(INTIAudio, IContentTypeAware)
-@WithRepr
 class NTIAudio(NTIMedia):
 	createDirectFieldProperties(INTIAudio)
 
@@ -118,10 +80,7 @@ class NTIAudio(NTIMedia):
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
 
 @interface.implementer(INTIAudioRef, IContentTypeAware)
-@WithRepr
-class NTIAudioRef(SchemaConfigured,
-				  PersistentPropertyHolder,
-				  Contained):
+class NTIAudioRef(PersistentMixin):
 	createDirectFieldProperties(INTIAudioRef)
 
 	__external_class_name__ = u"Audio"

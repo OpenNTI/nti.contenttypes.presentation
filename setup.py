@@ -50,11 +50,11 @@ setup(
 		'zope.schema',
 		'zope.security',
 		'nti.common',
+		'nti.dublincore',
 		'nti.externalization',
 		'nti.mimetype',
 		'nti.ntiids',
-		'nti.schema',
-		'nti.zodb'
+		'nti.schema'
 	],
 	extras_require={
 		'test': TESTS_REQUIRE,
