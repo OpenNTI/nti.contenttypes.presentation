@@ -17,6 +17,7 @@ from .internalization import internalization_ntiaudio_pre_hook
 from .internalization import internalization_ntivideo_pre_hook
 from .internalization import internalization_ntiaudioref_pre_hook
 from .internalization import internalization_ntivideoref_pre_hook
+from .internalization import internalization_ntitimeline_pre_hook
 from .internalization import internalization_questionref_pre_hook
 from .internalization import internalization_assignmentref_pre_hook
 from .internalization import internalization_discussionref_pre_hook
@@ -89,6 +90,12 @@ def create_discussionref_from_external(ext_obj, _exec=True):
 def create_relatedwork_from_external(ext_obj, _exec=True):
 	result = create_object_from_external(ext_obj,
 										 pre_hook=internalization_relatedworkref_pre_hook,
+										 _exec=_exec)
+	return result
+
+def create_timelime_from_external(ext_obj, _exec=True):
+	result = create_object_from_external(ext_obj,
+										 pre_hook=internalization_ntitimeline_pre_hook,
 										 _exec=_exec)
 	return result
 

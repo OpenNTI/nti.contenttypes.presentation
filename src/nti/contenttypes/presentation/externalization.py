@@ -184,6 +184,11 @@ class _NTITimelineRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict.pop(CLASS)
 		if 'description' in extDict:
 			extDict[u'desc'] = extDict.pop('description')
+		if 'suggested_inline' in extDict:
+			if extDict['suggested_inline'] is None:
+				extDict.pop('suggested_inline')
+			else:
+				extDict['suggested-inline'] = extDict.pop('suggested_inline')
 		return extDict
 		
 @component.adapter( INTIRelatedWork )

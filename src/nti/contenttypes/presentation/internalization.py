@@ -236,8 +236,12 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 	_ext_iface_upper_bound = INTITimeline
 	
 	def fixAll(self, parsed):
+		if NTIID in parsed:
+			parsed[u'ntiid'] = parsed[NTIID]
 		if 'desc' in parsed:
 			parsed[u'description'] = parsed.pop('desc')
+		if 'suggested-inline' in parsed:
+			parsed[u'suggested_inline'] = parsed.pop('suggested-inline')
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -398,6 +402,11 @@ def internalization_discussionref_pre_hook(k, x):
 	if mimeType == "application/vnd.nextthought.discussion": 
 		x[MIMETYPE] = u"application/vnd.nextthought.discussionref"  #TODO: Is this fully  modeled
 	
+def internalization_ntitimeline_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.ntitimeline": 
+		x[MIMETYPE] = u"application/vnd.nextthought.timeline"
+		
 def internalization_relatedworkref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
@@ -411,6 +420,7 @@ def internalization_courseoverview_pre_hook(k, x):
 		idx = 0
 		while idx < len(x):
 			item = x[idx]
+			internalization_ntitimeline_pre_hook(None, item)
 			internalization_ntiaudioref_pre_hook(None, item)
 			internalization_ntivideoref_pre_hook(None, item)
 			internalization_questionref_pre_hook(None, item)
