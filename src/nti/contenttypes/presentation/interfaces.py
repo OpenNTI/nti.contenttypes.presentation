@@ -223,7 +223,7 @@ class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITit
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
 
-class INTITimeline(INTIIDIdentifiable):
+class INTITimeline(IGroupOverViewable, INTIIDIdentifiable):
 	label = ValidTextLine(title="The label", required=True, default=u'')
 	href = ValidTextLine(title="Resource href", required=False, default=u'')
 	icon = ValidTextLine(title="Icon href", required=False)
