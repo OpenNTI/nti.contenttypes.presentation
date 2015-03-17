@@ -46,7 +46,7 @@ class NTIAssessmentRef(	SchemaConfigured,
 class NTIAssignmentRef(NTIAssessmentRef):
 	createDirectFieldProperties(INTIAssignmentRef)
 
-	__external_class_name__ = u"Assignment"
+	__external_class_name__ = u"AssignmentRef"
 	mime_type = mimeType = u"application/vnd.nextthought.assignmentref"
 	
 	ContainerId = alias('containerId')
@@ -55,12 +55,12 @@ class NTIAssignmentRef(NTIAssessmentRef):
 class NTQuestionSetRef(NTIAssessmentRef):
 	createDirectFieldProperties(INTIQuestionSetRef)
 
-	__external_class_name__ = u"QuestionSet"
+	__external_class_name__ = u"QuestionSetRef"
 	mime_type = mimeType = u"application/vnd.nextthought.questionsetref"
 
 @interface.implementer(INTIQuestionRef)
 class NTQuestionRef(NTIAssessmentRef):
 	createDirectFieldProperties(INTIQuestionRef)
 
-	__external_class_name__ = u"Question"
+	__external_class_name__ = u"QuestionRef"
 	mime_type = mimeType = u"application/vnd.nextthought.questionref"
