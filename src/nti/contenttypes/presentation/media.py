@@ -69,6 +69,8 @@ class NTIVideoRef(PersistentPresentationAsset):
 
 	__external_class_name__ = u"Video"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
+	
+	target = alias('ntiid')
 
 @interface.implementer(INTIAudio)
 class NTIAudio(NTIMedia):
@@ -83,3 +85,6 @@ class NTIAudioRef(PersistentPresentationAsset):
 
 	__external_class_name__ = u"Audio"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
+	
+	target = alias('ntiid')
+
