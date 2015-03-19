@@ -21,9 +21,9 @@ import unittest
 import simplejson
 
 from nti.contenttypes.presentation.interfaces import INTIVideoRef
-from nti.contenttypes.presentation.interfaces import INTIDiscussion
 from nti.contenttypes.presentation.interfaces import INTIRelatedWork
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
+from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
 from nti.contenttypes.presentation.utils import create_courseoverview_from_external
@@ -59,8 +59,8 @@ class TestLesson(unittest.TestCase):
 		assert_that(group, has_length(4))
 		assert_that(list(group), has_length(4))
 		assert_that(group[0], validly_provides(INTIRelatedWork))
-		assert_that(group[1], verifiably_provides(INTIDiscussion))
-		assert_that(group[2], verifiably_provides(INTIDiscussion))
+		assert_that(group[1], verifiably_provides(INTIDiscussionRef))
+		assert_that(group[2], verifiably_provides(INTIDiscussionRef))
 		assert_that(group[3], verifiably_provides(INTIAssignmentRef))
 		
 		assert_that(group[1], has_property('target', is_('tag:nextthought.com,2011-10:AGEC_4990-Topic:EnrolledCourseSection-In_Class_Discussions.Introduce_Yourself')))

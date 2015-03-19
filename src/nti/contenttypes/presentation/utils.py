@@ -15,6 +15,7 @@ from nti.externalization.internalization import update_from_external_object
 
 from .internalization import internalization_ntiaudio_pre_hook
 from .internalization import internalization_ntivideo_pre_hook
+from .internalization import internalization_discussion_pre_hook
 from .internalization import internalization_ntiaudioref_pre_hook
 from .internalization import internalization_ntivideoref_pre_hook
 from .internalization import internalization_ntitimeline_pre_hook
@@ -78,6 +79,12 @@ def create_questionsetref_from_external(ext_obj, _exec=True):
 def create_assignmentref_from_external(ext_obj, _exec=True):
 	result = create_object_from_external(ext_obj,
 										 pre_hook=internalization_assignmentref_pre_hook,
+										 _exec=_exec)
+	return result
+
+def create_discussion_from_external(ext_obj, _exec=True):
+	result = create_object_from_external(ext_obj,
+										 pre_hook=internalization_discussion_pre_hook,
 										 _exec=_exec)
 	return result
 

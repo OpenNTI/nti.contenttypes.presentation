@@ -25,7 +25,7 @@ class TestModule(unittest.TestCase):
 	
 	def test_ifaces(self):
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
-		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(8))
+		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(9))
 
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
-		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(18))
+		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(19))

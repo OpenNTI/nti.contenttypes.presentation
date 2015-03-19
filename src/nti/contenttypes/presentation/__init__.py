@@ -19,6 +19,7 @@ from .interfaces import INTIMedia
 from .interfaces import INTIMediaSource
 from .interfaces import INTIAssessmentRef
 from .interfaces import IGroupOverViewable
+from .interfaces import INTIBaseDiscussion
 from .interfaces import IPresentationAsset
 
 NTI_VIDEO = NTIVideo = u'NTIVideo'
@@ -64,14 +65,15 @@ def _set_ifaces():
 		result = bool(type(item) == interface.interface.InterfaceClass and \
 					  issubclass(item, IGroupOverViewable) and \
 					  item != IGroupOverViewable and \
-					  item not in (IMediaRef, INTIAssessmentRef))
+					  item not in (IMediaRef, INTIAssessmentRef, INTIBaseDiscussion))
 		return result
 	
 	def _presentationasset_item_predicate(item):
 		result = bool(type(item) == interface.interface.InterfaceClass and \
 					  issubclass(item, IPresentationAsset) and \
 					  item != IPresentationAsset and \
-					  item not in (IMediaRef, INTIAssessmentRef, INTIMediaSource, INTIMedia))
+					  item not in (IMediaRef, INTIAssessmentRef, INTIMediaSource,
+								   INTIMedia, INTIBaseDiscussion))
 		return result
 	
 	for _, item in inspect.getmembers(m, _overview_item_predicate):

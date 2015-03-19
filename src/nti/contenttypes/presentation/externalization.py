@@ -33,6 +33,7 @@ from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
 from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
+from .interfaces import INTIDiscussionRef
 from .interfaces import INTIQuestionSetRef
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
@@ -227,10 +228,10 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
-@component.adapter( INTIDiscussion )
-class _NTIDiscussionRenderExternalObject(_NTIBaseRenderExternalObject):
+@component.adapter( INTIDiscussionRef )
+class _NTIDiscussionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
-	related = alias('obj')
+	discussion = alias('obj')
 
 	def _do_toExternalObject( self, extDict ):
 		if CLASS in extDict:
@@ -240,6 +241,16 @@ class _NTIDiscussionRenderExternalObject(_NTIBaseRenderExternalObject):
 		if 'target' in extDict:
 			extDict[NTIID] = extDict.pop('target')
 		extDict[MIMETYPE] = 'application/vnd.nextthought.discussion'  #legacy
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
+		return extDict
+
+@component.adapter( INTIDiscussion )
+class _NTIDiscussionRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	discussion = alias('obj')
+
+	def _do_toExternalObject( self, extDict ):
 		extDict.pop(CREATED_TIME, None)
 		extDict.pop(LAST_MODIFIED, None)
 		return extDict

@@ -247,12 +247,16 @@ class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresent
 	label = ValidTextLine(title="The label", required=False, default=u'')
 INTIRelatedWorkRef = INTIRelatedWork
 
-class INTIDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
-	title = ValidTextLine(title="Discussion title", required=True)
+class INTIBaseDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
+	title = ValidTextLine(title="Discussion title", required=False)
 	icon = ValidTextLine(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
+	
+class INTIDiscussionRef(INTIBaseDiscussion):
 	target = ValidNTIID(title="Target NTIID", required=True)
-INTIDiscussionRef = INTIDiscussion
+
+class INTIDiscussion(INTIBaseDiscussion):
+	title = ValidTextLine(title="Discussion title", required=True)
 
 class INTIAssessmentRef(IGroupOverViewable, IPresentationAsset):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
