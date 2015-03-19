@@ -17,7 +17,7 @@ from nti.schema.field import ListOrTupleFromObject
 def CompoundModeledContentBody(required=False):
 	"""
 	Returns a :class:`zope.schema.interfaces.IField` representing
-	the way that a compound body 
+	the a compound body 
 	"""
 
 	return ListOrTupleFromObject( title="The body of this object",
