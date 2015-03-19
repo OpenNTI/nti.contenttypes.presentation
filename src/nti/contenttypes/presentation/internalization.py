@@ -29,9 +29,9 @@ from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.internalization import find_factory_for
 from nti.externalization.internalization import update_from_external_object
 
-from nti.ntiids.ntiids import get_type
-from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import is_ntiid_of_types
+
+from .discussion import make_discussionref_ntiid
 
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
@@ -52,8 +52,6 @@ from .interfaces import INTICourseOverviewGroup
 
 from . import RELATED_WORK
 from . import RELATED_WORK_REF
-
-from . import DISCUSSION_REF
 
 ITEMS = StandardExternalFields.ITEMS
 NTIID = StandardExternalFields.NTIID
@@ -304,12 +302,7 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 		self.fixTarget(parsed, transfer=True)	
 		ntiid = parsed.get('ntiid')
 		if parsed.get('target') and ntiid == parsed.get('target'):
-			nttype = get_type(ntiid)
-			if ':' in nttype:
-				nttype = DISCUSSION_REF + nttype[nttype.index(':'):]
-			else:
-				nttype = DISCUSSION_REF
-			ntiid = make_ntiid(nttype=nttype, base=ntiid)
+			ntiid = make_discussionref_ntiid(ntiid)
 			parsed['ntiid'] = ntiid
 		return self
 	

@@ -12,24 +12,40 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from .media import NTIAudioRef
+from .media import NTIVideoRef
+
+from .discussion import NTIDiscussionRef
+from .discussion import make_discussionref_ntiid
+
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
+from .interfaces import INTIDiscussion
+from .interfaces import INTIDiscussionRef
 
-from .media import NTIAudioRef
-from .media import NTIVideoRef
-
-@component.adapter(INTIVideoRef)
-@interface.implementer(INTIVideo)
+@component.adapter(INTIVideo)
+@interface.implementer(INTIVideoRef)
 def ntivideo_to_ntivideoref(video):
     result = NTIVideoRef(ntiid=video.ntiid,
                          poster=video.poster,
                          label=video.label)
     return result
 
-@component.adapter(INTIAudioRef)
-@interface.implementer(INTIAudio)
-def ntiaudio_to_ntiaudioref(video):
-    result = NTIAudioRef(ntiid=video.ntiid)
+@component.adapter(INTIAudio)
+@interface.implementer(INTIAudioRef)
+def ntiaudio_to_ntiaudioref(audio):
+    result = NTIAudioRef(ntiid=audio.ntiid)
+    return result
+
+@component.adapter(INTIDiscussion)
+@interface.implementer(INTIDiscussionRef)
+def ntidiscussion_to_ntidiscussionref(context):
+    ntiid = make_discussionref_ntiid(context.ntiid)
+    result = NTIDiscussionRef(ntiid=ntiid,
+                              target=context.ntiid,
+                              title=context.title,
+                              icon=context.icon,
+                              label=context.label)
     return result

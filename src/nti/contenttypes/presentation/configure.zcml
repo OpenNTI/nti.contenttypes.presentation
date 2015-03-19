@@ -20,6 +20,10 @@
 			 for=".interfaces.INTIAudio"
 			 provides=".interfaces.INTIAudioRef" /> 
 	 
+	<adapter factory=".adapters.ntidiscussion_to_ntidiscussionref"
+			 for=".interfaces.INTIDiscussion"
+			 provides=".interfaces.INTIDiscussionRef" /> 
+			 
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />
 	<include package="nti.externalization" />
