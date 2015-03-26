@@ -50,6 +50,9 @@ from .interfaces import INTIQuestionSetRef
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
 
+from . import TIMELINE
+from . import JSON_TIMELINE
+
 from . import RELATED_WORK
 from . import RELATED_WORK_REF
 
@@ -449,7 +452,11 @@ def internalization_discussionref_pre_hook(k, x):
 	
 def internalization_ntitimeline_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType == "application/vnd.nextthought.ntitimeline": 
+	if not mimeType:
+		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
+		if ntiid and is_ntiid_of_types(ntiid, (JSON_TIMELINE, TIMELINE)):
+			x[MIMETYPE] = "application/vnd.nextthought.timeline"
+	elif mimeType == "application/vnd.nextthought.ntitimeline": 
 		x[MIMETYPE] = u"application/vnd.nextthought.timeline"
 		
 def internalization_relatedworkref_pre_hook(k, x):

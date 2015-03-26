@@ -28,6 +28,7 @@ NTI_SLIDE = NTISlide = u'NTISlide'
 NTI_SLIDE_DECK = NTISlideDeck = u'NTISlideDeck'
 NTI_SLIDE_VIDEO = NTISlideVideo = u'NTISlideVideo'
 
+JSON_TIMELINE = 'JSON:Timeline'
 TIMELINE = NTI_TIMELINE = NTITimeline = 'Timeline'
 
 RELATED_WORK = NTI_RELATED_WORK = 'RelatedWork'
