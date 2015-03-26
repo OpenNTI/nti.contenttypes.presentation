@@ -42,7 +42,7 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 
 def make_discussionref_ntiid(ntiid):
 	nttype = get_type(ntiid)
-	if ':' in nttype:
+	if nttype and ':' in nttype:
 		nttype = DISCUSSION_REF + nttype[nttype.index(':'):]
 	else:
 		nttype = DISCUSSION_REF
