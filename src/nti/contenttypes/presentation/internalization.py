@@ -29,6 +29,7 @@ from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.internalization import find_factory_for
 from nti.externalization.internalization import update_from_external_object
 
+from nti.ntiids.ntiids import is_ntiid_of_type
 from nti.ntiids.ntiids import is_ntiid_of_types
 
 from .discussion import make_discussionref_ntiid
@@ -454,17 +455,18 @@ def internalization_ntitimeline_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
-		if ntiid and is_ntiid_of_types(ntiid, (JSON_TIMELINE, TIMELINE)):
+		if ntiid and (JSON_TIMELINE in ntiid or is_ntiid_of_type(ntiid, TIMELINE)):
 			x[MIMETYPE] = "application/vnd.nextthought.timeline"
 	elif mimeType == "application/vnd.nextthought.ntitimeline": 
 		x[MIMETYPE] = u"application/vnd.nextthought.timeline"
 		
 def internalization_relatedworkref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
-	if 	not mimeType and ntiid and \
-		(is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF)) or \
-		 '.relatedworkref.' in ntiid): # old legacy courses
+	if not mimeType:
+		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
+		if 	ntiid and \
+			(is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF)) or \
+			 '.relatedworkref.' in ntiid): # old legacy courses
 			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
 		
 def internalization_courseoverview_pre_hook(k, x):
