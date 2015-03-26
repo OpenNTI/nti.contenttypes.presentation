@@ -186,10 +186,11 @@ class INTIVideoRef(IMediaRef):
 class INTIAudioSource(INTIMediaSource):
 	service = Choice(vocabulary=AUDIO_SERVICES_VOCABULARY, title='Audio service',
 					 required=True, default=HTML5_AUDIO_SERVICE)
-	
-	source = ListOrTuple(Choice(vocabulary=AUDIO_SOURCES_VOCABULARY), 
+
+	source = ListOrTuple(Variant((Choice(vocabulary=AUDIO_SOURCES_VOCABULARY), 
+								  ValidTextLine())),
 						 title='Audio source', required=True, min_length=1)
-	
+
 	type = ListOrTuple(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
 					   title='Audio service types', required=True, min_length=1)
 

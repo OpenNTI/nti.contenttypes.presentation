@@ -87,4 +87,3 @@ class NTIAudioRef(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
 	
 	target = alias('ntiid')
-
