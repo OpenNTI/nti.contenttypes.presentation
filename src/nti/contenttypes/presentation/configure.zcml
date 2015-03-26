@@ -47,7 +47,8 @@
 						 .interfaces.INTIAssignmentRef
 						 .interfaces.INTIQuestionSetRef
 						 .interfaces.INTILessonOverview
-						 .interfaces.INTICourseOverviewGroup"
+						 .interfaces.INTICourseOverviewGroup
+						 .interfaces.INTICourseOverviewSpacer"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 
 	<!-- Internalization -->
@@ -171,7 +172,11 @@
 	<adapter factory=".externalization._NTIAssignmentRefRenderExternalObject"
 			 for=".interfaces.INTIAssignmentRef"
 			 name="render" />
-			 
+		
+	<adapter factory=".externalization._NTICourseOverviewSpacerRenderExternalObject"
+			 for=".interfaces.INTICourseOverviewSpacer"
+			 name="render" />
+			 	 
 	<adapter factory=".externalization._NTICourseOverviewGroupRenderExternalObject"
 			 for=".interfaces.INTICourseOverviewGroup"
 			 name="render" />

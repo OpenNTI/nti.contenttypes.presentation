@@ -299,6 +299,9 @@ class INTIAssignmentRef(INTIAssessmentRef, ITitled):
 	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
 
+class INTICourseOverviewSpacer(IGroupOverViewable, IPresentationAsset):
+	pass
+	
 class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset):
 	ntiid = ValidNTIID(title="Overview NTIID", required=False)
 	Items = IndexedIterable(value_type=Object(IGroupOverViewable), 

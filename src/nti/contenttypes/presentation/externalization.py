@@ -37,6 +37,7 @@ from .interfaces import INTIDiscussionRef
 from .interfaces import INTIQuestionSetRef
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
+from .interfaces import INTICourseOverviewSpacer
 
 from . import NTI_SLIDE_DECK
 
@@ -307,6 +308,16 @@ class _NTIQuestionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
+@component.adapter( INTICourseOverviewSpacer )
+class _NTICourseOverviewSpacerRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	spacer = alias('obj')
+
+	def toExternalObject( self, *args, **kwargs ):
+		extDict = LocatedExternalDict()
+		extDict[MIMETYPE] = self.spacer.mimeType
+		return extDict
+	
 @component.adapter( INTICourseOverviewGroup )
 class _NTICourseOverviewGroupRenderExternalObject(_NTIBaseRenderExternalObject):
 

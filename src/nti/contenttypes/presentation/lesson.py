@@ -26,8 +26,16 @@ from ._base import PersistentPresentationAsset
 
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
+from .interfaces import INTICourseOverviewSpacer
 
 from . import NTI_COURSE_OVERVIEW_GROUP
+
+@interface.implementer(INTICourseOverviewSpacer)
+class NTICourseOverViewSpacer(PersistentPresentationAsset):
+	createDirectFieldProperties(INTICourseOverviewSpacer)
+	
+	__external_class_name__ = u"CourseOverviewSpacer"
+	mime_type = mimeType = u"application/vnd.nextthought.nticourseoverviewspacer"
 
 @interface.implementer(INTICourseOverviewGroup)
 @EqHash('ntiid')

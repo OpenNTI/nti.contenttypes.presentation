@@ -26,6 +26,7 @@ from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
+from nti.contenttypes.presentation.utils import create_object_from_external
 from nti.contenttypes.presentation.utils import create_courseoverview_from_external
 from nti.contenttypes.presentation.utils import create_lessonoverview_from_external
 
@@ -43,6 +44,19 @@ class TestLesson(unittest.TestCase):
 
 	layer = SharedConfiguringTestLayer
 
+	def test_nticourseoverviewspacer(self):
+		path = os.path.join(os.path.dirname(__file__), 'nticourseoverviewspacer.json')
+		with open(path, "r") as fp:
+			source = simplejson.load(fp, encoding="UTF-8")
+			original = copy.deepcopy(source)
+
+		spacer = create_object_from_external(source)
+		assert_that(spacer, has_property('mimeType', is_(u"application/vnd.nextthought.nticourseoverviewspacer")))
+		
+		ext_obj = to_external_object(spacer, name="render")
+		for k, v in original.items():
+			assert_that(ext_obj, has_entry(k, is_(v)))
+				
 	def test_nticourseoverviewgroup(self):
 		path = os.path.join(os.path.dirname(__file__), 'nticourseoverviewgroup.json')
 		with open(path, "r") as fp:
