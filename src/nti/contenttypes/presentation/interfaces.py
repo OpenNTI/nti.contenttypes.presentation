@@ -26,6 +26,7 @@ from nti.schema.field import Number
 from nti.schema.field import Object
 from nti.schema.field import Variant
 from nti.schema.field import ValidURI
+from nti.schema.field import ValidText
 from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
@@ -243,7 +244,7 @@ class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresent
 	target = ValidNTIID(title="Target NTIID", required=False)
 	creator = ValidTextLine(title="The creator", required=False)
 	section = ValidTextLine(title="Section", required=False)
-	description = ValidTextLine(title="Slide video description", required=False)
+	description = ValidText(title="Slide video description", required=False)
 	icon = ValidTextLine(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
