@@ -18,6 +18,7 @@ import copy
 import unittest
 import simplejson
 
+from nti.contenttypes.presentation.utils import create_ntiaudio_from_external
 from nti.contenttypes.presentation.utils import create_ntivideo_from_external
 
 from nti.externalization.externalization import to_external_object
@@ -60,5 +61,29 @@ class TestMedia(unittest.TestCase):
 		assert_that(transcript, has_property('purpose', is_(u"normal")))
 
 		ext_obj = to_external_object(ntivideo, name="render")
+		for k, v in original.items():
+			assert_that(ext_obj, has_entry(k, is_(v)))
+			
+	def test_ntiaudio(self):
+		path = os.path.join(os.path.dirname(__file__), 'ntiaudio.json')
+		with open(path, "r") as fp:
+			source = simplejson.load(fp, encoding="UTF-8")
+			original = copy.deepcopy(source)
+			
+		ntiaudio = create_ntiaudio_from_external(source)
+		assert_that(ntiaudio, has_property('creator', is_(u'Alibra')))
+		assert_that(ntiaudio, has_property('title', is_(u"audio")))
+		assert_that(ntiaudio, has_property('mimeType', is_(u"application/vnd.nextthought.ntiaudio")))
+		assert_that(ntiaudio, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:Alibra-NTIAudio-Alibra_Unit7.ntiaudio.audio_90how")))
+		
+		assert_that(ntiaudio, has_property('sources', has_length(1)))
+		source = ntiaudio.sources[0]
+		
+		assert_that(source, has_property('service', is_(u"html5")))
+		assert_that(source, has_property('source', has_length(2)))
+		assert_that(source, has_property('type', has_length(2)))
+		assert_that(source, has_property('thumbnail', is_("//s3.amazonaws.com/media.nextthought.com/Alibra/Unit07/90+how-thumb.jpg")))
+		
+		ext_obj = to_external_object(ntiaudio, name="render")
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
