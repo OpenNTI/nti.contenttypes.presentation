@@ -465,8 +465,8 @@ def internalization_relatedworkref_pre_hook(k, x):
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if 	ntiid and \
-			(is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF)) or \
-			 '.relatedworkref.' in ntiid): # old legacy courses
+			('.relatedworkref.' in ntiid or \
+			 is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF)) ): 
 			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
 		
 def internalization_courseoverview_pre_hook(k, x):
