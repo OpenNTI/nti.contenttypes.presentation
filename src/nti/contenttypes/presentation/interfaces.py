@@ -280,7 +280,7 @@ class INTIDiscussion(INTIBaseDiscussion, IACLEnabled):
 	title = ValidTextLine(title="Discussion title", required=True)
 	body = CompoundModeledContentBody(True)
 
-class INTIAssessmentRef(IGroupOverViewable, IPresentationAsset):
+class INTIAssessmentRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
@@ -299,7 +299,7 @@ class INTIAssignmentRef(INTIAssessmentRef, ITitled):
 	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
 
-class INTICourseOverviewSpacer(IGroupOverViewable, IPresentationAsset):
+class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	pass
 	
 class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset):

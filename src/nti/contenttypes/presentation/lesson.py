@@ -29,6 +29,7 @@ from .interfaces import INTICourseOverviewGroup
 from .interfaces import INTICourseOverviewSpacer
 
 from . import NTI_COURSE_OVERVIEW_GROUP
+from . import NTI_COURSE_OVERVIEW_SPACER
 
 @interface.implementer(INTICourseOverviewSpacer)
 class NTICourseOverViewSpacer(PersistentPresentationAsset):
@@ -36,6 +37,13 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 	
 	__external_class_name__ = u"CourseOverviewSpacer"
 	mime_type = mimeType = u"application/vnd.nextthought.nticourseoverviewspacer"
+
+	@readproperty
+	def ntiid(self):
+		result = make_ntiid(provider='NTI',
+							nttype=NTI_COURSE_OVERVIEW_SPACER,
+							specific=md5(str(uuid.uuid4())).hexdigest() )
+		return result
 
 @interface.implementer(INTICourseOverviewGroup)
 @EqHash('ntiid')

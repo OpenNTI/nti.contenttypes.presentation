@@ -51,6 +51,7 @@ class TestLesson(unittest.TestCase):
 			original = copy.deepcopy(source)
 
 		spacer = create_object_from_external(source)
+		assert_that(spacer, has_property('ntiid', is_not(none())))
 		assert_that(spacer, has_property('mimeType', is_(u"application/vnd.nextthought.nticourseoverviewspacer")))
 		
 		ext_obj = to_external_object(spacer, name="render")
