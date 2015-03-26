@@ -140,7 +140,7 @@ class INTITranscript(IPresentationAsset):
 	purpose = ValidTextLine(title="Transcript purpose", required=True, default='normal')
 
 class INTIIDIdentifiable(interface.Interface):
-	ntiid = ValidNTIID(title="Media NTIID", required=True)
+	ntiid = ValidNTIID(title="Item NTIID", required=True)
 	
 class INTIMediaSource(IPresentationAsset):
 	service = ValidTextLine(title="Source service", required=True)
@@ -248,6 +248,8 @@ class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresent
 	icon = ValidTextLine(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
+	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
+					 ValidNTIID(title="Related content ntiid") ), required=True)
 INTIRelatedWorkRef = INTIRelatedWork
 
 class INTIBaseDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
