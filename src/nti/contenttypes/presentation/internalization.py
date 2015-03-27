@@ -270,6 +270,10 @@ class _TargetNTIIDUpdater(InterfaceObjectIO):
 			elif not parsed.get('ntiid') and parsed.get('target'):
 				parsed[u'ntiid'] = parsed['target']
 
+		for key in ('ntiid', 'transfer'):
+			value = parsed.get(key)
+			if value is not None and value.startswith('"'):
+				parsed[key] = value[1:]
 		return self
 
 @component.adapter(INTIRelatedWork)
