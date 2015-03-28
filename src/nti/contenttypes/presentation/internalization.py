@@ -62,6 +62,11 @@ NTIID = StandardExternalFields.NTIID
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
 
+def ntiid_check(s):
+	s = s.strip() if s else s
+	s = s[1:] if s and (s.startswith('"') or s.startswith("'")) else s		
+	return s
+
 @interface.implementer(IInternalObjectUpdater)
 class _NTIMediaUpdater(InterfaceObjectIO):
 
@@ -187,7 +192,7 @@ class _NTISlideVideoUpdater(InterfaceObjectIO):
 			parsed[CREATOR] = parsed.pop('creator')
 		
 		if 'video-ntiid' in parsed:
-			parsed[u'video_ntiid'] = parsed.pop('video-ntiid')
+			parsed[u'video_ntiid'] = ntiid_check(parsed.pop('video-ntiid'))
 
 		return self
 		
@@ -207,10 +212,10 @@ class _NTISlideDeckUpdater(InterfaceObjectIO):
 			parsed[CREATOR] = parsed.pop('creator')
 
 		if 'slidedeckid' in parsed and not parsed.get('ntiid'):
-			parsed[u'ntiid'] = parsed['slidedeckid']
+			parsed[u'ntiid'] = ntiid_check(parsed['slidedeckid'])
 
 		if 'ntiid' in parsed and not parsed.get('slidedeckid'):
-			parsed[u'slidedeckid'] = parsed['ntiid']
+			parsed[u'slidedeckid'] = ntiid_check(parsed['ntiid'])
 
 		return self
 		
@@ -240,7 +245,7 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 	
 	def fixAll(self, parsed):
 		if NTIID in parsed:
-			parsed[u'ntiid'] = parsed[NTIID]
+			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		if 'desc' in parsed:
 			parsed[u'description'] = parsed.pop('desc')
 		if 'suggested-inline' in parsed:
@@ -257,11 +262,11 @@ class _TargetNTIIDUpdater(InterfaceObjectIO):
 	
 	def fixTarget(self, parsed, transfer=True):
 		if NTIID in parsed:
-			parsed[u'ntiid'] = parsed[NTIID]
+			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		
 		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid'):
 			if name in parsed:
-				parsed['target'] = parsed.pop(name)
+				parsed['target'] = ntiid_check(parsed.pop(name))
 				break
 
 		if transfer:
@@ -270,10 +275,6 @@ class _TargetNTIIDUpdater(InterfaceObjectIO):
 			elif not parsed.get('ntiid') and parsed.get('target'):
 				parsed[u'ntiid'] = parsed['target']
 
-		for key in ('ntiid', 'transfer'):
-			value = parsed.get(key)
-			if value is not None and value.startswith('"'):
-				parsed[key] = value[1:]
 		return self
 
 @component.adapter(INTIRelatedWork)
@@ -308,7 +309,7 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 	
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)	
-		ntiid = parsed.get('ntiid')
+		ntiid = ntiid_check(parsed.get('ntiid'))
 		if parsed.get('target') and ntiid == parsed.get('target'):
 			ntiid = make_discussionref_ntiid(ntiid)
 			parsed['ntiid'] = ntiid
@@ -389,7 +390,7 @@ class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
 
 	def fixAll(self, parsed):
 		if NTIID in parsed:
-			parsed[u'ntiid'] = parsed[NTIID]
+			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		items = PersistentList(parsed.get(ITEMS) or ())
 		parsed[ITEMS] = items	
 		return parsed
@@ -407,7 +408,7 @@ class _NTILessonOverviewUpdater(InterfaceObjectIO):
 
 	def fixAll(self, parsed):
 		if NTIID in parsed:
-			parsed[u'ntiid'] = parsed[NTIID]
+			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		items = PersistentList(parsed.get(ITEMS) or ())
 		parsed[ITEMS] = items	
 		return parsed
