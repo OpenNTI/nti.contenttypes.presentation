@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from urlparse import urlparse
+
 from zope import interface
 
 from nti.ntiids.ntiids import get_type
@@ -23,6 +25,7 @@ from .interfaces import INTIDiscussionRef
 from ._base import PersistentPresentationAsset
 
 from . import DISCUSSION_REF
+from . import NTI_COURSE_BUNDLE
 
 @interface.implementer(INTIDiscussion)
 @EqHash('ntiid')
@@ -31,7 +34,7 @@ class NTIDiscussion(PersistentPresentationAsset):
 
 	__external_class_name__ = u"Discussion"
 	mime_type = mimeType = u'application/vnd.nextthought.discussion'
-
+		
 @interface.implementer(INTIDiscussionRef)
 @EqHash('ntiid')
 class NTIDiscussionRef(PersistentPresentationAsset):
@@ -40,6 +43,13 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 	__external_class_name__ = u"DiscussionRef"
 	mime_type = mimeType = u'application/vnd.nextthought.discussionref'
 
+	@property
+	def is_nti_course_bundle(self):
+		ntiid = self.ntiid
+		cmpns = urlparse(ntiid) if ntiid else None
+		result = cmpns.scheme == NTI_COURSE_BUNDLE if cmpns is not None else False
+		return result
+	
 def make_discussionref_ntiid(ntiid):
 	nttype = get_type(ntiid)
 	if nttype and ':' in nttype:

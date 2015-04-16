@@ -257,9 +257,12 @@ class INTIBaseDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPrese
 	title = ValidTextLine(title="Discussion title", required=False)
 	icon = ValidTextLine(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
+	ntiid = Variant((ValidTextLine(title="Discussion NTIID"),
+					 ValidNTIID(title="Discussion NTIID") ), required=True)
 	
 class INTIDiscussionRef(INTIBaseDiscussion):
-	target = ValidNTIID(title="Target NTIID", required=True)
+	target = Variant((ValidTextLine(title="Target NTIID"),
+					  ValidNTIID(title="Target NTIID") ), required=True)
 
 class IACE(interface.Interface):
 	Action = ValidTextLine(title="action (allow,deny)", required=True)
