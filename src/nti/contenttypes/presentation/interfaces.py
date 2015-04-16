@@ -264,6 +264,11 @@ class INTIDiscussionRef(INTIBaseDiscussion):
 	target = Variant((ValidTextLine(title="Target NTIID"),
 					  ValidNTIID(title="Target NTIID") ), required=True)
 
+	def is_nti_course_bundle():
+		"""
+		return if this DiscussionRef refers to a course bundle
+		"""
+
 class IACE(interface.Interface):
 	Action = ValidTextLine(title="action (allow,deny)", required=True)
 	Principals = ListOrTuple(value_type=ValidTextLine(title="principal id"),

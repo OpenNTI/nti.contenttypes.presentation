@@ -43,7 +43,6 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 	__external_class_name__ = u"DiscussionRef"
 	mime_type = mimeType = u'application/vnd.nextthought.discussionref'
 
-	@property
 	def is_nti_course_bundle(self):
 		ntiid = self.ntiid
 		cmpns = urlparse(ntiid) if ntiid else None
