@@ -119,6 +119,17 @@ AUDIO_SOURCES = (MP3_AUDIO_SOURCE, WAV_AUDIO_SOURCE, OTHER_AUDIO_SOURCE)
 AUDIO_SOURCES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
 
+class ITaggedContent(interface.Interface):
+	"""
+	Something that can contain tags.
+	"""
+
+	tags = ListOrTuple(title="Tags applied by the user.",
+					   value_type=ValidTextLine(min_length=1, title="A single tag"),
+					   unique=True,
+					   default=(),
+					   required=False)
+	
 class IPresentationAsset(ILastModified):
 	"""
 	marker interface for all presentation assests
@@ -284,7 +295,7 @@ class IACLEnabled(interface.Interface):
 					  title="ACL spec",
 					  required=False)
 	
-class INTIDiscussion(INTIBaseDiscussion, IACLEnabled):
+class INTIDiscussion(INTIBaseDiscussion, ITaggedContent, IACLEnabled):
 	title = ValidTextLine(title="Discussion title", required=True)
 	body = CompoundModeledContentBody(True)
 
