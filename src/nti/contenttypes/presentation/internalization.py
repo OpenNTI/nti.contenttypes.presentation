@@ -41,7 +41,6 @@ from .interfaces import INTIAudioRef
 from .interfaces import INTITimeline
 from .interfaces import INTIVideoRef
 from .interfaces import INTISlideDeck
-from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
 from .interfaces import INTIQuestionRef
@@ -318,20 +317,6 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(map_string_adjuster(parsed))
 		result = super(_NTIDiscussionRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
-
-@component.adapter(INTIDiscussion)
-class _NTIDiscussionUpdater(_TargetNTIIDUpdater):
-	
-	_ext_iface_upper_bound = INTIDiscussion
-	
-	def fixAll(self, parsed):
-		self.fixTarget(parsed, transfer=True)
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
-		result = super(_NTIDiscussionUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTIAssignmentRef)

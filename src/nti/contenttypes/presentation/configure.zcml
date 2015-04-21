@@ -19,10 +19,6 @@
 	<adapter factory=".adapters.ntiaudio_to_ntiaudioref"
 			 for=".interfaces.INTIAudio"
 			 provides=".interfaces.INTIAudioRef" /> 
-	 
-	<adapter factory=".adapters.ntidiscussion_to_ntidiscussionref"
-			 for=".interfaces.INTIDiscussion"
-			 provides=".interfaces.INTIDiscussionRef" /> 
 			 
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />
@@ -41,7 +37,6 @@
 						 .interfaces.INTISlideVideo
 						 .interfaces.INTITimeline
 						 .interfaces.INTIRelatedWork
-						 .interfaces.INTIDiscussion
 						 .interfaces.INTIDiscussionRef
 						 .interfaces.INTIQuestionRef
 						 .interfaces.INTIAssignmentRef
@@ -87,11 +82,7 @@
 	<adapter factory=".internalization._NTIRelatedWorkUpdater"
 			 for=".interfaces.INTIRelatedWork"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-	
-	<adapter factory=".internalization._NTIDiscussionUpdater"
-			 for=".interfaces.INTIDiscussion"
-			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-		
+
 	<adapter factory=".internalization._NTIDiscussionRefUpdater"
 			 for=".interfaces.INTIDiscussionRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -151,10 +142,6 @@
 			 
 	<adapter factory=".externalization._NTIRelatedWorkRenderExternalObject"
 			 for=".interfaces.INTIRelatedWork"
-			 name="render" />
-
-	<adapter factory=".externalization._NTIDiscussionRenderExternalObject"
-			 for=".interfaces.INTIDiscussion"
 			 name="render" />
 
 	<adapter factory=".externalization._NTIDiscussionRefRenderExternalObject"

@@ -19,21 +19,12 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from .interfaces import INTIDiscussion
 from .interfaces import INTIDiscussionRef
 
 from ._base import PersistentPresentationAsset
 
 from . import DISCUSSION_REF
 from . import NTI_COURSE_BUNDLE
-
-@interface.implementer(INTIDiscussion)
-@EqHash('ntiid')
-class NTIDiscussion(PersistentPresentationAsset):
-	createDirectFieldProperties(INTIDiscussion)
-
-	__external_class_name__ = u"Discussion"
-	mime_type = mimeType = u'application/vnd.nextthought.discussion'
 		
 @interface.implementer(INTIDiscussionRef)
 @EqHash('ntiid')

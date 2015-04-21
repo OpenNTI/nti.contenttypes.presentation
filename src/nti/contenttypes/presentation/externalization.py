@@ -28,7 +28,6 @@ from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
 from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
-from .interfaces import INTIDiscussion
 from .interfaces import INTISlideVideo
 from .interfaces import INTIRelatedWork
 from .interfaces import INTIQuestionRef
@@ -242,16 +241,6 @@ class _NTIDiscussionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 		if 'target' in extDict:
 			extDict[NTIID] = extDict.pop('target')
 		extDict[MIMETYPE] = 'application/vnd.nextthought.discussion'  #legacy
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
-		return extDict
-
-@component.adapter( INTIDiscussion )
-class _NTIDiscussionRenderExternalObject(_NTIBaseRenderExternalObject):
-
-	discussion = alias('obj')
-
-	def _do_toExternalObject( self, extDict ):
 		extDict.pop(CREATED_TIME, None)
 		extDict.pop(LAST_MODIFIED, None)
 		return extDict

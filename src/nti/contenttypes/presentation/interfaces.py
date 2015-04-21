@@ -31,8 +31,6 @@ from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
 
-from .schema import CompoundModeledContentBody
-
 ## Transcript types (file extensions)
 
 SBV_TRANSCRIPT_TYPE = u'sbv'
@@ -279,25 +277,6 @@ class INTIDiscussionRef(INTIBaseDiscussion):
 		"""
 		return if this DiscussionRef refers to a course bundle
 		"""
-
-class IACE(interface.Interface):
-	Action = ValidTextLine(title="action (allow,deny)", required=True)
-	Principals = ListOrTuple(value_type=ValidTextLine(title="principal id"),
-							 title="principals ids",
-							 required=True,
-							 min_length=1)
-	Permissions = ListOrTuple(value_type=ValidTextLine(title='Permission'),
-							  min_length=1,
-							  required=True)
-
-class IACLEnabled(interface.Interface):
-	acl = ListOrTuple(value_type=Object(IACE, title="the ace"), 
-					  title="ACL spec",
-					  required=False)
-	
-class INTIDiscussion(INTIBaseDiscussion, ITaggedContent, IACLEnabled):
-	title = ValidTextLine(title="Discussion title", required=True)
-	body = CompoundModeledContentBody(True)
 
 class INTIAssessmentRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
