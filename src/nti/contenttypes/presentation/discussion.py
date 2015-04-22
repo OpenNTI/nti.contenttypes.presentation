@@ -34,11 +34,12 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 	__external_class_name__ = u"DiscussionRef"
 	mime_type = mimeType = u'application/vnd.nextthought.discussionref'
 
-	def is_nti_course_bundle(self):
+	def isCourseBundle(self):
 		ntiid = self.ntiid
 		cmpns = urlparse(ntiid) if ntiid else None
 		result = cmpns.scheme == NTI_COURSE_BUNDLE if cmpns is not None else False
 		return result
+	is_nti_course_bundle = isCourseBundle
 	
 def make_discussionref_ntiid(ntiid):
 	nttype = get_type(ntiid)

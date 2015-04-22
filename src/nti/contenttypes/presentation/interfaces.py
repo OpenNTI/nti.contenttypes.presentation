@@ -273,7 +273,7 @@ class INTIDiscussionRef(INTIBaseDiscussion):
 	target = Variant((ValidTextLine(title="Target NTIID"),
 					  ValidNTIID(title="Target NTIID") ), required=True)
 
-	def is_nti_course_bundle():
+	def isCourseBundle():
 		"""
 		return if this DiscussionRef refers to a course bundle
 		"""
