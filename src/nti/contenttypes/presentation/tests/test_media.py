@@ -18,6 +18,7 @@ import copy
 import unittest
 import simplejson
 
+from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_ntiaudio_from_external
 from nti.contenttypes.presentation.utils import create_ntivideo_from_external
 
@@ -32,7 +33,7 @@ class TestMedia(unittest.TestCase):
 	def test_ntivideo(self):
 		path = os.path.join(os.path.dirname(__file__), 'ntivideo.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 			
 		ntivideo = create_ntivideo_from_external(source)
@@ -67,7 +68,7 @@ class TestMedia(unittest.TestCase):
 	def test_ntiaudio(self):
 		path = os.path.join(os.path.dirname(__file__), 'ntiaudio.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 			
 		ntiaudio = create_ntiaudio_from_external(source)

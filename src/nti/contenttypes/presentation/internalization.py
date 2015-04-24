@@ -19,8 +19,6 @@ from zope import component
 
 from persistent.list import PersistentList
 
-from nti.common.string import map_string_adjuster
-
 from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.externalization.interfaces import IInternalObjectUpdater
@@ -88,7 +86,7 @@ class _NTIMediaUpdater(InterfaceObjectIO):
 		return parsed
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTIMediaUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
@@ -144,7 +142,7 @@ class _NTIMediaRefUpdater(InterfaceObjectIO):
 		return parsed
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTIMediaRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 	
@@ -176,7 +174,7 @@ class _NTISlideUpdater(InterfaceObjectIO):
 		return self
 		
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTISlideUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
@@ -196,7 +194,7 @@ class _NTISlideVideoUpdater(InterfaceObjectIO):
 		return self
 		
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTISlideVideoUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
@@ -231,7 +229,6 @@ class _NTISlideDeckUpdater(InterfaceObjectIO):
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		map_string_adjuster(parsed, recur=False)
 		self.fixAll(parsed).parseSlides(parsed).parseVideos(parsed)
 		result = super(_NTISlideDeckUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
@@ -252,7 +249,7 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTITimelineUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
@@ -296,7 +293,7 @@ class _NTIRelatedWorkUpdater(_TargetNTIIDUpdater):
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTIRelatedWorkUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 _NTIRelatedWorkRefUpdater = _NTIRelatedWorkUpdater
@@ -315,7 +312,7 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTIDiscussionRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
@@ -333,7 +330,7 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTIAssignmentRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
@@ -349,7 +346,7 @@ class _NTIQuestionSetRefUpdater(_TargetNTIIDUpdater):
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTIQuestionSetRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 	
@@ -363,7 +360,7 @@ class _NTIQuestionRefUpdater(_TargetNTIIDUpdater):
 		return self
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed))
+		self.fixAll(parsed)
 		result = super(_NTIQuestionRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
@@ -381,7 +378,7 @@ class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
 		return parsed
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed, recur=False))
+		self.fixAll(parsed)
 		result = super(_NTICourseOverviewGroupUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
@@ -399,7 +396,7 @@ class _NTILessonOverviewUpdater(InterfaceObjectIO):
 		return parsed
 	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(map_string_adjuster(parsed, recur=False))
+		self.fixAll(parsed)
 		result = super(_NTILessonOverviewUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 

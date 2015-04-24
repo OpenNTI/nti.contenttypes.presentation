@@ -18,6 +18,7 @@ import copy
 import unittest
 import simplejson
 
+from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_object_from_external
 
 from nti.externalization.externalization import to_external_object
@@ -31,7 +32,7 @@ class TestSlide(unittest.TestCase):
 	def test_slide(self):
 		path = os.path.join(os.path.dirname(__file__), 'slide.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 
 		slide = create_object_from_external(source)
@@ -50,7 +51,7 @@ class TestSlide(unittest.TestCase):
 	def test_ntislidevideo(self):
 		path = os.path.join(os.path.dirname(__file__), 'ntislidevideo.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 			
 		slide = create_object_from_external(source)
@@ -69,7 +70,7 @@ class TestSlide(unittest.TestCase):
 	def test_ntislidedeck(self):
 		path = os.path.join(os.path.dirname(__file__), 'ntislidedeck.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			
 		slide = create_object_from_external(source)
 		assert_that(slide, has_property('creator', is_("Deborah Trytten")))

@@ -19,6 +19,7 @@ import copy
 import unittest
 import simplejson
 
+from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_object_from_external
 from nti.contenttypes.presentation.utils import create_timelime_from_external
 
@@ -36,7 +37,7 @@ class TestTimeline(unittest.TestCase):
 	def test_timeline(self):
 		path = os.path.join(os.path.dirname(__file__), 'timeline.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 			
 		timeline = create_object_from_external(source)
@@ -54,7 +55,7 @@ class TestTimeline(unittest.TestCase):
 	def test_ntitimeline(self):
 		path = os.path.join(os.path.dirname(__file__), 'ntitimeline.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 		
 		assert_that(source, has_entry(MIMETYPE, is_('application/vnd.nextthought.ntitimeline')))
 		

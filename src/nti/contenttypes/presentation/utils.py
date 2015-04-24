@@ -27,6 +27,10 @@ from .internalization import internalization_lessonoverview_pre_hook
 from .internalization import internalization_questionsetref_pre_hook
 from .internalization import internalization_relatedworkref_pre_hook
 
+def prepare_json_text(s):
+	result = unicode(s, 'utf-8') if isinstance(s, bytes) else s
+	return result
+
 def create_object_from_external(ext_obj, pre_hook=pre_hook, _exec=True):
 	__traceback_info__ = ext_obj
 	## CS: We want to call prehook in case we can to update a single dict.

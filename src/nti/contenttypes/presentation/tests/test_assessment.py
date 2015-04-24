@@ -17,6 +17,7 @@ import copy
 import unittest
 import simplejson
 
+from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_questionref_from_external
 from nti.contenttypes.presentation.utils import create_assignmentref_from_external
 from nti.contenttypes.presentation.utils import create_questionsetref_from_external
@@ -35,7 +36,7 @@ class TestAssignment(unittest.TestCase):
 	def test_assignment(self):
 		path = os.path.join(os.path.dirname(__file__), 'assignment.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 		assert_that(source, has_entry(MIMETYPE, is_('application/vnd.nextthought.assessment.assignment')))
 		
@@ -53,7 +54,7 @@ class TestAssignment(unittest.TestCase):
 	def test_questionset(self):
 		path = os.path.join(os.path.dirname(__file__), 'questionset.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 		assert_that(source, has_entry(MIMETYPE, is_('application/vnd.nextthought.naquestionset')))
 		
@@ -70,7 +71,7 @@ class TestAssignment(unittest.TestCase):
 	def test_question(self):
 		path = os.path.join(os.path.dirname(__file__), 'question.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 		assert_that(source, has_entry(MIMETYPE, is_('application/vnd.nextthought.naquestion')))
 		

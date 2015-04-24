@@ -17,6 +17,7 @@ import copy
 import unittest
 import simplejson
 
+from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_object_from_external
 
 from nti.externalization.externalization import to_external_object
@@ -30,7 +31,7 @@ class TestRelatedWork(unittest.TestCase):
 	def test_related(self):
 		path = os.path.join(os.path.dirname(__file__), 'relatedwork.json')
 		with open(path, "r") as fp:
-			source = simplejson.load(fp, encoding="UTF-8")
+			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
 
 		related = create_object_from_external(source)
