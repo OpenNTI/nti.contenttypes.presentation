@@ -117,6 +117,15 @@ AUDIO_SOURCES = (MP3_AUDIO_SOURCE, WAV_AUDIO_SOURCE, OTHER_AUDIO_SOURCE)
 AUDIO_SOURCES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
 
+PUBLIC = u'Public'
+CREDIT = "ForCredit"
+EVERYONE = u'everyone'
+PURCHASED = "Purchased"
+VISIBILITY = (PUBLIC, CREDIT, EVERYONE, PURCHASED)
+
+VISIBILITY_VOCABULARY = \
+	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VISIBILITY])
+	
 class ITaggedContent(interface.Interface):
 	"""
 	Something that can contain tags.
@@ -156,8 +165,8 @@ class INTIMediaSource(IPresentationAsset):
 	thumbnail = ValidTextLine(title="Source thumbnail", required=False)
 
 class IMediaRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
-	visibility = ValidTextLine(title="Media ref visibility", required=False,
-							   default='everyone')
+	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='Media ref visibility',
+					 	required=False, default=EVERYONE)
 
 class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
 	creator = ValidTextLine(title="Media creator", required=False)
@@ -250,7 +259,7 @@ class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	description = ValidTextLine(title="Timeline description", required=False)
 	suggested_inline = Bool("Suggested inline flag", required=False, default=None)
 
-class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset):
+class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset):
 	href = ValidTextLine(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
 	creator = ValidTextLine(title="The creator", required=False)
@@ -259,11 +268,11 @@ class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresent
 	icon = ValidTextLine(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
-	visibility = ValidTextLine(title="Related work visibility", required=False,
-							   default='everyone')
+	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='RelatedWord ref visibility',
+					 	required=False, default=EVERYONE)
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid") ), required=True)
-INTIRelatedWorkRef = INTIRelatedWork
+INTIRelatedWork = INTIRelatedWorkRef
 
 class INTIBaseDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=False)
