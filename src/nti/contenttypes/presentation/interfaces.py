@@ -117,11 +117,12 @@ AUDIO_SOURCES = (MP3_AUDIO_SOURCE, WAV_AUDIO_SOURCE, OTHER_AUDIO_SOURCE)
 AUDIO_SOURCES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
 
+OU = "OU"
 PUBLIC = u'Public'
 CREDIT = "ForCredit"
 EVERYONE = u'everyone'
 PURCHASED = "Purchased"
-VISIBILITY = (PUBLIC, CREDIT, EVERYONE, PURCHASED)
+VISIBILITY = (PUBLIC, CREDIT, EVERYONE, PURCHASED, OU)
 
 VISIBILITY_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VISIBILITY])
