@@ -329,9 +329,12 @@ class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset):
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
 
-class IPrincipalVisibility(interface.Interface):
+class IPresentationVisibility(interface.Interface):
 	"""
-	marker interface to return the visibility for a principal.
+	marker interface to return the visibility for an object.
 	
 	Register as an adapter
 	"""
+	
+	def visibility():
+		pass
