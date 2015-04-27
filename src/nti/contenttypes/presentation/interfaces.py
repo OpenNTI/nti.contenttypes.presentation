@@ -328,3 +328,10 @@ class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset):
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup), 
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
+
+class IPrincipalVisibility(interface.Interface):
+	"""
+	marker interface to return the visibility for a principal.
+	
+	Register as an adapter
+	"""
