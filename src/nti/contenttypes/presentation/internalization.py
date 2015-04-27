@@ -471,8 +471,6 @@ def internalization_courseoverview_pre_hook(k, x):
 			
 			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
 			if mimeType == "application/vnd.nextthought.discussion": 
-				if 'body' in item or 'Body' in item: # fully model
-					continue
 				s = item.get(NTIID) or item.get('ntiid')
 				ntiids = s.split(' ') if s else ()
 				if len(ntiids) > 1:
