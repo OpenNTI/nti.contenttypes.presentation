@@ -120,7 +120,7 @@ AUDIO_SOURCES_VOCABULARY = \
 OU = "OU"
 PUBLIC = u'Public'
 CREDIT = "ForCredit"
-EVERYONE = u'everyone'
+EVERYONE = u'Everyone'
 PURCHASED = "Purchased"
 VISIBILITY = (PUBLIC, CREDIT, EVERYONE, PURCHASED, OU)
 
@@ -165,9 +165,15 @@ class INTIMediaSource(IPresentationAsset):
 	service = ValidTextLine(title="Source service", required=True)
 	thumbnail = ValidTextLine(title="Source thumbnail", required=False)
 
-class IMediaRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
+class IVisible(interface.Interface):
+	"""
+	marker interface for things that have visibility
+	"""
 	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='Media ref visibility',
 					 	required=False, default=EVERYONE)
+
+class IMediaRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
+	pass
 
 class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
 	creator = ValidTextLine(title="Media creator", required=False)
@@ -260,7 +266,7 @@ class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	description = ValidTextLine(title="Timeline description", required=False)
 	suggested_inline = Bool("Suggested inline flag", required=False, default=None)
 
-class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset):
+class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset, IVisible):
 	href = ValidTextLine(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
 	creator = ValidTextLine(title="The creator", required=False)
@@ -269,8 +275,6 @@ class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPres
 	icon = ValidTextLine(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
-	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='RelatedWord ref visibility',
-					 	required=False, default=EVERYONE)
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid") ), required=True)
 INTIRelatedWork = INTIRelatedWorkRef
