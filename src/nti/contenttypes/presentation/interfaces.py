@@ -156,7 +156,8 @@ class INTIMediaSource(IPresentationAsset):
 	thumbnail = ValidTextLine(title="Source thumbnail", required=False)
 
 class IMediaRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
-	pass
+	visibility = ValidTextLine(title="Media ref visibility", required=False,
+							   default='everyone')
 
 class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
 	creator = ValidTextLine(title="Media creator", required=False)
@@ -258,6 +259,8 @@ class INTIRelatedWork(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresent
 	icon = ValidTextLine(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
+	visibility = ValidTextLine(title="Related work visibility", required=False,
+							   default='everyone')
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid") ), required=True)
 INTIRelatedWorkRef = INTIRelatedWork

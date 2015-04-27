@@ -118,7 +118,6 @@ class _NTIVideoRefRenderExternalObject(_NTIBaseRenderExternalObject):
 	def _do_toExternalObject( self, extDict ):
 		if MIMETYPE in extDict:
 			extDict[MIMETYPE] = u"application/vnd.nextthought.ntivideo"
-		extDict[u"visibility"] = u"everyone"
 		extDict.pop(CREATED_TIME, None)
 		extDict.pop(LAST_MODIFIED, None)
 
@@ -128,7 +127,6 @@ class _NTIAudioRefRenderExternalObject(_NTIBaseRenderExternalObject):
 	def _do_toExternalObject( self, extDict ):
 		if MIMETYPE in extDict:
 			extDict[MIMETYPE] = u"application/vnd.nextthought.ntiaudio"
-		extDict[u"visibility"] = u"everyone"
 		extDict.pop(CREATED_TIME, None)
 		extDict.pop(LAST_MODIFIED, None)
 
@@ -223,7 +221,6 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[u'target-NTIID'] = extDict[u'target-ntiid'] = extDict.pop('target')
 		if 'type' in extDict:
 			extDict[u'targetMimeType'] = extDict['type']
-		extDict[u"visibility"] = u"everyone"
 		extDict.pop(CREATED_TIME, None)
 		extDict.pop(LAST_MODIFIED, None)
 		return extDict
