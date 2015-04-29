@@ -483,7 +483,7 @@ def internalization_courseoverview_pre_hook(k, x):
 						item[NTIID] = ntiid
 						internalization_discussionref_pre_hook(None, item)
 				elif not ntiids:# not yet ready
-					item[NTIID] = make_placeholder_ntiid(item.get('title'))
+					item[NTIID] = make_placeholder_ntiid()
 					internalization_discussionref_pre_hook(None, item)
 				else:
 					internalization_discussionref_pre_hook(None, item)
