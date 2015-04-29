@@ -9,12 +9,14 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import uuid
 from urlparse import urlparse
 
 from zope import interface
 
 from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid
+from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -40,6 +42,14 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 		result = cmpns.scheme == NTI_COURSE_BUNDLE if cmpns is not None else False
 		return result
 	is_nti_course_bundle = isCourseBundle
+
+def make_placeholder_ntiid(title=''):
+	splits = str(uuid.uuid4()).split('-')
+	prefix = '_'.join(splits if not title else splits[0:2])
+	prefix = "%s_%s" % (prefix, make_specific_safe(title or u''))
+	specific = make_specific_safe(prefix)
+	ntiid = make_ntiid(provider='NTI', nttype=DISCUSSION_REF, specific=specific)
+	return ntiid
 	
 def make_discussionref_ntiid(ntiid):
 	nttype = get_type(ntiid)
