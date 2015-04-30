@@ -112,7 +112,7 @@ class TestLesson(unittest.TestCase):
 		for item in lesson[3]:
 			assert_that(item, validly_provides(INTIVideoRef))
 			
-		assert_that(lesson[4], has_length(1))
+		assert_that(lesson[4], has_length(0))
 	
 		ext_obj = to_external_object(lesson, name="render")
 		assert_that(ext_obj, has_entry('NTIID', is_(u"tag:nextthought.com,2011-10:OU-HTML-LSTD1153_S_2015_History_United_States_1865_to_Present.lec:11.06_LESSON")))
