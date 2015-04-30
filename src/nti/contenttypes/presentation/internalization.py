@@ -30,7 +30,6 @@ from nti.externalization.internalization import update_from_external_object
 from nti.ntiids.ntiids import is_ntiid_of_type
 from nti.ntiids.ntiids import is_ntiid_of_types
 
-from .discussion import make_placeholder_ntiid
 from .discussion import make_discussionref_ntiid
 
 from .interfaces import INTIAudio
@@ -483,8 +482,8 @@ def internalization_courseoverview_pre_hook(k, x):
 						item[NTIID] = ntiid
 						internalization_discussionref_pre_hook(None, item)
 				elif not ntiids:# not yet ready
-					item[NTIID] = make_placeholder_ntiid()
-					internalization_discussionref_pre_hook(None, item)
+					del x[idx]
+					continue
 				else:
 					internalization_discussionref_pre_hook(None, item)
 			idx +=1
