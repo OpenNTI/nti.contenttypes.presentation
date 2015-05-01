@@ -49,6 +49,8 @@ class TestTimeline(unittest.TestCase):
 		
 		ext_obj = to_external_object(timeline, name="render")
 		for k, v in original.items():
+			if k == 'ntiid':
+				k = 'NTIID'
 			if k != MIMETYPE:
 				assert_that(ext_obj, has_entry(k, is_(v)))
 			

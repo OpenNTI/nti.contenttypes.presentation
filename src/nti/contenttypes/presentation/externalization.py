@@ -204,7 +204,7 @@ class _NTITimelineRenderExternalObject(_NTIBaseRenderExternalObject):
 			else:
 				extDict['suggested-inline'] = extDict.pop('suggested_inline')
 		if 'ntiid' in extDict:
-			extDict[NTIID] = extDict.get('ntiid')
+			extDict[NTIID] = extDict.pop('ntiid')
 		extDict.pop(CREATED_TIME, None)
 		extDict.pop(LAST_MODIFIED, None)
 		return extDict
