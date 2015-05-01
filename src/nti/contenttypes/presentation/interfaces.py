@@ -264,7 +264,7 @@ class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	href = ValidTextLine(title="Resource href", required=False, default=u'')
 	icon = ValidTextLine(title="Icon href", required=False)
 	description = ValidTextLine(title="Timeline description", required=False)
-	suggested_inline = Bool("Suggested inline flag", required=False, default=None)
+	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
 
 class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset, IVisible):
 	href = ValidTextLine(title="Related work href", required=False, default=u'')

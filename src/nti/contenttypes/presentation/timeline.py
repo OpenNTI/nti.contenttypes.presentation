@@ -26,6 +26,6 @@ class NTITimeLine(PersistentPresentationAsset):
 	createDirectFieldProperties(INTITimeline)
 
 	__external_class_name__ = u"Timeline"
-	mime_type = mimeType = u'application/vnd.nextthought.timeline'
+	mime_type = mimeType = u'application/vnd.nextthought.ntitimeline'
 
 	desc = alias('description')

@@ -443,9 +443,9 @@ def internalization_ntitimeline_pre_hook(k, x):
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if ntiid and (JSON_TIMELINE in ntiid or is_ntiid_of_type(ntiid, TIMELINE)):
-			x[MIMETYPE] = "application/vnd.nextthought.timeline"
-	elif mimeType == "application/vnd.nextthought.ntitimeline": 
-		x[MIMETYPE] = u"application/vnd.nextthought.timeline"
+			x[MIMETYPE] = "application/vnd.nextthought.ntitimeline"
+	elif mimeType == "application/vnd.nextthought.timeline": 
+		x[MIMETYPE] = u"application/vnd.nextthought.ntitimeline"
 		
 def internalization_relatedworkref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
