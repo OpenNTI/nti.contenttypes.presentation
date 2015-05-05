@@ -61,9 +61,9 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 
 	def __iter__(self):
 		for item in self.items or ():
-			item = item() if IWeakRef.providedBy(item) else item
-			if item is not None:
-				yield item
+			resolved = item() if IWeakRef.providedBy(item) else item
+			if resolved is not None:
+				yield resolved
 			else:
 				logger.warn("Cannot resolve %s", item)
 	
