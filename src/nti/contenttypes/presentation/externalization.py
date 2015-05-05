@@ -79,7 +79,7 @@ class _NTIMediaRenderExternalObject(_NTIBaseRenderExternalObject):
 	def _do_toExternalObject( self, extDict ):
 		super(_NTIMediaRenderExternalObject, self)._do_toExternalObject(extDict)
 		if MIMETYPE in extDict:
-			extDict[StandardExternalFields.CTA_MIMETYPE] = extDict.pop(MIMETYPE)
+			extDict[StandardExternalFields.CTA_MIMETYPE] = extDict[MIMETYPE] # legacy
 		
 		if CREATOR in extDict:
 			extDict[u'creator'] = extDict.pop(CREATOR)
