@@ -319,8 +319,7 @@ class _NTICourseOverviewGroupRenderExternalObject(_NTIBaseRenderExternalObject):
 		extDict[MIMETYPE] = self.group.mimeType
 		extDict[u'title'] = self.group.title
 		extDict[u'accentColor'] = self.group.color
-		extDict[ITEMS] = [toExternalObject(x, name='render') 
-						  for x in self.group if x is not None]
+		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.group]
 		return extDict
 
 @interface.implementer(IInternalObjectIO)
@@ -339,7 +338,7 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
 	
 	def toExternalObject( self, *args, **kwargs ):
 		result = super(_NTICourseOverviewGroupInternalObjectIO, self).toExternalObject(*args, **kwargs)
-		result[ITEMS] = [toExternalObject(x) for x in self._ext_self if x is not None]
+		result[ITEMS] = [toExternalObject(x) for x in self._ext_self]
 		return result
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 

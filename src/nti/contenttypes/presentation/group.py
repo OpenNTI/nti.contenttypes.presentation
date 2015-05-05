@@ -50,20 +50,22 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 	
 	def __getitem__(self, index):
 		item = self.items[index]
-		item = item() if IWeakRef.providedBy(item) else item
 		return item
 	
 	def __setitem__(self, index, item):
 		self.items[index] = item
 	
 	def __len__(self):
-		result = len(self.items)
+		result = len(self.items) ## include weak refs
 		return result
 
 	def __iter__(self):
 		for item in self.items or ():
 			item = item() if IWeakRef.providedBy(item) else item
-			yield item
+			if item is not None:
+				yield item
+			else:
+				logger.warn("Cannot resolve %s", item)
 	
 	def sublocations(self):
 		for item in self:
