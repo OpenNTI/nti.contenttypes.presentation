@@ -40,6 +40,7 @@ from .interfaces import INTICourseOverviewSpacer
 
 from . import NTI_SLIDE_DECK
 
+OID = StandardExternalFields.OID
 CLASS = StandardExternalFields.CLASS
 NTIID = StandardExternalFields.NTIID
 ITEMS = StandardExternalFields.ITEMS
@@ -54,7 +55,11 @@ class _NTIBaseRenderExternalObject(object):
 	def __init__( self, obj ):
 		self.obj = obj
 
-	def _do_toExternalObject( self, extDict ):
+	@classmethod
+	def _do_toExternalObject( cls, extDict ):
+		extDict.pop(OID, None)
+		extDict.pop(CREATED_TIME, None)
+		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 	def toExternalObject( self, *args, **kwargs ):
@@ -68,12 +73,10 @@ class _NTIMediaRenderExternalObject(_NTIBaseRenderExternalObject):
 	media = alias('obj')
 	
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIMediaRenderExternalObject, self)._do_toExternalObject(extDict)
 		if MIMETYPE in extDict:
 			extDict[StandardExternalFields.CTA_MIMETYPE] = extDict.pop(MIMETYPE)
 		
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
-				
 		if CREATOR in extDict:
 			extDict[u'creator'] = extDict.pop(CREATOR)
 		
@@ -97,7 +100,7 @@ class _NTIMediaRenderExternalObject(_NTIBaseRenderExternalObject):
 class _NTIVideoRenderExternalObject(_NTIMediaRenderExternalObject):
 
 	def _do_toExternalObject( self, extDict ):
-		extDict = super(_NTIVideoRenderExternalObject, self)._do_toExternalObject(extDict)
+		super(_NTIVideoRenderExternalObject, self)._do_toExternalObject(extDict)
 
 		if 'closed_caption' in extDict:
 			extDict[u'closedCaptions'] = extDict.pop('closed_caption')
@@ -116,19 +119,17 @@ class _NTIAudioRenderExternalObject(_NTIMediaRenderExternalObject):
 class _NTIVideoRefRenderExternalObject(_NTIBaseRenderExternalObject):
 	
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIVideoRefRenderExternalObject, self)._do_toExternalObject(extDict)
 		if MIMETYPE in extDict:
 			extDict[MIMETYPE] = u"application/vnd.nextthought.ntivideo"
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 
 @component.adapter( INTIAudioRef )
 class _NTIAudioRefRenderExternalObject(_NTIBaseRenderExternalObject):
 	
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIAudioRefRenderExternalObject, self)._do_toExternalObject(extDict)
 		if MIMETYPE in extDict:
 			extDict[MIMETYPE] = u"application/vnd.nextthought.ntiaudio"
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 
 @interface.implementer( IExternalObject )
 class _NTIBaseSlideExternalObject(_NTIBaseRenderExternalObject):
@@ -136,6 +137,7 @@ class _NTIBaseSlideExternalObject(_NTIBaseRenderExternalObject):
 	slide = alias('obj')
 	
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIBaseSlideExternalObject, self)._do_toExternalObject(extDict)
 		if CLASS in extDict:
 			extDict[u'class'] = (extDict.pop(CLASS) or u'').lower()
 		
@@ -145,8 +147,6 @@ class _NTIBaseSlideExternalObject(_NTIBaseRenderExternalObject):
 		if 'description' in extDict and not extDict['description']:
 			extDict.pop('description') 
 
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTISlide )
@@ -194,6 +194,7 @@ class _NTITimelineRenderExternalObject(_NTIBaseRenderExternalObject):
 	timeline = alias('obj')
 
 	def _do_toExternalObject( self, extDict ):
+		super(_NTITimelineRenderExternalObject, self)._do_toExternalObject(extDict)
 		if CLASS in extDict:
 			extDict.pop(CLASS)
 		if 'description' in extDict:
@@ -205,8 +206,6 @@ class _NTITimelineRenderExternalObject(_NTIBaseRenderExternalObject):
 				extDict['suggested-inline'] = extDict.pop('suggested_inline')
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 		
 @component.adapter( INTIRelatedWork )
@@ -215,6 +214,7 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 	related = alias('obj')
 
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIRelatedWorkRenderExternalObject, self)._do_toExternalObject(extDict)
 		if CLASS in extDict:
 			extDict.pop(CLASS)
 		if CREATOR in extDict:
@@ -225,8 +225,6 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[u'target-NTIID'] = extDict[u'target-ntiid'] = extDict.pop('target')
 		if 'type' in extDict:
 			extDict[u'targetMimeType'] = extDict['type']
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTIDiscussionRef )
@@ -235,6 +233,7 @@ class _NTIDiscussionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 	discussion = alias('obj')
 
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIDiscussionRefRenderExternalObject, self)._do_toExternalObject(extDict)
 		if CLASS in extDict:
 			extDict.pop(CLASS)
 		if 'ntiid' in extDict:
@@ -242,8 +241,6 @@ class _NTIDiscussionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 		if 'target' in extDict:
 			extDict[NTIID] = extDict.pop('target')
 		extDict[MIMETYPE] = 'application/vnd.nextthought.discussion'  #legacy
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTIAssignmentRef )
@@ -252,6 +249,7 @@ class _NTIAssignmentRefRenderExternalObject(_NTIBaseRenderExternalObject):
 	assignment = alias('obj')
 
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIAssignmentRefRenderExternalObject, self)._do_toExternalObject(extDict)
 		extDict[CLASS] = 'Assignment' # for legacy iPad
 		extDict[MIMETYPE] = 'application/vnd.nextthought.assessment.assignment'  # for legacy iPad
 		if 'ntiid' in extDict:
@@ -260,8 +258,6 @@ class _NTIAssignmentRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[u'Target-NTIID'] = extDict.pop('target')
 		if 'containerId' in extDict:
 			extDict[u'ContainerId'] = extDict.pop('containerId')
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTIQuestionSetRef )
@@ -270,6 +266,7 @@ class _NTIQuestionSetRefRenderExternalObject(_NTIBaseRenderExternalObject):
 	question_set = alias('obj')
 
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIQuestionSetRefRenderExternalObject, self)._do_toExternalObject(extDict)
 		extDict[CLASS] = 'QuestionSet' # for legacy iPad
 		extDict[MIMETYPE] = 'application/vnd.nextthought.naquestionset'  # for legacy iPad
 		if 'ntiid' in extDict:
@@ -278,8 +275,6 @@ class _NTIQuestionSetRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[u'Target-NTIID'] = extDict.pop('target')
 		if 'question_count' in extDict:
 			extDict[u'question-count'] = str(extDict.pop('question_count'))
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter( INTIQuestionRef )
@@ -288,6 +283,7 @@ class _NTIQuestionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 	question = alias('obj')
 
 	def _do_toExternalObject( self, extDict ):
+		super(_NTIQuestionRefRenderExternalObject, self)._do_toExternalObject(extDict)
 		extDict[CLASS] = 'Question' # for legacy iPad
 		extDict[MIMETYPE] = 'application/vnd.nextthought.naquestion'  # for legacy iPad
 		if 'ntiid' in extDict:
@@ -330,7 +326,7 @@ class _NTILessonOverviewRenderExternalObject(_NTIBaseRenderExternalObject):
 	def toExternalObject( self, *args, **kwargs ):
 		extDict = LocatedExternalDict()
 		extDict[NTIID] = self.lesson.ntiid
-		extDict[MIMETYPE] = self.lesson.mimeType
 		extDict[u'title'] = self.lesson.title
+		extDict[MIMETYPE] = self.lesson.mimeType
 		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.lesson.items or ()]
 		return extDict
