@@ -8,10 +8,13 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 from zope import interface
+from zope.interface.common.sequence import IFiniteSequence
 
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 
 from zope.schema import vocabulary
+
+from dolmen.builtins.interfaces import IIterable
 
 from nti.coremetadata.interfaces import ITitled
 from nti.coremetadata.interfaces import ICreated
@@ -30,6 +33,8 @@ from nti.schema.field import ValidText
 from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
+
+from nti.wref.interfaces import IWeakRef
 
 ## Transcript types (file extensions)
 
@@ -147,6 +152,9 @@ class IGroupOverViewable(interface.Interface):
 	"""
 	marker interface for things that can be part of a course overview group
 	"""
+
+class IGroupOverViewableWeakRef(IWeakRef):
+	pass
 
 class INTITranscript(IPresentationAsset):
 	src = Variant((	ValidTextLine(title="Transcript source"),
@@ -317,14 +325,17 @@ IAssignmentRef = INTIAssignment = INTIAssignmentRef
 class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	pass
 	
-class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset):
+class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset, 
+							  IFiniteSequence, IIterable):
 	ntiid = ValidNTIID(title="Overview NTIID", required=False)
-	Items = IndexedIterable(value_type=Object(IGroupOverViewable), 
+	Items = IndexedIterable(value_type=Variant((Object(IGroupOverViewable),
+												Object(IGroupOverViewableWeakRef))), 
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
 	accentColor = ValidTextLine(title="Overview color", required=False)
 
-class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset):
+class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset,
+						 IFiniteSequence, IIterable):
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup), 
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)

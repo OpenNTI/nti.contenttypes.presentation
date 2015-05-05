@@ -17,9 +17,13 @@ from zope import interface
 from nti.common.property import alias
 
 from nti.externalization.interfaces import IExternalObject
+from nti.externalization.interfaces import IInternalObjectIO
 from nti.externalization.interfaces import LocatedExternalDict
-from nti.externalization.externalization import toExternalObject
 from nti.externalization.interfaces import StandardExternalFields
+
+from nti.externalization.externalization import toExternalObject
+
+from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
 
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
@@ -307,16 +311,37 @@ class _NTICourseOverviewSpacerRenderExternalObject(_NTIBaseRenderExternalObject)
 @component.adapter( INTICourseOverviewGroup )
 class _NTICourseOverviewGroupRenderExternalObject(_NTIBaseRenderExternalObject):
 
-	course = alias('obj')
+	group = alias('obj')
 
 	def toExternalObject( self, *args, **kwargs ):
 		extDict = LocatedExternalDict()
-		extDict[NTIID] = self.course.ntiid
-		extDict[MIMETYPE] = self.course.mimeType
-		extDict[u'title'] = self.course.title
-		extDict[u'accentColor'] = self.course.color
-		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.course.items or ()]
+		extDict[NTIID] = self.group.ntiid
+		extDict[MIMETYPE] = self.group.mimeType
+		extDict[u'title'] = self.group.title
+		extDict[u'accentColor'] = self.group.color
+		extDict[ITEMS] = [toExternalObject(x, name='render') 
+						  for x in self.group if x is not None]
 		return extDict
+
+@interface.implementer(IInternalObjectIO)
+class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfaceObjectIO):
+
+	_excluded = {ITEMS}
+	_excluded_out_ivars_ = _excluded | AutoPackageSearchingScopedInterfaceObjectIO._excluded_out_ivars_
+
+	@classmethod
+	def _ap_enumerate_externalizable_root_interfaces(cls, pa_interfaces):
+		return (pa_interfaces.INTICourseOverviewGroup,)
+
+	@classmethod
+	def _ap_enumerate_module_names(cls):
+		return ('group',)
+	
+	def toExternalObject( self, *args, **kwargs ):
+		result = super(_NTICourseOverviewGroupInternalObjectIO, self).toExternalObject(*args, **kwargs)
+		result[ITEMS] = [toExternalObject(x) for x in self._ext_self if x is not None]
+		return result
+_NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
 @component.adapter( INTILessonOverview )
 class _NTILessonOverviewRenderExternalObject(_NTIBaseRenderExternalObject):

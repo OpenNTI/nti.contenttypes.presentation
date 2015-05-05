@@ -42,10 +42,12 @@
 						 .interfaces.INTIAssignmentRef
 						 .interfaces.INTIQuestionSetRef
 						 .interfaces.INTILessonOverview
-						 .interfaces.INTICourseOverviewGroup
 						 .interfaces.INTICourseOverviewSpacer"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
-
+	
+	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
+			 for=".interfaces.INTICourseOverviewGroup" />
+			 
 	<!-- Internalization -->
 	<adapter factory=".internalization._NTIVideoUpdater"
 			 for=".interfaces.INTIVideo"
@@ -171,5 +173,8 @@
 	<adapter factory=".externalization._NTILessonOverviewRenderExternalObject"
 			 for=".interfaces.INTILessonOverview"
 			 name="render" />
+
+	<!-- Mime factories -->
+	<ext:registerMimeFactories module=".group" />
 
 </configure>
