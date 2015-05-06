@@ -22,15 +22,11 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.wref.interfaces import IWeakRef
-
 from ._base import PersistentPresentationAsset
 
 from .interfaces import INTILessonOverview
-from .interfaces import INTICourseOverviewGroup
 from .interfaces import INTICourseOverviewSpacer
 
-from . import NTI_COURSE_OVERVIEW_GROUP
 from . import NTI_COURSE_OVERVIEW_SPACER
 
 @interface.implementer(INTICourseOverviewSpacer)
@@ -46,45 +42,6 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 							nttype=NTI_COURSE_OVERVIEW_SPACER,
 							specific=md5(str(uuid.uuid4())).hexdigest() )
 		return result
-
-@interface.implementer(INTICourseOverviewGroup)
-@EqHash('ntiid')
-class NTICourseOverViewGroup(PersistentPresentationAsset):
-	createDirectFieldProperties(INTICourseOverviewGroup)
-
-	__external_class_name__ = u"CourseOverviewGroup"
-	mime_type = mimeType = u"application/vnd.nextthought.nticourseoverviewgroup"
-	
-	color = alias('accentColor')
-	items = alias('Items')
-
-	@readproperty
-	def ntiid(self):
-		result = make_ntiid(provider='NTI',
-							nttype=NTI_COURSE_OVERVIEW_GROUP,
-							specific=md5(str(uuid.uuid4())).hexdigest() )
-		return result
-	
-	def __getitem__(self, index):
-		item = self.items[index]
-		item = item() if IWeakRef.providedBy(item) else item
-		return item
-	
-	def __setitem__(self, index, item):
-		self.items[index] = item
-	
-	def __len__(self):
-		result = len(self.items)
-		return result
-
-	def __iter__(self):
-		for item in self.items or ():
-			item = item() if IWeakRef.providedBy(item) else item
-			yield item
-	
-	def sublocations(self):
-		for item in self:
-			yield item
 
 @interface.implementer(INTILessonOverview)
 @EqHash('ntiid')
@@ -111,3 +68,10 @@ class NTILessonOverView(PersistentPresentationAsset):
 	def sublocations(self):
 		for item in self.items or ():
 			yield item
+
+import zope.deferredimport
+zope.deferredimport.initialize()
+zope.deferredimport.deprecatedFrom(
+	"moved to nti.contenttypes.presentation.group",
+	"nti.contenttypes.presentation.group",
+	"NTICourseOverViewGroup")
