@@ -40,10 +40,6 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 		result = cmpns.scheme == NTI_COURSE_BUNDLE if cmpns is not None else False
 		return result
 	is_nti_course_bundle = isCourseBundle
-
-def make_placeholder_ntiid():
-	ntiid = make_ntiid(provider='NTI', nttype=DISCUSSION_REF, specific='PlaceHolder')
-	return ntiid
 	
 def make_discussionref_ntiid(ntiid):
 	nttype = get_type(ntiid)
