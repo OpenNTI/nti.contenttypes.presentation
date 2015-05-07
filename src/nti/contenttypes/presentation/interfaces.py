@@ -214,7 +214,7 @@ class INTIVideo(INTIMedia):
 							  title="The transcripts", required=False, min_length=0)
 
 class INTIVideoRef(IMediaRef):
-	label = ValidTextLine(title="Video label", required=False)
+	label = ValidText(title="Video label", required=False)
 	poster = ValidTextLine(title="Video poster", required=False)
 
 class INTIAudioSource(INTIMediaSource):
