@@ -61,6 +61,7 @@ from . import RELATED_WORK_REF
 
 from . import NTI_LESSON_OVERVIEW
 
+ID = StandardExternalFields.ID
 ITEMS = StandardExternalFields.ITEMS
 NTIID = StandardExternalFields.NTIID
 CREATOR = StandardExternalFields.CREATOR
@@ -317,8 +318,9 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 	_excluded_in_ivars_ = InterfaceObjectIO._excluded_in_ivars_ - {'id'}
 
 	def fixTarget(self, parsed, transfer=True):
-		iden = parsed.get('id')
+		iden = parsed.get('id') or parsed.get(ID)
 		if is_nti_course_bundle(iden):
+			parsed['id'] = iden # reset in case
 			ntiid = ntiid_check(parsed.get(NTIID) or parsed.get('ntiid'))
 			if not ntiid:
 				parsed[NTIID] = make_discussionref_ntiid_from_bundle_id(iden)
@@ -498,6 +500,7 @@ def internalization_courseoverview_pre_hook(k, x):
 
 			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
 			if mimeType == "application/vnd.nextthought.discussion":
+				iden = item.get('id') or item.get(ID)
 				s = item.get(NTIID) or item.get('ntiid')
 				ntiids = s.split(' ') if s else ()
 				if len(ntiids) > 1:
@@ -508,7 +511,7 @@ def internalization_courseoverview_pre_hook(k, x):
 							x.insert(idx, item)
 						item[NTIID] = ntiid
 						internalization_discussionref_pre_hook(None, item)
-				elif not ntiids and not is_nti_course_bundle(item.get('id')):  # not yet ready
+				elif not ntiids and not is_nti_course_bundle(iden):  # not yet ready
 					del x[idx]
 					continue
 				else:
