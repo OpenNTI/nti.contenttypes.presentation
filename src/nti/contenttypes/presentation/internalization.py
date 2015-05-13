@@ -398,8 +398,8 @@ class _NTILessonOverviewUpdater(InterfaceObjectIO):
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		ntiid = parsed.get('ntiid')
 		lesson = parsed.get('lesson')
-		if not lesson and is_valid_ntiid_string(ntiid) and \
-			get_type(ntiid) != NTI_LESSON_OVERVIEW:  # # correct ntiid
+		if 	not lesson and is_valid_ntiid_string(ntiid) and \
+			get_type(ntiid) != NTI_LESSON_OVERVIEW:  # correct ntiid
 			lesson = make_ntiid(nttype=NTI_LESSON_OVERVIEW, base=ntiid)
 			parsed[u'ntiid'] = lesson
 			parsed[u'lesson'] = ntiid
