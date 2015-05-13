@@ -70,6 +70,7 @@ MIMETYPE = StandardExternalFields.MIMETYPE
 def ntiid_check(s):
 	s = s.strip() if s else s
 	s = s[1:] if s and (s.startswith('"') or s.startswith("'")) else s
+	s = s[6:] if s and s.startswith("relwk:tag:") else s
 	return s
 
 @interface.implementer(IInternalObjectUpdater)
@@ -273,6 +274,8 @@ class _TargetNTIIDUpdater(InterfaceObjectIO):
 	def fixTarget(self, parsed, transfer=True):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
+		elif 'ntiid' in parsed:
+			parsed[u'ntiid'] = ntiid_check(parsed[u'ntiid'])
 
 		target = self.getTargetNTIID(parsed)
 		if target:
