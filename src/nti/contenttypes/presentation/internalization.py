@@ -27,8 +27,11 @@ from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.internalization import find_factory_for
 from nti.externalization.internalization import update_from_external_object
 
+from nti.ntiids.ntiids import get_type
+from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import is_ntiid_of_type
 from nti.ntiids.ntiids import is_ntiid_of_types
+from nti.ntiids.ntiids import is_valid_ntiid_string
 
 from .discussion import make_discussionref_ntiid
 
@@ -54,6 +57,8 @@ from . import JSON_TIMELINE
 from . import RELATED_WORK
 from . import RELATED_WORK_REF
 
+from . import NTI_LESSON_OVERVIEW
+
 ITEMS = StandardExternalFields.ITEMS
 NTIID = StandardExternalFields.NTIID
 CREATOR = StandardExternalFields.CREATOR
@@ -61,7 +66,7 @@ MIMETYPE = StandardExternalFields.MIMETYPE
 
 def ntiid_check(s):
 	s = s.strip() if s else s
-	s = s[1:] if s and (s.startswith('"') or s.startswith("'")) else s		
+	s = s[1:] if s and (s.startswith('"') or s.startswith("'")) else s
 	return s
 
 @interface.implementer(IInternalObjectUpdater)
@@ -71,7 +76,7 @@ class _NTIMediaUpdater(InterfaceObjectIO):
 		if 'creator' in parsed:
 			parsed[CREATOR] = parsed.pop('creator')
 		return self
-	
+
 	def parseTranscripts(self, parsed):
 		transcripts = parsed.get('transcripts')
 		for idx, transcript in enumerate(transcripts or ()):
@@ -80,14 +85,14 @@ class _NTIMediaUpdater(InterfaceObjectIO):
 			obj = find_factory_for(transcript)()
 			transcripts[idx] = update_from_external_object(obj, transcript)
 		return self
-		
+
 	def fixAll(self, parsed):
 		self.fixCreator(parsed).parseTranscripts(parsed)
 		return parsed
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTIMediaUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTIMediaUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTIVideo)
@@ -110,7 +115,7 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
 		elif 'closedCaption' in parsed:
 			parsed[u'closed_caption'] = parsed['closedCaption']
 		return self
-	
+
 	def fixAll(self, parsed):
 		self.parseSources(parsed).parseTranscripts(parsed).fixCloseCaption(parsed).fixCreator(parsed)
 		return parsed
@@ -135,75 +140,75 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 
 @interface.implementer(IInternalObjectUpdater)
 class _NTIMediaRefUpdater(InterfaceObjectIO):
-		
+
 	def fixAll(self, parsed):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = parsed.pop(NTIID)
 		return parsed
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTIMediaRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTIMediaRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
-	
+
 @interface.implementer(IInternalObjectUpdater)
 class _NTIVideoRefUpdater(_NTIMediaRefUpdater):
 	_ext_iface_upper_bound = INTIVideoRef
 
 @interface.implementer(IInternalObjectUpdater)
 class _NTIAudioRefUpdater(_NTIMediaRefUpdater):
-	_ext_iface_upper_bound = INTIAudioRef	
+	_ext_iface_upper_bound = INTIAudioRef
 
 @component.adapter(INTISlide)
 @interface.implementer(IInternalObjectUpdater)
 class _NTISlideUpdater(InterfaceObjectIO):
-	
+
 	_ext_iface_upper_bound = INTISlide
-	
+
 	def fixAll(self, parsed):
-		for name, func in ( ("slidevideostart", float),
+		for name, func in (("slidevideostart", float),
 							("slidevideoend", float),
 							("slidenumber", int)):
-			
+
 			value = parsed.get(name, None)
 			if value is not None and isinstance(value, six.string_types):
 				try:
-					parsed[name] = func(value) 
+					parsed[name] = func(value)
 				except (TypeError, ValueError):
 					pass
 		return self
-		
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTISlideUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTISlideUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTISlideVideo)
 @interface.implementer(IInternalObjectUpdater)
 class _NTISlideVideoUpdater(InterfaceObjectIO):
-	
+
 	_ext_iface_upper_bound = INTISlideVideo
-	
+
 	def fixAll(self, parsed):
 		if 'creator' in parsed:
 			parsed[CREATOR] = parsed.pop('creator')
-		
+
 		if 'video-ntiid' in parsed:
 			parsed[u'video_ntiid'] = ntiid_check(parsed.pop('video-ntiid'))
 
 		return self
-		
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTISlideVideoUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTISlideVideoUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTISlideDeck)
 @interface.implementer(IInternalObjectUpdater)
 class _NTISlideDeckUpdater(InterfaceObjectIO):
-	
+
 	_ext_iface_upper_bound = INTISlideDeck
-	
+
 	def fixAll(self, parsed):
 		if 'creator' in parsed:
 			parsed[CREATOR] = parsed.pop('creator')
@@ -215,7 +220,7 @@ class _NTISlideDeckUpdater(InterfaceObjectIO):
 			parsed[u'slidedeckid'] = ntiid_check(parsed['ntiid'])
 
 		return self
-		
+
 	def parseSlides(self, parsed):
 		slides = PersistentList(parsed.get('Slides') or ())
 		if slides:
@@ -227,18 +232,18 @@ class _NTISlideDeckUpdater(InterfaceObjectIO):
 		if videos:
 			parsed[u'Videos'] = videos
 		return self
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed).parseSlides(parsed).parseVideos(parsed)
-		result = super(_NTISlideDeckUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTISlideDeckUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTITimeline)
 @interface.implementer(IInternalObjectUpdater)
 class _NTITimelineUpdater(InterfaceObjectIO):
-	
+
 	_ext_iface_upper_bound = INTITimeline
-	
+
 	def fixAll(self, parsed):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
@@ -247,19 +252,19 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 		if 'suggested-inline' in parsed:
 			parsed[u'suggested_inline'] = parsed.pop('suggested-inline')
 		return self
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTITimelineUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTITimelineUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @interface.implementer(IInternalObjectUpdater)
 class _TargetNTIIDUpdater(InterfaceObjectIO):
-	
+
 	def fixTarget(self, parsed, transfer=True):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
-		
+
 		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid'):
 			if name in parsed:
 				parsed['target'] = ntiid_check(parsed.pop(name))
@@ -275,52 +280,52 @@ class _TargetNTIIDUpdater(InterfaceObjectIO):
 
 @component.adapter(INTIRelatedWork)
 class _NTIRelatedWorkUpdater(_TargetNTIIDUpdater):
-	
+
 	_ext_iface_upper_bound = INTIRelatedWork
-	
+
 	def fixAll(self, parsed):
 		if 'creator' in parsed:
 			parsed[CREATOR] = parsed.pop('creator')
-			
+
 		if 'desc' in parsed:
 			parsed[u'description'] = parsed.pop('desc')
-		
-		self.fixTarget(parsed, transfer=False)	
-		
+
+		self.fixTarget(parsed, transfer=False)
+
 		if 'targetMimeType' in parsed:
 			parsed[u'type'] = parsed.pop('targetMimeType')
-			
+
 		return self
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTIRelatedWorkUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTIRelatedWorkUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 _NTIRelatedWorkRefUpdater = _NTIRelatedWorkUpdater
 
 @component.adapter(INTIDiscussionRef)
 class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
-	
+
 	_ext_iface_upper_bound = INTIDiscussionRef
-	
+
 	def fixAll(self, parsed):
-		self.fixTarget(parsed, transfer=True)	
+		self.fixTarget(parsed, transfer=True)
 		ntiid = ntiid_check(parsed.get('ntiid'))
 		if parsed.get('target') and ntiid == parsed.get('target'):
 			ntiid = make_discussionref_ntiid(ntiid)
 			parsed['ntiid'] = ntiid
 		return self
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTIDiscussionRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTIDiscussionRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTIAssignmentRef)
 class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
-	
+
 	_ext_iface_upper_bound = INTIAssignmentRef
-	
+
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)
 		if not parsed.get('title') and parsed.get('label'):
@@ -328,40 +333,40 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 		elif not parsed.get('label') and parsed.get('title'):
 			parsed[u'label'] = parsed['title']
 		return self
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTIAssignmentRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTIAssignmentRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTIQuestionSetRef)
 class _NTIQuestionSetRefUpdater(_TargetNTIIDUpdater):
-	
+
 	_ext_iface_upper_bound = INTIQuestionSetRef
-	
+
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)
 		if 'question-count' in parsed:
-			parsed[u'question_count'] = int(parsed.pop('question-count'))	
+			parsed[u'question_count'] = int(parsed.pop('question-count'))
 		return self
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
 		result = super(_NTIQuestionSetRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
-	
+
 @component.adapter(INTIQuestionRef)
 class _NTIQuestionRefUpdater(_TargetNTIIDUpdater):
-	
+
 	_ext_iface_upper_bound = INTIQuestionRef
-	
+
 	def fixAll(self, parsed):
-		self.fixTarget(parsed, transfer=True)			
+		self.fixTarget(parsed, transfer=True)
 		return self
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTIQuestionRefUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTIQuestionRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTICourseOverviewGroup)
@@ -374,12 +379,12 @@ class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		items = PersistentList(parsed.get(ITEMS) or ())
-		parsed[ITEMS] = items	
+		parsed[ITEMS] = items
 		return parsed
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTICourseOverviewGroupUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTICourseOverviewGroupUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTILessonOverview)
@@ -391,13 +396,20 @@ class _NTILessonOverviewUpdater(InterfaceObjectIO):
 	def fixAll(self, parsed):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
+		ntiid = parsed.get('ntiid')
+		lesson = parsed.get('lesson')
+		if not lesson and is_valid_ntiid_string(ntiid) and \
+			get_type(ntiid) != NTI_LESSON_OVERVIEW:  # # correct ntiid
+			lesson = make_ntiid(nttype=NTI_LESSON_OVERVIEW, base=ntiid)
+			parsed[u'ntiid'] = lesson
+			parsed[u'lesson'] = ntiid
 		items = PersistentList(parsed.get(ITEMS) or ())
-		parsed[ITEMS] = items	
+		parsed[ITEMS] = items
 		return parsed
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTILessonOverviewUpdater,self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTILessonOverviewUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 def internalization_ntivideo_pre_hook(k, x):
@@ -407,57 +419,57 @@ internalization_ntiaudio_pre_hook = internalization_ntivideo_pre_hook
 
 def internalization_assignmentref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType == "application/vnd.nextthought.assessment.assignment": 
+	if mimeType == "application/vnd.nextthought.assessment.assignment":
 		x[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
-	
+
 def internalization_questionsetref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType == "application/vnd.nextthought.naquestionset": 
+	if mimeType == "application/vnd.nextthought.naquestionset":
 		x[MIMETYPE] = u"application/vnd.nextthought.questionsetref"
-	
+
 def internalization_questionref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType == "application/vnd.nextthought.naquestion": 
+	if mimeType == "application/vnd.nextthought.naquestion":
 		x[MIMETYPE] = u"application/vnd.nextthought.questionref"
-				
+
 def internalization_ntivideoref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType == "application/vnd.nextthought.ntivideo": 
+	if mimeType == "application/vnd.nextthought.ntivideo":
 		x[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
-	
+
 def internalization_ntiaudioref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType == "application/vnd.nextthought.ntiaudio": 
+	if mimeType == "application/vnd.nextthought.ntiaudio":
 		x[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
-	
+
 def internalization_discussion_pre_hook(k, x):
 	pass
-		
+
 def internalization_discussionref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType == "application/vnd.nextthought.discussion": 
+	if mimeType == "application/vnd.nextthought.discussion":
 		x[MIMETYPE] = u"application/vnd.nextthought.discussionref"
-	
+
 def internalization_ntitimeline_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if ntiid and (JSON_TIMELINE in ntiid or is_ntiid_of_type(ntiid, TIMELINE)):
 			x[MIMETYPE] = "application/vnd.nextthought.ntitimeline"
-	elif mimeType == "application/vnd.nextthought.timeline": 
+	elif mimeType == "application/vnd.nextthought.timeline":
 		x[MIMETYPE] = u"application/vnd.nextthought.ntitimeline"
-		
+
 def internalization_relatedworkref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if 	ntiid and \
 			('.relatedworkref.' in ntiid or \
-			 is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF)) ): 
+			 is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
 			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
-		
+
 def internalization_courseoverview_pre_hook(k, x):
-	if k==ITEMS and isinstance(x, MutableSequence):
+	if k == ITEMS and isinstance(x, MutableSequence):
 		idx = 0
 		while idx < len(x):
 			item = x[idx]
@@ -468,9 +480,9 @@ def internalization_courseoverview_pre_hook(k, x):
 			internalization_assignmentref_pre_hook(None, item)
 			internalization_questionsetref_pre_hook(None, item)
 			internalization_relatedworkref_pre_hook(None, item)
-			
+
 			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
-			if mimeType == "application/vnd.nextthought.discussion": 
+			if mimeType == "application/vnd.nextthought.discussion":
 				s = item.get(NTIID) or item.get('ntiid')
 				ntiids = s.split(' ') if s else ()
 				if len(ntiids) > 1:
@@ -481,15 +493,15 @@ def internalization_courseoverview_pre_hook(k, x):
 							x.insert(idx, item)
 						item[NTIID] = ntiid
 						internalization_discussionref_pre_hook(None, item)
-				elif not ntiids:# not yet ready
+				elif not ntiids:  # not yet ready
 					del x[idx]
 					continue
 				else:
 					internalization_discussionref_pre_hook(None, item)
-			idx +=1
+			idx += 1
 
 def internalization_lessonoverview_pre_hook(k, x):
-	if k==ITEMS and isinstance(x, MutableSequence):
+	if k == ITEMS and isinstance(x, MutableSequence):
 		for item in x:
 			items = item.get(ITEMS) if isinstance(item, Mapping) else None
 			if items is not None:

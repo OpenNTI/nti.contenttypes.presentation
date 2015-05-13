@@ -50,7 +50,7 @@ class TestLesson(unittest.TestCase):
 		spacer = create_object_from_external(source)
 		assert_that(spacer, has_property('ntiid', is_not(none())))
 		assert_that(spacer, has_property('mimeType', is_(u"application/vnd.nextthought.nticourseoverviewspacer")))
-		
+
 		ext_obj = to_external_object(spacer, name="render")
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
@@ -61,27 +61,26 @@ class TestLesson(unittest.TestCase):
 			source = simplejson.loads(prepare_json_text(fp.read()))
 
 		lesson = create_lessonoverview_from_external(source)
-		assert_that(lesson, has_property('ntiid', is_(u'tag:nextthought.com,2011-10:OU-HTML-LSTD1153_S_2015_History_United_States_1865_to_Present.lec:11.06_LESSON')))
+		assert_that(lesson, has_property('ntiid', is_(u'tag:nextthought.com,2011-10:OU-NTILessonOverview-LSTD1153_S_2015_History_United_States_1865_to_Present.lec:11.06_LESSON')))
+		assert_that(lesson, has_property('lesson', is_(u'tag:nextthought.com,2011-10:OU-HTML-LSTD1153_S_2015_History_United_States_1865_to_Present.lec:11.06_LESSON')))
 		assert_that(lesson, has_property('Items', has_length(5)))
 		assert_that(lesson, has_property('mimeType', is_(u"application/vnd.nextthought.ntilessonoverview")))
-		
+
 		assert_that(lesson, has_length(5))
 		assert_that(list(lesson), has_length(5))
 		for item in lesson:
 			assert_that(item, validly_provides(INTICourseOverviewGroup))
-		
+
 		for item in lesson[1]:
 			assert_that(item, validly_provides(INTIAssignmentRef))
-			
+
 		for item in lesson[3]:
 			assert_that(item, validly_provides(INTIVideoRef))
-			
+
 		assert_that(lesson[4], has_length(0))
-	
+
 		ext_obj = to_external_object(lesson, name="render")
-		assert_that(ext_obj, has_entry('NTIID', is_(u"tag:nextthought.com,2011-10:OU-HTML-LSTD1153_S_2015_History_United_States_1865_to_Present.lec:11.06_LESSON")))
+		assert_that(ext_obj, has_entry('NTIID', is_(u"tag:nextthought.com,2011-10:OU-NTILessonOverview-LSTD1153_S_2015_History_United_States_1865_to_Present.lec:11.06_LESSON")))
 		assert_that(ext_obj, has_entry('MimeType', is_(u"application/vnd.nextthought.ntilessonoverview")))
 		assert_that(ext_obj, has_entry('title', is_(u"11.6 Apply Your Knowledge")))
 		assert_that(ext_obj, has_entry('Items', has_length(5)))
-
-		
