@@ -9,7 +9,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-from urllib import unquote
+import uuid
 from urlparse import urlparse
 
 from zope import interface
@@ -18,7 +18,6 @@ from nti.common.property import readproperty
 
 from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid
-from nti.ntiids.ntiids import make_provider_safe
 from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.schema import EqHash 
@@ -30,7 +29,8 @@ from ._base import PersistentPresentationAsset
 
 from . import DISCUSSION_REF
 from . import NTI_COURSE_BUNDLE
-		
+from . import NTI_COURSE_BUNDLE_REF
+
 @interface.implementer(INTIDiscussionRef)
 @EqHash('ntiid')
 class NTIDiscussionRef(PersistentPresentationAsset):
@@ -62,8 +62,7 @@ def make_discussionref_ntiid(ntiid):
 	return ntiid
 
 def make_discussionref_ntiid_from_bundle_id(iden):
-	cmpns = urlparse(iden)
-	path = make_specific_safe(cmpns.path)
-	netloc = make_provider_safe(unquote(cmpns.netloc))
-	ntiid = make_ntiid(provider=netloc, nttype=DISCUSSION_REF, specific=path)
+	postfix = '_'.join(str(uuid.uuid4()).split('-')[:2]) # uniqueness
+	path = make_specific_safe(iden[len(NTI_COURSE_BUNDLE_REF):] + "." + postfix)
+	ntiid = make_ntiid(provider="NTI", nttype=DISCUSSION_REF, specific=path)
 	return ntiid
