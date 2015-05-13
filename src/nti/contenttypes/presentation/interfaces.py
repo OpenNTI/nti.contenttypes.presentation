@@ -287,17 +287,18 @@ class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPres
 					 ValidNTIID(title="Related content ntiid")), required=True)
 INTIRelatedWork = INTIRelatedWorkRef
 
-class INTIBaseDiscussion(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
+class INTIDiscussionRef(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=False)
 	icon = ValidTextLine(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 	ntiid = Variant((ValidTextLine(title="Discussion NTIID"),
 					 ValidNTIID(title="Discussion NTIID")), required=True)
-
-class INTIDiscussionRef(INTIBaseDiscussion):
 	target = Variant((ValidTextLine(title="Target NTIID"),
 					  ValidNTIID(title="Target NTIID")), required=True)
 
+	id = ValidTextLine(title="Discussion identifier", required=True)
+	id.setTaggedValue('__external_accept_id__', True)
+	
 	def isCourseBundle():
 		"""
 		return if this DiscussionRef refers to a course bundle

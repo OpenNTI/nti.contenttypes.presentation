@@ -33,7 +33,9 @@ from nti.ntiids.ntiids import is_ntiid_of_type
 from nti.ntiids.ntiids import is_ntiid_of_types
 from nti.ntiids.ntiids import is_valid_ntiid_string
 
+from .discussion import is_nti_course_bundle
 from .discussion import make_discussionref_ntiid
+from .discussion import make_discussionref_ntiid_from_bundle_id
 
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
@@ -261,14 +263,19 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 @interface.implementer(IInternalObjectUpdater)
 class _TargetNTIIDUpdater(InterfaceObjectIO):
 
+	def getTargetNTIID(self, parsed):
+		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid'):
+			if name in parsed:
+				return ntiid_check(parsed.get(name))
+		return None
+
 	def fixTarget(self, parsed, transfer=True):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 
-		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid'):
-			if name in parsed:
-				parsed['target'] = ntiid_check(parsed.pop(name))
-				break
+		target = self.getTargetNTIID(parsed)
+		if target:
+			parsed['target'] = target
 
 		if transfer:
 			if not parsed.get('target') and parsed.get('ntiid'):
@@ -307,6 +314,15 @@ _NTIRelatedWorkRefUpdater = _NTIRelatedWorkUpdater
 class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 
 	_ext_iface_upper_bound = INTIDiscussionRef
+	_excluded_in_ivars_ = InterfaceObjectIO._excluded_in_ivars_ - {'id'}
+
+	def fixTarget(self, parsed, transfer=True):
+		iden = parsed.get('id')
+		if is_nti_course_bundle(iden):
+			ntiid = ntiid_check(parsed.get(NTIID) or parsed.get('ntiid'))
+			if not ntiid:
+				parsed[NTIID] = make_discussionref_ntiid_from_bundle_id(iden)
+		return super(_NTIDiscussionRefUpdater, self).fixTarget(parsed, transfer=transfer)
 
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)
@@ -314,6 +330,8 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 		if parsed.get('target') and ntiid == parsed.get('target'):
 			ntiid = make_discussionref_ntiid(ntiid)
 			parsed['ntiid'] = ntiid
+		if not parsed.get('id'):
+			parsed['id'] = ntiid
 		return self
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -442,9 +460,6 @@ def internalization_ntiaudioref_pre_hook(k, x):
 	if mimeType == "application/vnd.nextthought.ntiaudio":
 		x[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
 
-def internalization_discussion_pre_hook(k, x):
-	pass
-
 def internalization_discussionref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if mimeType == "application/vnd.nextthought.discussion":
@@ -493,7 +508,7 @@ def internalization_courseoverview_pre_hook(k, x):
 							x.insert(idx, item)
 						item[NTIID] = ntiid
 						internalization_discussionref_pre_hook(None, item)
-				elif not ntiids:  # not yet ready
+				elif not ntiids and not is_nti_course_bundle(item.get('id')):  # not yet ready
 					del x[idx]
 					continue
 				else:

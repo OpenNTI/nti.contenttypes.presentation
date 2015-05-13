@@ -19,7 +19,6 @@ from .interfaces import INTIMedia
 from .interfaces import INTIMediaSource
 from .interfaces import INTIAssessmentRef
 from .interfaces import IGroupOverViewable
-from .interfaces import INTIBaseDiscussion
 from .interfaces import IPresentationAsset
 
 NTI_VIDEO = NTIVideo = u'NTIVideo'
@@ -41,6 +40,7 @@ DISCUSSION = u'discussion'
 NTI_DISCUSSION = u'NTIDiscussion'
 DISCUSSION_REF = NTI_DISCUSSION_REF = u'DiscussionRef'
 NTI_COURSE_BUNDLE = u'nti-course-bundle'
+NTI_COURSE_BUNDLE_TYPE = u'NTICourseBundle'
 
 DISCUSSION_REF_ENROLLED_COURSE_ROOT = DISCUSSION_REF + ':' + ENROLLED_COURSE_ROOT
 DISCUSSION_REF_ENROLLED_COURSE_SECTION = DISCUSSION_REF + ':' + ENROLLED_COURSE_SECTION
@@ -70,7 +70,7 @@ def _set_ifaces():
 		result = bool(type(item) == interface.interface.InterfaceClass and \
 					  issubclass(item, IGroupOverViewable) and \
 					  item != IGroupOverViewable and \
-					  item not in (IMediaRef, INTIAssessmentRef, INTIBaseDiscussion))
+					  item not in (IMediaRef, INTIAssessmentRef))
 		return result
 	
 	def _presentationasset_item_predicate(item):
@@ -78,7 +78,7 @@ def _set_ifaces():
 					  issubclass(item, IPresentationAsset) and \
 					  item != IPresentationAsset and \
 					  item not in (IMediaRef, INTIAssessmentRef, INTIMediaSource,
-								   INTIMedia, INTIBaseDiscussion))
+								   INTIMedia))
 		return result
 	
 	for _, item in inspect.getmembers(m, _overview_item_predicate):

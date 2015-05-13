@@ -41,7 +41,22 @@ class TestDiscussion(unittest.TestCase):
 		assert_that(discussion, has_property('mimeType', is_(u"application/vnd.nextthought.discussionref")))
 		assert_that(discussion, has_property('target', is_(u"tag:nextthought.com,2011-10:LSTD_1153-Topic:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
 		assert_that(discussion, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:LSTD_1153-DiscussionRef:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
+		assert_that(discussion, has_property('id', is_(u"tag:nextthought.com,2011-10:LSTD_1153-DiscussionRef:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
 		
 		ext_obj = to_external_object(discussion, name="render")
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
+			
+	def test_discussion_bundle(self):
+		path = os.path.join(os.path.dirname(__file__), 'discussion_bundle.json')
+		with open(path, "r") as fp:
+			source = simplejson.loads(prepare_json_text(fp.read()))
+			
+		discussion = create_discussionref_from_external(source)
+		assert_that(discussion, has_property('label', is_(u'Ichigo')))
+		assert_that(discussion, has_property('title', is_(u'Ichigo')))
+		assert_that(discussion, has_property('icon', is_(u"resources/ichigo.jpg")))
+		assert_that(discussion, has_property('mimeType', is_(u"application/vnd.nextthought.discussionref")))
+		assert_that(discussion, has_property('target', is_(u"tag:nextthought.com,2011-10:Bleach-DiscussionRef-_Discussions_ichigo_json")))
+		assert_that(discussion, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:Bleach-DiscussionRef-_Discussions_ichigo_json")))
+		assert_that(discussion, has_property('id', is_(u"nti-course-bundle://Bleach/Discussions/ichigo.json")))
