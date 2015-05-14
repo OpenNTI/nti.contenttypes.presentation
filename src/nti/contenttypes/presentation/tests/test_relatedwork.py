@@ -8,6 +8,7 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
+from hamcrest import has_key
 from hamcrest import has_entry
 from hamcrest import assert_that
 from hamcrest import has_property
@@ -44,7 +45,11 @@ class TestRelatedWork(unittest.TestCase):
 		assert_that(related, has_property('target', is_(u"tag:nextthought.com,2011-10:OU-HTML-LSTD1153_S_2015_History_United_States_1865_to_Present.reading:12.3_1")))
 		assert_that(related, has_property('href', is_(u"tag:nextthought.com,2011-10:OU-HTML-LSTD1153_S_2015_History_United_States_1865_to_Present.reading:12.3_1")))
 		assert_that(related, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OU-RelatedWork-LSTD1153_S_2015_History_United_States_1865_to_Present.relatedwork.relwk:12.3_1_Critical_Year_1968")))
-		
+
 		ext_obj = to_external_object(related, name="render")
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
+
+		assert_that(ext_obj, has_key('MimeType'))
+		assert_that(ext_obj, has_key('Class'))
+		assert_that(ext_obj, has_key('NTIID'))

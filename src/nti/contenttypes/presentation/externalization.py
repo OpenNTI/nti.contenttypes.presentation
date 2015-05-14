@@ -82,22 +82,21 @@ class _NTIMediaRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[StandardExternalFields.CTA_MIMETYPE] = extDict[MIMETYPE]  # legacy
 
 		if CREATOR in extDict:
-			extDict[u'creator'] = extDict.pop(CREATOR)
+			extDict[u'creator'] = extDict[CREATOR] # legacy
 
-		for name in (CLASS, u'DCDescription', u'DCTitle', NTIID):
+		if 'ntiid' in extDict and NTIID not in extDict:
+			extDict[NTIID] = extDict['ntiid'] # alias
+	
+		for name in (u'DCDescription', u'DCTitle'):
 			extDict.pop(name, None)
 
 		for source in extDict.get('sources') or ():
-			source.pop(MIMETYPE, None)
 			source.pop(CREATED_TIME, None)
 			source.pop(LAST_MODIFIED, None)
-			source.pop(StandardExternalFields.CLASS, None)
 
 		for transcript in extDict.get('transcripts') or ():
-			transcript.pop(MIMETYPE, None)
 			transcript.pop(CREATED_TIME, None)
 			transcript.pop(LAST_MODIFIED, None)
-			transcript.pop(StandardExternalFields.CLASS, None)
 		return extDict
 
 @component.adapter(INTIVideo)
@@ -107,7 +106,7 @@ class _NTIVideoRenderExternalObject(_NTIMediaRenderExternalObject):
 		super(_NTIVideoRenderExternalObject, self)._do_toExternalObject(extDict)
 
 		if 'closed_caption' in extDict:
-			extDict[u'closedCaptions'] = extDict.pop('closed_caption')
+			extDict[u'closedCaptions'] = extDict['closed_caption'] # legacy
 
 		for name in ('poster', 'label', 'subtitle'):
 			if name in extDict and not extDict[name]:
@@ -143,10 +142,10 @@ class _NTIBaseSlideExternalObject(_NTIBaseRenderExternalObject):
 	def _do_toExternalObject(self, extDict):
 		super(_NTIBaseSlideExternalObject, self)._do_toExternalObject(extDict)
 		if CLASS in extDict:
-			extDict[u'class'] = (extDict.pop(CLASS) or u'').lower()
+			extDict[u'class'] = (extDict.get(CLASS) or u'').lower() # legacy
 
 		if CREATOR in extDict:
-			extDict[u'creator'] = extDict.pop(CREATOR)
+			extDict[u'creator'] = extDict[CREATOR] # alias
 
 		if 'description' in extDict and not extDict['description']:
 			extDict.pop('description')
@@ -173,7 +172,7 @@ class _NTISlideVideoRenderExternalObject(_NTIBaseSlideExternalObject):
 		super(_NTISlideVideoRenderExternalObject, self)._do_toExternalObject(extDict)
 
 		if 'video_ntiid' in extDict:
-			extDict[u'video-ntiid'] = extDict.pop('video_ntiid')
+			extDict[u'video-ntiid'] = extDict['video_ntiid'] # legacy
 
 		return extDict
 
@@ -183,11 +182,11 @@ class _NTISlideDeckRenderExternalObject(_NTIBaseSlideExternalObject):
 	def toExternalObject(self, *args, **kwargs):
 		extDict = LocatedExternalDict()
 		extDict[u'title'] = self.slide.title
-		extDict[u'ntiid'] = self.slide.ntiid
 		extDict[u'creator'] = self.slide.creator
 		extDict[MIMETYPE] = self.slide.mimeType
-		extDict[u'class'] = NTI_SLIDE_DECK.lower()
 		extDict[u'slidedeckid'] = self.slide.slidedeckid
+		extDict[u'ntiid'] = extDict[NTIID] = self.slide.ntiid
+		extDict[CLASS] = extDict[u'class'] = NTI_SLIDE_DECK.lower()
 		extDict[u'Slides'] = [toExternalObject(x, name='render') for x in self.slide.slides]
 		extDict[u'Videos'] = [toExternalObject(x, name='render') for x in self.slide.videos]
 		return extDict
@@ -199,17 +198,15 @@ class _NTITimelineRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTITimelineRenderExternalObject, self)._do_toExternalObject(extDict)
-		if CLASS in extDict:
-			extDict.pop(CLASS)
 		if 'description' in extDict:
-			extDict[u'desc'] = extDict.pop('description')
+			extDict[u'desc'] = extDict['description']
 		if 'suggested_inline' in extDict:
 			if extDict['suggested_inline'] is None:
 				extDict.pop('suggested_inline')
 			else:
-				extDict['suggested-inline'] = extDict.pop('suggested_inline')
+				extDict['suggested-inline'] = extDict['suggested_inline'] # legacy
 		if 'ntiid' in extDict:
-			extDict[NTIID] = extDict.pop('ntiid')
+			extDict[NTIID] = extDict['ntiid'] # legacy
 		return extDict
 
 @component.adapter(INTIRelatedWork)
@@ -219,14 +216,12 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTIRelatedWorkRenderExternalObject, self)._do_toExternalObject(extDict)
-		if CLASS in extDict:
-			extDict.pop(CLASS)
 		if CREATOR in extDict:
-			extDict[u'creator'] = extDict.pop(CREATOR)
+			extDict[u'creator'] = extDict[CREATOR] # legacy
 		if 'description' in extDict:
-			extDict[u'desc'] = extDict.pop('description')
+			extDict[u'desc'] = extDict['description'] # legacy
 		if 'target' in extDict:
-			extDict[u'target-NTIID'] = extDict[u'target-ntiid'] = extDict.pop('target')
+			extDict[u'target-NTIID'] = extDict[u'target-ntiid'] = extDict['target'] # legacy
 		if 'type' in extDict:
 			extDict[u'targetMimeType'] = extDict['type']
 		return extDict
@@ -238,8 +233,6 @@ class _NTIDiscussionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTIDiscussionRefRenderExternalObject, self)._do_toExternalObject(extDict)
-		if CLASS in extDict:
-			extDict.pop(CLASS)
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
@@ -294,8 +287,6 @@ class _NTIQuestionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
 			extDict[u'Target-NTIID'] = extDict.pop('target')
-		extDict.pop(CREATED_TIME, None)
-		extDict.pop(LAST_MODIFIED, None)
 		return extDict
 
 @component.adapter(INTICourseOverviewSpacer)
@@ -316,9 +307,10 @@ class _NTICourseOverviewGroupRenderExternalObject(_NTIBaseRenderExternalObject):
 	def toExternalObject(self, *args, **kwargs):
 		extDict = LocatedExternalDict()
 		extDict[NTIID] = self.group.ntiid
-		extDict[MIMETYPE] = self.group.mimeType
 		extDict[u'title'] = self.group.title
+		extDict[MIMETYPE] = self.group.mimeType
 		extDict[u'accentColor'] = self.group.color
+		extDict[CLASS] = self.group.__external_class_name__
 		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.group]
 		return extDict
 
@@ -353,6 +345,7 @@ class _NTILessonOverviewRenderExternalObject(_NTIBaseRenderExternalObject):
 		extDict[u'title'] = self.obj.title
 		extDict[u'lesson'] = self.obj.lesson
 		extDict[MIMETYPE] = self.obj.mimeType
+		extDict[CLASS] = self.obj.__external_class_name__
 		extDict[ITEMS] = [toExternalObject(x, name='render')
 						  for x in self.obj.items or ()]
 		return extDict

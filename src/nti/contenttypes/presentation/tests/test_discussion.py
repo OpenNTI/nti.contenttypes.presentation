@@ -8,6 +8,7 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
+from hamcrest import has_key
 from hamcrest import has_entry
 from hamcrest import assert_that
 from hamcrest import has_property
@@ -34,7 +35,7 @@ class TestDiscussion(unittest.TestCase):
 		with open(path, "r") as fp:
 			source = simplejson.loads(prepare_json_text(fp.read()))
 			original = copy.deepcopy(source)
-			
+
 		discussion = create_discussionref_from_external(source)
 		assert_that(discussion, has_property('label', is_(u'')))
 		assert_that(discussion, has_property('title', is_(u'11.6 Perspectives')))
@@ -43,16 +44,20 @@ class TestDiscussion(unittest.TestCase):
 		assert_that(discussion, has_property('target', is_(u"tag:nextthought.com,2011-10:LSTD_1153-Topic:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
 		assert_that(discussion, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:LSTD_1153-DiscussionRef:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
 		assert_that(discussion, has_property('id', is_(u"tag:nextthought.com,2011-10:LSTD_1153-DiscussionRef:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
-		
+
 		ext_obj = to_external_object(discussion, name="render")
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
-			
+
+		assert_that(ext_obj, has_key('MimeType'))
+		assert_that(ext_obj, has_key('Class'))
+		assert_that(ext_obj, has_key('NTIID'))
+
 	def test_discussion_bundle(self):
 		path = os.path.join(os.path.dirname(__file__), 'discussion_bundle.json')
 		with open(path, "r") as fp:
 			source = simplejson.loads(prepare_json_text(fp.read()))
-			
+
 		discussion = create_discussionref_from_external(source)
 		assert_that(discussion, has_property('label', is_(u'Ichigo')))
 		assert_that(discussion, has_property('title', is_(u'Ichigo')))

@@ -10,6 +10,7 @@ __docformat__ = "restructuredtext en"
 from hamcrest import is_
 from hamcrest import none
 from hamcrest import is_not
+from hamcrest import has_key
 from hamcrest import has_entry
 from hamcrest import has_length
 from hamcrest import assert_that
@@ -80,6 +81,7 @@ class TestLesson(unittest.TestCase):
 		assert_that(lesson[4], has_length(0))
 
 		ext_obj = to_external_object(lesson, name="render")
+		assert_that(ext_obj, has_key('Class'))
 		assert_that(ext_obj, has_entry('NTIID', is_(u"tag:nextthought.com,2011-10:OU-NTILessonOverview-LSTD1153_S_2015_History_United_States_1865_to_Present.lec:11.06_LESSON")))
 		assert_that(ext_obj, has_entry('MimeType', is_(u"application/vnd.nextthought.ntilessonoverview")))
 		assert_that(ext_obj, has_entry('title', is_(u"11.6 Apply Your Knowledge")))
