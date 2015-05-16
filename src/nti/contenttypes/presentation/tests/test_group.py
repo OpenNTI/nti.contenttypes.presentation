@@ -15,6 +15,7 @@ from hamcrest import has_entry
 from hamcrest import has_length
 from hamcrest import assert_that
 from hamcrest import has_property
+does_not = is_not
 
 import os
 import copy
@@ -25,6 +26,8 @@ from nti.contenttypes.presentation.interfaces import INTIVideoRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWork
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
+
+from nti.contenttypes.presentation.group import NTICourseOverViewGroup
 
 from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_courseoverview_from_external
@@ -46,6 +49,13 @@ class TestGroup(unittest.TestCase):
 
 	layer = SharedConfiguringTestLayer
 
+	def test_property(self):
+		group = NTICourseOverViewGroup()
+		ntiid = group.ntiid
+		assert_that(ntiid, is_not(none()))
+		assert_that(group, has_property('ntiid', is_(ntiid)))
+		assert_that(group.ntiid, is_(ntiid))
+										
 	def test_nticourseoverviewgroup(self):
 		path = os.path.join(os.path.dirname(__file__), 'nticourseoverviewgroup.json')
 		with open(path, "r") as fp:

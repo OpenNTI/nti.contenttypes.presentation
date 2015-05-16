@@ -19,7 +19,7 @@ from nti.common.property import readproperty
 
 from nti.ntiids.ntiids import make_ntiid
 
-from nti.schema.schema import EqHash 
+from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from ._base import PersistentPresentationAsset
@@ -32,7 +32,7 @@ from . import NTI_COURSE_OVERVIEW_SPACER
 @interface.implementer(INTICourseOverviewSpacer)
 class NTICourseOverViewSpacer(PersistentPresentationAsset):
 	createDirectFieldProperties(INTICourseOverviewSpacer)
-	
+
 	__external_class_name__ = u"CourseOverviewSpacer"
 	mime_type = mimeType = u"application/vnd.nextthought.nticourseoverviewspacer"
 
@@ -40,7 +40,8 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 	def ntiid(self):
 		result = make_ntiid(provider='NTI',
 							nttype=NTI_COURSE_OVERVIEW_SPACER,
-							specific=md5(str(uuid.uuid4())).hexdigest() )
+							specific=md5(str(uuid.uuid4())).hexdigest())
+		self.__dict__['ntiid'] = result
 		return result
 
 @interface.implementer(INTILessonOverview)
@@ -50,21 +51,21 @@ class NTILessonOverView(PersistentPresentationAsset):
 
 	__external_class_name__ = u"LessonOverView"
 	mime_type = mimeType = u"application/vnd.nextthought.ntilessonoverview"
-	
+
 	items = alias('Items')
 
 	def __getitem__(self, index):
 		return self.items[index]
-	
+
 	def __setitem__(self, index, item):
 		self.items[index] = item
-	
+
 	def __len__(self):
 		return len(self.items or ())
 
 	def __iter__(self):
 		return iter(self.items or ())
-	
+
 	def sublocations(self):
 		for item in self.items or ():
 			yield item

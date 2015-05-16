@@ -25,6 +25,8 @@ from nti.contenttypes.presentation.interfaces import INTIVideoRef
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
+from nti.contenttypes.presentation.lesson import NTICourseOverViewSpacer
+
 from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_object_from_external
 from nti.contenttypes.presentation.utils import create_lessonoverview_from_external
@@ -41,6 +43,13 @@ ITEMS = StandardExternalFields.ITEMS
 class TestLesson(unittest.TestCase):
 
 	layer = SharedConfiguringTestLayer
+
+	def test_property(self):
+		s = NTICourseOverViewSpacer()
+		ntiid = s.ntiid
+		assert_that(ntiid, is_not(none()))
+		assert_that(s, has_property('ntiid', is_(ntiid)))
+		assert_that(s.ntiid, is_(ntiid))
 
 	def test_nticourseoverviewspacer(self):
 		path = os.path.join(os.path.dirname(__file__), 'nticourseoverviewspacer.json')
