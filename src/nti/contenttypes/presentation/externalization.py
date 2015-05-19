@@ -112,6 +112,10 @@ class _NTIVideoRenderExternalObject(_NTIMediaRenderExternalObject):
 			if name in extDict and not extDict[name]:
 				del extDict[name]
 
+		title = extDict.get('title')
+		if title and not extDict.get('label'):
+			extDict['label'] = title
+
 		return extDict
 
 @component.adapter(INTIAudio)
