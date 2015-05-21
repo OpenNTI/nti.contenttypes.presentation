@@ -41,7 +41,7 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 		result = make_ntiid(provider='NTI',
 							nttype=NTI_COURSE_OVERVIEW_SPACER,
 							specific=md5(str(uuid.uuid4())).hexdigest())
-		self.__dict__['ntiid'] = result
+		self.ntiid = result
 		return result
 
 @interface.implementer(INTILessonOverview)
