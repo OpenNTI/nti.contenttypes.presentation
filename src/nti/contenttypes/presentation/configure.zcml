@@ -101,6 +101,10 @@
 			 for=".interfaces.INTIQuestionRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 		 
+	<adapter factory=".internalization._NTICourseOverviewSpacerUpdater"
+			 for=".interfaces.INTICourseOverviewSpacer"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
 	<adapter factory=".internalization._NTICourseOverviewGroupUpdater"
 			 for=".interfaces.INTICourseOverviewGroup"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />

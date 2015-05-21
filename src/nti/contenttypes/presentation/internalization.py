@@ -52,6 +52,7 @@ from .interfaces import INTIDiscussionRef
 from .interfaces import INTIQuestionSetRef
 from .interfaces import INTILessonOverview
 from .interfaces import INTICourseOverviewGroup
+from .interfaces import INTICourseOverviewSpacer
 
 from . import TIMELINE
 from . import JSON_TIMELINE
@@ -392,6 +393,17 @@ class _NTIQuestionRefUpdater(_TargetNTIIDUpdater):
 		result = super(_NTIQuestionRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
+@component.adapter(INTICourseOverviewSpacer)
+@interface.implementer(IInternalObjectUpdater)
+class _NTICourseOverviewSpacerUpdater(InterfaceObjectIO):
+
+	_ext_iface_upper_bound = INTICourseOverviewSpacer
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		result = super(_NTICourseOverviewSpacerUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		assert self._ext_replacement().ntiid, "No NTIID provided"
+		return result
+
 @component.adapter(INTICourseOverviewGroup)
 @interface.implementer(IInternalObjectUpdater)
 class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
@@ -408,6 +420,7 @@ class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
 		result = super(_NTICourseOverviewGroupUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		assert self._ext_replacement().ntiid, "No NTIID provided"
 		return result
 
 @component.adapter(INTILessonOverview)
