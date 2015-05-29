@@ -63,6 +63,6 @@ class TestDiscussion(unittest.TestCase):
 		assert_that(discussion, has_property('title', is_(u'Ichigo')))
 		assert_that(discussion, has_property('icon', is_(u"resources/ichigo.jpg")))
 		assert_that(discussion, has_property('mimeType', is_(u"application/vnd.nextthought.discussionref")))
-		assert_that(discussion, has_property('target', contains_string(u"tag:nextthought.com,2011-10:NTI-DiscussionRef-Discussions_ichigo_json")))
-		assert_that(discussion, has_property('ntiid', contains_string(u"tag:nextthought.com,2011-10:NTI-DiscussionRef-Discussions_ichigo_json")))
+		assert_that(discussion, has_property('target', contains_string(u"DiscussionRef-Discussions_ichigo_json")))
+		assert_that(discussion, has_property('ntiid', contains_string(u"DiscussionRef-Discussions_ichigo_json")))
 		assert_that(discussion, has_property('id', is_(u"nti-course-bundle://Discussions/ichigo.json")))

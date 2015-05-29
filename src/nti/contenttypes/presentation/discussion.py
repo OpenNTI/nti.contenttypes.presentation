@@ -62,7 +62,7 @@ def make_discussionref_ntiid(ntiid):
 	return ntiid
 
 def make_discussionref_ntiid_from_bundle_id(iden):
-	postfix = '_'.join(str(uuid.uuid4()).split('-')[:2]) # uniqueness
-	path = make_specific_safe(iden[len(NTI_COURSE_BUNDLE_REF):] + "." + postfix)
-	ntiid = make_ntiid(provider="NTI", nttype=DISCUSSION_REF, specific=path)
+	provider = str(uuid.uuid4()).split('-')[0].upper()
+	path = make_specific_safe(iden[len(NTI_COURSE_BUNDLE_REF):])
+	ntiid = make_ntiid(provider=provider, nttype=DISCUSSION_REF, specific=path)
 	return ntiid
