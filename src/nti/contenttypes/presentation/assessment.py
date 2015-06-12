@@ -24,6 +24,9 @@ from .interfaces import INTIQuestionSetRef
 
 from ._base import PersistentPresentationAsset
 
+import zope.deferredimport
+zope.deferredimport.initialize()
+
 @EqHash('ntiid')
 class NTIAssessmentRef(PersistentPresentationAsset):
 	target_ntiid = alias('target')
@@ -38,11 +41,15 @@ class NTIAssignmentRef(NTIAssessmentRef):
 	ContainerId = alias('containerId')
 
 @interface.implementer(INTIQuestionSetRef)
-class NTQuestionSetRef(NTIAssessmentRef):
+class NTIQuestionSetRef(NTIAssessmentRef):
 	createDirectFieldProperties(INTIQuestionSetRef)
 
 	__external_class_name__ = u"QuestionSetRef"
 	mime_type = mimeType = u"application/vnd.nextthought.questionsetref"
+
+zope.deferredimport.deprecated(
+	"Import from NTIQuestionSetRef instead",
+	NTQuestionSetRef='nti.contenttypes.presentation.assessment:NTIQuestionSetRef')
 
 @interface.implementer(INTIQuestionRef)
 class NTIQuestionRef(NTIAssessmentRef):
@@ -51,8 +58,6 @@ class NTIQuestionRef(NTIAssessmentRef):
 	__external_class_name__ = u"QuestionRef"
 	mime_type = mimeType = u"application/vnd.nextthought.questionref"
 
-import zope.deferredimport
-zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
 	"Import from NTIQuestionRef instead",
 	NTQuestionRef='nti.contenttypes.presentation.assessment:NTIQuestionRef')
