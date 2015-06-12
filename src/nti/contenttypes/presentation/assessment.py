@@ -16,6 +16,8 @@ from nti.common.property import alias
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
+from .interfaces import INTIPollRef
+from .interfaces import INTISurveyRef
 from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
 from .interfaces import INTIQuestionSetRef
@@ -24,7 +26,6 @@ from ._base import PersistentPresentationAsset
 
 @EqHash('ntiid')
 class NTIAssessmentRef(PersistentPresentationAsset):
-	
 	target_ntiid = alias('target')
 		
 @interface.implementer(INTIAssignmentRef)
@@ -44,8 +45,30 @@ class NTQuestionSetRef(NTIAssessmentRef):
 	mime_type = mimeType = u"application/vnd.nextthought.questionsetref"
 
 @interface.implementer(INTIQuestionRef)
-class NTQuestionRef(NTIAssessmentRef):
+class NTIQuestionRef(NTIAssessmentRef):
 	createDirectFieldProperties(INTIQuestionRef)
 
 	__external_class_name__ = u"QuestionRef"
 	mime_type = mimeType = u"application/vnd.nextthought.questionref"
+
+import zope.deferredimport
+zope.deferredimport.initialize()
+zope.deferredimport.deprecated(
+	"Import from NTIQuestionRef instead",
+	NTQuestionRef='nti.contenttypes.presentation.assessment:NTIQuestionRef')
+
+@interface.implementer(INTISurveyRef)
+class NTISurveyRef(NTIAssessmentRef):
+	createDirectFieldProperties(INTISurveyRef)
+
+	__external_class_name__ = u"SurveyRef"
+	mime_type = mimeType = u"application/vnd.nextthought.surveyref"
+	
+	ContainerId = alias('containerId')
+
+@interface.implementer(INTIPollRef)
+class NTIPollRef(NTIAssessmentRef):
+	createDirectFieldProperties(INTIPollRef)
+
+	__external_class_name__ = u"PollRef"
+	mime_type = mimeType = u"application/vnd.nextthought.pollref"

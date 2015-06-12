@@ -42,6 +42,8 @@
 						 .interfaces.INTIAssignmentRef
 						 .interfaces.INTIQuestionSetRef
 						 .interfaces.INTILessonOverview
+						 .interfaces.INTISurveyRef
+						 .interfaces.INTIPollRef
 						 .interfaces.INTICourseOverviewSpacer"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 	

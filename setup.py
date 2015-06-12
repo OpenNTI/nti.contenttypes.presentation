@@ -46,6 +46,7 @@ setup(
 		'six',
 		'persistent',
 		'zope.component',
+		'zope.deferredimport',
 		'zope.dublincore',
 		'zope.interface',
 		'zope.schema',

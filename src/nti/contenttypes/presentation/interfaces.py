@@ -305,7 +305,7 @@ class INTIDiscussionRef(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresen
 		"""
 
 class INTIAssessmentRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
-	ntiid = ValidNTIID(title="Discussion NTIID", required=True)
+	ntiid = ValidNTIID(title="Assessment Ref NTIID", required=True)
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 IAssessmentRef = INTIAssessmentRef
@@ -322,6 +322,14 @@ class INTIAssignmentRef(INTIAssessmentRef, ITitled):
 	containerId = ValidNTIID(title="Container NTIID", required=True)
 	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
+
+class INTIPollRef(INTIAssessmentRef):
+	pass
+IPollRef = INTIPollRef
+
+class INTISurveyRef(INTIAssessmentRef):
+	pass
+ISurveyRef = INTISurveyRef
 
 class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	pass
