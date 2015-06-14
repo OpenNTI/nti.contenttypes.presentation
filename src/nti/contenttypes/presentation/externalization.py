@@ -33,12 +33,12 @@ from .interfaces import INTIVideoRef
 from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
-from .interfaces import INTIRelatedWork
 from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
 from .interfaces import INTIDiscussionRef
 from .interfaces import INTIQuestionSetRef
 from .interfaces import INTILessonOverview
+from .interfaces import INTIRelatedWorkRef
 from .interfaces import INTICourseOverviewGroup
 from .interfaces import INTICourseOverviewSpacer
 
@@ -213,13 +213,13 @@ class _NTITimelineRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[NTIID] = extDict['ntiid'] # legacy
 		return extDict
 
-@component.adapter(INTIRelatedWork)
-class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
+@component.adapter(INTIRelatedWorkRef)
+class _NTIRelatedWorkRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	related = alias('obj')
 
 	def _do_toExternalObject(self, extDict):
-		super(_NTIRelatedWorkRenderExternalObject, self)._do_toExternalObject(extDict)
+		super(_NTIRelatedWorkRefRenderExternalObject, self)._do_toExternalObject(extDict)
 		if CREATOR in extDict:
 			extDict[u'creator'] = extDict[CREATOR] # legacy
 		if 'description' in extDict:
@@ -229,6 +229,7 @@ class _NTIRelatedWorkRenderExternalObject(_NTIBaseRenderExternalObject):
 		if 'type' in extDict:
 			extDict[u'targetMimeType'] = extDict['type']
 		return extDict
+_NTIRelatedWorkRenderExternalObject = _NTIRelatedWorkRefRenderExternalObject
 
 @component.adapter(INTIDiscussionRef)
 class _NTIDiscussionRefRenderExternalObject(_NTIBaseRenderExternalObject):

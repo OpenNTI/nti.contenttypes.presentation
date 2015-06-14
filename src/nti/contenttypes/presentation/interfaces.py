@@ -285,7 +285,6 @@ class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPres
 	label = ValidTextLine(title="The label", required=False, default=u'')
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid")), required=True)
-INTIRelatedWork = INTIRelatedWorkRef
 
 class INTIDiscussionRef(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=False)
@@ -359,3 +358,9 @@ class IPresentationVisibility(interface.Interface):
 
 	def visibility():
 		pass
+
+import zope.deferredimport
+zope.deferredimport.initialize()
+zope.deferredimport.deprecated(
+	"Import from INTIRelatedWorkRef instead",
+	INTIRelatedWork='nnti.contenttypes.presentation.interfaces:INTIRelatedWorkRef')

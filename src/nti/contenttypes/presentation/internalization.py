@@ -45,12 +45,12 @@ from .interfaces import INTITimeline
 from .interfaces import INTIVideoRef
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
-from .interfaces import INTIRelatedWork
 from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
 from .interfaces import INTIDiscussionRef
 from .interfaces import INTIQuestionSetRef
 from .interfaces import INTILessonOverview
+from .interfaces import INTIRelatedWorkRef
 from .interfaces import INTICourseOverviewGroup
 from .interfaces import INTICourseOverviewSpacer
 
@@ -290,10 +290,10 @@ class _TargetNTIIDUpdater(InterfaceObjectIO):
 
 		return self
 
-@component.adapter(INTIRelatedWork)
-class _NTIRelatedWorkUpdater(_TargetNTIIDUpdater):
+@component.adapter(INTIRelatedWorkRef)
+class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):
 
-	_ext_iface_upper_bound = INTIRelatedWork
+	_ext_iface_upper_bound = INTIRelatedWorkRef
 
 	def fixAll(self, parsed):
 		if 'creator' in parsed:
@@ -311,9 +311,9 @@ class _NTIRelatedWorkUpdater(_TargetNTIIDUpdater):
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
-		result = super(_NTIRelatedWorkUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		result = super(_NTIRelatedWorkRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
-_NTIRelatedWorkRefUpdater = _NTIRelatedWorkUpdater
+_NTIRelatedWorkUpdater = _NTIRelatedWorkRefUpdater
 
 @component.adapter(INTIDiscussionRef)
 class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):

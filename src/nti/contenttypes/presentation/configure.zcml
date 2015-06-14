@@ -36,7 +36,7 @@
 						 .interfaces.INTISlideDeck
 						 .interfaces.INTISlideVideo
 						 .interfaces.INTITimeline
-						 .interfaces.INTIRelatedWork
+						 .interfaces.INTIRelatedWorkRef
 						 .interfaces.INTIDiscussionRef
 						 .interfaces.INTIQuestionRef
 						 .interfaces.INTIAssignmentRef
@@ -84,7 +84,7 @@
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 	
 	<adapter factory=".internalization._NTIRelatedWorkUpdater"
-			 for=".interfaces.INTIRelatedWork"
+			 for=".interfaces.INTIRelatedWorkRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
 	<adapter factory=".internalization._NTIDiscussionRefUpdater"
@@ -149,7 +149,7 @@
 			 name="render" />
 			 
 	<adapter factory=".externalization._NTIRelatedWorkRenderExternalObject"
-			 for=".interfaces.INTIRelatedWork"
+			 for=".interfaces.INTIRelatedWorkRef"
 			 name="render" />
 
 	<adapter factory=".externalization._NTIDiscussionRefRenderExternalObject"

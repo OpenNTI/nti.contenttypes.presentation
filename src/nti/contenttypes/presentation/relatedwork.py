@@ -13,22 +13,28 @@ from zope import interface
 
 from nti.common.property import alias
 
-from nti.schema.schema import EqHash 
+from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from ._base import PersistentPresentationAsset
 
-from .interfaces import INTIRelatedWork
+from .interfaces import INTIRelatedWorkRef
 
-@interface.implementer(INTIRelatedWork)
 @EqHash('ntiid')
-class NTIRelatedWork(PersistentPresentationAsset):
-	createDirectFieldProperties(INTIRelatedWork)
+@interface.implementer(INTIRelatedWorkRef)
+class NTIRelatedWorkRef(PersistentPresentationAsset):
+	createDirectFieldProperties(INTIRelatedWorkRef)
 
 	__external_class_name__ = u"RelatedWork"
 	mime_type = mimeType = u'application/vnd.nextthought.relatedworkref'
 
 	Creator = alias('creator')
 	desc = alias('description')
-	target_ntiid =  alias('target')
+	target_ntiid = alias('target')
 	targetMimeType = target_mime_type = alias('type')
+
+import zope.deferredimport
+zope.deferredimport.initialize()
+zope.deferredimport.deprecated(
+	"Import from NTIRelatedWorkRef instead",
+	NTIRelatedWork='nnti.contenttypes.presentation.relatedwork:NTIRelatedWorkRef')
