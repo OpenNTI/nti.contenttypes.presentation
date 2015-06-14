@@ -37,4 +37,4 @@ import zope.deferredimport
 zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
 	"Import from NTIRelatedWorkRef instead",
-	NTIRelatedWork='nnti.contenttypes.presentation.relatedwork:NTIRelatedWorkRef')
+	NTIRelatedWork='nti.contenttypes.presentation.relatedwork:NTIRelatedWorkRef')
