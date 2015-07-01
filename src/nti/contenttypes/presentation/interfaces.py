@@ -12,6 +12,8 @@ from zope.interface.common.sequence import IFiniteSequence
 
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 
+from zope.location.interfaces import IContained
+
 from zope.schema import vocabulary
 
 from dolmen.builtins.interfaces import IIterable
@@ -143,7 +145,7 @@ class ITaggedContent(interface.Interface):
 					   default=(),
 					   required=False)
 
-class IPresentationAsset(ILastModified):
+class IPresentationAsset(ILastModified, IContained):
 	"""
 	marker interface for all presentation assests
 	"""
