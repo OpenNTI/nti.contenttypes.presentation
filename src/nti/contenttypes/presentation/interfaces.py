@@ -361,6 +361,15 @@ class IPresentationVisibility(interface.Interface):
 	def visibility():
 		pass
 
+class IPresentationAssetContainer(interface.Interface):
+	"""
+	Something that is an unordered bag of presentation asset items 
+
+	This package provides no implementation of this interface. (But
+	something like the content library package may be adaptable to this,
+	typically with annotations).
+	"""
+
 import zope.deferredimport
 zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
