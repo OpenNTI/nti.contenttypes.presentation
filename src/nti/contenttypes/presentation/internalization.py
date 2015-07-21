@@ -458,6 +458,16 @@ def internalization_assignmentref_pre_hook(k, x):
 	if mimeType == "application/vnd.nextthought.assessment.assignment":
 		x[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
 
+def internalization_surveyref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.nasurvey":
+		x[MIMETYPE] = u"application/vnd.nextthought.surveyref"
+
+def internalization_pollref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.napoll":
+		x[MIMETYPE] = u"application/vnd.nextthought.pollref"
+
 def internalization_questionsetref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if mimeType == "application/vnd.nextthought.naquestionset":
@@ -506,6 +516,8 @@ def internalization_courseoverview_pre_hook(k, x):
 		idx = 0
 		while idx < len(x):
 			item = x[idx]
+			internalization_pollref_pre_hook(None, item)
+			internalization_surveyref_pre_hook(None, item)
 			internalization_ntitimeline_pre_hook(None, item)
 			internalization_ntiaudioref_pre_hook(None, item)
 			internalization_ntivideoref_pre_hook(None, item)
