@@ -176,6 +176,14 @@
 			 for=".interfaces.INTIAssignmentRef"
 			 name="render" />
 		
+	<adapter factory=".externalization._NTISurveyRefRenderExternalObject"
+			 for=".interfaces.INTISurveyRef"
+			 name="render" />
+
+	<adapter factory=".externalization._NTIPollRefRenderExternalObject"
+			 for=".interfaces.INTIPollRef"
+			 name="render" />
+
 	<adapter factory=".externalization._NTICourseOverviewSpacerRenderExternalObject"
 			 for=".interfaces.INTICourseOverviewSpacer"
 			 name="render" />

@@ -28,10 +28,12 @@ from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceO
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
+from .interfaces import INTIPollRef
 from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
 from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
+from .interfaces import INTISurveyRef
 from .interfaces import INTISlideVideo
 from .interfaces import INTIQuestionRef
 from .interfaces import INTIAssignmentRef
@@ -260,6 +262,34 @@ class _NTIAssignmentRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[u'Target-NTIID'] = extDict.pop('target')
 		if 'containerId' in extDict:
 			extDict[u'ContainerId'] = extDict.pop('containerId')
+		return extDict
+
+@component.adapter(INTISurveyRef)
+class _NTISurveyRefRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	survey = alias('obj')
+
+	def _do_toExternalObject(self, extDict):
+		super(_NTISurveyRefRenderExternalObject, self)._do_toExternalObject(extDict)
+		extDict[CLASS] = 'Survey'  # for legacy iPad
+		if 'ntiid' in extDict:
+			extDict[NTIID] = extDict.pop('ntiid')
+		if 'target' in extDict:
+			extDict[u'Target-NTIID'] = extDict.pop('target')
+		return extDict
+
+@component.adapter(INTIPollRef)
+class _NTIPollRefRenderExternalObject(_NTIBaseRenderExternalObject):
+
+	survey = alias('obj')
+
+	def _do_toExternalObject(self, extDict):
+		super(_NTIPollRefRenderExternalObject, self)._do_toExternalObject(extDict)
+		extDict[CLASS] = 'Poll'  # for legacy iPad
+		if 'ntiid' in extDict:
+			extDict[NTIID] = extDict.pop('ntiid')
+		if 'target' in extDict:
+			extDict[u'Target-NTIID'] = extDict.pop('target')
 		return extDict
 
 @component.adapter(INTIQuestionSetRef)
