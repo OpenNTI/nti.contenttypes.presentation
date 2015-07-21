@@ -19,6 +19,7 @@ import unittest
 import simplejson
 
 from nti.contenttypes.presentation.utils import prepare_json_text
+from nti.contenttypes.presentation.utils import create_surveyref_from_external
 from nti.contenttypes.presentation.utils import create_questionref_from_external
 from nti.contenttypes.presentation.utils import create_assignmentref_from_external
 from nti.contenttypes.presentation.utils import create_questionsetref_from_external
@@ -91,6 +92,28 @@ class TestAssignment(unittest.TestCase):
 		ext_obj = to_external_object(question, name="render")
 		for k, v in original.items():
 			assert_that(ext_obj, has_entry(k, is_(v)))
+
+		assert_that(ext_obj, has_key('MimeType'))
+		assert_that(ext_obj, has_key('Class'))
+		assert_that(ext_obj, has_key('NTIID'))
+		
+	def test_survey(self):
+		path = os.path.join(os.path.dirname(__file__), 'survey.json')
+		with open(path, "r") as fp:
+			source = simplejson.loads(prepare_json_text(fp.read()))
+			original = copy.deepcopy(source)
+		assert_that(source, has_entry(MIMETYPE, is_('application/vnd.nextthought.nasurvey')))
+
+		question = create_surveyref_from_external(source)
+		assert_that(question, has_property('target', is_(u"tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.survey.survey_test")))
+		assert_that(question, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.survey.survey_test")))
+
+		ext_obj = to_external_object(question, name="render")
+		for k, v in original.items():
+			if k != MIMETYPE:
+				assert_that(ext_obj, has_entry(k, is_(v)))
+			else:
+				assert_that(ext_obj, has_entry(k, is_('application/vnd.nextthought.surveyref')))
 
 		assert_that(ext_obj, has_key('MimeType'))
 		assert_that(ext_obj, has_key('Class'))

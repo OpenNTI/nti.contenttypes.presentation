@@ -276,6 +276,8 @@ class _NTISurveyRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
 			extDict[u'Target-NTIID'] = extDict.pop('target')
+		if 'question_count' in extDict:
+			extDict[u'question-count'] = str(extDict.pop('question_count'))
 		return extDict
 
 @component.adapter(INTIPollRef)

@@ -416,6 +416,8 @@ class _NTISurveyRefUpdater(_TargetNTIIDUpdater):
 
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)
+		if 'question-count' in parsed:
+			parsed[u'question_count'] = int(parsed.pop('question-count'))
 		return self
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):

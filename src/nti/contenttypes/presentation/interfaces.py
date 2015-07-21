@@ -8,9 +8,10 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 from zope import interface
-from zope.interface.common.sequence import IFiniteSequence
 
 from zope.dublincore.interfaces import IDCDescriptiveProperties
+
+from zope.interface.common.sequence import IFiniteSequence
 
 from zope.location.interfaces import IContained
 
@@ -329,7 +330,7 @@ class INTIPollRef(INTIAssessmentRef):
 IPollRef = INTIPollRef
 
 class INTISurveyRef(INTIAssessmentRef):
-	pass
+	question_count = Int(title="Question count", required=False)
 ISurveyRef = INTISurveyRef
 
 class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
