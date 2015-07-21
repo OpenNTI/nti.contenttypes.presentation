@@ -103,6 +103,14 @@
 			 for=".interfaces.INTIQuestionRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 		 
+	<adapter factory=".internalization._NTISurveyRefUpdater"
+			 for=".interfaces.INTISurveyRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
+	<adapter factory=".internalization._NTIPollRefUpdater"
+			 for=".interfaces.INTIPollRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
 	<adapter factory=".internalization._NTICourseOverviewSpacerUpdater"
 			 for=".interfaces.INTICourseOverviewSpacer"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />

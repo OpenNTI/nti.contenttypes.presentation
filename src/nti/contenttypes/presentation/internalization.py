@@ -40,9 +40,11 @@ from .discussion import make_discussionref_ntiid_from_bundle_id
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTISlide
+from .interfaces import INTIPollRef
 from .interfaces import INTIAudioRef
 from .interfaces import INTITimeline
 from .interfaces import INTIVideoRef
+from .interfaces import INTISurveyRef
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
 from .interfaces import INTIQuestionRef
@@ -391,6 +393,34 @@ class _NTIQuestionRefUpdater(_TargetNTIIDUpdater):
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
 		result = super(_NTIQuestionRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+@component.adapter(INTIPollRef)
+class _NTIPollRefUpdater(_TargetNTIIDUpdater):
+
+	_ext_iface_upper_bound = INTIPollRef
+
+	def fixAll(self, parsed):
+		self.fixTarget(parsed, transfer=True)
+		return self
+
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(parsed)
+		result = super(_NTIPollRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+@component.adapter(INTISurveyRef)
+class _NTISurveyRefUpdater(_TargetNTIIDUpdater):
+
+	_ext_iface_upper_bound = INTISurveyRef
+
+	def fixAll(self, parsed):
+		self.fixTarget(parsed, transfer=True)
+		return self
+
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(parsed)
+		result = super(_NTISurveyRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
 
 @component.adapter(INTICourseOverviewSpacer)
