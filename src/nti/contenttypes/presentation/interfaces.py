@@ -325,11 +325,14 @@ class INTIAssignmentRef(INTIAssessmentRef, ITitled):
 	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
 
-class INTIPollRef(INTIAssessmentRef):
+class INTIInquiryRef(INTIAssessmentRef):
+	pass
+
+class INTIPollRef(INTIInquiryRef):
 	pass
 IPollRef = INTIPollRef
 
-class INTISurveyRef(INTIAssessmentRef):
+class INTISurveyRef(INTIInquiryRef):
 	question_count = Int(title="Question count", required=False)
 ISurveyRef = INTISurveyRef
 
