@@ -271,7 +271,6 @@ class _NTISurveyRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTISurveyRefRenderExternalObject, self)._do_toExternalObject(extDict)
-		extDict[CLASS] = 'Survey'  # for legacy iPad
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
@@ -287,7 +286,6 @@ class _NTIPollRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTIPollRefRenderExternalObject, self)._do_toExternalObject(extDict)
-		extDict[CLASS] = 'Poll'  # for legacy iPad
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
