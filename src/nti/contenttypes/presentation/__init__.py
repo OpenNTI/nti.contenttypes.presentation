@@ -16,6 +16,7 @@ from zope import interface
 
 from .interfaces import IMediaRef
 from .interfaces import INTIMedia
+from .interfaces import INTIInquiryRef
 from .interfaces import INTIMediaSource
 from .interfaces import INTIAssessmentRef
 from .interfaces import IGroupOverViewable
@@ -71,15 +72,15 @@ def _set_ifaces():
 		result = bool(type(item) == interface.interface.InterfaceClass and \
 					  issubclass(item, IGroupOverViewable) and \
 					  item != IGroupOverViewable and \
-					  item not in (IMediaRef, INTIAssessmentRef))
+					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef))
 		return result
 	
 	def _presentationasset_item_predicate(item):
 		result = bool(type(item) == interface.interface.InterfaceClass and \
 					  issubclass(item, IPresentationAsset) and \
 					  item != IPresentationAsset and \
-					  item not in (IMediaRef, INTIAssessmentRef, INTIMediaSource,
-								   INTIMedia))
+					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
+                                   INTIMediaSource, INTIMedia))
 		return result
 	
 	for _, item in inspect.getmembers(m, _overview_item_predicate):
