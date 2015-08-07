@@ -61,8 +61,7 @@ class _NTIBaseRenderExternalObject(object):
 	def __init__(self, obj):
 		self.obj = obj
 
-	@classmethod
-	def _do_toExternalObject(cls, extDict):
+	def _do_toExternalObject(self, extDict):
 		extDict.pop(OID, None)
 		extDict.pop(CREATED_TIME, None)
 		extDict.pop(LAST_MODIFIED, None)
