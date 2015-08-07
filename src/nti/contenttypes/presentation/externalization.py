@@ -192,8 +192,10 @@ class _NTISlideDeckRenderExternalObject(_NTIBaseSlideExternalObject):
 		extDict[u'slidedeckid'] = self.slide.slidedeckid
 		extDict[u'ntiid'] = extDict[NTIID] = self.slide.ntiid
 		extDict[CLASS] = extDict[u'class'] = NTI_SLIDE_DECK.lower()
-		extDict[u'Slides'] = [toExternalObject(x, name='render') for x in self.slide.slides]
-		extDict[u'Videos'] = [toExternalObject(x, name='render') for x in self.slide.videos]
+		extDict[u'Slides'] = [toExternalObject(x, name='render', decorate=False)
+							  for x in self.slide.slides]
+		extDict[u'Videos'] = [toExternalObject(x, name='render', decorate=False) 
+							  for x in self.slide.videos]
 		return extDict
 
 @component.adapter(INTITimeline)
@@ -345,7 +347,8 @@ class _NTICourseOverviewGroupRenderExternalObject(_NTIBaseRenderExternalObject):
 		extDict[MIMETYPE] = self.group.mimeType
 		extDict[u'accentColor'] = self.group.color
 		extDict[CLASS] = self.group.__external_class_name__
-		extDict[ITEMS] = [toExternalObject(x, name='render') for x in self.group]
+		extDict[ITEMS] = [toExternalObject(x, name='render', decorate=False)
+						  for x in self.group]
 		return extDict
 
 @interface.implementer(IInternalObjectIO)
@@ -380,6 +383,6 @@ class _NTILessonOverviewRenderExternalObject(_NTIBaseRenderExternalObject):
 		extDict[u'lesson'] = self.obj.lesson
 		extDict[MIMETYPE] = self.obj.mimeType
 		extDict[CLASS] = self.obj.__external_class_name__
-		extDict[ITEMS] = [toExternalObject(x, name='render')
+		extDict[ITEMS] = [toExternalObject(x, name='render', decorate=False)
 						  for x in self.obj.items or ()]
 		return extDict
