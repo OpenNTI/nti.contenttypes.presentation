@@ -347,6 +347,9 @@ class _NTICourseOverviewGroupRenderExternalObject(_NTIBaseRenderExternalObject):
 		extDict[MIMETYPE] = self.group.mimeType
 		extDict[u'accentColor'] = self.group.color
 		extDict[CLASS] = self.group.__external_class_name__
+		# we don't decorate because most of the item is a group call the 
+		# method _NTIBaseRenderExternalObject.toExternalObject which 
+		# performs any decoration
 		extDict[ITEMS] = [toExternalObject(x, name='render', decorate=False)
 						  for x in self.group]
 		return extDict
@@ -384,5 +387,6 @@ class _NTILessonOverviewRenderExternalObject(_NTIBaseRenderExternalObject):
 		extDict[u'lesson'] = self.obj.lesson
 		extDict[MIMETYPE] = self.obj.mimeType
 		extDict[CLASS] = self.obj.__external_class_name__
+		# overview groups are usually decorated
 		extDict[ITEMS] = [toExternalObject(x, name='render') for x in items]
 		return extDict
