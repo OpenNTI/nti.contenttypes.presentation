@@ -377,12 +377,12 @@ class _NTILessonOverviewRenderExternalObject(_NTIBaseRenderExternalObject):
 	lesson = alias('obj')
 
 	def toExternalObject(self, *args, **kwargs):
+		items = self.obj.items or ()
 		extDict = LocatedExternalDict()
 		extDict[NTIID] = self.obj.ntiid
 		extDict[u'title'] = self.obj.title
 		extDict[u'lesson'] = self.obj.lesson
 		extDict[MIMETYPE] = self.obj.mimeType
 		extDict[CLASS] = self.obj.__external_class_name__
-		extDict[ITEMS] = [toExternalObject(x, name='render', decorate=False)
-						  for x in self.obj.items or ()]
+		extDict[ITEMS] = [toExternalObject(x, name='render') for x in items]
 		return extDict
