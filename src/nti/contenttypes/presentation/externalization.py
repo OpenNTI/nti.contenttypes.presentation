@@ -226,6 +226,7 @@ class _NTIRelatedWorkRefRenderExternalObject(_NTIBaseRenderExternalObject):
 		if CREATOR in extDict:
 			extDict[u'creator'] = extDict[CREATOR] # legacy
 		if 'description' in extDict:
+			extDict['description'] = extDict.get('description', u'').strip()
 			extDict[u'desc'] = extDict['description'] # legacy
 		if 'target' in extDict:
 			extDict[u'target-NTIID'] = extDict[u'target-ntiid'] = extDict['target'] # legacy
