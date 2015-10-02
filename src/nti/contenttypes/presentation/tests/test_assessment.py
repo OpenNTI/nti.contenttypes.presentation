@@ -29,6 +29,7 @@ from nti.externalization.externalization import to_external_object
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
+CLASS = StandardExternalFields.CLASS
 MIMETYPE = StandardExternalFields.MIMETYPE
 
 class TestAssignment(unittest.TestCase):
@@ -51,7 +52,8 @@ class TestAssignment(unittest.TestCase):
 
 		ext_obj = to_external_object(assignment, name="render")
 		for k, v in original.items():
-			assert_that(ext_obj, has_entry(k, is_(v)))
+			if k not in (MIMETYPE, CLASS):
+				assert_that(ext_obj, has_entry(k, is_(v)))
 
 		assert_that(ext_obj, has_key('MimeType'))
 		assert_that(ext_obj, has_key('Class'))
@@ -72,7 +74,8 @@ class TestAssignment(unittest.TestCase):
 
 		ext_obj = to_external_object(questionset, name="render")
 		for k, v in original.items():
-			assert_that(ext_obj, has_entry(k, is_(v)))
+			if k not in (MIMETYPE, CLASS):
+				assert_that(ext_obj, has_entry(k, is_(v)))
 
 		assert_that(ext_obj, has_key('MimeType'))
 		assert_that(ext_obj, has_key('Class'))
@@ -91,7 +94,8 @@ class TestAssignment(unittest.TestCase):
 
 		ext_obj = to_external_object(question, name="render")
 		for k, v in original.items():
-			assert_that(ext_obj, has_entry(k, is_(v)))
+			if k not in (MIMETYPE, CLASS):
+				assert_that(ext_obj, has_entry(k, is_(v)))
 
 		assert_that(ext_obj, has_key('MimeType'))
 		assert_that(ext_obj, has_key('Class'))

@@ -246,7 +246,6 @@ class _NTIDiscussionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
 			extDict[NTIID] = extDict.pop('target')
-		extDict[MIMETYPE] = 'application/vnd.nextthought.discussion'  # legacy
 		return extDict
 
 @component.adapter(INTIAssignmentRef)
@@ -256,8 +255,6 @@ class _NTIAssignmentRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTIAssignmentRefRenderExternalObject, self)._do_toExternalObject(extDict)
-		extDict[CLASS] = 'Assignment'  # for legacy iPad
-		extDict[MIMETYPE] = 'application/vnd.nextthought.assessment.assignment'  # for legacy iPad
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
@@ -301,8 +298,6 @@ class _NTIQuestionSetRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTIQuestionSetRefRenderExternalObject, self)._do_toExternalObject(extDict)
-		extDict[CLASS] = 'QuestionSet'  # for legacy iPad
-		extDict[MIMETYPE] = 'application/vnd.nextthought.naquestionset'  # for legacy iPad
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:
@@ -318,8 +313,6 @@ class _NTIQuestionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTIQuestionRefRenderExternalObject, self)._do_toExternalObject(extDict)
-		extDict[CLASS] = 'Question'  # for legacy iPad
-		extDict[MIMETYPE] = 'application/vnd.nextthought.naquestion'  # for legacy iPad
 		if 'ntiid' in extDict:
 			extDict[NTIID] = extDict.pop('ntiid')
 		if 'target' in extDict:

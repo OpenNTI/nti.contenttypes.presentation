@@ -22,9 +22,13 @@ import simplejson
 from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_discussionref_from_external
 
+from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.externalization import to_external_object
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
+
+CLASS = StandardExternalFields.CLASS
+MIMETYPE = StandardExternalFields.MIMETYPE
 
 class TestDiscussion(unittest.TestCase):
 
@@ -47,7 +51,8 @@ class TestDiscussion(unittest.TestCase):
 
 		ext_obj = to_external_object(discussion, name="render")
 		for k, v in original.items():
-			assert_that(ext_obj, has_entry(k, is_(v)))
+			if k not in (MIMETYPE, CLASS):
+				assert_that(ext_obj, has_entry(k, is_(v)))
 
 		assert_that(ext_obj, has_key('MimeType'))
 		assert_that(ext_obj, has_key('Class'))
