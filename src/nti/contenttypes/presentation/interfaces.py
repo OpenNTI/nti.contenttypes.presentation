@@ -38,10 +38,12 @@ from nti.schema.field import ValidText
 from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
+from nti.dataserver.users.interfaces import TAG_HIDDEN_IN_UI
+from nti.dataserver.users.interfaces import TAG_REQUIRED_IN_UI
 
 from nti.wref.interfaces import IWeakRef
 
-## Transcript types (file extensions)
+# Transcript types (file extensions)
 
 SBV_TRANSCRIPT_TYPE = u'sbv'
 SRT_TRANSCRIPT_TYPE = u'srt'
@@ -51,7 +53,7 @@ TRANSCRIPT_TYPES = (SBV_TRANSCRIPT_TYPE, SRT_TRANSCRIPT_TYPE, VTT_TRANSCRIPT_TYP
 TRANSCRIPT_TYPE_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in TRANSCRIPT_TYPES])
 
-## Transcript MimeTypes
+# Transcript MimeTypes
 
 SBV_TRANSCRIPT_MIMETYPE = u'text/sbv'
 SRT_TRANSCRIPT_MIMETYPE = u'text/srt'
@@ -62,7 +64,7 @@ TRANSCRIPT_MIMETYPES = (SBV_TRANSCRIPT_MIMETYPE, SRT_TRANSCRIPT_MIMETYPE,
 TRANSCRIPT_MIMETYPE_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in TRANSCRIPT_MIMETYPES])
 
-## Video Services
+# Video Services
 
 HTML5_VIDEO_SERVICE = u'html5'
 VIMEO_VIDEO_SERVICE = u'vimeo'
@@ -74,7 +76,7 @@ VIDEO_SERVICES = (HTML5_VIDEO_SERVICE, VIMEO_VIDEO_SERVICE, YOUTUBE_VIDEO_SERVIC
 VIDEO_SERVICES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VIDEO_SERVICES])
 
-## Video Service Types
+# Video Service Types
 
 MP4_VIDEO_SERVICE_TYPE = u'video/mp4'
 WEBM_VIDEO_SERVICE_TYPE = u'video/webm'
@@ -89,7 +91,7 @@ VIDEO_SERVICE_TYPES = (MP4_VIDEO_SERVICE_TYPE, WEBM_VIDEO_SERVICE_TYPE,
 VIDEO_SERVICE_TYPES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VIDEO_SERVICE_TYPES])
 
-## Video Service Sources
+# Video Service Sources
 
 MP4_VIDEO_SOURCE = u'mp4'
 WEBM_VIDEO_SOURCE = u'webm'
@@ -99,7 +101,7 @@ VIDEO_SOURCES = (MP4_VIDEO_SOURCE, WEBM_VIDEO_SOURCE, OTHER_VIDEO_SOURCE)
 VIDEO_SOURCES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VIDEO_SOURCES])
 
-## Audio Services
+# Audio Services
 
 HTML5_AUDIO_SERVICE = u'html5'
 AUDIO_SERVICES = (HTML5_AUDIO_SERVICE,)
@@ -107,7 +109,7 @@ AUDIO_SERVICES = (HTML5_AUDIO_SERVICE,)
 AUDIO_SERVICES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SERVICES])
 
-## Audio Service Types
+# Audio Service Types
 
 MP3_AUDIO_SERVICE_TYPE = u'audio/mp3'
 WAV_AUDIO_SERVICE_TYPE = u'audio/wav'
@@ -117,7 +119,7 @@ AUDIO_SERVICE_TYPES = (MP3_AUDIO_SERVICE_TYPE, WAV_AUDIO_SERVICE_TYPE)
 AUDIO_SERVICE_TYPES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SERVICE_TYPES])
 
-## Audio Service Sources
+# Audio Service Sources
 
 MP3_AUDIO_SOURCE = u'mp4'
 WAV_AUDIO_SOURCE = u'webm'
@@ -218,9 +220,17 @@ class INTIVideo(INTIMedia):
 	transcripts = ListOrTuple(value_type=Object(INTITranscript),
 							  title="The transcripts", required=False, min_length=0)
 
+INTIVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTIVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+
 class INTIVideoRef(IMediaRef):
 	label = ValidText(title="Video label", required=False)
 	poster = ValidTextLine(title="Video poster", required=False)
+
+INTIVideoRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIVideoRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIAudioSource(INTIMediaSource):
 	service = Choice(vocabulary=AUDIO_SERVICES_VOCABULARY, title='Audio service',
@@ -239,6 +249,11 @@ class INTIAudio(INTIMedia):
 
 	transcripts = ListOrTuple(value_type=Object(INTITranscript),
 							  title="The transcripts", required=False, min_length=0)
+
+INTIAudio['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIAudio['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTIAudio['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIAudio['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIAudioRef(IMediaRef):
 	pass
@@ -259,6 +274,11 @@ class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITi
 	thumbnail = ValidTextLine(title="Slide video thumbnail", required=False)
 	description = ValidTextLine(title="Slide video description", required=False)
 
+INTISlideVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTISlideVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTISlideVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTISlideVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+
 class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
 	Slides = IndexedIterable(value_type=Object(INTISlide),
 						 	 title="The slides", required=False, min_length=1)
@@ -271,6 +291,11 @@ class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITit
 	creator = ValidTextLine(title="Slide deck creator", required=True)
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
+
+INTISlideDeck['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTISlideDeck['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTISlideDeck['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	label = ValidTextLine(title="The label", required=True, default=u'')
@@ -308,6 +333,9 @@ class INTIDiscussionRef(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresen
 		return if this DiscussionRef refers to a course bundle
 		"""
 
+INTIDiscussionRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIDiscussionRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+
 class INTIAssessmentRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	ntiid = ValidNTIID(title="Assessment Ref NTIID", required=True)
 	target = ValidNTIID(title="Target NTIID", required=True)
@@ -318,14 +346,25 @@ class INTIQuestionSetRef(INTIAssessmentRef):
 	question_count = Int(title="Question count", required=False)
 IQuestionSetRef = INTIQuestionSetRef
 
+INTIQuestionSetRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIQuestionSetRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+
 class INTIQuestionRef(INTIAssessmentRef):
 	pass
 IQuestionRef = INTIQuestionRef
+
+INTIQuestionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIQuestionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIAssignmentRef(INTIAssessmentRef, ITitled):
 	containerId = ValidNTIID(title="Container NTIID", required=True)
 	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
+
+INTIAssignmentRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIAssignmentRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTIAssignmentRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIAssignmentRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIInquiryRef(INTIAssessmentRef):
 	pass
@@ -334,9 +373,15 @@ class INTIPollRef(INTIInquiryRef):
 	pass
 IPollRef = INTIPollRef
 
+INTIPollRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIPollRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+
 class INTISurveyRef(INTIInquiryRef):
 	question_count = Int(title="Question count", required=False)
 ISurveyRef = INTISurveyRef
+
+INTISurveyRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	pass
@@ -350,12 +395,20 @@ class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset,
 	title = ValidTextLine(title="Overview title", required=False)
 	accentColor = ValidTextLine(title="Overview color", required=False)
 
+INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+
 class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset,
 						 IFiniteSequence, IIterable):
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
 	lesson = ValidTextLine(title="Lesson NTIID", required=False)
+
+INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTILessonOverview['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class IPresentationVisibility(interface.Interface):
 	"""
