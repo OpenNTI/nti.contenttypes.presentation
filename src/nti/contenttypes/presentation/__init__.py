@@ -14,6 +14,10 @@ import inspect
 
 from zope import interface
 
+from zope.interface.interfaces import IMethod
+
+from nti.dataserver.users.interfaces import TAG_HIDDEN_IN_UI
+
 from .interfaces import IMediaRef
 from .interfaces import INTIMedia
 from .interfaces import INTIInquiryRef
@@ -92,6 +96,13 @@ def _set_ifaces():
 
 	GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
 	ALL_PRESENTATION_ASSETS_INTERFACES = tuple(ALL_PRESENTATION_ASSETS_INTERFACES)
+	
+	# set ui settings
+	for iSchema in ALL_PRESENTATION_ASSETS_INTERFACES:
+		for k, v in iSchema.namesAndDescriptions(all=True):
+			if IMethod.providedBy(v) or v.queryTaggedValue(TAG_HIDDEN_IN_UI) is not None:
+				continue
+			iSchema[k].setTaggedValue(TAG_HIDDEN_IN_UI, True)
 
 _set_ifaces()
 del _set_ifaces
