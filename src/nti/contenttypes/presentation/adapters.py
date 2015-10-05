@@ -23,13 +23,13 @@ from .interfaces import INTIVideoRef
 @component.adapter(INTIVideo)
 @interface.implementer(INTIVideoRef)
 def ntivideo_to_ntivideoref(video):
-    result = NTIVideoRef(ntiid=video.ntiid,
-                         poster=video.poster,
-                         label=video.label)
-    return result
+	result = NTIVideoRef(ntiid=video.ntiid,
+						 poster=video.poster,
+						 label=video.label)
+	return result
 
 @component.adapter(INTIAudio)
 @interface.implementer(INTIAudioRef)
 def ntiaudio_to_ntiaudioref(audio):
-    result = NTIAudioRef(ntiid=audio.ntiid)
-    return result
+	result = NTIAudioRef(ntiid=audio.ntiid)
+	return result

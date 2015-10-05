@@ -20,7 +20,7 @@ from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
 
-from nti.schema.schema import EqHash 
+from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from .interfaces import INTIDiscussionRef
@@ -42,7 +42,7 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 	@readproperty
 	def id(self):
 		return self.ntiid
-		
+
 	def isCourseBundle(self):
 		return is_nti_course_bundle(self.id or self.ntiid)
 	is_nti_course_bundle = isCourseBundle
@@ -51,7 +51,7 @@ def is_nti_course_bundle(iden):
 	cmpns = urlparse(iden) if iden else None
 	result = cmpns.scheme == NTI_COURSE_BUNDLE if cmpns is not None else False
 	return result
-	
+
 def make_discussionref_ntiid(ntiid):
 	nttype = get_type(ntiid)
 	if nttype and ':' in nttype:

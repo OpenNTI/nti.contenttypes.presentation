@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 from zope import interface
 
+from zope.annotation.interfaces import IAttributeAnnotatable
+
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 
 from zope.interface.common.sequence import IFiniteSequence
@@ -146,7 +148,7 @@ class ITaggedContent(interface.Interface):
 					   default=(),
 					   required=False)
 
-class IPresentationAsset(ILastModified, IContained):
+class IPresentationAsset(ILastModified, IContained, IAttributeAnnotatable):
 	"""
 	marker interface for all presentation assests
 	"""
@@ -160,7 +162,7 @@ class IGroupOverViewableWeakRef(IWeakRef):
 	pass
 
 class INTITranscript(IPresentationAsset):
-	src = Variant((ValidTextLine(title="Transcript source"),
+	src = Variant((	ValidTextLine(title="Transcript source"),
 					ValidURI(title="Transcript source uri")), required=True)
 	srcjsonp = Variant((ValidTextLine(title="Transcript source jsonp"),
 						ValidURI(title="Transcript source uri jsonp")), required=False)

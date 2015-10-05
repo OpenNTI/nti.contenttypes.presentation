@@ -13,7 +13,7 @@ from zope import interface
 
 from nti.common.property import alias
 
-from nti.schema.schema import EqHash 
+from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from .interfaces import INTIPollRef
@@ -30,14 +30,14 @@ zope.deferredimport.initialize()
 @EqHash('ntiid')
 class NTIAssessmentRef(PersistentPresentationAsset):
 	target_ntiid = alias('target')
-		
+
 @interface.implementer(INTIAssignmentRef)
 class NTIAssignmentRef(NTIAssessmentRef):
 	createDirectFieldProperties(INTIAssignmentRef)
 
 	__external_class_name__ = u"AssignmentRef"
 	mime_type = mimeType = u"application/vnd.nextthought.assignmentref"
-	
+
 	ContainerId = alias('containerId')
 
 @interface.implementer(INTIQuestionSetRef)
@@ -68,7 +68,7 @@ class NTISurveyRef(NTIAssessmentRef):
 
 	__external_class_name__ = u"SurveyRef"
 	mime_type = mimeType = u"application/vnd.nextthought.surveyref"
-	
+
 	ContainerId = alias('containerId')
 
 @interface.implementer(INTIPollRef)

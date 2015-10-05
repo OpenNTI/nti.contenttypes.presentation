@@ -26,12 +26,12 @@ from .interfaces import IPresentationAsset
 class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject,
 					  Contained):
-	
+
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
 		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
 
-@interface.implementer(IPresentationAsset, IContentTypeAware)
 @WithRepr
+@interface.implementer(IPresentationAsset, IContentTypeAware)
 class PersistentPresentationAsset(PersistentMixin):
 	parameters = {}
