@@ -38,8 +38,8 @@ from nti.schema.field import ValidText
 from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
-from nti.dataserver.users.interfaces import TAG_HIDDEN_IN_UI
-from nti.dataserver.users.interfaces import TAG_REQUIRED_IN_UI
+from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
+from nti.schema.jsonschema import TAG_REQUIRED_IN_UI
 
 from nti.wref.interfaces import IWeakRef
 
