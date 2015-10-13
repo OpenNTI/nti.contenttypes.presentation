@@ -23,6 +23,7 @@ from dolmen.builtins.interfaces import IIterable
 
 from nti.coremetadata.interfaces import ITitled
 from nti.coremetadata.interfaces import ICreated
+from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import ILastModified
 
 from nti.ntiids.schema import ValidNTIID
@@ -150,7 +151,7 @@ class ITaggedContent(interface.Interface):
 					   default=(),
 					   required=False)
 
-class IPresentationAsset(ILastModified, IContained, IAttributeAnnotatable):
+class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnotatable):
 	"""
 	marker interface for all presentation assests
 	"""
