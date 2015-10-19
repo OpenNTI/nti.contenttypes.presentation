@@ -30,22 +30,22 @@ from .interfaces import INTICourseOverviewGroup
 
 from . import NTI_COURSE_OVERVIEW_GROUP
 
-@interface.implementer(INTICourseOverviewGroup)
 @EqHash('ntiid')
+@interface.implementer(INTICourseOverviewGroup)
 class NTICourseOverViewGroup(PersistentPresentationAsset):
 	createDirectFieldProperties(INTICourseOverviewGroup)
 
 	__external_class_name__ = u"CourseOverviewGroup"
 	mime_type = mimeType = u"application/vnd.nextthought.nticourseoverviewgroup"
 	
-	color = alias('accentColor')
 	items = alias('Items')
+	color = alias('accentColor')
 
 	@readproperty
 	def ntiid(self):
 		result = make_ntiid(provider='NTI',
 							nttype=NTI_COURSE_OVERVIEW_GROUP,
-							specific=md5(str(uuid.uuid4())).hexdigest() )
+							specific=md5(str(uuid.uuid4())).hexdigest())
 		self.ntiid = result
 		return result
 	
