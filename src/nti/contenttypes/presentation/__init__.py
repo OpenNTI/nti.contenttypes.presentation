@@ -19,10 +19,17 @@ from zope.interface.interfaces import IMethod
 from nti.dataserver.users.interfaces import TAG_HIDDEN_IN_UI
 
 from .interfaces import IMediaRef
+from .interfaces import INTIAudio
 from .interfaces import INTIMedia
+from .interfaces import INTISlide
+from .interfaces import INTIVideo
+from .interfaces import INTITimeline
+from .interfaces import INTISlideDeck
 from .interfaces import INTIInquiryRef
+from .interfaces import INTISlideVideo
 from .interfaces import INTIMediaSource
 from .interfaces import INTIAssessmentRef
+from .interfaces import INTIRelatedWorkRef
 from .interfaces import IGroupOverViewable
 from .interfaces import IPresentationAsset
 
@@ -63,6 +70,9 @@ NTI_LESSON_OVERVIEW = u'NTILessonOverview'
 
 GROUP_OVERVIEWABLE_INTERFACES = None
 ALL_PRESENTATION_ASSETS_INTERFACES = None
+
+PACKAGE_CONTAINER_INTERFACES = (INTIAudio, INTIVideo, INTITimeline, INTIRelatedWorkRef,
+								INTISlideDeck, INTISlide, INTISlideVideo)
 
 def _set_ifaces():
 	global GROUP_OVERVIEWABLE_INTERFACES

@@ -14,6 +14,7 @@ from hamcrest import assert_that
 
 import unittest
 
+from nti.contenttypes.presentation import PACKAGE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
 
@@ -29,3 +30,5 @@ class TestModule(unittest.TestCase):
 
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(21))
+
+		assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))
