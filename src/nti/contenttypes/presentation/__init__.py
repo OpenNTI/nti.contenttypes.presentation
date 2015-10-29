@@ -74,6 +74,12 @@ ALL_PRESENTATION_ASSETS_INTERFACES = None
 PACKAGE_CONTAINER_INTERFACES = (INTIAudio, INTIVideo, INTITimeline, INTIRelatedWorkRef,
 								INTISlideDeck, INTISlide, INTISlideVideo)
 
+def iface_of_asset(item):
+	for iface in ALL_PRESENTATION_ASSETS_INTERFACES:
+		if iface.providedBy(item):
+			return iface
+	return None
+
 def _set_ifaces():
 	global GROUP_OVERVIEWABLE_INTERFACES
 	global ALL_PRESENTATION_ASSETS_INTERFACES
