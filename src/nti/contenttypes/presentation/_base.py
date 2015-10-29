@@ -37,3 +37,4 @@ class PersistentMixin(SchemaConfigured,
 @interface.implementer(IPresentationAsset, IContentTypeAware)
 class PersistentPresentationAsset(PersistentMixin, RecordableMixin): # order matters
 	parameters = {}
+	creator = None
