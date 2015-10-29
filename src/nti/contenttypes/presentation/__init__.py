@@ -23,6 +23,8 @@ from .interfaces import INTIAudio
 from .interfaces import INTIMedia
 from .interfaces import INTISlide
 from .interfaces import INTIVideo
+from .interfaces import INTIAudioRef
+from .interfaces import INTIVideoRef
 from .interfaces import INTITimeline
 from .interfaces import INTISlideDeck
 from .interfaces import INTIInquiryRef
@@ -73,6 +75,8 @@ ALL_PRESENTATION_ASSETS_INTERFACES = None
 
 PACKAGE_CONTAINER_INTERFACES = (INTIAudio, INTIVideo, INTITimeline, INTIRelatedWorkRef,
 								INTISlideDeck, INTISlide, INTISlideVideo)
+
+MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef, INTIVideoRef)
 
 def iface_of_asset(item):
 	for iface in ALL_PRESENTATION_ASSETS_INTERFACES:
