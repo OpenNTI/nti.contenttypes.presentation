@@ -14,8 +14,8 @@ import copy
 from collections import Mapping
 from collections import MutableSequence
 
-from zope import interface
 from zope import component
+from zope import interface
 
 from persistent.list import PersistentList
 
@@ -326,7 +326,7 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 	def fixTarget(self, parsed, transfer=True):
 		iden = parsed.get('id') or parsed.get(ID)
 		if is_nti_course_bundle(iden):
-			parsed['id'] = iden # reset in case
+			parsed['id'] = iden  # reset in case
 			ntiid = ntiid_check(parsed.get(NTIID) or parsed.get('ntiid'))
 			if not ntiid:
 				parsed[NTIID] = make_discussionref_ntiid_from_bundle_id(iden)
@@ -430,7 +430,7 @@ class _NTISurveyRefUpdater(_TargetNTIIDUpdater):
 class _NTICourseOverviewSpacerUpdater(InterfaceObjectIO):
 
 	_ext_iface_upper_bound = INTICourseOverviewSpacer
-	
+
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		result = super(_NTICourseOverviewSpacerUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		assert self._ext_replacement().ntiid, "No NTIID provided"

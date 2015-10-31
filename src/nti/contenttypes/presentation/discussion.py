@@ -23,9 +23,9 @@ from nti.ntiids.ntiids import make_specific_safe
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from .interfaces import INTIDiscussionRef
-
 from ._base import PersistentPresentationAsset
+
+from .interfaces import INTIDiscussionRef
 
 from . import DISCUSSION_REF
 from . import NTI_COURSE_BUNDLE
