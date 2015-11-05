@@ -16,6 +16,7 @@ from zope.container.contained import Contained
 from zope.mimetype.interfaces import IContentTypeAware
 
 from nti.coremetadata.mixins import RecordableMixin
+from nti.coremetadata.mixins import PublishableMixin
 
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
@@ -35,6 +36,8 @@ class PersistentMixin(SchemaConfigured,
 
 @WithRepr
 @interface.implementer(IPresentationAsset, IContentTypeAware)
-class PersistentPresentationAsset(PersistentMixin, RecordableMixin): # order matters
+class PersistentPresentationAsset(PersistentMixin,
+								  RecordableMixin, 
+								  PublishableMixin): # order matters
 	parameters = {}
 	creator = None
