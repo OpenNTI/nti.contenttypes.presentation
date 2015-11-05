@@ -16,7 +16,7 @@ from zope import interface
 
 from zope.interface.interfaces import IMethod
 
-from nti.dataserver.users.interfaces import TAG_HIDDEN_IN_UI
+from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 
 from .interfaces import IMediaRef
 from .interfaces import INTIAudio
