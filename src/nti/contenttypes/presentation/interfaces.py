@@ -13,6 +13,7 @@ from zope.annotation.interfaces import IAttributeAnnotatable
 
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 
+from zope.interface.common.mapping import IMapping
 from zope.interface.common.sequence import IFiniteSequence
 
 from zope.location.interfaces import IContained
@@ -421,7 +422,7 @@ class IPresentationVisibility(interface.Interface):
 	def visibility():
 		pass
 
-class IPresentationAssetContainer(interface.Interface):
+class IPresentationAssetContainer(IMapping):
 	"""
 	Something that is an unordered bag of presentation asset items 
 
