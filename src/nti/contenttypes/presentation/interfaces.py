@@ -141,6 +141,11 @@ VISIBILITY = (PUBLIC, CREDIT, EVERYONE, PURCHASED, OU)
 VISIBILITY_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VISIBILITY])
 
+def creator_schema_field(required=False):
+	return Variant((ValidTextLine(title="Creator name"),
+					Object(interface.Interface, title="Creator object")),
+					required=required)
+
 class ITaggedContent(interface.Interface):
 	"""
 	Something that can contain tags.
@@ -190,10 +195,10 @@ class IVisible(interface.Interface):
 					 	required=False, default=EVERYONE)
 
 class IMediaRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
-	pass
+	target = ValidNTIID(title="Target NTIID", required=False)
 
 class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
-	creator = ValidTextLine(title="Media creator", required=False)
+	creator = creator_schema_field()
 	title = ValidTextLine(title="Media title", required=False, default=u'')
 	description = ValidTextLine(title="Media description", required=False, default=u'')
 
@@ -209,7 +214,7 @@ class INTIVideoSource(INTIMediaSource):
 						 title='Video source', required=True, min_length=1)
 
 	type = ListOrTuple(Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
-						title='Video service types', required=True, min_length=1)
+					   title='Video service types', required=True, min_length=1)
 
 class INTIVideo(INTIMedia):
 	subtitle = Bool(title="Subtitle flag", required=False, default=None)
@@ -269,8 +274,8 @@ class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slidenumber = Int(title="Slide number", required=True, default=1)
 
 class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
+	creator = creator_schema_field(required=False)
 	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
-	creator = ValidTextLine(title="Slide video creator", required=True)
 	title = ValidTextLine(title="Slide video title", required=False, default=u'')
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 	thumbnail = ValidTextLine(title="Slide video thumbnail", required=False)
@@ -290,7 +295,7 @@ class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITit
 
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 
-	creator = ValidTextLine(title="Slide deck creator", required=True)
+	creator = creator_schema_field(required=False)
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
 
@@ -309,7 +314,7 @@ class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset, IVisible):
 	href = ValidTextLine(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
-	creator = ValidTextLine(title="The creator", required=False)
+	creator = creator_schema_field(required=False)
 	section = ValidTextLine(title="Section", required=False)
 	description = ValidText(title="Slide video description", required=False)
 	icon = ValidTextLine(title="Related work icon href", required=False)

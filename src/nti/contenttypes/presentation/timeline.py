@@ -20,8 +20,8 @@ from ._base import PersistentPresentationAsset
 
 from .interfaces import INTITimeline
 
-@interface.implementer(INTITimeline)
 @EqHash('ntiid')
+@interface.implementer(INTITimeline)
 class NTITimeLine(PersistentPresentationAsset):
 	createDirectFieldProperties(INTITimeline)
 

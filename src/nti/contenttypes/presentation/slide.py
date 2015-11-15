@@ -22,8 +22,8 @@ from .interfaces import INTISlide
 from .interfaces import INTISlideDeck
 from .interfaces import INTISlideVideo
 
-@interface.implementer(INTISlide)
 @EqHash('ntiid')
+@interface.implementer(INTISlide)
 class NTISlide(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlide)
 
@@ -37,8 +37,8 @@ class NTISlide(PersistentPresentationAsset):
 	end = video_end = alias('slidevideoend')
 	start = video_start = alias('slidevideostart')
 
-@interface.implementer(INTISlideVideo)
 @EqHash('ntiid')
+@interface.implementer(INTISlideVideo)
 class NTISlideVideo(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlideVideo)
 
@@ -49,8 +49,8 @@ class NTISlideVideo(PersistentPresentationAsset):
 	video = alias('video_ntiid')
 	slide_deck = deck = alias('slidedeckid')
 
-@interface.implementer(INTISlideDeck)
 @EqHash('ntiid')
+@interface.implementer(INTISlideDeck)
 class NTISlideDeck(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlideDeck)
 

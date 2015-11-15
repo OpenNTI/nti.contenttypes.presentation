@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from zope.cachedescriptors.property import readproperty
+
 from nti.common.property import alias
 
 from nti.schema.schema import EqHash
@@ -71,7 +73,10 @@ class NTIVideoRef(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
 	
 	visibility = u"everyone"
-	target = alias('ntiid')
+	
+	@readproperty
+	def target(self):
+		return self.ntiid
 
 @interface.implementer(INTIAudio)
 class NTIAudio(NTIMedia):
@@ -88,4 +93,7 @@ class NTIAudioRef(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
 	
 	visibility = u"everyone"
-	target = alias('ntiid')
+	
+	@readproperty
+	def target(self):
+		return self.ntiid

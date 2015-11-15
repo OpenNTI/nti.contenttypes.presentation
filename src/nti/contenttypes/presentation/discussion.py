@@ -14,7 +14,7 @@ from urlparse import urlparse
 
 from zope import interface
 
-from nti.common.property import readproperty
+from zope.cachedescriptors.property import readproperty
 
 from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid

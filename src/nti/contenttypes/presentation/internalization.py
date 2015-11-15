@@ -146,11 +146,37 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 		return parsed
 
 @interface.implementer(IInternalObjectUpdater)
-class _NTIMediaRefUpdater(InterfaceObjectIO):
+class _TargetNTIIDUpdater(InterfaceObjectIO):
+
+	def getTargetNTIID(self, parsed):
+		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid', ''):
+			if name in parsed:
+				return ntiid_check(parsed.get(name))
+		return None
+
+	def fixTarget(self, parsed, transfer=True):
+		if NTIID in parsed:
+			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
+		elif 'ntiid' in parsed:
+			parsed[u'ntiid'] = ntiid_check(parsed[u'ntiid'])
+
+		target = self.getTargetNTIID(parsed)
+		if target:
+			parsed['target'] = target
+
+		if transfer:
+			if not parsed.get('target') and parsed.get('ntiid'):
+				parsed[u'target'] = parsed['ntiid']
+			elif not parsed.get('ntiid') and parsed.get('target'):
+				parsed[u'ntiid'] = parsed['target']
+
+		return self
+
+@interface.implementer(IInternalObjectUpdater)
+class _NTIMediaRefUpdater(_TargetNTIIDUpdater):
 
 	def fixAll(self, parsed):
-		if NTIID in parsed:
-			parsed[u'ntiid'] = parsed.pop(NTIID)
+		self.fixTarget(parsed)
 		return parsed
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -264,33 +290,6 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 		self.fixAll(parsed)
 		result = super(_NTITimelineUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		return result
-
-@interface.implementer(IInternalObjectUpdater)
-class _TargetNTIIDUpdater(InterfaceObjectIO):
-
-	def getTargetNTIID(self, parsed):
-		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid'):
-			if name in parsed:
-				return ntiid_check(parsed.get(name))
-		return None
-
-	def fixTarget(self, parsed, transfer=True):
-		if NTIID in parsed:
-			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
-		elif 'ntiid' in parsed:
-			parsed[u'ntiid'] = ntiid_check(parsed[u'ntiid'])
-
-		target = self.getTargetNTIID(parsed)
-		if target:
-			parsed['target'] = target
-
-		if transfer:
-			if not parsed.get('target') and parsed.get('ntiid'):
-				parsed[u'target'] = parsed['ntiid']
-			elif not parsed.get('ntiid') and parsed.get('target'):
-				parsed[u'ntiid'] = parsed['target']
-
-		return self
 
 @component.adapter(INTIRelatedWorkRef)
 class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):

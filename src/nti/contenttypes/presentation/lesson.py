@@ -14,8 +14,9 @@ from hashlib import md5
 
 from zope import interface
 
+from zope.cachedescriptors.property import readproperty
+
 from nti.common.property import alias
-from nti.common.property import readproperty
 
 from nti.ntiids.ntiids import make_ntiid
 
@@ -44,8 +45,8 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 		self.ntiid = result
 		return result
 
-@interface.implementer(INTILessonOverview)
 @EqHash('ntiid')
+@interface.implementer(INTILessonOverview)
 class NTILessonOverView(PersistentPresentationAsset):
 	createDirectFieldProperties(INTILessonOverview)
 

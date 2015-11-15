@@ -20,12 +20,13 @@ def CompoundModeledContentBody(required=False):
 	the a compound body 
 	"""
 
-	return ListOrTupleFromObject( title="The body of this object",
-								  description="An ordered sequence of body parts",
-								  value_type=Variant((ValidText(min_length=1, description="Content"),
-													  ValidTextLine(min_length=1, description="Content")),
-													 title="A body part",
-													 __name__='body'),
-								  min_length=1,
-								  required=required,
-								  __name__='body')
+	return ListOrTupleFromObject(
+					title="The body of this object",
+					description="An ordered sequence of body parts",
+					value_type=Variant((ValidText(min_length=1, description="Content"),
+										ValidTextLine(min_length=1, description="Content")),
+										title="A body part",
+										__name__='body'),
+					min_length=1,
+					required=required,
+					__name__='body')
