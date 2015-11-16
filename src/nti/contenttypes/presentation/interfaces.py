@@ -146,6 +146,13 @@ def creator_schema_field(required=False):
 					Object(interface.Interface, title="Creator object")),
 					required=required)
 
+def href_schema_field(title=u'', required=False, default=None):
+	return Variant((ValidTextLine(title="href name"),
+					ValidURI(title="href source uri")),
+					title=title,
+					default=default,
+					required=required)
+	
 class ITaggedContent(interface.Interface):
 	"""
 	Something that can contain tags.
@@ -171,10 +178,8 @@ class IGroupOverViewableWeakRef(IWeakRef):
 	pass
 
 class INTITranscript(IPresentationAsset):
-	src = Variant((	ValidTextLine(title="Transcript source"),
-					ValidURI(title="Transcript source uri")), required=True)
-	srcjsonp = Variant((ValidTextLine(title="Transcript source jsonp"),
-						ValidURI(title="Transcript source uri jsonp")), required=False)
+	src = href_schema_field(title="Transcript source", required=True)
+	srcjsonp = href_schema_field(title="Transcript source jsonp", required=False)
 	lang = ValidTextLine(title="Transcript language", required=True, default='en')
 	type = Choice(vocabulary=TRANSCRIPT_MIMETYPE_VOCABULARY, title='Transcript mimetype',
 				  required=True, default=VTT_TRANSCRIPT_MIMETYPE)
@@ -306,18 +311,18 @@ INTISlideDeck['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	label = ValidTextLine(title="The label", required=True, default=u'')
-	href = ValidTextLine(title="Resource href", required=False, default=u'')
-	icon = ValidTextLine(title="Icon href", required=False)
+	href = href_schema_field(title="Resource href", required=False, default=u'')
+	icon = href_schema_field(title="Icon href", required=False)
 	description = ValidTextLine(title="Timeline description", required=False)
 	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
 
 class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset, IVisible):
-	href = ValidTextLine(title="Related work href", required=False, default=u'')
+	href = href_schema_field(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
 	creator = creator_schema_field(required=False)
 	section = ValidTextLine(title="Section", required=False)
 	description = ValidText(title="Slide video description", required=False)
-	icon = ValidTextLine(title="Related work icon href", required=False)
+	icon = href_schema_field(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
@@ -325,7 +330,7 @@ class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPres
 
 class INTIDiscussionRef(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=False)
-	icon = ValidTextLine(title="Discussion icon href", required=False)
+	icon = href_schema_field(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 	ntiid = Variant((ValidTextLine(title="Discussion NTIID"),
 					 ValidNTIID(title="Discussion NTIID")), required=True)
