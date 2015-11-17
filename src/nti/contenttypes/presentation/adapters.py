@@ -24,8 +24,8 @@ from .interfaces import INTIVideoRef
 @interface.implementer(INTIVideoRef)
 def ntivideo_to_ntivideoref(video):
 	result = NTIVideoRef(ntiid=video.ntiid,
-						 poster=video.poster,
-						 label=video.label)
+						 poster=video.title,
+						 label=video.title)
 	return result
 
 @component.adapter(INTIAudio)
