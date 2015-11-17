@@ -18,7 +18,9 @@ from zope.cachedescriptors.property import readproperty
 
 from nti.common.property import alias
 
+from nti.ntiids.ntiids import TYPE_UUID
 from nti.ntiids.ntiids import make_ntiid
+from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -44,9 +46,11 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 
 	@readproperty
 	def ntiid(self):
+		digest = md5(str(uuid.uuid4())).hexdigest()
+		specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
 		result = make_ntiid(provider='NTI',
 							nttype=NTI_COURSE_OVERVIEW_GROUP,
-							specific=md5(str(uuid.uuid4())).hexdigest())
+							specific=specific)
 		self.ntiid = result
 		return result
 	
