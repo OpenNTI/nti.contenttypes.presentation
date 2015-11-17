@@ -149,7 +149,7 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 class _TargetNTIIDUpdater(InterfaceObjectIO):
 
 	def getTargetNTIID(self, parsed):
-		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid', ''):
+		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid', 'target'):
 			if name in parsed:
 				return ntiid_check(parsed.get(name))
 		return None
