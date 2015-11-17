@@ -87,6 +87,8 @@ class _NTIMediaUpdater(InterfaceObjectIO):
 	def parseTranscripts(self, parsed):
 		transcripts = parsed.get('transcripts')
 		for idx, transcript in enumerate(transcripts or ()):
+			if not isinstance(transcript, Mapping):
+				continue
 			if MIMETYPE not in transcript:
 				transcript[MIMETYPE] = u'application/vnd.nextthought.ntitranscript'
 			obj = find_factory_for(transcript)()
@@ -110,6 +112,8 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
 	def parseSources(self, parsed):
 		sources = parsed.get('sources')
 		for idx, source in enumerate(sources or ()):
+			if not isinstance(source, Mapping):
+				continue
 			if MIMETYPE not in source:
 				source[MIMETYPE] = u'application/vnd.nextthought.ntivideosource'
 			obj = find_factory_for(source)()
@@ -135,6 +139,8 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 	def parseSources(self, parsed):
 		sources = parsed.get('sources')
 		for idx, source in enumerate(sources or ()):
+			if not isinstance(source, Mapping):
+				continue
 			if MIMETYPE not in source:
 				source[MIMETYPE] = u'application/vnd.nextthought.ntiaudiosource'
 			obj = find_factory_for(source)()
@@ -200,8 +206,8 @@ class _NTISlideUpdater(InterfaceObjectIO):
 
 	def fixAll(self, parsed):
 		for name, func in (("slidevideostart", float),
-							("slidevideoend", float),
-							("slidenumber", int)):
+						   ("slidevideoend", float),
+						   ("slidenumber", int)):
 
 			value = parsed.get(name, None)
 			if value is not None and isinstance(value, six.string_types):
