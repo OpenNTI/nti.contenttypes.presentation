@@ -186,7 +186,7 @@ class INTITranscript(IPresentationAsset):
 	purpose = ValidTextLine(title="Transcript purpose", required=True, default='normal')
 
 class INTIIDIdentifiable(interface.Interface):
-	ntiid = ValidNTIID(title="Item NTIID", required=True)
+	ntiid = ValidNTIID(title="Item NTIID", required=False, default=None)
 
 class INTIMediaSource(IPresentationAsset):
 	service = ValidTextLine(title="Source service", required=True)
@@ -326,14 +326,14 @@ class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPres
 	type = ValidTextLine(title="The target mimetype", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
-					 ValidNTIID(title="Related content ntiid")), required=True)
+					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
 
 class INTIDiscussionRef(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=False)
 	icon = href_schema_field(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 	ntiid = Variant((ValidTextLine(title="Discussion NTIID"),
-					 ValidNTIID(title="Discussion NTIID")), required=True)
+					 ValidNTIID(title="Discussion NTIID")), required=False, default=None)
 	target = Variant((ValidTextLine(title="Target NTIID"),
 					  ValidNTIID(title="Target NTIID")), required=True)
 
@@ -349,7 +349,6 @@ INTIDiscussionRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIDiscussionRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIAssessmentRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
-	ntiid = ValidNTIID(title="Assessment Ref NTIID", required=True)
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 IAssessmentRef = INTIAssessmentRef
@@ -400,7 +399,6 @@ class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresenta
 
 class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset,
 							  IFiniteSequence, IIterable):
-	ntiid = ValidNTIID(title="Overview NTIID", required=False)
 	Items = IndexedIterable(value_type=Variant((Object(IGroupOverViewable),
 												Object(IGroupOverViewableWeakRef))),
 						 	title="The overview items", required=False, min_length=0)
