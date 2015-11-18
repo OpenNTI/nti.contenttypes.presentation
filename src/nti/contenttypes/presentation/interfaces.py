@@ -177,7 +177,7 @@ class IGroupOverViewable(interface.Interface):
 class IGroupOverViewableWeakRef(IWeakRef):
 	pass
 
-class INTITranscript(IPresentationAsset):
+class INTITranscript(ILastModified):
 	src = href_schema_field(title="Transcript source", required=True)
 	srcjsonp = href_schema_field(title="Transcript source jsonp", required=False)
 	lang = ValidTextLine(title="Transcript language", required=True, default='en')
@@ -188,7 +188,7 @@ class INTITranscript(IPresentationAsset):
 class INTIIDIdentifiable(interface.Interface):
 	ntiid = ValidNTIID(title="Item NTIID", required=False, default=None)
 
-class INTIMediaSource(IPresentationAsset):
+class INTIMediaSource(ILastModified):
 	service = ValidTextLine(title="Source service", required=True)
 	thumbnail = ValidTextLine(title="Source thumbnail", required=False)
 

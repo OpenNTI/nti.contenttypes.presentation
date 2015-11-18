@@ -29,8 +29,9 @@ from nti.schema.field import SchemaConfigured
 from .interfaces import IPresentationAsset
 
 class PersistentMixin(SchemaConfigured,
-					  PersistentCreatedModDateTrackingObject,
-					  Contained):
+					  PersistentCreatedModDateTrackingObject):
+
+	parameters = {}
 
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
@@ -40,6 +41,6 @@ class PersistentMixin(SchemaConfigured,
 @interface.implementer(IPresentationAsset, IContentTypeAware, ICreated)
 class PersistentPresentationAsset(PersistentMixin,
 								  RecordableMixin, 
-								  PublishableMixin): # order matters
-	parameters = {}
+								  PublishableMixin,
+								  Contained): # order matters
 	creator = None

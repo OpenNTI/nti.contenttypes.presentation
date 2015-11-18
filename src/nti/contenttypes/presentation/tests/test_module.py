@@ -29,6 +29,6 @@ class TestModule(unittest.TestCase):
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(11))
 
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
-		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(21))
+		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(18))
 
 		assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))

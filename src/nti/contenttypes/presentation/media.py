@@ -13,11 +13,14 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
+from zope.mimetype.interfaces import IContentTypeAware
+
 from nti.common.property import alias
 
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
+from ._base import PersistentMixin
 from ._base import PersistentPresentationAsset
 
 from .interfaces import INTIAudio
@@ -29,22 +32,22 @@ from .interfaces import INTITranscript
 from .interfaces import INTIAudioSource
 from .interfaces import INTIVideoSource
 
-@interface.implementer(INTITranscript)
-class NTITranscript(PersistentPresentationAsset):
+@interface.implementer(INTITranscript, IContentTypeAware)
+class NTITranscript(PersistentMixin):
 	createDirectFieldProperties(INTITranscript)
 
 	__external_class_name__ = u"Transcript"
 	mime_type = mimeType = u'application/vnd.nextthought.ntitranscript'
 	
-@interface.implementer(INTIAudioSource)
-class NTIAudioSource(PersistentPresentationAsset):
+@interface.implementer(INTIAudioSource, IContentTypeAware)
+class NTIAudioSource(PersistentMixin):
 	createDirectFieldProperties(INTIAudioSource)
 
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiosource'
 					
-@interface.implementer(INTIVideoSource)
-class NTIVideoSource(PersistentPresentationAsset):
+@interface.implementer(INTIVideoSource, IContentTypeAware)
+class NTIVideoSource(PersistentMixin):
 	createDirectFieldProperties(INTIVideoSource)
 
 	__external_class_name__ = u"VideoSource"
