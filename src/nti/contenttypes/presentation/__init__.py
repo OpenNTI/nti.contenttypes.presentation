@@ -70,6 +70,22 @@ NTI_COURSE_OVERVIEW_SPACER = u'NTICourseOverviewSpacer'
 LESSON_OVERVIEW = u'LessonOverview'
 NTI_LESSON_OVERVIEW = u'NTILessonOverview'
 
+AUDIO_MIMETYES = ('application/vnd.nextthought.ntiaudio',)
+VIDEO_MIMETYES = ('application/vnd.nextthought.ntivideo',)
+AUDIO_REF_MIMETYES = ('application/vnd.nextthought.ntiaudioref',)
+VIDEO_REF_MIMETYES = ('application/vnd.nextthought.ntivideoref',)
+RELATED_WORK_REF_MIMETYES = ('application/vnd.nextthought.relatedworkref',)
+LESSON_OVERVIEW_MIMETYES = ('application/vnd.nextthought.ntilessonoverview',)
+COURSE_OVERVIEW_GROUP_MIMETYES = ('application/vnd.nextthought.nticourseoverviewgroup',)
+
+POLL_REF_MIMETYES = ('application/vnd.nextthought.pollref', 'application/vnd.nextthought.napoll')
+TIMELINE_MIMETYES = ('application/vnd.nextthought.ntitimeline', 'application/vnd.nextthought.timeline')
+SURVEY_REF_MIMETYES = ('application/vnd.nextthought.surveyref', 'application/vnd.nextthought.surveyref')
+QUESTION_REF_MIMETYES = ('application/vnd.nextthought.questionref', 'application/vnd.nextthought.naquestion')
+ASSIGNMENT_REF_MIMETYES = ('application/vnd.nextthought.assignmentref', 'application/vnd.nextthought.assignment')
+DISCUSSION_REF_MIMETYES = ('application/vnd.nextthought.discussionref', 'application/vnd.nextthought.discussion')
+QUESTIONSET_REF_MIMETYES = ('application/vnd.nextthought.questionsetref', 'application/vnd.nextthought.naquestionset')
+
 PACKAGE_CONTAINER_INTERFACES = (INTIAudio, INTIVideo, INTITimeline, INTIRelatedWorkRef,
 								INTISlideDeck, INTISlide, INTISlideVideo)
 

@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from collections import Mapping
+
 from nti.externalization.interfaces import StandardExternalFields
 
 from nti.externalization.internalization import pre_hook
@@ -29,6 +31,21 @@ from .internalization import internalization_courseoverview_pre_hook
 from .internalization import internalization_lessonoverview_pre_hook
 from .internalization import internalization_questionsetref_pre_hook
 from .internalization import internalization_relatedworkref_pre_hook
+
+from . import AUDIO_MIMETYES
+from . import VIDEO_MIMETYES
+from . import POLL_REF_MIMETYES
+from . import TIMELINE_MIMETYES
+from . import AUDIO_REF_MIMETYES
+from . import VIDEO_REF_MIMETYES
+from . import SURVEY_REF_MIMETYES
+from . import QUESTION_REF_MIMETYES
+from . import ASSIGNMENT_REF_MIMETYES
+from . import DISCUSSION_REF_MIMETYES
+from . import LESSON_OVERVIEW_MIMETYES
+from . import QUESTIONSET_REF_MIMETYES
+from . import RELATED_WORK_REF_MIMETYES
+from . import COURSE_OVERVIEW_GROUP_MIMETYES
 
 MIMETYPE = StandardExternalFields.MIMETYPE
 
@@ -145,34 +162,72 @@ def create_lessonoverview_from_external(ext_obj, notify=True, _exec=True):
 
 def create_from_external(ext_obj, notify=True, _exec=True):
 	mimeType = ext_obj.get('mimeType') or ext_obj.get(MIMETYPE)
-	if mimeType == 'application/vnd.nextthought.ntilessonoverview':
+	if mimeType in LESSON_OVERVIEW_MIMETYES:
 		result = create_lessonoverview_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType == 'application/vnd.nextthought.nticourseoverviewgroup':
+	elif mimeType in COURSE_OVERVIEW_GROUP_MIMETYES:
 		result = create_courseoverview_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in ('application/vnd.nextthought.ntitimeline', 'application/vnd.nextthought.timeline'):
+	elif mimeType in TIMELINE_MIMETYES:
 		result = create_timelime_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType == 'application/vnd.nextthought.relatedworkref':
+	elif mimeType in RELATED_WORK_REF_MIMETYES:
 		result = create_relatedwork_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in ('application/vnd.nextthought.discussionref', 'application/vnd.nextthought.discussion'):
+	elif mimeType in DISCUSSION_REF_MIMETYES:
 		result = create_discussionref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in ('application/vnd.nextthought.pollref', 'application/vnd.nextthought.napoll'):
+	elif mimeType in POLL_REF_MIMETYES:
 		result = create_pollref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in ('application/vnd.nextthought.surveyref', 'application/vnd.nextthought.nasurvey'):
+	elif mimeType in SURVEY_REF_MIMETYES:
 		result = create_surveyref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in ('application/vnd.nextthought.assignmentref', 'application/vnd.nextthought.assignment'):
+	elif mimeType in ASSIGNMENT_REF_MIMETYES:
 		result = create_assignmentref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in ('application/vnd.nextthought.questionsetref', 'application/vnd.nextthought.naquestionset'):
+	elif mimeType in QUESTIONSET_REF_MIMETYES:
 		result = create_questionsetref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in ('application/vnd.nextthought.questionref', 'application/vnd.nextthought.naquestion'):
+	elif mimeType in QUESTION_REF_MIMETYES:
 		result = create_questionref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType == 'application/vnd.nextthought.ntiaudioref':
-		result = create_ntiaudioref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType == 'application/vnd.nextthought.ntivideoref':
+	elif mimeType in VIDEO_REF_MIMETYES:
 		result = create_ntivideoref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType == 'application/vnd.nextthought.ntivideo':
+	elif mimeType in AUDIO_REF_MIMETYES:
+		result = create_ntiaudioref_from_external(ext_obj, notify=notify, _exec=_exec)
+	elif mimeType in VIDEO_MIMETYES:
 		result = create_ntivideo_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType == 'application/vnd.nextthought.ntiaudio':
+	elif mimeType in AUDIO_MIMETYES:
 		result = create_ntiaudio_from_external(ext_obj, notify=notify, _exec=_exec)
 	else:
 		result = create_object_from_external(ext_obj, notify=notify, _exec=_exec)
+	return result
+
+def get_external_pre_hook(ext_obj):
+	if isinstance(ext_obj, Mapping):
+		mimeType = ext_obj.get('mimeType') or ext_obj.get(MIMETYPE)
+	else:
+		mimeType = str(ext_obj)
+
+	if mimeType in LESSON_OVERVIEW_MIMETYES:
+		result = internalization_lessonoverview_pre_hook
+	elif mimeType in COURSE_OVERVIEW_GROUP_MIMETYES:
+		result = internalization_courseoverview_pre_hook
+	elif mimeType in TIMELINE_MIMETYES:
+		result = internalization_ntitimeline_pre_hook
+	elif mimeType in RELATED_WORK_REF_MIMETYES:
+		result = internalization_relatedworkref_pre_hook
+	elif mimeType in DISCUSSION_REF_MIMETYES:
+		result = internalization_discussionref_pre_hook
+	elif mimeType in POLL_REF_MIMETYES:
+		result = internalization_pollref_pre_hook
+	elif mimeType in SURVEY_REF_MIMETYES:
+		result = internalization_surveyref_pre_hook
+	elif mimeType in ASSIGNMENT_REF_MIMETYES:
+		result = internalization_assignmentref_pre_hook
+	elif mimeType in QUESTIONSET_REF_MIMETYES:
+		result = internalization_questionsetref_pre_hook
+	elif mimeType in QUESTION_REF_MIMETYES:
+		result = internalization_questionref_pre_hook
+	elif mimeType in VIDEO_REF_MIMETYES:
+		result = internalization_ntivideoref_pre_hook
+	elif mimeType in AUDIO_REF_MIMETYES:
+		result = internalization_ntiaudioref_pre_hook
+	elif mimeType in VIDEO_MIMETYES:
+		result = internalization_ntivideo_pre_hook
+	elif mimeType in AUDIO_MIMETYES:
+		result = internalization_ntiaudio_pre_hook
+	else:
+		result = pre_hook
 	return result
