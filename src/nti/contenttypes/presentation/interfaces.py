@@ -16,6 +16,9 @@ from zope.dublincore.interfaces import IDCDescriptiveProperties
 from zope.interface.common.mapping import IMapping
 from zope.interface.common.sequence import IFiniteSequence
 
+from zope.interface.interfaces import ObjectEvent
+from zope.interface.interfaces import IObjectEvent
+
 from zope.location.interfaces import IContained
 
 from zope.schema import vocabulary
@@ -438,6 +441,13 @@ class IPresentationAssetContainer(IMapping):
 	something like the content library package may be adaptable to this,
 	typically with annotations).
 	"""
+
+class IWillRemovePresentationAssetEvent(IObjectEvent):
+	pass
+
+@interface.implementer(IWillRemovePresentationAssetEvent)
+class WillRemovePresentationAssetEvent(ObjectEvent):
+	pass
 
 import zope.deferredimport
 zope.deferredimport.initialize()
