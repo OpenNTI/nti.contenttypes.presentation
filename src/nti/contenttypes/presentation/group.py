@@ -62,7 +62,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 		self.items[index] = item
 	
 	def __len__(self):
-		result = len(self.items) ## include weak refs
+		result = len(self.items or ()) # include weak refs
 		return result
 
 	def __iter__(self):
@@ -78,7 +78,9 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 
 	def remove(self, item):
 		try:
-			self.items.remove(item)
-			return True
+			if self.items:
+				self.items.remove(item)
+				return True
 		except ValueError:
-			return False
+			pass
+		return False

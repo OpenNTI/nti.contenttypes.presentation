@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from persistent.list import PersistentList
+
 from nti.common.property import alias
 
 from nti.schema.schema import EqHash 
@@ -64,16 +66,18 @@ class NTISlideDeck(PersistentPresentationAsset):
 
 	def add(self, item):
 		if INTISlide.providedBy(item):
+			self.slides = PersistentList() if self.slides is None else self.slides
 			self.slides.append(item)
 		elif INTISlideVideo.providedBy(item):
+			self.videos = PersistentList() if self.videos is None else self.videos
 			self.videos.append(item)
 
 	def remove(self, item):
 		result = True
 		try:
-			if INTISlide.providedBy(item):
+			if INTISlide.providedBy(item) and self.slides:
 				self.slides.remove(item)
-			elif INTISlideVideo.providedBy(item):
+			elif INTISlideVideo.providedBy(item) and self.videos:
 				self.videos.remove(item)
 			else:
 				result = False
