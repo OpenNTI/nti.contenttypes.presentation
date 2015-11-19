@@ -16,8 +16,6 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
-from zope.location.interfaces import ISublocations
-
 from nti.common.property import alias
 
 from nti.ntiids.ntiids import make_ntiid
@@ -48,7 +46,7 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 		return result
 
 @EqHash('ntiid')
-@interface.implementer(INTILessonOverview, ISublocations)
+@interface.implementer(INTILessonOverview)
 class NTILessonOverView(PersistentPresentationAsset):
 	createDirectFieldProperties(INTILessonOverview)
 
@@ -80,10 +78,6 @@ class NTILessonOverView(PersistentPresentationAsset):
 		except ValueError:
 			pass
 		return False
-
-	def sublocations(self):
-		for item in self.items or ():
-			yield item
 
 import zope.deferredimport
 zope.deferredimport.initialize()
