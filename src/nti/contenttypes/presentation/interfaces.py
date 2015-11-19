@@ -407,6 +407,16 @@ class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset,
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
 	accentColor = ValidTextLine(title="Overview color", required=False)
+	
+	def pop(idx):
+		"""
+		remove the group at the specified index
+		"""
+		
+	def remove(item):
+		"""
+		remove the specified item
+		"""
 
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -420,6 +430,16 @@ class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset,
 	title = ValidTextLine(title="Overview title", required=False)
 	lesson = ValidTextLine(title="Lesson NTIID", required=False)
 
+	def pop(idx):
+		"""
+		remove the group at the specified index
+		"""
+		
+	def remove(group):
+		"""
+		remove the specified group
+		"""
+	
 INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTILessonOverview['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 

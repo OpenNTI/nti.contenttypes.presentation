@@ -67,6 +67,16 @@ class NTILessonOverView(PersistentPresentationAsset):
 	def __iter__(self):
 		return iter(self.items or ())
 
+	def pop(self, index):
+		self.items.pop(index)
+
+	def remove(self, group):
+		try:
+			self.items.remove(group)
+			return True
+		except ValueError:
+			return False
+
 	def sublocations(self):
 		for item in self.items or ():
 			yield item

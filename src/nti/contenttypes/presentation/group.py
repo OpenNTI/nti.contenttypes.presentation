@@ -73,6 +73,16 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 			else:
 				logger.warn("Cannot resolve %s", item)
 	
+	def pop(self, index):
+		self.items.pop(index)
+
+	def remove(self, item):
+		try:
+			self.items.remove(item)
+			return True
+		except ValueError:
+			return False
+
 	def sublocations(self):
 		for item in self:
 			yield item
