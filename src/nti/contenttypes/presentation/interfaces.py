@@ -307,7 +307,7 @@ class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITit
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
 
-	def add(item):
+	def append(item):
 		"""
 		add an item to this deck
 		"""
@@ -418,11 +418,16 @@ class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset,
 	title = ValidTextLine(title="Overview title", required=False)
 	accentColor = ValidTextLine(title="Overview color", required=False)
 	
+	def append(item):
+		"""
+		Add an item
+		"""
+
 	def pop(idx):
 		"""
 		remove the group at the specified index
 		"""
-		
+
 	def remove(item):
 		"""
 		remove the specified item
@@ -440,16 +445,21 @@ class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset,
 	title = ValidTextLine(title="Overview title", required=False)
 	lesson = ValidTextLine(title="Lesson NTIID", required=False)
 
+	def append(group):
+		"""
+		Add a group
+		"""
+
 	def pop(idx):
 		"""
 		remove the group at the specified index
 		"""
-		
+	
 	def remove(group):
 		"""
 		remove the specified group
 		"""
-	
+
 INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTILessonOverview['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 

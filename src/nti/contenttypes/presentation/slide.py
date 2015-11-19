@@ -64,14 +64,15 @@ class NTISlideDeck(PersistentPresentationAsset):
 	Creator = alias('creator')
 	id = alias('slidedeckid')
 
-	def add(self, item):
+	def append(self, item):
 		if INTISlide.providedBy(item):
 			self.slides = PersistentList() if self.slides is None else self.slides
 			self.slides.append(item)
 		elif INTISlideVideo.providedBy(item):
 			self.videos = PersistentList() if self.videos is None else self.videos
 			self.videos.append(item)
-
+	add = append
+		
 	def remove(self, item):
 		result = True
 		try:

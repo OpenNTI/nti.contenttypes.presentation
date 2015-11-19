@@ -16,6 +16,8 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
+from persistent.list import PersistentList
+
 from nti.common.property import alias
 
 from nti.ntiids.ntiids import TYPE_UUID
@@ -29,7 +31,9 @@ from nti.wref.interfaces import IWeakRef
 
 from ._base import PersistentPresentationAsset
 
+from .interfaces import IGroupOverViewable
 from .interfaces import INTICourseOverviewGroup
+from .interfaces import IGroupOverViewableWeakRef
 
 from . import NTI_COURSE_OVERVIEW_GROUP
 
@@ -72,6 +76,14 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 				yield resolved
 			else:
 				logger.warn("Cannot resolve %s", item)
+	
+	def append(self, item):
+		assert IGroupOverViewable.providedBy(item) \
+			or IGroupOverViewableWeakRef.providedBy(item)
+
+		self.items = PersistentList() if self.items is None else self.items
+		self.items.append(item)
+	add = append
 	
 	def pop(self, index):
 		self.items.pop(index)

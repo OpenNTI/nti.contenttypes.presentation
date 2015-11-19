@@ -16,6 +16,8 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
+from persistent.list import PersistentList
+
 from nti.common.property import alias
 
 from nti.ntiids.ntiids import make_ntiid
@@ -26,6 +28,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 from ._base import PersistentPresentationAsset
 
 from .interfaces import INTILessonOverview
+from .interfaces import INTICourseOverviewGroup
 from .interfaces import INTICourseOverviewSpacer
 
 from . import NTI_COURSE_OVERVIEW_SPACER
@@ -66,6 +69,12 @@ class NTILessonOverView(PersistentPresentationAsset):
 
 	def __iter__(self):
 		return iter(self.items or ())
+
+	def append(self, group):
+		assert INTICourseOverviewGroup.providedBy(group)
+		self.items = PersistentList() if self.items is None else self.items
+		self.items.append(group)
+	add = append
 
 	def pop(self, index):
 		self.items.pop(index)
