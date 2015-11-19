@@ -82,7 +82,3 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 			return True
 		except ValueError:
 			return False
-
-	def sublocations(self):
-		for item in self:
-			yield item

@@ -307,6 +307,16 @@ class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITit
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
 
+	def add(item):
+		"""
+		add an item to this deck
+		"""
+		
+	def remove(item):
+		"""
+		remove an item from this deck
+		"""
+
 INTISlideDeck['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)

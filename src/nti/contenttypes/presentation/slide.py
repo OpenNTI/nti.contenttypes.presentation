@@ -61,3 +61,22 @@ class NTISlideDeck(PersistentPresentationAsset):
 	videos = alias('Videos')
 	Creator = alias('creator')
 	id = alias('slidedeckid')
+
+	def add(self, item):
+		if INTISlide.providedBy(item):
+			self.slides.append(item)
+		elif INTISlideVideo.providedBy(item):
+			self.videos.append(item)
+
+	def remove(self, item):
+		result = True
+		try:
+			if INTISlide.providedBy(item):
+				self.slides.remove(item)
+			elif INTISlideVideo.providedBy(item):
+				self.videos.remove(item)
+			else:
+				result = False
+		except ValueError:
+			result = False
+		return result
