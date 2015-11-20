@@ -171,6 +171,9 @@ class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnot
 	"""
 	marker interface for all presentation assests
 	"""
+	
+class IAssetRef(interface.Interface):
+	target = interface.Attribute("target object id")
 
 class IGroupOverViewable(interface.Interface):
 	"""
@@ -202,7 +205,7 @@ class IVisible(interface.Interface):
 	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='Media ref visibility',
 					 	required=False, default=EVERYONE)
 
-class IMediaRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
+class IMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
 	target = ValidNTIID(title="Target NTIID", required=False)
 
 class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
@@ -243,7 +246,7 @@ INTIVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTIVideoRef(IMediaRef):
 	label = ValidText(title="Video label", required=False)
 	poster = ValidTextLine(title="Video poster", required=False)
-
+	
 INTIVideoRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIVideoRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
@@ -329,7 +332,8 @@ class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	description = ValidTextLine(title="Timeline description", required=False)
 	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
 
-class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPresentationAsset, IVisible):
+class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICreated,
+						 IPresentationAsset, IVisible):
 	href = href_schema_field(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
 	creator = creator_schema_field(required=False)
@@ -341,7 +345,7 @@ class INTIRelatedWorkRef(IGroupOverViewable, INTIIDIdentifiable, ICreated, IPres
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
 
-class INTIDiscussionRef(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
+class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=False)
 	icon = href_schema_field(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
@@ -361,7 +365,7 @@ class INTIDiscussionRef(IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresen
 INTIDiscussionRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIDiscussionRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTIAssessmentRef(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
+class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 IAssessmentRef = INTIAssessmentRef
