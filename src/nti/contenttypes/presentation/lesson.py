@@ -72,6 +72,7 @@ class NTILessonOverView(PersistentPresentationAsset):
 
 	def append(self, group):
 		assert INTICourseOverviewGroup.providedBy(group)
+		group.__parent__ = self # take ownership
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(group)
 	add = append
