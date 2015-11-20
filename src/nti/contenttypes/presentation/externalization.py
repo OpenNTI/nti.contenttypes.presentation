@@ -50,7 +50,6 @@ OID = StandardExternalFields.OID
 CLASS = StandardExternalFields.CLASS
 NTIID = StandardExternalFields.NTIID
 ITEMS = StandardExternalFields.ITEMS
-CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
 CREATED_TIME = StandardExternalFields.CREATED_TIME
 LAST_MODIFIED = StandardExternalFields.LAST_MODIFIED
@@ -82,8 +81,8 @@ class _NTIMediaRenderExternalObject(_NTIBaseRenderExternalObject):
 		if MIMETYPE in extDict:
 			extDict[StandardExternalFields.CTA_MIMETYPE] = extDict[MIMETYPE]  # legacy
 
-		if CREATOR in extDict:
-			extDict[u'creator'] = extDict[CREATOR] # legacy
+		if 'byline' in extDict:
+			extDict[u'creator'] = extDict['byline'] # legacy
 
 		if 'ntiid' in extDict and NTIID not in extDict:
 			extDict[NTIID] = extDict['ntiid'] # alias
@@ -149,8 +148,8 @@ class _NTIBaseSlideExternalObject(_NTIBaseRenderExternalObject):
 		if CLASS in extDict:
 			extDict[u'class'] = (extDict.get(CLASS) or u'').lower() # legacy
 
-		if CREATOR in extDict:
-			extDict[u'creator'] = extDict[CREATOR] # alias
+		if 'byline' in extDict:
+			extDict[u'creator'] = extDict['byline'] # alias
 
 		if 'description' in extDict and not extDict['description']:
 			extDict.pop('description')
@@ -186,12 +185,14 @@ class _NTISlideDeckRenderExternalObject(_NTIBaseSlideExternalObject):
 
 	def toExternalObject(self, *args, **kwargs):
 		extDict = LocatedExternalDict()
-		extDict[u'title'] = self.slide.title
-		extDict[u'creator'] = self.slide.creator
 		extDict[MIMETYPE] = self.slide.mimeType
+		extDict[CLASS] = extDict[u'class'] = NTI_SLIDE_DECK.lower()
+		
+		extDict[u'title'] = self.slide.title
+		extDict[u'creator'] = self.slide.byline # legacy
+		extDict[u'byline'] = self.slide.byline
 		extDict[u'slidedeckid'] = self.slide.slidedeckid
 		extDict[u'ntiid'] = extDict[NTIID] = self.slide.ntiid
-		extDict[CLASS] = extDict[u'class'] = NTI_SLIDE_DECK.lower()
 		extDict[u'Slides'] = [toExternalObject(x, name='render', decorate=False)
 							  for x in self.slide.slides]
 		extDict[u'Videos'] = [toExternalObject(x, name='render', decorate=False) 
@@ -223,8 +224,8 @@ class _NTIRelatedWorkRefRenderExternalObject(_NTIBaseRenderExternalObject):
 
 	def _do_toExternalObject(self, extDict):
 		super(_NTIRelatedWorkRefRenderExternalObject, self)._do_toExternalObject(extDict)
-		if CREATOR in extDict:
-			extDict[u'creator'] = extDict[CREATOR] # legacy
+		if 'byline' in extDict:
+			extDict[u'creator'] = extDict['byline'] # legacy
 		if 'description' in extDict:
 			extDict['description'] = extDict.get('description', u'').strip()
 			extDict[u'desc'] = extDict['description'] # legacy

@@ -77,12 +77,23 @@ def ntiid_check(s):
 	return s
 
 @interface.implementer(IInternalObjectUpdater)
-class _NTIMediaUpdater(InterfaceObjectIO):
+class _AssetUpdater(InterfaceObjectIO):
 
 	def fixCreator(self, parsed):
 		if 'creator' in parsed:
-			parsed[CREATOR] = parsed.pop('creator')
+			parsed['byline'] = parsed.pop('creator')
 		return self
+
+	def fixAll(self, parsed):
+		self.fixCreator(parsed)
+		return parsed
+
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		self.fixAll(parsed)
+		result = super(_AssetUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		return result
+
+class _NTIMediaUpdater(_AssetUpdater):
 
 	def parseTranscripts(self, parsed):
 		transcripts = parsed.get('transcripts')
@@ -98,11 +109,6 @@ class _NTIMediaUpdater(InterfaceObjectIO):
 	def fixAll(self, parsed):
 		self.fixCreator(parsed).parseTranscripts(parsed)
 		return parsed
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTIMediaUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
 
 @component.adapter(INTIVideo)
 class _NTIVideoUpdater(_NTIMediaUpdater):
@@ -151,8 +157,7 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 		self.fixCreator(parsed).parseSources(parsed).parseTranscripts(parsed)
 		return parsed
 
-@interface.implementer(IInternalObjectUpdater)
-class _TargetNTIIDUpdater(InterfaceObjectIO):
+class _TargetNTIIDUpdater(_AssetUpdater):
 
 	def getTargetNTIID(self, parsed):
 		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid', 'target'):
@@ -178,29 +183,20 @@ class _TargetNTIIDUpdater(InterfaceObjectIO):
 
 		return self
 
-@interface.implementer(IInternalObjectUpdater)
 class _NTIMediaRefUpdater(_TargetNTIIDUpdater):
 
 	def fixAll(self, parsed):
-		self.fixTarget(parsed)
+		self.fixTarget(parsed).fixCreator(parsed)
 		return parsed
 
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTIMediaRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
-
-@interface.implementer(IInternalObjectUpdater)
 class _NTIVideoRefUpdater(_NTIMediaRefUpdater):
 	_ext_iface_upper_bound = INTIVideoRef
 
-@interface.implementer(IInternalObjectUpdater)
 class _NTIAudioRefUpdater(_NTIMediaRefUpdater):
 	_ext_iface_upper_bound = INTIAudioRef
 
 @component.adapter(INTISlide)
-@interface.implementer(IInternalObjectUpdater)
-class _NTISlideUpdater(InterfaceObjectIO):
+class _NTISlideUpdater(_AssetUpdater):
 
 	_ext_iface_upper_bound = INTISlide
 
@@ -215,50 +211,22 @@ class _NTISlideUpdater(InterfaceObjectIO):
 					parsed[name] = func(value)
 				except (TypeError, ValueError):
 					pass
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTISlideUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 @component.adapter(INTISlideVideo)
-@interface.implementer(IInternalObjectUpdater)
-class _NTISlideVideoUpdater(InterfaceObjectIO):
+class _NTISlideVideoUpdater(_AssetUpdater):
 
 	_ext_iface_upper_bound = INTISlideVideo
 
 	def fixAll(self, parsed):
-		if 'creator' in parsed:
-			parsed[CREATOR] = parsed.pop('creator')
-
 		if 'video-ntiid' in parsed:
 			parsed[u'video_ntiid'] = ntiid_check(parsed.pop('video-ntiid'))
-
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTISlideVideoUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 @component.adapter(INTISlideDeck)
-@interface.implementer(IInternalObjectUpdater)
-class _NTISlideDeckUpdater(InterfaceObjectIO):
+class _NTISlideDeckUpdater(_AssetUpdater):
 
 	_ext_iface_upper_bound = INTISlideDeck
-
-	def fixAll(self, parsed):
-		if 'creator' in parsed:
-			parsed[CREATOR] = parsed.pop('creator')
-
-		if 'slidedeckid' in parsed and not parsed.get('ntiid'):
-			parsed[u'ntiid'] = ntiid_check(parsed['slidedeckid'])
-
-		if 'ntiid' in parsed and not parsed.get('slidedeckid'):
-			parsed[u'slidedeckid'] = ntiid_check(parsed['ntiid'])
-
-		return self
 
 	def parseSlides(self, parsed):
 		slides = PersistentList(parsed.get('Slides') or ())
@@ -272,14 +240,19 @@ class _NTISlideDeckUpdater(InterfaceObjectIO):
 			parsed[u'Videos'] = videos
 		return self
 
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed).parseSlides(parsed).parseVideos(parsed)
-		result = super(_NTISlideDeckUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+	def fixAll(self, parsed):
+		self.fixCreator(parsed)
+		
+		if 'slidedeckid' in parsed and not parsed.get('ntiid'):
+			parsed[u'ntiid'] = ntiid_check(parsed['slidedeckid'])
+
+		if 'ntiid' in parsed and not parsed.get('slidedeckid'):
+			parsed[u'slidedeckid'] = ntiid_check(parsed['ntiid'])
+
+		return self.parseSlides(parsed).parseVideos(parsed)
 
 @component.adapter(INTITimeline)
-@interface.implementer(IInternalObjectUpdater)
-class _NTITimelineUpdater(InterfaceObjectIO):
+class _NTITimelineUpdater(_AssetUpdater):
 
 	_ext_iface_upper_bound = INTITimeline
 
@@ -290,12 +263,7 @@ class _NTITimelineUpdater(InterfaceObjectIO):
 			parsed[u'description'] = parsed.pop('desc')
 		if 'suggested-inline' in parsed:
 			parsed[u'suggested_inline'] = parsed.pop('suggested-inline')
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTITimelineUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 @component.adapter(INTIRelatedWorkRef)
 class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):
@@ -303,9 +271,6 @@ class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):
 	_ext_iface_upper_bound = INTIRelatedWorkRef
 
 	def fixAll(self, parsed):
-		if 'creator' in parsed:
-			parsed[CREATOR] = parsed.pop('creator')
-
 		if 'desc' in parsed:
 			parsed[u'description'] = parsed.pop('desc')
 
@@ -314,12 +279,8 @@ class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):
 		if 'targetMimeType' in parsed:
 			parsed[u'type'] = parsed.pop('targetMimeType')
 
-		return self
+		return self.fixCreator(parsed)
 
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTIRelatedWorkRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
 _NTIRelatedWorkUpdater = _NTIRelatedWorkRefUpdater
 
 @component.adapter(INTIDiscussionRef)
@@ -345,12 +306,7 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 			parsed['ntiid'] = ntiid
 		if not parsed.get('id'):
 			parsed['id'] = ntiid
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTIDiscussionRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 @component.adapter(INTIAssignmentRef)
 class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
@@ -363,7 +319,7 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 			parsed[u'title'] = parsed['label']
 		elif not parsed.get('label') and parsed.get('title'):
 			parsed[u'label'] = parsed['title']
-		return self
+		return self.fixCreator(parsed)
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
@@ -379,12 +335,7 @@ class _NTIQuestionSetRefUpdater(_TargetNTIIDUpdater):
 		self.fixTarget(parsed, transfer=True)
 		if 'question-count' in parsed:
 			parsed[u'question_count'] = int(parsed.pop('question-count'))
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTIQuestionSetRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 @component.adapter(INTIQuestionRef)
 class _NTIQuestionRefUpdater(_TargetNTIIDUpdater):
@@ -393,12 +344,7 @@ class _NTIQuestionRefUpdater(_TargetNTIIDUpdater):
 
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTIQuestionRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 @component.adapter(INTIPollRef)
 class _NTIPollRefUpdater(_TargetNTIIDUpdater):
@@ -407,12 +353,7 @@ class _NTIPollRefUpdater(_TargetNTIIDUpdater):
 
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTIPollRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 @component.adapter(INTISurveyRef)
 class _NTISurveyRefUpdater(_TargetNTIIDUpdater):
@@ -423,16 +364,10 @@ class _NTISurveyRefUpdater(_TargetNTIIDUpdater):
 		self.fixTarget(parsed, transfer=True)
 		if 'question-count' in parsed:
 			parsed[u'question_count'] = int(parsed.pop('question-count'))
-		return self
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTISurveyRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 @component.adapter(INTICourseOverviewSpacer)
-@interface.implementer(IInternalObjectUpdater)
-class _NTICourseOverviewSpacerUpdater(InterfaceObjectIO):
+class _NTICourseOverviewSpacerUpdater(_AssetUpdater):
 
 	_ext_iface_upper_bound = INTICourseOverviewSpacer
 
@@ -442,8 +377,7 @@ class _NTICourseOverviewSpacerUpdater(InterfaceObjectIO):
 		return result
 
 @component.adapter(INTICourseOverviewGroup)
-@interface.implementer(IInternalObjectUpdater)
-class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
+class _NTICourseOverviewGroupUpdater(_AssetUpdater):
 
 	_ext_iface_upper_bound = INTICourseOverviewGroup
 
@@ -452,17 +386,15 @@ class _NTICourseOverviewGroupUpdater(InterfaceObjectIO):
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		items = PersistentList(parsed.get(ITEMS) or ())
 		parsed[ITEMS] = items
-		return parsed
+		return self.fixCreator(parsed)
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
 		result = super(_NTICourseOverviewGroupUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		assert self._ext_replacement().ntiid, "No NTIID provided"
 		return result
 
 @component.adapter(INTILessonOverview)
-@interface.implementer(IInternalObjectUpdater)
-class _NTILessonOverviewUpdater(InterfaceObjectIO):
+class _NTILessonOverviewUpdater(_AssetUpdater):
 
 	_ext_iface_upper_bound = INTILessonOverview
 
@@ -479,12 +411,7 @@ class _NTILessonOverviewUpdater(InterfaceObjectIO):
 			parsed[u'lesson'] = ntiid
 		items = PersistentList(parsed.get(ITEMS) or ())
 		parsed[ITEMS] = items
-		return parsed
-
-	def updateFromExternalObject(self, parsed, *args, **kwargs):
-		self.fixAll(parsed)
-		result = super(_NTILessonOverviewUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		return result
+		return self.fixCreator(parsed)
 
 def internalization_ntivideo_pre_hook(k, x):
 	if isinstance(x, Mapping) and 'mimeType' in x:

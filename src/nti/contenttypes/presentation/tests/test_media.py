@@ -52,6 +52,7 @@ class TestMedia(unittest.TestCase):
 
 		ntivideo = create_ntivideo_from_external(source)
 		assert_that(ntivideo, has_property('creator', is_(u'OU')))
+		assert_that(ntivideo, has_property('byline', is_(u'OU')))
 		assert_that(ntivideo, has_property('title', is_(u"Andrew Johnson")))
 		assert_that(ntivideo, has_property('mimeType', is_(u"application/vnd.nextthought.ntivideo")))
 		assert_that(ntivideo, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NTIVideo-LSTD1153_S_2015_History_United_States_1865_to_Present.ntivideo.video_Andrew_Johnson")))
@@ -91,6 +92,7 @@ class TestMedia(unittest.TestCase):
 		ntiaudio = create_ntiaudio_from_external(source)
 		assert_that(ntiaudio, has_property('creator', is_(u'Alibra')))
 		assert_that(ntiaudio, has_property('title', is_(u"audio")))
+		assert_that(ntiaudio, has_property('byline', is_(u'Alibra')))
 		assert_that(ntiaudio, has_property('mimeType', is_(u"application/vnd.nextthought.ntiaudio")))
 		assert_that(ntiaudio, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:Alibra-NTIAudio-Alibra_Unit7.ntiaudio.audio_90how")))
 

@@ -62,6 +62,7 @@ class TestSlide(unittest.TestCase):
 		slide = create_object_from_external(source)
 		assert_that(slide, has_property('thumbnail', is_("//www.kaltura.com/p/1500101/thumbnail/entry_id/0_06h42bu6/width/640/")))
 		assert_that(slide, has_property('creator', is_("Deborah Trytten")))
+		assert_that(slide, has_property('byline', is_("Deborah Trytten")))
 		assert_that(slide, has_property('title', is_("Install Software on Macintosh")))
 		assert_that(slide, has_property("deck", "tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac"))
 		assert_that(slide, has_property('mimeType', is_(u"application/vnd.nextthought.ntislidevideo")))
@@ -83,6 +84,7 @@ class TestSlide(unittest.TestCase):
 
 		slide = create_object_from_external(source)
 		assert_that(slide, has_property('creator', is_("Deborah Trytten")))
+		assert_that(slide, has_property('byline', is_("Deborah Trytten")))
 		assert_that(slide, has_property('title', is_("Install Software on a Macintosh")))
 		assert_that(slide, has_property("id", is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
 		assert_that(slide, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
@@ -92,6 +94,7 @@ class TestSlide(unittest.TestCase):
 
 		ext_obj = to_external_object(slide, name="render")
 		assert_that(ext_obj, has_entry('creator', is_("Deborah Trytten")))
+		assert_that(ext_obj, has_entry('byline', is_("Deborah Trytten")))
 		assert_that(ext_obj, has_entry('title', is_("Install Software on a Macintosh")))
 		assert_that(ext_obj, has_entry('MimeType', is_(u"application/vnd.nextthought.ntislidedeck")))
 		assert_that(ext_obj, has_entry('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))

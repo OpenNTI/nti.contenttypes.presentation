@@ -144,7 +144,7 @@ VISIBILITY = (PUBLIC, CREDIT, EVERYONE, PURCHASED, OU)
 VISIBILITY_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VISIBILITY])
 
-def creator_schema_field(required=False):
+def byline_schema_field(required=False):
 	return Variant((ValidTextLine(title="Creator name"),
 					Object(interface.Interface, title="Creator object")),
 					required=required)
@@ -209,7 +209,7 @@ class IMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentation
 	target = ValidNTIID(title="Target NTIID", required=False)
 
 class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
-	creator = creator_schema_field()
+	byline = byline_schema_field(required=False)
 	title = ValidTextLine(title="Media title", required=False, default=u'')
 	description = ValidTextLine(title="Media description", required=False, default=u'')
 
@@ -285,7 +285,7 @@ class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slidenumber = Int(title="Slide number", required=True, default=1)
 
 class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
-	creator = creator_schema_field(required=False)
+	byline = byline_schema_field(required=False)
 	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
 	title = ValidTextLine(title="Slide video title", required=False, default=u'')
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
@@ -306,7 +306,7 @@ class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITit
 
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 
-	creator = creator_schema_field(required=False)
+	byline = byline_schema_field(required=False)
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
 
@@ -336,7 +336,7 @@ class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICre
 						 IPresentationAsset, IVisible):
 	href = href_schema_field(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
-	creator = creator_schema_field(required=False)
+	byline = byline_schema_field(required=False)
 	section = ValidTextLine(title="Section", required=False)
 	description = ValidText(title="Slide video description", required=False)
 	icon = href_schema_field(title="Related work icon href", required=False)

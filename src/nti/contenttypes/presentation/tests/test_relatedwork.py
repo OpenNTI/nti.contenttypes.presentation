@@ -37,6 +37,7 @@ class TestRelatedWork(unittest.TestCase):
 
 		related = create_object_from_external(source)
 		assert_that(related, has_property('creator', is_(u'Steven M. Gillon')))
+		assert_that(related, has_property('byline', is_(u'Steven M. Gillon')))
 		assert_that(related, has_property('label', is_(u'The Critical Year: 1968')))
 		assert_that(related, has_property('type', is_(u"application/vnd.nextthought.content")))
 		assert_that(related, has_property('icon', is_(u"resources/LSTD1153_S_2015_History_United_States_1865_to_Present/420c90cea830984c7260c255692e6cd794e2b281/fd35e23767020999111e1f49239199b4c5eff23e.jpg")))

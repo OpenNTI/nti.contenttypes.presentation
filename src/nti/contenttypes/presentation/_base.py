@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from zope.cachedescriptors.property import readproperty
+
 from zope.container.contained import Contained
 
 from zope.mimetype.interfaces import IContentTypeAware
@@ -41,4 +43,8 @@ class PersistentMixin(SchemaConfigured,
 class PersistentPresentationAsset(PersistentMixin,
 								  RecordableMixin,
 								  Contained): # order matters
-	creator = None
+	byline = None
+
+	@readproperty
+	def creator(self):
+		return self.byline 
