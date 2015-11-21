@@ -20,6 +20,8 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.coremetadata.mixins import PublishableMixin
+
 from nti.ntiids.ntiids import make_ntiid
 
 from nti.schema.schema import EqHash
@@ -50,7 +52,7 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 
 @EqHash('ntiid')
 @interface.implementer(INTILessonOverview)
-class NTILessonOverView(PersistentPresentationAsset):
+class NTILessonOverView(PersistentPresentationAsset, PublishableMixin):
 	createDirectFieldProperties(INTILessonOverview)
 
 	__external_class_name__ = u"LessonOverView"
