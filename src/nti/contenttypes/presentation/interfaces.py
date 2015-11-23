@@ -196,7 +196,7 @@ class INTIIDIdentifiable(interface.Interface):
 
 class INTIMediaSource(ILastModified):
 	service = ValidTextLine(title="Source service", required=True)
-	thumbnail = ValidTextLine(title="Source thumbnail", required=False)
+	thumbnail = href_schema_field(title="Source thumbnail", required=False)
 
 class IVisible(interface.Interface):
 	"""
@@ -281,7 +281,7 @@ class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 	slidevideostart = Number(title="Video start", required=False, default=0)
 	slidevideoend = Number(title="Video end", required=False, default=0)
-	slideimage = ValidTextLine(title="Slide image source", required=False)
+	slideimage = href_schema_field(title="Slide image source", required=False)
 	slidenumber = Int(title="Slide number", required=True, default=1)
 
 class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
@@ -289,7 +289,7 @@ class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITi
 	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
 	title = ValidTextLine(title="Slide video title", required=False, default=u'')
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
-	thumbnail = ValidTextLine(title="Slide video thumbnail", required=False)
+	thumbnail = href_schema_field(title="Slide video thumbnail", required=False)
 	description = ValidTextLine(title="Slide video description", required=False)
 
 INTISlideVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
