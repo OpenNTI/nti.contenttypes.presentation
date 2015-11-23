@@ -30,6 +30,8 @@ from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import ILastModified
 
+from nti.namedfile.interfaces import INamedFile
+
 from nti.ntiids.schema import ValidNTIID
 
 from nti.schema.field import Int
@@ -151,7 +153,8 @@ def byline_schema_field(required=False):
 
 def href_schema_field(title=u'', required=False, default=None):
 	return Variant((ValidTextLine(title="href name"),
-					ValidURI(title="href source uri")),
+					ValidURI(title="href source uri"),
+					Object(INamedFile, title="href file")),
 					title=title,
 					default=default,
 					required=required)

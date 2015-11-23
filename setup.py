@@ -56,6 +56,7 @@ setup(
 		'nti.dublincore',
 		'nti.externalization',
 		'nti.mimetype',
+		'nti.namedfile',
 		'nti.ntiids',
 		'nti.schema',
 		'nti.wref'
