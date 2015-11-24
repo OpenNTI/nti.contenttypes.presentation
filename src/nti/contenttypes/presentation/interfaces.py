@@ -175,7 +175,7 @@ class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnot
 	marker interface for all presentation assests
 	"""
 	
-class IAssetRef(interface.Interface):
+class IAssetRef(ICreated):
 	target = interface.Attribute("target object id")
 
 class IGroupOverViewable(interface.Interface):
@@ -208,8 +208,9 @@ class IVisible(interface.Interface):
 	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='Media ref visibility',
 					 	required=False, default=EVERYONE)
 
-class IMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
+class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
 	target = ValidNTIID(title="Target NTIID", required=False)
+IMediaRef = INTIMediaRef # BWC
 
 class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
 	byline = byline_schema_field(required=False)
@@ -246,7 +247,7 @@ INTIVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTIVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTIVideoRef(IMediaRef):
+class INTIVideoRef(INTIMediaRef):
 	label = ValidText(title="Video label", required=False)
 	poster = ValidTextLine(title="Video poster", required=False)
 	
@@ -276,7 +277,28 @@ INTIAudio['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTIAudio['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIAudio['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTIAudioRef(IMediaRef):
+class INTIAudioRef(INTIMediaRef):
+	pass
+
+class INTIMediaRoll(INTIIDIdentifiable, ICreated, IPresentationAsset):
+	items = ListOrTuple(value_type=Object(INTIMedia),
+						title="The media sources", required=False, min_length=1)
+
+class INTIAudioRoll(INTIMediaRoll):
+	items = ListOrTuple(value_type=Object(INTIAudio),
+						title="The audio sources", required=False, min_length=1)
+
+class INTIVideoRoll(INTIMediaRoll):
+	items = ListOrTuple(value_type=Object(INTIVideo),
+						title="The video sources", required=False, min_length=1)
+
+class INTIMediaRollRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
+	pass
+
+class INTIAudioRollRef(INTIMediaRollRef):
+	pass
+
+class INTIVideoRollRef(INTIMediaRollRef):
 	pass
 
 class INTISlide(INTIIDIdentifiable, IPresentationAsset):

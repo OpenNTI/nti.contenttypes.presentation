@@ -27,10 +27,17 @@ from .interfaces import INTIAudio
 from .interfaces import INTIMedia
 from .interfaces import INTIVideo
 from .interfaces import INTIAudioRef
+from .interfaces import INTIMediaRef
 from .interfaces import INTIVideoRef
+from .interfaces import INTIAudioRoll
+from .interfaces import INTIMediaRoll
+from .interfaces import INTIVideoRoll
 from .interfaces import INTITranscript
 from .interfaces import INTIAudioSource
 from .interfaces import INTIVideoSource
+from .interfaces import INTIAudioRollRef
+from .interfaces import INTIMediaRollRef
+from .interfaces import INTIVideoRollRef
 
 @interface.implementer(INTITranscript, IContentTypeAware)
 class NTITranscript(PersistentMixin):
@@ -53,12 +60,29 @@ class NTIVideoSource(PersistentMixin):
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
 
-@interface.implementer(INTIMedia)
 @EqHash('ntiid')
+@interface.implementer(INTIMedia)
 class NTIMedia(PersistentPresentationAsset):
+	createDirectFieldProperties(INTIMedia)
+
+	__external_class_name__ = u"Media"
+	mime_type = mimeType = u'application/vnd.nextthought.ntimedia'
 	
 	Creator = alias('creator')
 		
+@interface.implementer(INTIMediaRef)
+class NTIMediaRef(PersistentPresentationAsset):
+	createDirectFieldProperties(INTIMediaRef)
+
+	__external_class_name__ = u"MediaRef"
+	mime_type = mimeType = u'application/vnd.nextthought.ntimediaref'
+	
+	visibility = u"everyone"
+	
+	@readproperty
+	def target(self):
+		return self.ntiid
+
 @interface.implementer(INTIVideo)
 class NTIVideo(NTIMedia):
 	createDirectFieldProperties(INTIVideo)
@@ -69,17 +93,11 @@ class NTIVideo(NTIMedia):
 	closedCaption = closedCaptions = alias('closed_caption')
 
 @interface.implementer(INTIVideoRef)
-class NTIVideoRef(PersistentPresentationAsset):
+class NTIVideoRef(NTIMediaRef):
 	createDirectFieldProperties(INTIVideoRef)
 
 	__external_class_name__ = u"Video"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
-	
-	visibility = u"everyone"
-	
-	@readproperty
-	def target(self):
-		return self.ntiid
 
 @interface.implementer(INTIAudio)
 class NTIAudio(NTIMedia):
@@ -89,14 +107,59 @@ class NTIAudio(NTIMedia):
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
 
 @interface.implementer(INTIAudioRef)
-class NTIAudioRef(PersistentPresentationAsset):
+class NTIAudioRef(NTIMediaRef):
 	createDirectFieldProperties(INTIAudioRef)
 
 	__external_class_name__ = u"Audio"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
+
+@EqHash('ntiid')
+@interface.implementer(INTIMediaRoll)
+class NTIMediaRoll(PersistentPresentationAsset):
+	createDirectFieldProperties(INTIMediaRoll)
+	
+	__external_class_name__ = u"MediaRoll"
+	mime_type = mimeType = u'application/vnd.nextthought.ntimediaroll'
+	
+	Creator = alias('creator')
+
+@interface.implementer(INTIMediaRollRef)
+class NTIMediaRollRef(PersistentPresentationAsset):
+	createDirectFieldProperties(INTIMediaRollRef)
+
+	__external_class_name__ = u"MediaRollRef"
+	mime_type = mimeType = u'application/vnd.nextthought.ntimediarollref'
 	
 	visibility = u"everyone"
 	
 	@readproperty
 	def target(self):
 		return self.ntiid
+	
+@interface.implementer(INTIAudioRoll)
+class NTIAudioRoll(NTIMediaRoll):
+	createDirectFieldProperties(INTIAudioRoll)
+	
+	__external_class_name__ = u"AudioRoll"
+	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
+
+@interface.implementer(INTIAudioRollRef)
+class NTIAudioRollRef(NTIMediaRoll):
+	createDirectFieldProperties(INTIAudioRollRef)
+	
+	__external_class_name__ = u"AudioRollRef"
+	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiorollref'
+
+@interface.implementer(INTIVideoRoll)
+class NTIVideoRoll(NTIMediaRoll):
+	createDirectFieldProperties(INTIVideoRoll)
+	
+	__external_class_name__ = u"VideoRoll"
+	mime_type = mimeType = u'application/vnd.nextthought.ntivideoroll'
+
+@interface.implementer(INTIVideoRollRef)
+class NTIVideoRollRef(NTIMediaRollRef):
+	createDirectFieldProperties(INTIVideoRollRef)
+
+	__external_class_name__ = u"VideoRollRef"
+	mime_type = mimeType = u'application/vnd.nextthought.ntivideorollref'

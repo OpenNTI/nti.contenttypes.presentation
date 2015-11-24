@@ -44,6 +44,10 @@
 						 .interfaces.INTILessonOverview
 						 .interfaces.INTISurveyRef
 						 .interfaces.INTIPollRef
+						 .interfaces.INTIAudioRoll
+						 .interfaces.INTIVideoRoll
+						 .interfaces.INTIAudioRollRef
+						 .interfaces.INTIVideoRollRef
 						 .interfaces.INTICourseOverviewSpacer"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 	

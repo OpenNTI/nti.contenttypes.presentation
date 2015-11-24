@@ -26,10 +26,12 @@ from .interfaces import INTIVideo
 from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
 from .interfaces import INTITimeline
+from .interfaces import INTIMediaRoll
 from .interfaces import INTISlideDeck
 from .interfaces import INTIInquiryRef
 from .interfaces import INTISlideVideo
 from .interfaces import INTIMediaSource
+from .interfaces import INTIMediaRollRef
 from .interfaces import INTIAssessmentRef
 from .interfaces import INTIRelatedWorkRef
 from .interfaces import IGroupOverViewable
@@ -115,7 +117,8 @@ def _set_ifaces():
 		result = bool(type(item) == interface.interface.InterfaceClass and \
 					  issubclass(item, IGroupOverViewable) and \
 					  item != IGroupOverViewable and \
-					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef))
+					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
+								   INTIMediaRollRef))
 		return result
 
 	def _presentationasset_item_predicate(item):
@@ -123,7 +126,8 @@ def _set_ifaces():
 					  issubclass(item, IPresentationAsset) and \
 					  item != IPresentationAsset and \
 					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
-								   INTIMediaSource, INTIMedia))
+								   INTIMediaSource, INTIMedia, INTIMediaRoll,
+								   INTIMediaRollRef))
 		return result
 
 	for _, item in inspect.getmembers(m, _overview_item_predicate):
