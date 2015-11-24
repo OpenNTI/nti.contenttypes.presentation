@@ -15,10 +15,14 @@ from zope.cachedescriptors.property import readproperty
 
 from zope.mimetype.interfaces import IContentTypeAware
 
+from persistent.list import PersistentList
+
 from nti.common.property import alias
 
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+from nti.wref.interfaces import IWeakRef
 
 from ._base import PersistentMixin
 from ._base import PersistentPresentationAsset
@@ -122,6 +126,43 @@ class NTIMediaRoll(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediaroll'
 	
 	Creator = alias('creator')
+	
+	def __getitem__(self, index):
+		item = self.items[index]
+		return item
+	
+	def __setitem__(self, index, item):
+		self.items[index] = item
+	
+	def __len__(self):
+		result = len(self.items or ()) # include weak refs
+		return result
+
+	def __iter__(self):
+		for item in self.items or ():
+			resolved = item() if IWeakRef.providedBy(item) else item
+			if resolved is not None:
+				yield resolved
+			else:
+				logger.warn("Cannot resolve %s", item)
+	
+	def append(self, item):
+		assert INTIMedia.providedBy(item) or INTIMediaRef.providedBy(item)
+		self.items = PersistentList() if self.items is None else self.items
+		self.items.append(item)
+	add = append
+	
+	def pop(self, index):
+		self.items.pop(index)
+
+	def remove(self, item):
+		try:
+			if self.items:
+				self.items.remove(item)
+				return True
+		except ValueError:
+			pass
+		return False
 
 @interface.implementer(INTIMediaRollRef)
 class NTIMediaRollRef(PersistentPresentationAsset):

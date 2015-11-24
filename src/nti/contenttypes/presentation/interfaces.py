@@ -281,16 +281,30 @@ class INTIAudioRef(INTIMediaRef):
 	pass
 
 class INTIMediaRoll(INTIIDIdentifiable, ICreated, IPresentationAsset):
-	items = ListOrTuple(value_type=Object(INTIMedia),
+	items = ListOrTuple(value_type=Variant((Object(INTIMedia),
+											Object(INTIMediaRef))),
 						title="The media sources", required=False, min_length=1)
 
+	def append(item):
+		"""
+		Add an item
+		"""
+
+	def pop(idx):
+		"""
+		remove the item at the specified index
+		"""
+
+	def remove(item):
+		"""
+		remove the specified item
+		"""
+		
 class INTIAudioRoll(INTIMediaRoll):
-	items = ListOrTuple(value_type=Object(INTIAudio),
-						title="The audio sources", required=False, min_length=1)
+	pass
 
 class INTIVideoRoll(INTIMediaRoll):
-	items = ListOrTuple(value_type=Object(INTIVideo),
-						title="The video sources", required=False, min_length=1)
+	pass
 
 class INTIMediaRollRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
 	pass
