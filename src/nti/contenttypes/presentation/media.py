@@ -82,7 +82,8 @@ class NTIMediaRef(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediaref'
 	
 	visibility = u"everyone"
-	
+	Creator = alias('creator')
+
 	@readproperty
 	def target(self):
 		return self.ntiid
