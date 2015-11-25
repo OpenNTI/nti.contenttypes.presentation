@@ -13,11 +13,19 @@ from hamcrest import has_length
 from hamcrest import assert_that
 from hamcrest import has_property
 
+from nti.schema.testing import validly_provides
+
 import os
 import copy
 import unittest
 import simplejson
 from collections import Mapping
+
+from nti.contenttypes.presentation.media import NTIAudioRoll
+from nti.contenttypes.presentation.media import NTIVideoRoll
+
+from nti.contenttypes.presentation.interfaces import INTIAudioRoll
+from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 
 from nti.contenttypes.presentation.utils import prepare_json_text
 from nti.contenttypes.presentation.utils import create_ntiaudio_from_external
@@ -110,3 +118,7 @@ class TestMedia(unittest.TestCase):
 		assert_that(ext_obj, has_key('MimeType'))
 		assert_that(ext_obj, has_key('Class'))
 		assert_that(ext_obj, has_key('NTIID'))
+		
+	def test_rolls(self):
+		assert_that(NTIAudioRoll(), validly_provides(INTIAudioRoll))
+		assert_that(NTIVideoRoll(), validly_provides(INTIVideoRoll))
