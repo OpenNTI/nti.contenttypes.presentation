@@ -27,6 +27,8 @@ from nti.wref.interfaces import IWeakRef
 from ._base import PersistentMixin
 from ._base import PersistentPresentationAsset
 
+from .interfaces import EVERYONE
+
 from .interfaces import INTIAudio
 from .interfaces import INTIMedia
 from .interfaces import INTIVideo
@@ -81,7 +83,7 @@ class NTIMediaRef(PersistentPresentationAsset):
 	__external_class_name__ = u"MediaRef"
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediaref'
 	
-	visibility = u"everyone"
+	visibility = EVERYONE
 	Creator = alias('creator')
 
 	@readproperty
@@ -126,6 +128,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 	__external_class_name__ = u"MediaRoll"
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediaroll'
 	
+	items = alias('Items')
 	Creator = alias('creator')
 	
 	def __getitem__(self, index):
@@ -172,7 +175,7 @@ class NTIMediaRollRef(PersistentPresentationAsset):
 	__external_class_name__ = u"MediaRollRef"
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediarollref'
 	
-	visibility = u"everyone"
+	visibility = EVERYONE
 	
 	@readproperty
 	def target(self):

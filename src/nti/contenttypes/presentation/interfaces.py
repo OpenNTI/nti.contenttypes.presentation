@@ -281,7 +281,7 @@ class INTIAudioRef(INTIMediaRef):
 	pass
 
 class INTIMediaRoll(INTIIDIdentifiable, ICreated, IPresentationAsset):
-	items = ListOrTuple(value_type=Variant((Object(INTIMedia),
+	Items = ListOrTuple(value_type=Variant((Object(INTIMedia),
 											Object(INTIMediaRef))),
 						title="The media sources", required=False, min_length=1)
 
