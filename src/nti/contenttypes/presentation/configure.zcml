@@ -188,6 +188,14 @@
 			 for=".interfaces.INTIPollRef"
 			 name="render" />
 
+	<adapter factory=".externalization._NTIMediaRollRefRenderExternalObject"
+			 for=".interfaces.INTIMediaRollRef"
+			 name="render" />
+
+	<adapter factory=".externalization._NTIMediaRollRenderExternalObject"
+			 for=".interfaces.INTIMediaRoll"
+			 name="render" />
+
 	<adapter factory=".externalization._NTICourseOverviewSpacerRenderExternalObject"
 			 for=".interfaces.INTICourseOverviewSpacer"
 			 name="render" />

@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttypes.presentation.interfaces import INTIMediaRollRef
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -32,6 +33,7 @@ from .interfaces import INTIPollRef
 from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
 from .interfaces import INTITimeline
+from .interfaces import INTIMediaRoll
 from .interfaces import INTISlideDeck
 from .interfaces import INTISurveyRef
 from .interfaces import INTISlideVideo
@@ -319,6 +321,14 @@ class _NTIQuestionRefRenderExternalObject(_NTIBaseRenderExternalObject):
 		if 'target' in extDict:
 			extDict[u'Target-NTIID'] = extDict.pop('target')
 		return extDict
+
+@component.adapter(INTIMediaRollRef)
+class _NTIMediaRollRefRenderExternalObject(_NTIBaseRenderExternalObject):
+	pass
+
+@component.adapter(INTIMediaRoll)
+class _NTIMediaRollRenderExternalObject(_NTIBaseRenderExternalObject):
+	pass
 
 @component.adapter(INTICourseOverviewSpacer)
 class _NTICourseOverviewSpacerRenderExternalObject(_NTIBaseRenderExternalObject):
