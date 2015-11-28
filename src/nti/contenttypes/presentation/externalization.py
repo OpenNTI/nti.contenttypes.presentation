@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttypes.presentation.interfaces import INTIMediaRollRef
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -38,6 +37,7 @@ from .interfaces import INTISlideDeck
 from .interfaces import INTISurveyRef
 from .interfaces import INTISlideVideo
 from .interfaces import INTIQuestionRef
+from .interfaces import INTIMediaRollRef
 from .interfaces import INTIAssignmentRef
 from .interfaces import INTIDiscussionRef
 from .interfaces import INTIQuestionSetRef
