@@ -280,7 +280,7 @@ INTIAudio['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTIAudioRef(INTIMediaRef):
 	pass
 
-class INTIMediaRoll(INTIIDIdentifiable, ICreated, IPresentationAsset):
+class INTIMediaRoll(INTIIDIdentifiable, ICreated, IPresentationAsset, IIterable):
 	Items = ListOrTuple(value_type=Variant((Object(INTIMedia),
 											Object(INTIMediaRef))),
 						title="The media sources", required=False, min_length=1)
