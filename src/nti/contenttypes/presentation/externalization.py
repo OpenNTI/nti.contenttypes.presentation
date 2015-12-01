@@ -228,7 +228,7 @@ class _NTIRelatedWorkRefRenderExternalObject(_NTIBaseRenderExternalObject):
 		super(_NTIRelatedWorkRefRenderExternalObject, self)._do_toExternalObject(extDict)
 		if 'byline' in extDict:
 			extDict[u'creator'] = extDict['byline'] # legacy
-		if 'description' in extDict:
+		if extDict.get('description'):
 			extDict['description'] = extDict.get('description', u'').strip()
 			extDict[u'desc'] = extDict['description'] # legacy
 		if 'target' in extDict:
