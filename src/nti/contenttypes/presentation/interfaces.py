@@ -19,8 +19,9 @@ from zope.interface.common.sequence import IFiniteSequence
 from zope.interface.interfaces import ObjectEvent
 from zope.interface.interfaces import IObjectEvent
 
-from zope.lifecycleevent import ObjectModifiedEvent
-from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent,\
+	IObjectCreatedEvent
 
 from zope.location.interfaces import IContained
 
@@ -516,6 +517,18 @@ class IPresentationAssetContainer(IMapping):
 	something like the content library package may be adaptable to this,
 	typically with annotations).
 	"""
+
+class IPresentationAssetCreatedEvent(IObjectCreatedEvent):
+	principal = interface.Attribute("Creator principal")
+	externalValue = interface.Attribute("External object")
+
+@interface.implementer(IPresentationAssetCreatedEvent)
+class PresentationAssetCreatedEvent(ObjectCreatedEvent):
+
+	def __init__(self, obj, principal=None, externalValue=None):
+		self.object = obj
+		self.principal = principal
+		self.externalValue = externalValue
 
 class IWillRemovePresentationAssetEvent(IObjectEvent):
 	pass
