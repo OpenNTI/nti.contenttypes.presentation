@@ -161,7 +161,7 @@ def href_schema_field(title=u'', required=False, default=None):
 					title=title,
 					default=default,
 					required=required)
-	
+
 class ITaggedContent(interface.Interface):
 	"""
 	Something that can contain tags.
@@ -177,7 +177,7 @@ class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnot
 	"""
 	marker interface for all presentation assests
 	"""
-	
+
 class IAssetRef(ICreated):
 	target = interface.Attribute("target object id")
 
@@ -191,7 +191,7 @@ class IItemAssetContainer(interface.Interface):
 	def remove(item):
 		"""
 		remove the specified item
-		
+
 		:return True if object was removed
 		"""
 
@@ -225,11 +225,14 @@ class IVisible(interface.Interface):
 	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='Media ref visibility',
 					 	required=False, default=EVERYONE)
 
-class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
+class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, 
+				   IPresentationAsset, IVisible):
 	target = ValidNTIID(title="Target NTIID", required=False)
-IMediaRef = INTIMediaRef # BWC
+IMediaRef = INTIMediaRef  # BWC
 
-class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
+class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated,
+				ITitled, IPresentationAsset):
+
 	byline = byline_schema_field(required=False)
 	title = ValidTextLine(title="Media title", required=False, default=u'')
 	description = ValidTextLine(title="Media description", required=False, default=u'')
@@ -267,7 +270,7 @@ INTIVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTIVideoRef(INTIMediaRef):
 	label = ValidText(title="Video label", required=False)
 	poster = ValidTextLine(title="Video poster", required=False)
-	
+
 INTIVideoRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIVideoRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
@@ -297,7 +300,7 @@ INTIAudio['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTIAudioRef(INTIMediaRef):
 	pass
 
-class INTIMediaRoll(IItemAssetContainer, INTIIDIdentifiable, ICreated, 
+class INTIMediaRoll(IItemAssetContainer, INTIIDIdentifiable, ICreated,
 					IPresentationAsset, IIterable):
 
 	Items = ListOrTuple(value_type=Variant((Object(INTIMedia),
@@ -308,14 +311,15 @@ class INTIMediaRoll(IItemAssetContainer, INTIIDIdentifiable, ICreated,
 		"""
 		remove the item at the specified index
 		"""
-		
+
 class INTIAudioRoll(INTIMediaRoll):
 	pass
 
 class INTIVideoRoll(INTIMediaRoll):
 	pass
 
-class INTIMediaRollRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset, IVisible):
+class INTIMediaRollRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
+					   IPresentationAsset, IVisible):
 	pass
 
 class INTIAudioRollRef(INTIMediaRollRef):
@@ -345,7 +349,7 @@ INTISlideVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTISlideDeck(IItemAssetContainer, IDCDescriptiveProperties, INTIIDIdentifiable, 
+class INTISlideDeck(IItemAssetContainer, IDCDescriptiveProperties, INTIIDIdentifiable,
 					ICreated, ITitled, IPresentationAsset):
 
 	Slides = IndexedIterable(value_type=Object(INTISlide),
@@ -396,7 +400,7 @@ class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ITitl
 
 	id = ValidTextLine(title="Discussion identifier", required=True)
 	id.setTaggedValue('__external_accept_id__', True)
-	
+
 	def isCourseBundle():
 		"""
 		return if this DiscussionRef refers to a course bundle
@@ -454,7 +458,7 @@ INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	pass
 
-class INTICourseOverviewGroup(IItemAssetContainer, ITitled, INTIIDIdentifiable, 
+class INTICourseOverviewGroup(IItemAssetContainer, ITitled, INTIIDIdentifiable,
 							  IPresentationAsset, IFiniteSequence, IIterable):
 
 	Items = IndexedIterable(value_type=Variant((Object(IGroupOverViewable),
@@ -462,7 +466,7 @@ class INTICourseOverviewGroup(IItemAssetContainer, ITitled, INTIIDIdentifiable,
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
 	accentColor = ValidTextLine(title="Overview color", required=False)
-	
+
 	def append(item):
 		"""
 		Add an item
@@ -478,7 +482,7 @@ INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTILessonOverview(IItemAssetContainer, ITitled, INTIIDIdentifiable, 
+class INTILessonOverview(IItemAssetContainer, ITitled, INTIIDIdentifiable,
 						 IPresentationAsset, IFiniteSequence, IIterable):
 
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
@@ -506,7 +510,7 @@ class IPresentationVisibility(interface.Interface):
 
 class IPresentationAssetContainer(IMapping):
 	"""
-	Something that is an unordered bag of presentation asset items 
+	Something that is an unordered bag of presentation asset items
 
 	This package provides no implementation of this interface. (But
 	something like the content library package may be adaptable to this,
@@ -519,6 +523,9 @@ class IWillRemovePresentationAssetEvent(IObjectEvent):
 @interface.implementer(IWillRemovePresentationAssetEvent)
 class WillRemovePresentationAssetEvent(ObjectEvent):
 	pass
+
+#: Asset removed from item asset container
+TRX_ASSET_REMOVED_FROM_ITEM_ASSET_CONTAINER = u'assetremovedfromitemcontainer'
 
 class IItemRemovedFromItemAssetContainerEvent(IObjectModifiedEvent):
 	pass
