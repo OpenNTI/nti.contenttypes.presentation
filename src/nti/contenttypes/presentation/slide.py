@@ -9,11 +9,14 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from itertools import chain
+
 from zope import interface
 
 from persistent.list import PersistentList
 
 from nti.common.property import alias
+from nti.common.property import CachedProperty 
 
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -63,6 +66,11 @@ class NTISlideDeck(PersistentPresentationAsset):
 	videos = alias('Videos')
 	Creator = alias('creator')
 	id = alias('slidedeckid')
+	
+	@CachedProperty("lastModified")
+	def Items(self):
+		result = list(chain(self.slides or (), self.videos or ()))
+		return result
 
 	def append(self, item):
 		if INTISlide.providedBy(item):
