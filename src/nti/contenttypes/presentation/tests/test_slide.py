@@ -82,17 +82,17 @@ class TestSlide(unittest.TestCase):
 		with open(path, "r") as fp:
 			source = simplejson.loads(prepare_json_text(fp.read()))
 
-		slide = create_object_from_external(source)
-		assert_that(slide, has_property('creator', is_("Deborah Trytten")))
-		assert_that(slide, has_property('byline', is_("Deborah Trytten")))
-		assert_that(slide, has_property('title', is_("Install Software on a Macintosh")))
-		assert_that(slide, has_property("id", is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
-		assert_that(slide, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
-		assert_that(slide, has_property('mimeType', is_(u"application/vnd.nextthought.ntislidedeck")))
-		assert_that(slide, has_property('videos', has_length(1)))
-		assert_that(slide, has_property('slides', has_length(19)))
+		deck = create_object_from_external(source)
+		assert_that(deck, has_property('creator', is_("Deborah Trytten")))
+		assert_that(deck, has_property('byline', is_("Deborah Trytten")))
+		assert_that(deck, has_property('title', is_("Install Software on a Macintosh")))
+		assert_that(deck, has_property("id", is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
+		assert_that(deck, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NTISlideDeck-CS1323_S_2015_Intro_to_Computer_Programming.nsd.pres:Install_Mac")))
+		assert_that(deck, has_property('mimeType', is_(u"application/vnd.nextthought.ntislidedeck")))
+		assert_that(deck, has_property('videos', has_length(1)))
+		assert_that(deck, has_property('slides', has_length(19)))
 
-		ext_obj = to_external_object(slide, name="render")
+		ext_obj = to_external_object(deck, name="render")
 		assert_that(ext_obj, has_entry('creator', is_("Deborah Trytten")))
 		assert_that(ext_obj, has_entry('byline', is_("Deborah Trytten")))
 		assert_that(ext_obj, has_entry('title', is_("Install Software on a Macintosh")))
@@ -105,3 +105,12 @@ class TestSlide(unittest.TestCase):
 		assert_that(ext_obj, has_key('MimeType'))
 		assert_that(ext_obj, has_key('Class'))
 		assert_that(ext_obj, has_key('NTIID'))
+		
+		slide = deck.Slides[0]
+		assert_that(deck.remove(slide), is_(True))
+		assert_that(deck.Slides, has_length(18))
+		
+		video = deck.Videos[0]
+		assert_that(deck.remove(video), is_(True))
+		assert_that(deck.Videos, has_length(0))
+

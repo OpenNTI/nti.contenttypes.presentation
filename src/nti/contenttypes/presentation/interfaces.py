@@ -19,6 +19,9 @@ from zope.interface.common.sequence import IFiniteSequence
 from zope.interface.interfaces import ObjectEvent
 from zope.interface.interfaces import IObjectEvent
 
+from zope.lifecycleevent import ObjectModifiedEvent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+
 from zope.location.interfaces import IContained
 
 from zope.schema import vocabulary
@@ -178,6 +181,20 @@ class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnot
 class IAssetRef(ICreated):
 	target = interface.Attribute("target object id")
 
+class IItemAssetContainer(interface.Interface):
+
+	def append(item):
+		"""
+		Add an item
+		"""
+
+	def remove(item):
+		"""
+		remove the specified item
+		
+		:return True if object was removed
+		"""
+
 class IGroupOverViewable(interface.Interface):
 	"""
 	marker interface for things that can be part of a course overview group
@@ -280,24 +297,16 @@ INTIAudio['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTIAudioRef(INTIMediaRef):
 	pass
 
-class INTIMediaRoll(INTIIDIdentifiable, ICreated, IPresentationAsset, IIterable):
+class INTIMediaRoll(IItemAssetContainer, INTIIDIdentifiable, ICreated, 
+					IPresentationAsset, IIterable):
+
 	Items = ListOrTuple(value_type=Variant((Object(INTIMedia),
 											Object(INTIMediaRef))),
 						title="The media sources", required=False, min_length=1)
 
-	def append(item):
-		"""
-		Add an item
-		"""
-
 	def pop(idx):
 		"""
 		remove the item at the specified index
-		"""
-
-	def remove(item):
-		"""
-		remove the specified item
 		"""
 		
 class INTIAudioRoll(INTIMediaRoll):
@@ -336,7 +345,9 @@ INTISlideVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
+class INTISlideDeck(IItemAssetContainer, IDCDescriptiveProperties, INTIIDIdentifiable, 
+					ICreated, ITitled, IPresentationAsset):
+
 	Slides = IndexedIterable(value_type=Object(INTISlide),
 						 	 title="The slides", required=False, min_length=1)
 
@@ -348,16 +359,6 @@ class INTISlideDeck(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITit
 	byline = byline_schema_field(required=False)
 	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
 	description = ValidTextLine(title="Slide deck description", required=False)
-
-	def append(item):
-		"""
-		add an item to this deck
-		"""
-		
-	def remove(item):
-		"""
-		remove an item from this deck
-		"""
 
 INTISlideDeck['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -453,8 +454,9 @@ INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	pass
 
-class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset,
-							  IFiniteSequence, IIterable):
+class INTICourseOverviewGroup(IItemAssetContainer, ITitled, INTIIDIdentifiable, 
+							  IPresentationAsset, IFiniteSequence, IIterable):
+
 	Items = IndexedIterable(value_type=Variant((Object(IGroupOverViewable),
 												Object(IGroupOverViewableWeakRef))),
 						 	title="The overview items", required=False, min_length=0)
@@ -464,11 +466,6 @@ class INTICourseOverviewGroup(ITitled, INTIIDIdentifiable, IPresentationAsset,
 	def append(item):
 		"""
 		Add an item
-		"""
-
-	def pop(idx):
-		"""
-		remove the group at the specified index
 		"""
 
 	def remove(item):
@@ -481,26 +478,17 @@ INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTILessonOverview(ITitled, INTIIDIdentifiable, IPresentationAsset,
-						 IFiniteSequence, IIterable):
+class INTILessonOverview(IItemAssetContainer, ITitled, INTIIDIdentifiable, 
+						 IPresentationAsset, IFiniteSequence, IIterable):
+
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
 	lesson = ValidTextLine(title="Lesson NTIID", required=False)
 
-	def append(group):
-		"""
-		Add a group
-		"""
-
 	def pop(idx):
 		"""
 		remove the group at the specified index
-		"""
-	
-	def remove(group):
-		"""
-		remove the specified group
 		"""
 
 INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -530,6 +518,13 @@ class IWillRemovePresentationAssetEvent(IObjectEvent):
 
 @interface.implementer(IWillRemovePresentationAssetEvent)
 class WillRemovePresentationAssetEvent(ObjectEvent):
+	pass
+
+class IItemRemovedFromItemAssetContainerEvent(IObjectModifiedEvent):
+	pass
+
+@interface.implementer(IItemRemovedFromItemAssetContainerEvent)
+class ItemRemovedFromItemAssetContainerEvent(ObjectModifiedEvent):
 	pass
 
 import zope.deferredimport

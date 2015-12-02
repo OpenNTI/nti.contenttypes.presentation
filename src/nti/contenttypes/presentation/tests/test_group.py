@@ -98,3 +98,6 @@ class TestGroup(unittest.TestCase):
 		new_object = factory()
 		update_from_external_object(new_object, ext_obj)
 		assert_that(new_object, has_length(5))
+		
+		assert_that(group.remove(group.Items[0]), is_(True))
+		assert_that(group, has_length(4))

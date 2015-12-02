@@ -95,3 +95,7 @@ class TestLesson(unittest.TestCase):
 		assert_that(ext_obj, has_entry('MimeType', is_(u"application/vnd.nextthought.ntilessonoverview")))
 		assert_that(ext_obj, has_entry('title', is_(u"11.6 Apply Your Knowledge")))
 		assert_that(ext_obj, has_entry('Items', has_length(5)))
+		
+		assert_that(lesson.remove(lesson.Items[0]), is_(True))
+		assert_that(lesson, has_length(4))
+
