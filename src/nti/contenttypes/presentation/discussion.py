@@ -31,8 +31,8 @@ from . import DISCUSSION_REF
 from . import NTI_COURSE_BUNDLE
 from . import NTI_COURSE_BUNDLE_REF
 
-@interface.implementer(INTIDiscussionRef)
 @EqHash('ntiid')
+@interface.implementer(INTIDiscussionRef)
 class NTIDiscussionRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIDiscussionRef)
 

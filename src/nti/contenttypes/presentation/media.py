@@ -168,6 +168,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 			pass
 		return False
 
+@EqHash('ntiid')
 @interface.implementer(INTIMediaRollRef)
 class NTIMediaRollRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIMediaRollRef)
@@ -189,7 +190,7 @@ class NTIAudioRoll(NTIMediaRoll):
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
 
 @interface.implementer(INTIAudioRollRef)
-class NTIAudioRollRef(NTIMediaRoll):
+class NTIAudioRollRef(NTIMediaRollRef):
 	createDirectFieldProperties(INTIAudioRollRef)
 	
 	__external_class_name__ = u"AudioRollRef"

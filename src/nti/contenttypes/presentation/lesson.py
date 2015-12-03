@@ -35,6 +35,7 @@ from .interfaces import INTICourseOverviewSpacer
 
 from . import NTI_COURSE_OVERVIEW_SPACER
 
+@EqHash('ntiid')
 @interface.implementer(INTICourseOverviewSpacer)
 class NTICourseOverViewSpacer(PersistentPresentationAsset):
 	createDirectFieldProperties(INTICourseOverviewSpacer)
