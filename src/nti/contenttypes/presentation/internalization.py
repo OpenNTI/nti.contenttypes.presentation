@@ -229,14 +229,14 @@ class _NTISlideDeckUpdater(_AssetUpdater):
 	_ext_iface_upper_bound = INTISlideDeck
 
 	def parseSlides(self, parsed):
-		slides = PersistentList(parsed.get('Slides') or ())
-		if slides:
+		if 'Slides' in parsed:
+			slides = PersistentList(parsed.get('Slides') or ())
 			parsed[u'Slides'] = slides
 		return self
 
 	def parseVideos(self, parsed):
-		videos = PersistentList(parsed.get('Videos') or ())
-		if videos:
+		if 'Videos' in parsed:
+			videos = PersistentList(parsed.get('Videos') or ())
 			parsed[u'Videos'] = videos
 		return self
 
@@ -384,8 +384,9 @@ class _NTICourseOverviewGroupUpdater(_AssetUpdater):
 	def fixAll(self, parsed):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
-		items = PersistentList(parsed.get(ITEMS) or ())
-		parsed[ITEMS] = items
+		if ITEMS is parsed:
+			items = PersistentList(parsed.get(ITEMS) or ())
+			parsed[ITEMS] = items
 		return self.fixCreator(parsed)
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -403,14 +404,15 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		ntiid = parsed.get('ntiid')
 		lesson = parsed.get('lesson')
-		if 	not lesson \
+		if 		not lesson \
 			and is_valid_ntiid_string(ntiid) \
 			and get_type(ntiid) != NTI_LESSON_OVERVIEW:  # correct ntiid
 			lesson = make_ntiid(nttype=NTI_LESSON_OVERVIEW, base=ntiid)
 			parsed[u'ntiid'] = lesson
 			parsed[u'lesson'] = ntiid
-		items = PersistentList(parsed.get(ITEMS) or ())
-		parsed[ITEMS] = items
+		if ITEMS is parsed:
+			items = PersistentList(parsed.get(ITEMS) or ())
+			parsed[ITEMS] = items
 		return self.fixCreator(parsed)
 
 def internalization_ntivideo_pre_hook(k, x):
@@ -471,9 +473,9 @@ def internalization_relatedworkref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
-		if 	ntiid and \
-			('.relatedworkref.' in ntiid or \
-			 is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
+		if 		ntiid \
+			and (	'.relatedworkref.' in ntiid 
+				 or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
 			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
 
 def internalization_courseoverview_pre_hook(k, x):
