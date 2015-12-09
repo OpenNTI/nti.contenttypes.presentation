@@ -397,7 +397,7 @@ class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ITitl
 	ntiid = Variant((ValidTextLine(title="Discussion NTIID"),
 					 ValidNTIID(title="Discussion NTIID")), required=False, default=None)
 	target = Variant((ValidTextLine(title="Target NTIID"),
-					  ValidNTIID(title="Target NTIID")), required=True)
+					  ValidNTIID(title="Target NTIID")), required=False)
 
 	id = ValidTextLine(title="Discussion identifier", required=True)
 	id.setTaggedValue('__external_accept_id__', True)
