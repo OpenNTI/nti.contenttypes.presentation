@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from zope.cachedescriptors.property import readproperty
+
 from nti.common.property import alias
 
 from nti.schema.schema import EqHash
@@ -29,7 +31,12 @@ zope.deferredimport.initialize()
 
 @EqHash('ntiid')
 class NTIAssessmentRef(PersistentPresentationAsset):
+
 	target_ntiid = alias('target')
+	
+	@readproperty
+	def target(self):
+		return self.ntiid
 
 @interface.implementer(INTIAssignmentRef)
 class NTIAssignmentRef(NTIAssessmentRef):
