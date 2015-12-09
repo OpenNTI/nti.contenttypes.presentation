@@ -314,7 +314,8 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)
 		ntiid = ntiid_check(parsed.get('ntiid'))
-		if parsed.get('target') and ntiid == parsed.get('target'):
+		target = parsed.get('target')
+		if target and ntiid == target:
 			ntiid = make_discussionref_ntiid(ntiid)
 			parsed['ntiid'] = ntiid
 		if not parsed.get('id'):
