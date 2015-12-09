@@ -19,9 +19,10 @@ from zope.interface.common.sequence import IFiniteSequence
 from zope.interface.interfaces import ObjectEvent
 from zope.interface.interfaces import IObjectEvent
 
-from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
-from zope.lifecycleevent.interfaces import IObjectModifiedEvent,\
-	IObjectCreatedEvent
+from zope.lifecycleevent import ObjectCreatedEvent
+from zope.lifecycleevent import ObjectModifiedEvent
+from zope.lifecycleevent.interfaces import IObjectCreatedEvent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
 from zope.location.interfaces import IContained
 
@@ -226,7 +227,7 @@ class IVisible(interface.Interface):
 	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='Media ref visibility',
 					 	required=False, default=EVERYONE)
 
-class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, 
+class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 				   IPresentationAsset, IVisible):
 	target = ValidNTIID(title="Target NTIID", required=False)
 IMediaRef = INTIMediaRef  # BWC
@@ -537,7 +538,7 @@ class IWillRemovePresentationAssetEvent(IObjectEvent):
 class WillRemovePresentationAssetEvent(ObjectEvent):
 	pass
 
-#: Asset removed from item asset container
+# : Asset removed from item asset container
 TRX_ASSET_REMOVED_FROM_ITEM_ASSET_CONTAINER = u'assetremovedfromitemcontainer'
 
 class IItemRemovedFromItemAssetContainerEvent(IObjectModifiedEvent):
