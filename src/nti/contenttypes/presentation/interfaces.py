@@ -431,7 +431,7 @@ INTIQuestionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIQuestionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIAssignmentRef(INTIAssessmentRef, ITitled):
-	containerId = ValidNTIID(title="Container NTIID", required=True)
+	containerId = ValidNTIID(title="Container NTIID", required=False)
 	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
 
@@ -451,6 +451,7 @@ INTIPollRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIPollRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTISurveyRef(INTIInquiryRef):
+	containerId = ValidNTIID(title="Container NTIID", required=False)
 	question_count = Int(title="Question count", required=False)
 ISurveyRef = INTISurveyRef
 
