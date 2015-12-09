@@ -159,8 +159,15 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 
 class _TargetNTIIDUpdater(_AssetUpdater):
 
+	TARGET_FIELDS =  ('Target-NTIID', 'target-NTIID', 'target-ntiid', 'target')
+	
+	def popTargets(self, parsed):
+		for name in self.TARGET_FIELDS:
+			parsed.pop(name, None)
+		return self
+	
 	def getTargetNTIID(self, parsed):
-		for name in ('Target-NTIID', 'target-NTIID', 'target-ntiid', 'target'):
+		for name in self.TARGET_FIELDS:
 			if name in parsed:
 				return ntiid_check(parsed.get(name))
 		return None
@@ -296,6 +303,12 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 			ntiid = ntiid_check(parsed.get(NTIID) or parsed.get('ntiid'))
 			if not ntiid:
 				parsed[NTIID] = make_discussionref_ntiid_from_bundle_id(iden)
+
+		# remove target fields if empty
+		target = self.getTargetNTIID(parsed)
+		if not target:
+			self.popTargets(parsed)
+		# complete
 		return super(_NTIDiscussionRefUpdater, self).fixTarget(parsed, transfer=transfer)
 
 	def fixAll(self, parsed):
