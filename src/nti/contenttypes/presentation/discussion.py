@@ -42,6 +42,10 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 	@readproperty
 	def id(self):
 		return self.ntiid
+	
+	@readproperty
+	def target(self):
+		return self.ntiid
 
 	def isCourseBundle(self):
 		return is_nti_course_bundle(self.id or self.ntiid)
