@@ -9,6 +9,9 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import uuid
+from hashlib import md5
+
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
@@ -24,6 +27,10 @@ from nti.coremetadata.mixins import RecordableMixin
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
 from nti.externalization.representation import WithRepr
+
+from nti.ntiids.ntiids import TYPE_UUID
+from nti.ntiids.ntiids import make_ntiid
+from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.field import SchemaConfigured
 
@@ -42,9 +49,18 @@ class PersistentMixin(SchemaConfigured,
 @interface.implementer(IPresentationAsset, IContentTypeAware, ICreated)
 class PersistentPresentationAsset(PersistentMixin,
 								  RecordableMixin,
-								  Contained): # order matters
+								  Contained):  # order matters
 	byline = None
 
 	@readproperty
 	def creator(self):
-		return self.byline 
+		return self.byline
+
+	@classmethod
+	def generate_ntiid(cls, nttype):
+		digest = md5(str(uuid.uuid4())).hexdigest()
+		specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
+		result = make_ntiid(provider='NTI',
+							nttype=nttype,
+							specific=specific)
+		return result

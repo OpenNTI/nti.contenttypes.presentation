@@ -39,6 +39,13 @@ from .interfaces import IPresentationAsset
 
 NTI_VIDEO = NTIVideo = u'NTIVideo'
 
+NTI_QUESTION_REF = 'NTIQuestionRef'
+NTI_ASSIGNMENT_REF = 'NTIAssignmentRef'
+NTI_QUESTION_SET_REF = 'NTIQuestionSetRef'
+
+NTI_POLL_REF = 'NTIPollRef'
+NTI_SURVEY_REF = 'NTISurveyRef'
+
 NTI_SLIDE = NTISlide = u'NTISlide'
 NTI_SLIDE_DECK = NTISlideDeck = u'NTISlideDeck'
 NTI_SLIDE_VIDEO = NTISlideVideo = u'NTISlideVideo'
@@ -71,6 +78,12 @@ NTI_COURSE_OVERVIEW_SPACER = u'NTICourseOverviewSpacer'
 
 LESSON_OVERVIEW = u'LessonOverview'
 NTI_LESSON_OVERVIEW = u'NTILessonOverview'
+
+NTI_AUDIO_REF = 'NTIAudioRef'
+NTI_VIDEO_REF = 'NTIVideoRef'
+
+NTI_AUDIO_ROLL_REF = 'NTIAudioRollRef'
+NTI_VIDEO_ROLL_REF = 'NTIVideoRollRef'
 
 AUDIO_MIMETYES = ('application/vnd.nextthought.ntiaudio',)
 VIDEO_MIMETYES = ('application/vnd.nextthought.ntivideo',)

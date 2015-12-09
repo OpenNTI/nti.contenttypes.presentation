@@ -45,6 +45,11 @@ from .interfaces import INTIAudioRollRef
 from .interfaces import INTIMediaRollRef
 from .interfaces import INTIVideoRollRef
 
+from . import NTI_AUDIO_REF
+from . import NTI_VIDEO_REF
+from . import NTI_AUDIO_ROLL_REF
+from . import NTI_VIDEO_ROLL_REF
+
 @interface.implementer(INTITranscript, IContentTypeAware)
 class NTITranscript(PersistentMixin):
 	createDirectFieldProperties(INTITranscript)
@@ -83,6 +88,7 @@ class NTIMediaRef(PersistentPresentationAsset):
 	__external_class_name__ = u"MediaRef"
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediaref'
 	
+	nttype = 'NTIMediaRef'
 	visibility = EVERYONE
 	Creator = alias('creator')
 
@@ -105,6 +111,13 @@ class NTIVideoRef(NTIMediaRef):
 
 	__external_class_name__ = u"Video"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
+	
+	nttype = NTI_VIDEO_REF
+	
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(self.nttype)
+		return self.ntiid
 
 @interface.implementer(INTIAudio)
 class NTIAudio(NTIMedia):
@@ -119,6 +132,8 @@ class NTIAudioRef(NTIMediaRef):
 
 	__external_class_name__ = u"Audio"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
+	
+	nttype = NTI_AUDIO_REF
 
 @EqHash('ntiid')
 @interface.implementer(INTIMediaRoll)
@@ -177,6 +192,12 @@ class NTIMediaRollRef(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediarollref'
 	
 	visibility = EVERYONE
+	nttype = 'NTIMediaRollRef'
+
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(self.nttype)
+		return self.ntiid
 	
 	@readproperty
 	def target(self):
@@ -195,6 +216,8 @@ class NTIAudioRollRef(NTIMediaRollRef):
 	
 	__external_class_name__ = u"AudioRollRef"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiorollref'
+	
+	nttype = NTI_AUDIO_ROLL_REF
 
 @interface.implementer(INTIVideoRoll)
 class NTIVideoRoll(NTIMediaRoll):
@@ -209,3 +232,5 @@ class NTIVideoRollRef(NTIMediaRollRef):
 
 	__external_class_name__ = u"VideoRollRef"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideorollref'
+	
+	nttype = NTI_VIDEO_ROLL_REF

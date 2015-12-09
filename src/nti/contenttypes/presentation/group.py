@@ -9,9 +9,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import uuid
-from hashlib import md5
-
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
@@ -19,10 +16,6 @@ from zope.cachedescriptors.property import readproperty
 from persistent.list import PersistentList
 
 from nti.common.property import alias
-
-from nti.ntiids.ntiids import TYPE_UUID
-from nti.ntiids.ntiids import make_ntiid
-from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.schema import EqHash 
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -50,13 +43,8 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 
 	@readproperty
 	def ntiid(self):
-		digest = md5(str(uuid.uuid4())).hexdigest()
-		specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
-		result = make_ntiid(provider='NTI',
-							nttype=NTI_COURSE_OVERVIEW_GROUP,
-							specific=specific)
-		self.ntiid = result
-		return result
+		self.ntiid = self.generate_ntiid(NTI_COURSE_OVERVIEW_GROUP)
+		return self.ntiid
 	
 	def __getitem__(self, index):
 		item = self.items[index]
