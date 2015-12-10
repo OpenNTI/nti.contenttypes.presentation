@@ -34,7 +34,6 @@ from nti.ntiids.ntiids import is_ntiid_of_types
 from nti.ntiids.ntiids import is_valid_ntiid_string
 
 from .discussion import is_nti_course_bundle
-from .discussion import make_discussionref_ntiid
 from .discussion import make_discussionref_ntiid_from_bundle_id
 
 from .interfaces import INTIAudio
@@ -183,11 +182,10 @@ class _TargetNTIIDUpdater(_AssetUpdater):
 			parsed['target'] = target
 
 		if transfer:
-			if not parsed.get('target') and parsed.get('ntiid'):
-				parsed[u'target'] = parsed['ntiid']
-			elif not parsed.get('ntiid') and parsed.get('target'):
-				parsed[u'ntiid'] = parsed['target']
-
+			ntiid, target = parsed.get('ntiid'), parsed.get('target')
+			if ntiid and not target:
+				parsed['target'] = ntiid
+				parsed.pop('ntiid', None)
 		return self
 
 class _NTIMediaRefUpdater(_TargetNTIIDUpdater):
@@ -277,11 +275,14 @@ class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):
 
 	_ext_iface_upper_bound = INTIRelatedWorkRef
 
+	def fixTarget(self, parsed, transfer=False):
+		return _TargetNTIIDUpdater.fixTarget(self, parsed, transfer=False)
+
 	def fixAll(self, parsed):
 		if 'desc' in parsed:
 			parsed[u'description'] = parsed.pop('desc')
 
-		self.fixTarget(parsed, transfer=False)
+		self.fixTarget(parsed)
 
 		if 'targetMimeType' in parsed:
 			parsed[u'type'] = parsed.pop('targetMimeType')
@@ -314,11 +315,9 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 	def fixAll(self, parsed):
 		self.fixTarget(parsed, transfer=True)
 		ntiid = ntiid_check(parsed.get('ntiid'))
-		target = parsed.get('target')
-		if target and ntiid == target:
-			ntiid = make_discussionref_ntiid(ntiid)
+		if ntiid:
 			parsed['ntiid'] = ntiid
-		if not parsed.get('id'):
+		if not parsed.get('id') and ntiid:
 			parsed['id'] = ntiid
 		return self.fixCreator(parsed)
 

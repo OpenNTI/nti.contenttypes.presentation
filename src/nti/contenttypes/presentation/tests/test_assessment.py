@@ -9,6 +9,7 @@ __docformat__ = "restructuredtext en"
 
 from hamcrest import is_
 from hamcrest import has_key
+from hamcrest import not_none
 from hamcrest import has_entry
 from hamcrest import assert_that
 from hamcrest import has_property
@@ -68,9 +69,9 @@ class TestAssignment(unittest.TestCase):
 
 		questionset = create_questionsetref_from_external(source)
 		assert_that(questionset, has_property('question_count', is_(7)))
+		assert_that(questionset, has_property('ntiid', is_(not_none())))
 		assert_that(questionset, has_property('label', is_(u'Janux Course Features Verification Quiz')))
 		assert_that(questionset, has_property('target', is_(u"tag:nextthought.com,2011-10:OU-NAQ-CHEM4970_200_F_2014_Chemistry_of_Beer.naq.set.qset:janux_features_verification_quiz")))
-		assert_that(questionset, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OU-NAQ-CHEM4970_200_F_2014_Chemistry_of_Beer.naq.set.qset:janux_features_verification_quiz")))
 
 		ext_obj = to_external_object(questionset, name="render")
 		for k, v in original.items():
@@ -90,7 +91,7 @@ class TestAssignment(unittest.TestCase):
 
 		question = create_questionref_from_external(source)
 		assert_that(question, has_property('target', is_(u"tag:nextthought.com,2011-10:OKState-NAQ-OKState_AGEC4990_S_2015_Farm_to_Fork.naq.qid.FootprintQuiz.01")))
-		assert_that(question, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:OKState-NAQ-OKState_AGEC4990_S_2015_Farm_to_Fork.naq.qid.FootprintQuiz.01")))
+		assert_that(question, has_property('ntiid', is_(not_none())))
 
 		ext_obj = to_external_object(question, name="render")
 		for k, v in original.items():

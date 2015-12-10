@@ -9,6 +9,7 @@ __docformat__ = "restructuredtext en"
 
 from hamcrest import is_
 from hamcrest import has_key
+from hamcrest import not_none
 from hamcrest import has_entry
 from hamcrest import assert_that
 from hamcrest import has_property
@@ -42,12 +43,12 @@ class TestDiscussion(unittest.TestCase):
 
 		discussion = create_discussionref_from_external(source)
 		assert_that(discussion, has_property('label', is_(u'')))
+		assert_that(discussion, has_property('ntiid', is_(not_none())))
+		assert_that(discussion, has_property('id', is_(discussion.ntiid)))
 		assert_that(discussion, has_property('title', is_(u'11.6 Perspectives')))
 		assert_that(discussion, has_property('icon', is_(u"resources/LSTD1153_S_2015_History_United_States_1865_to_Present/8c9c6e901a7884087d71ccf46941ad258121abce/fd35e23767020999111e1f49239199b4c5eff23e.jpg")))
 		assert_that(discussion, has_property('mimeType', is_(u"application/vnd.nextthought.discussionref")))
 		assert_that(discussion, has_property('target', is_(u"tag:nextthought.com,2011-10:LSTD_1153-Topic:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
-		assert_that(discussion, has_property('ntiid', is_(u"tag:nextthought.com,2011-10:LSTD_1153-DiscussionRef:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
-		assert_that(discussion, has_property('id', is_(u"tag:nextthought.com,2011-10:LSTD_1153-DiscussionRef:EnrolledCourseRoot-Open_Discussions.11_6_Perspectives")))
 
 		ext_obj = to_external_object(discussion, name="render")
 		for k, v in original.items():
@@ -66,8 +67,8 @@ class TestDiscussion(unittest.TestCase):
 		discussion = create_discussionref_from_external(source)
 		assert_that(discussion, has_property('label', is_(u'Ichigo')))
 		assert_that(discussion, has_property('title', is_(u'Ichigo')))
+		assert_that(discussion, has_property('ntiid', is_(not_none())))
 		assert_that(discussion, has_property('icon', is_(u"resources/ichigo.jpg")))
 		assert_that(discussion, has_property('mimeType', is_(u"application/vnd.nextthought.discussionref")))
 		assert_that(discussion, has_property('target', contains_string(u"DiscussionRef-Discussions_ichigo_json")))
-		assert_that(discussion, has_property('ntiid', contains_string(u"DiscussionRef-Discussions_ichigo_json")))
 		assert_that(discussion, has_property('id', is_(u"nti-course-bundle://Discussions/ichigo.json")))
