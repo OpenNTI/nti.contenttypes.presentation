@@ -398,6 +398,7 @@ class _NTICourseOverviewGroupUpdater(_AssetUpdater):
 	def fixAll(self, parsed):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
+		# use persistent lists
 		if ITEMS in parsed:
 			items = PersistentList(parsed.get(ITEMS) or ())
 			parsed[ITEMS] = items
@@ -418,12 +419,15 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
 		ntiid = parsed.get('ntiid')
 		lesson = parsed.get('lesson')
+		# make sure we update the incoming ntiid
+		# since in legacy it may the ntiid of a content unit
 		if 		not lesson \
 			and is_valid_ntiid_string(ntiid) \
-			and get_type(ntiid) != NTI_LESSON_OVERVIEW:  # correct ntiid
+			and get_type(ntiid) != NTI_LESSON_OVERVIEW:
 			lesson = make_ntiid(nttype=NTI_LESSON_OVERVIEW, base=ntiid)
 			parsed[u'ntiid'] = lesson
 			parsed[u'lesson'] = ntiid
+		# use persistent lists
 		if ITEMS in parsed:
 			items = PersistentList(parsed.get(ITEMS) or ())
 			parsed[ITEMS] = items
