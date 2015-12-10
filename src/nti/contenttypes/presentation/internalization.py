@@ -160,12 +160,12 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 class _TargetNTIIDUpdater(_AssetUpdater):
 
 	TARGET_FIELDS =  ('Target-NTIID', 'target-NTIID', 'target-ntiid', 'target')
-	
+
 	def popTargets(self, parsed):
 		for name in self.TARGET_FIELDS:
 			parsed.pop(name, None)
 		return self
-	
+
 	def getTargetNTIID(self, parsed):
 		for name in self.TARGET_FIELDS:
 			if name in parsed:
@@ -249,7 +249,7 @@ class _NTISlideDeckUpdater(_AssetUpdater):
 
 	def fixAll(self, parsed):
 		self.fixCreator(parsed)
-		
+
 		if 'slidedeckid' in parsed and not parsed.get('ntiid'):
 			parsed[u'ntiid'] = ntiid_check(parsed['slidedeckid'])
 
@@ -398,7 +398,7 @@ class _NTICourseOverviewGroupUpdater(_AssetUpdater):
 	def fixAll(self, parsed):
 		if NTIID in parsed:
 			parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
-		if ITEMS is parsed:
+		if ITEMS in parsed:
 			items = PersistentList(parsed.get(ITEMS) or ())
 			parsed[ITEMS] = items
 		return self.fixCreator(parsed)
@@ -424,7 +424,7 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
 			lesson = make_ntiid(nttype=NTI_LESSON_OVERVIEW, base=ntiid)
 			parsed[u'ntiid'] = lesson
 			parsed[u'lesson'] = ntiid
-		if ITEMS is parsed:
+		if ITEMS in parsed:
 			items = PersistentList(parsed.get(ITEMS) or ())
 			parsed[ITEMS] = items
 		return self.fixCreator(parsed)
@@ -488,7 +488,7 @@ def internalization_relatedworkref_pre_hook(k, x):
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if 		ntiid \
-			and (	'.relatedworkref.' in ntiid 
+			and (	'.relatedworkref.' in ntiid
 				 or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
 			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
 
