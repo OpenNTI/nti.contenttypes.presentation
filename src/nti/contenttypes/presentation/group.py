@@ -17,7 +17,7 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
-from nti.schema.schema import EqHash 
+from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.wref.interfaces import IWeakRef
@@ -37,7 +37,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 
 	__external_class_name__ = u"CourseOverviewGroup"
 	mime_type = mimeType = u"application/vnd.nextthought.nticourseoverviewgroup"
-	
+
 	items = alias('Items')
 	color = alias('accentColor')
 
@@ -45,14 +45,14 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 	def ntiid(self):
 		self.ntiid = self.generate_ntiid(NTI_COURSE_OVERVIEW_GROUP)
 		return self.ntiid
-	
+
 	def __getitem__(self, index):
 		item = self.items[index]
 		return item
-	
+
 	def __setitem__(self, index, item):
 		self.items[index] = item
-	
+
 	def __len__(self):
 		result = len(self.items or ()) # include weak refs
 		return result
@@ -64,7 +64,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 				yield resolved
 			else:
 				logger.warn("Cannot resolve %s", item)
-	
+
 	def append(self, item):
 		assert IGroupOverViewable.providedBy(item) \
 			or IGroupOverViewableWeakRef.providedBy(item)
@@ -72,7 +72,16 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(item)
 	add = append
-	
+
+	def insert(self, index, obj):
+		# Remove from our list if it exists, and then insert at.
+		self.remove(obj)
+		if index is None or index >= len(self.Items or ()):
+			# Default to append.
+			self.append(obj)
+		else:
+			self.items.insert(index, obj)
+
 	def pop(self, index):
 		self.items.pop(index)
 
