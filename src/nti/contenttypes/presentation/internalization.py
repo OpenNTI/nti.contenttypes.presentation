@@ -45,8 +45,14 @@ from .interfaces import INTITimeline
 from .interfaces import INTIVideoRef
 from .interfaces import INTISurveyRef
 from .interfaces import INTISlideDeck
+from .interfaces import INTIAudioRoll
+from .interfaces import INTIMediaRoll
+from .interfaces import INTIVideoRoll
 from .interfaces import INTISlideVideo
 from .interfaces import INTIQuestionRef
+from .interfaces import INTIAudioRollRef
+from .interfaces import INTIMediaRollRef
+from .interfaces import INTIVideoRollRef
 from .interfaces import INTIAssignmentRef
 from .interfaces import INTIDiscussionRef
 from .interfaces import INTIQuestionSetRef
@@ -62,6 +68,11 @@ from . import RELATED_WORK
 from . import RELATED_WORK_REF
 
 from . import NTI_LESSON_OVERVIEW
+
+from . import AUDIO_ROLL_MIMETYES
+from . import VIDEO_ROLL_MIMETYES
+from . import AUDIO_ROLL_REF_MIMETYES
+from . import VIDEO_ROLL_REF_MIMETYES
 
 ID = StandardExternalFields.ID
 ITEMS = StandardExternalFields.ITEMS
@@ -158,7 +169,7 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 
 class _TargetNTIIDUpdater(_AssetUpdater):
 
-	TARGET_FIELDS =  ('Target-NTIID', 'target-NTIID', 'target-ntiid', 'target')
+	TARGET_FIELDS = ('Target-NTIID', 'target-NTIID', 'target-ntiid', 'target')
 
 	def popTargets(self, parsed):
 		for name in self.TARGET_FIELDS:
@@ -389,6 +400,34 @@ class _NTICourseOverviewSpacerUpdater(_AssetUpdater):
 		assert self._ext_replacement().ntiid, "No NTIID provided"
 		return result
 
+@component.adapter(INTIMediaRoll)
+class _NTIMediaRollUpdater(_AssetUpdater):
+	_ext_iface_upper_bound = INTIMediaRoll
+
+@component.adapter(INTIAudioRoll)
+class _NTIAudioRollUpdater(_NTIMediaRollUpdater):
+	_ext_iface_upper_bound = INTIAudioRoll
+
+@component.adapter(INTIVideoRoll)
+class _NTIVideoRollUpdater(_NTIMediaRollUpdater):
+	_ext_iface_upper_bound = INTIVideoRoll
+	
+@component.adapter(INTIMediaRollRef)
+class _NTIMediaRollRefUpdater(_TargetNTIIDUpdater):
+	_ext_iface_upper_bound = INTIMediaRollRef
+	
+	def fixAll(self, parsed):
+		self.fixTarget(parsed).fixCreator(parsed)
+		return parsed
+
+@component.adapter(INTIAudioRollRef)
+class _NTIAudioRollRefUpdater(_NTIMediaRollRefUpdater):
+	_ext_iface_upper_bound = INTIAudioRollRef
+	
+@component.adapter(INTIVideoRollRef)
+class _NTIVideoRollRefUpdater(_NTIMediaRollRefUpdater):
+	_ext_iface_upper_bound = INTIVideoRollRef
+
 @component.adapter(INTICourseOverviewGroup)
 class _NTICourseOverviewGroupUpdater(_AssetUpdater):
 
@@ -491,9 +530,27 @@ def internalization_relatedworkref_pre_hook(k, x):
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if 		ntiid \
-			and (	'.relatedworkref.' in ntiid
+			and ('.relatedworkref.' in ntiid
 				 or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
 			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
+
+def internalization_mediaroll_pre_hook(k, x):
+	if k == ITEMS and isinstance(x, MutableSequence):
+		for item in x:
+			internalization_ntiaudioref_pre_hook(None, item)
+			internalization_ntivideoref_pre_hook(None, item)
+internalization_audioroll_pre_hook = internalization_mediaroll_pre_hook
+internalization_videoroll_pre_hook = internalization_mediaroll_pre_hook
+
+def internalization_ntiaudiorollref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType in AUDIO_ROLL_MIMETYES:
+		x[MIMETYPE] = AUDIO_ROLL_REF_MIMETYES[0]
+
+def internalization_ntivideorollref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType in VIDEO_ROLL_MIMETYES:
+		x[MIMETYPE] = VIDEO_ROLL_REF_MIMETYES[0]
 
 def internalization_courseoverview_pre_hook(k, x):
 	if k == ITEMS and isinstance(x, MutableSequence):
@@ -509,8 +566,13 @@ def internalization_courseoverview_pre_hook(k, x):
 			internalization_assignmentref_pre_hook(None, item)
 			internalization_questionsetref_pre_hook(None, item)
 			internalization_relatedworkref_pre_hook(None, item)
+			internalization_ntiaudiorollref_pre_hook(None, item)
+			internalization_ntivideorollref_pre_hook(None, item)
 
+			# do checks
 			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
+
+			# handle discussions
 			if mimeType == "application/vnd.nextthought.discussion":
 				iden = item.get('id') or item.get(ID)
 				s = item.get(NTIID) or item.get('ntiid')
@@ -528,6 +590,12 @@ def internalization_courseoverview_pre_hook(k, x):
 					continue
 				else:
 					internalization_discussionref_pre_hook(None, item)
+
+			# handle media rolls
+			if mimeType in AUDIO_ROLL_REF_MIMETYES or mimeType in VIDEO_ROLL_REF_MIMETYES:
+				internalization_mediaroll_pre_hook(ITEMS, item.get(ITEMS))
+
+			# check next
 			idx += 1
 
 def internalization_lessonoverview_pre_hook(k, x):

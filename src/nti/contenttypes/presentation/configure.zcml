@@ -78,7 +78,15 @@
 	<adapter factory=".internalization._NTIAudioRefUpdater"
 			 for=".interfaces.INTIAudioRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-			 
+
+	<adapter factory=".internalization._NTIAudioRollUpdater"
+			 for=".interfaces.INTIAudioRoll"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
+	<adapter factory=".internalization._NTIVideoRollUpdater"
+			 for=".interfaces.INTIVideoRoll"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
 	<adapter factory=".internalization._NTISlideUpdater"
 			 for=".interfaces.INTISlide"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -123,6 +131,14 @@
 			 for=".interfaces.INTIPollRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
+	<adapter factory=".internalization._NTIAudioRollRefUpdater"
+			 for=".interfaces.INTIAudioRollRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
+	<adapter factory=".internalization._NTIVideoRollRefUpdater"
+			 for=".interfaces.INTIVideoRollRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+ 
 	<adapter factory=".internalization._NTICourseOverviewSpacerUpdater"
 			 for=".interfaces.INTICourseOverviewSpacer"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />

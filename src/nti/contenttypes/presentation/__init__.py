@@ -94,6 +94,14 @@ RELATED_WORK_REF_MIMETYES = ('application/vnd.nextthought.relatedworkref',)
 LESSON_OVERVIEW_MIMETYES = ('application/vnd.nextthought.ntilessonoverview',)
 COURSE_OVERVIEW_GROUP_MIMETYES = ('application/vnd.nextthought.nticourseoverviewgroup',)
 
+AUDIO_ROLL_MIMETYES = ('application/vnd.nextthought.ntiaudioroll','application/vnd.nextthought.audioroll')
+VIDEO_ROLL_MIMETYES = ('application/vnd.nextthought.ntivideoroll','application/vnd.nextthought.videoroll')
+ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIMETYES + VIDEO_ROLL_MIMETYES
+
+MEDIA_ROLL_REF_MIMETYES = ('application/vnd.nextthought.ntimediarollref',)
+AUDIO_ROLL_REF_MIMETYES = ('application/vnd.nextthought.ntiaudiorollref',)
+VIDEO_ROLL_REF_MIMETYES = ('application/vnd.nextthought.ntivideorollref',)
+
 POLL_REF_MIMETYES = ('application/vnd.nextthought.pollref', 'application/vnd.nextthought.napoll')
 TIMELINE_MIMETYES = ('application/vnd.nextthought.ntitimeline', 'application/vnd.nextthought.timeline')
 SURVEY_REF_MIMETYES = ('application/vnd.nextthought.surveyref', 'application/vnd.nextthought.surveyref')
