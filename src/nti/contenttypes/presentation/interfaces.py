@@ -305,8 +305,7 @@ class INTIAudioRef(INTIMediaRef):
 class INTIMediaRoll(IItemAssetContainer, INTIIDIdentifiable, ICreated,
 					IPresentationAsset, IIterable):
 
-	Items = ListOrTuple(value_type=Variant((Object(INTIMedia),
-											Object(INTIMediaRef))),
+	Items = ListOrTuple(value_type=Object(INTIMediaRef),
 						title="The media sources", required=False, min_length=1)
 
 	def pop(idx):
@@ -315,10 +314,12 @@ class INTIMediaRoll(IItemAssetContainer, INTIIDIdentifiable, ICreated,
 		"""
 
 class INTIAudioRoll(INTIMediaRoll):
-	pass
+	Items = ListOrTuple(value_type=Object(INTIAudioRef),
+						title="The audio sources", required=False, min_length=1)
 
 class INTIVideoRoll(INTIMediaRoll):
-	pass
+	Items = ListOrTuple(value_type=Object(INTIVideoRef),
+						title="The audio sources", required=False, min_length=1)
 
 class INTIMediaRollRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 					   IPresentationAsset, IVisible):
