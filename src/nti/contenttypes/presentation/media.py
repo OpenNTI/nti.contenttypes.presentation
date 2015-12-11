@@ -166,7 +166,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 				logger.warn("Cannot resolve %s", item)
 	
 	def append(self, item):
-		assert INTIMedia.providedBy(item) or INTIMediaRef.providedBy(item)
+		assert INTIMediaRef.providedBy(item)
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(item)
 	add = append
