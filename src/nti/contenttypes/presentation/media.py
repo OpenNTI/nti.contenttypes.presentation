@@ -22,8 +22,6 @@ from nti.common.property import alias
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.wref.interfaces import IWeakRef
-
 from ._base import PersistentMixin
 from ._base import PersistentPresentationAsset
 
@@ -159,11 +157,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 
 	def __iter__(self):
 		for item in self.items or ():
-			resolved = item() if IWeakRef.providedBy(item) else item
-			if resolved is not None:
-				yield resolved
-			else:
-				logger.warn("Cannot resolve %s", item)
+			yield item
 	
 	def append(self, item):
 		assert INTIMediaRef.providedBy(item)
