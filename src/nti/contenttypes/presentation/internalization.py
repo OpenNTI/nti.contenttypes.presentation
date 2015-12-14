@@ -411,11 +411,11 @@ class _NTIAudioRollUpdater(_NTIMediaRollUpdater):
 @component.adapter(INTIVideoRoll)
 class _NTIVideoRollUpdater(_NTIMediaRollUpdater):
 	_ext_iface_upper_bound = INTIVideoRoll
-	
+
 @component.adapter(INTIMediaRollRef)
 class _NTIMediaRollRefUpdater(_TargetNTIIDUpdater):
 	_ext_iface_upper_bound = INTIMediaRollRef
-	
+
 	def fixAll(self, parsed):
 		self.fixTarget(parsed).fixCreator(parsed)
 		return parsed
@@ -423,7 +423,7 @@ class _NTIMediaRollRefUpdater(_TargetNTIIDUpdater):
 @component.adapter(INTIAudioRollRef)
 class _NTIAudioRollRefUpdater(_NTIMediaRollRefUpdater):
 	_ext_iface_upper_bound = INTIAudioRollRef
-	
+
 @component.adapter(INTIVideoRollRef)
 class _NTIVideoRollRefUpdater(_NTIMediaRollRefUpdater):
 	_ext_iface_upper_bound = INTIVideoRollRef

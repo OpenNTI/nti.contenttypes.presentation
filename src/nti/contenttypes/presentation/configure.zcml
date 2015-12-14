@@ -14,24 +14,24 @@
 	<!-- Adapters -->
 	<adapter factory=".adapters.ntivideo_to_ntivideoref"
 			 for=".interfaces.INTIVideo"
-			 provides=".interfaces.INTIVideoRef" /> 
+			 provides=".interfaces.INTIVideoRef" />
 
 	<adapter factory=".adapters.ntiaudio_to_ntiaudioref"
 			 for=".interfaces.INTIAudio"
-			 provides=".interfaces.INTIAudioRef" /> 
-	
+			 provides=".interfaces.INTIAudioRef" />
+
 	<adapter factory=".adapters.ntivideoroll_to_ntivideorollref"
 			 for=".interfaces.INTIVideoRoll"
-			 provides=".interfaces.INTIVideoRollRef" /> 
+			 provides=".interfaces.INTIVideoRollRef" />
 
 	<adapter factory=".adapters.ntiaudioroll_to_ntiaudiorollref"
 			 for=".interfaces.INTIAudioRoll"
-			 provides=".interfaces.INTIAudioRollRef" /> 
-		 
+			 provides=".interfaces.INTIAudioRollRef" />
+
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />
 	<include package="nti.externalization" />
-		
+
 	<ext:registerAutoPackageIO
 		root_interfaces=".interfaces.INTIAudio
 						 .interfaces.INTIAudioRef
@@ -58,10 +58,10 @@
 						 .interfaces.INTIVideoRollRef
 						 .interfaces.INTICourseOverviewSpacer"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
-	
+
 	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
-			 for=".interfaces.INTICourseOverviewGroup" />
-			 
+				for=".interfaces.INTICourseOverviewGroup" />
+
 	<!-- Internalization -->
 	<adapter factory=".internalization._NTIVideoUpdater"
 			 for=".interfaces.INTIVideo"
@@ -70,7 +70,7 @@
 	<adapter factory=".internalization._NTIVideoRefUpdater"
 			 for=".interfaces.INTIVideoRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-			 
+
 	<adapter factory=".internalization._NTIAudioUpdater"
 			 for=".interfaces.INTIAudio"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -94,7 +94,7 @@
 	<adapter factory=".internalization._NTISlideVideoUpdater"
 			 for=".interfaces.INTISlideVideo"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-			
+
 	<adapter factory=".internalization._NTISlideDeckUpdater"
 			 for=".interfaces.INTISlideDeck"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -102,7 +102,7 @@
 	<adapter factory=".internalization._NTITimelineUpdater"
 			 for=".interfaces.INTITimeline"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-	
+
 	<adapter factory=".internalization._NTIRelatedWorkUpdater"
 			 for=".interfaces.INTIRelatedWorkRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -114,7 +114,7 @@
 	<adapter factory=".internalization._NTIAssignmentRefUpdater"
 			 for=".interfaces.INTIAssignmentRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-	 
+
 	<adapter factory=".internalization._NTIQuestionSetRefUpdater"
 			 for=".interfaces.INTIQuestionSetRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -122,7 +122,7 @@
 	<adapter factory=".internalization._NTIQuestionRefUpdater"
 			 for=".interfaces.INTIQuestionRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-		 
+
 	<adapter factory=".internalization._NTISurveyRefUpdater"
 			 for=".interfaces.INTISurveyRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -138,7 +138,7 @@
 	<adapter factory=".internalization._NTIVideoRollRefUpdater"
 			 for=".interfaces.INTIVideoRollRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
- 
+
 	<adapter factory=".internalization._NTICourseOverviewSpacerUpdater"
 			 for=".interfaces.INTICourseOverviewSpacer"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
@@ -146,91 +146,10 @@
 	<adapter factory=".internalization._NTICourseOverviewGroupUpdater"
 			 for=".interfaces.INTICourseOverviewGroup"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-		
+
 	<adapter factory=".internalization._NTILessonOverviewUpdater"
 			 for=".interfaces.INTILessonOverview"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-	 		 
-	<!-- Externalization -->
-	<adapter factory=".externalization._NTIAudioRenderExternalObject"
-			 for=".interfaces.INTIAudio"
-			 name="render" />
-
-	<adapter factory=".externalization._NTIAudioRefRenderExternalObject"
-			 for=".interfaces.INTIAudioRef"
-			 name="render" />
-			 
-	<adapter factory=".externalization._NTIVideoRenderExternalObject"
-			 for=".interfaces.INTIVideo"
-			 name="render" />
-			 
-	<adapter factory=".externalization._NTIVideoRefRenderExternalObject"
-			 for=".interfaces.INTIVideoRef"
-			 name="render" />
-			 
-	<adapter factory=".externalization._NTISlideRenderExternalObject"
-			 for=".interfaces.INTISlide"
-			 name="render" />
-
-	<adapter factory=".externalization._NTISlideVideoRenderExternalObject"
-			 for=".interfaces.INTISlideVideo"
-			 name="render" />
-
-	<adapter factory=".externalization._NTISlideDeckRenderExternalObject"
-			 for=".interfaces.INTISlideDeck"
-			 name="render" />
-
-	<adapter factory=".externalization._NTITimelineRenderExternalObject"
-			 for=".interfaces.INTITimeline"
-			 name="render" />
-			 
-	<adapter factory=".externalization._NTIRelatedWorkRenderExternalObject"
-			 for=".interfaces.INTIRelatedWorkRef"
-			 name="render" />
-
-	<adapter factory=".externalization._NTIDiscussionRefRenderExternalObject"
-			 for=".interfaces.INTIDiscussionRef"
-			 name="render" />
-			 
-	<adapter factory=".externalization._NTIQuestionRefRenderExternalObject"
-			 for=".interfaces.INTIQuestionRef"
-			 name="render" />
-
-	<adapter factory=".externalization._NTIQuestionSetRefRenderExternalObject"
-			 for=".interfaces.INTIQuestionSetRef"
-			 name="render" />
-
-	<adapter factory=".externalization._NTIAssignmentRefRenderExternalObject"
-			 for=".interfaces.INTIAssignmentRef"
-			 name="render" />
-		
-	<adapter factory=".externalization._NTISurveyRefRenderExternalObject"
-			 for=".interfaces.INTISurveyRef"
-			 name="render" />
-
-	<adapter factory=".externalization._NTIPollRefRenderExternalObject"
-			 for=".interfaces.INTIPollRef"
-			 name="render" />
-
-	<adapter factory=".externalization._NTIMediaRollRefRenderExternalObject"
-			 for=".interfaces.INTIMediaRollRef"
-			 name="render" />
-
-	<adapter factory=".externalization._NTIMediaRollRenderExternalObject"
-			 for=".interfaces.INTIMediaRoll"
-			 name="render" />
-
-	<adapter factory=".externalization._NTICourseOverviewSpacerRenderExternalObject"
-			 for=".interfaces.INTICourseOverviewSpacer"
-			 name="render" />
-			 	 
-	<adapter factory=".externalization._NTICourseOverviewGroupRenderExternalObject"
-			 for=".interfaces.INTICourseOverviewGroup"
-			 name="render" />
-
-	<adapter factory=".externalization._NTILessonOverviewRenderExternalObject"
-			 for=".interfaces.INTILessonOverview"
-			 name="render" />
 
 	<!-- Mime factories -->
 	<ext:registerMimeFactories module=".group" />
