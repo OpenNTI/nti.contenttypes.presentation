@@ -53,8 +53,6 @@ from nti.schema.field import IndexedIterable
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 from nti.schema.jsonschema import TAG_REQUIRED_IN_UI
 
-from nti.wref.interfaces import IWeakRef
-
 # Transcript types (file extensions)
 
 SBV_TRANSCRIPT_TYPE = u'sbv'
@@ -201,9 +199,6 @@ class IGroupOverViewable(interface.Interface):
 	"""
 	marker interface for things that can be part of a course overview group
 	"""
-
-class IGroupOverViewableWeakRef(IWeakRef):
-	pass
 
 class INTITranscript(ILastModified):
 	src = href_schema_field(title="Transcript source", required=True)
@@ -465,8 +460,7 @@ class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresenta
 class INTICourseOverviewGroup(IItemAssetContainer, ITitled, INTIIDIdentifiable,
 							  IPresentationAsset, IFiniteSequence, IIterable):
 
-	Items = IndexedIterable(value_type=Variant((Object(IGroupOverViewable),
-												Object(IGroupOverViewableWeakRef))),
+	Items = IndexedIterable(value_type=Object(IGroupOverViewable),
 						 	title="The overview items", required=False, min_length=0)
 	title = ValidTextLine(title="Overview title", required=False)
 	accentColor = ValidTextLine(title="Overview color", required=False)

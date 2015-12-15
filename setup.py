@@ -58,8 +58,7 @@ setup(
 		'nti.mimetype',
 		'nti.namedfile',
 		'nti.ntiids',
-		'nti.schema',
-		'nti.wref'
+		'nti.schema'
 	],
 	extras_require={
 		'test': TESTS_REQUIRE,

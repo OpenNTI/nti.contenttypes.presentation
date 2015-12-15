@@ -83,7 +83,7 @@ class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
 	def insert(self, index, obj):
 		# Remove from our list if it exists, and then insert at.
 		self.remove(obj)
-		if index is None or index >= len(self.Items or ()):
+		if index is None or index >= len(self):
 			# Default to append.
 			self.append(obj)
 		else:

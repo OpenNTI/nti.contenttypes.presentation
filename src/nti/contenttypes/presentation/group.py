@@ -20,13 +20,10 @@ from nti.common.property import alias
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.wref.interfaces import IWeakRef
-
 from ._base import PersistentPresentationAsset
 
 from .interfaces import IGroupOverViewable
 from .interfaces import INTICourseOverviewGroup
-from .interfaces import IGroupOverViewableWeakRef
 
 from . import NTI_COURSE_OVERVIEW_GROUP
 
@@ -58,17 +55,10 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 		return result
 
 	def __iter__(self):
-		for item in self.items or ():
-			resolved = item() if IWeakRef.providedBy(item) else item
-			if resolved is not None:
-				yield resolved
-			else:
-				logger.warn("Cannot resolve %s", item)
+		return iter(self.items or ())
 
 	def append(self, item):
-		assert IGroupOverViewable.providedBy(item) \
-			or IGroupOverViewableWeakRef.providedBy(item)
-
+		assert IGroupOverViewable.providedBy(item)
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(item)
 	add = append
@@ -76,7 +66,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 	def insert(self, index, obj):
 		# Remove from our list if it exists, and then insert at.
 		self.remove(obj)
-		if index is None or index >= len(self.Items or ()):
+		if index is None or index >= len(self):
 			# Default to append.
 			self.append(obj)
 		else:
