@@ -31,13 +31,13 @@ from nti.schema.interfaces import find_most_derived_interface
 class TestModule(unittest.TestCase):
 
 	layer = SharedConfiguringTestLayer
-	
+
 	def test_ifaces(self):
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
-		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(13))
+		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(14))
 
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
-		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(22))
+		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(20))
 
 		assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))
 
@@ -45,7 +45,7 @@ class TestModule(unittest.TestCase):
 		class Foo(object):
 			pass
 		for iface in ALL_PRESENTATION_ASSETS_INTERFACES:
-			obj = Foo() 
+			obj = Foo()
 			interface.alsoProvides(obj, iface)
 			provided = find_most_derived_interface(obj, IPresentationAsset)
 			assert_that(iface_of_asset(obj), is_(provided))

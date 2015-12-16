@@ -32,8 +32,6 @@ from .internalization import internalization_courseoverview_pre_hook
 from .internalization import internalization_lessonoverview_pre_hook
 from .internalization import internalization_questionsetref_pre_hook
 from .internalization import internalization_relatedworkref_pre_hook
-from .internalization import internalization_ntiaudiorollref_pre_hook
-from .internalization import internalization_ntivideorollref_pre_hook
 
 from . import AUDIO_MIMETYES
 from . import VIDEO_MIMETYES
@@ -44,9 +42,7 @@ from . import VIDEO_REF_MIMETYES
 from . import SURVEY_REF_MIMETYES
 from . import QUESTION_REF_MIMETYES
 from . import ASSIGNMENT_REF_MIMETYES
-from . import AUDIO_ROLL_REF_MIMETYES
 from . import DISCUSSION_REF_MIMETYES
-from . import VIDEO_ROLL_REF_MIMETYES
 from . import LESSON_OVERVIEW_MIMETYES
 from . import QUESTIONSET_REF_MIMETYES
 from . import ALL_MEDIA_ROLL_MIME_TYPES
@@ -161,20 +157,6 @@ def create_mediaroll_from_external(ext_obj, notify=True, _exec=True):
 create_audioroll_from_external = create_mediaroll_from_external
 create_videoroll_from_external = create_mediaroll_from_external
 
-def create_audiorollref_from_external(ext_obj, notify=True, _exec=True):
-	result = create_object_from_external(ext_obj,
-										 notify=notify,
-										 pre_hook=internalization_ntiaudiorollref_pre_hook,
-										 _exec=_exec)
-	return result
-
-def create_videorollref_from_external(ext_obj, notify=True, _exec=True):
-	result = create_object_from_external(ext_obj,
-										 notify=notify,
-										 pre_hook=internalization_ntivideorollref_pre_hook,
-										 _exec=_exec)
-	return result
-
 def create_courseoverview_from_external(ext_obj, notify=True, _exec=True):
 	result = create_object_from_external(ext_obj,
 										 notify=notify,
@@ -221,10 +203,6 @@ def create_from_external(ext_obj, notify=True, _exec=True):
 		result = create_ntiaudio_from_external(ext_obj, notify=notify, _exec=_exec)
 	elif mimeType in ALL_MEDIA_ROLL_MIME_TYPES:
 		result = create_mediaroll_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in VIDEO_ROLL_REF_MIMETYES:
-		result = create_videorollref_from_external(ext_obj, notify=notify, _exec=_exec)
-	elif mimeType in AUDIO_ROLL_REF_MIMETYES:
-		result = create_audiorollref_from_external(ext_obj, notify=notify, _exec=_exec)
 	else:
 		result = create_object_from_external(ext_obj, notify=notify, _exec=_exec)
 	return result
@@ -265,10 +243,6 @@ def get_external_pre_hook(ext_obj):
 		result = internalization_ntiaudio_pre_hook
 	elif mimeType in ALL_MEDIA_ROLL_MIME_TYPES:
 		result = internalization_mediaroll_pre_hook
-	elif mimeType in VIDEO_ROLL_REF_MIMETYES:
-		result = internalization_ntivideorollref_pre_hook
-	elif mimeType in AUDIO_ROLL_REF_MIMETYES:
-		result = internalization_ntiaudiorollref_pre_hook
 	else:
 		result = pre_hook
 	return result

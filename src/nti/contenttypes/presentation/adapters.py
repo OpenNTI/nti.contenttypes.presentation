@@ -14,8 +14,6 @@ from zope import interface
 
 from .media import NTIAudioRef
 from .media import NTIVideoRef
-from .media import NTIAudioRollRef
-from .media import NTIVideoRollRef
 
 from .interfaces import INTIAudio
 from .interfaces import INTIVideo
@@ -23,8 +21,6 @@ from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
 from .interfaces import INTIAudioRoll
 from .interfaces import INTIVideoRoll
-from .interfaces import INTIAudioRollRef
-from .interfaces import INTIVideoRollRef
 
 @component.adapter(INTIVideo)
 @interface.implementer(INTIVideoRef)
@@ -44,22 +40,4 @@ def ntiaudio_to_ntiaudioref(audio):
 						 target=audio.ntiid)
 	result.byline = audio.byline
 	result.creator = audio.creator
-	return result
-
-@component.adapter(INTIAudioRoll)
-@interface.implementer(INTIAudioRollRef)
-def ntiaudioroll_to_ntiaudiorollref(roll):
-	result = NTIAudioRollRef(ntiid=roll.ntiid,
-							 target=roll.ntiid)
-	result.byline = roll.byline
-	result.creator = roll.creator
-	return result
-
-@component.adapter(INTIVideoRoll)
-@interface.implementer(INTIVideoRollRef)
-def ntivideoroll_to_ntivideorollref(roll):
-	result = NTIVideoRollRef(ntiid=roll.ntiid,
-							 target=roll.ntiid)
-	result.byline = roll.byline
-	result.creator = roll.creator
 	return result

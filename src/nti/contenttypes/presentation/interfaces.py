@@ -297,8 +297,8 @@ INTIAudio['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTIAudioRef(INTIMediaRef):
 	pass
 
-class INTIMediaRoll(IItemAssetContainer, INTIIDIdentifiable, ICreated,
-					IPresentationAsset, IIterable):
+class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
+					ICreated, IPresentationAsset, IIterable, IVisible):
 
 	Items = ListOrTuple(value_type=Object(INTIMediaRef),
 						title="The media sources", required=False, min_length=1)
@@ -315,16 +315,6 @@ class INTIAudioRoll(INTIMediaRoll):
 class INTIVideoRoll(INTIMediaRoll):
 	Items = ListOrTuple(value_type=Object(INTIVideoRef),
 						title="The audio sources", required=False, min_length=1)
-
-class INTIMediaRollRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-					   IPresentationAsset, IVisible):
-	pass
-
-class INTIAudioRollRef(INTIMediaRollRef):
-	pass
-
-class INTIVideoRollRef(INTIMediaRollRef):
-	pass
 
 class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)

@@ -20,14 +20,6 @@
 			 for=".interfaces.INTIAudio"
 			 provides=".interfaces.INTIAudioRef" />
 
-	<adapter factory=".adapters.ntivideoroll_to_ntivideorollref"
-			 for=".interfaces.INTIVideoRoll"
-			 provides=".interfaces.INTIVideoRollRef" />
-
-	<adapter factory=".adapters.ntiaudioroll_to_ntiaudiorollref"
-			 for=".interfaces.INTIAudioRoll"
-			 provides=".interfaces.INTIAudioRollRef" />
-
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />
 	<include package="nti.externalization" />
@@ -54,8 +46,6 @@
 						 .interfaces.INTIPollRef
 						 .interfaces.INTIAudioRoll
 						 .interfaces.INTIVideoRoll
-						 .interfaces.INTIAudioRollRef
-						 .interfaces.INTIVideoRollRef
 						 .interfaces.INTICourseOverviewSpacer"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 
@@ -129,14 +119,6 @@
 
 	<adapter factory=".internalization._NTIPollRefUpdater"
 			 for=".interfaces.INTIPollRef"
-			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-
-	<adapter factory=".internalization._NTIAudioRollRefUpdater"
-			 for=".interfaces.INTIAudioRollRef"
-			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
-
-	<adapter factory=".internalization._NTIVideoRollRefUpdater"
-			 for=".interfaces.INTIVideoRollRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
 	<adapter factory=".internalization._NTICourseOverviewSpacerUpdater"

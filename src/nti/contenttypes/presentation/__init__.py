@@ -31,7 +31,6 @@ from .interfaces import INTISlideDeck
 from .interfaces import INTIInquiryRef
 from .interfaces import INTISlideVideo
 from .interfaces import INTIMediaSource
-from .interfaces import INTIMediaRollRef
 from .interfaces import INTIAssessmentRef
 from .interfaces import INTIRelatedWorkRef
 from .interfaces import IGroupOverViewable
@@ -83,9 +82,6 @@ NTI_COURSE_OVERVIEW_SPACER = u'NTICourseOverviewSpacer'
 LESSON_OVERVIEW = u'LessonOverview'
 NTI_LESSON_OVERVIEW = u'NTILessonOverview'
 
-NTI_AUDIO_ROLL_REF = 'NTIAudioRollRef'
-NTI_VIDEO_ROLL_REF = 'NTIVideoRollRef'
-
 AUDIO_MIMETYES = ('application/vnd.nextthought.ntiaudio',)
 VIDEO_MIMETYES = ('application/vnd.nextthought.ntivideo',)
 AUDIO_REF_MIMETYES = ('application/vnd.nextthought.ntiaudioref',)
@@ -97,10 +93,6 @@ COURSE_OVERVIEW_GROUP_MIMETYES = ('application/vnd.nextthought.nticourseoverview
 AUDIO_ROLL_MIMETYES = ('application/vnd.nextthought.ntiaudioroll','application/vnd.nextthought.audioroll')
 VIDEO_ROLL_MIMETYES = ('application/vnd.nextthought.ntivideoroll','application/vnd.nextthought.videoroll')
 ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIMETYES + VIDEO_ROLL_MIMETYES
-
-MEDIA_ROLL_REF_MIMETYES = ('application/vnd.nextthought.ntimediarollref',)
-AUDIO_ROLL_REF_MIMETYES = ('application/vnd.nextthought.ntiaudiorollref',)
-VIDEO_ROLL_REF_MIMETYES = ('application/vnd.nextthought.ntivideorollref',)
 
 POLL_REF_MIMETYES = ('application/vnd.nextthought.pollref', 'application/vnd.nextthought.napoll')
 TIMELINE_MIMETYES = ('application/vnd.nextthought.ntitimeline', 'application/vnd.nextthought.timeline')
@@ -139,8 +131,7 @@ def _set_ifaces():
 		result = bool(type(item) == interface.interface.InterfaceClass and \
 					  issubclass(item, IGroupOverViewable) and \
 					  item != IGroupOverViewable and \
-					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
-								   INTIMediaRollRef))
+					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef))
 		return result
 
 	def _presentationasset_item_predicate(item):
@@ -148,8 +139,7 @@ def _set_ifaces():
 					  issubclass(item, IPresentationAsset) and \
 					  item != IPresentationAsset and \
 					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
-								   INTIMediaSource, INTIMedia, INTIMediaRoll,
-								   INTIMediaRollRef))
+								   INTIMediaSource, INTIMedia, INTIMediaRoll))
 		return result
 
 	for _, item in inspect.getmembers(m, _overview_item_predicate):
@@ -160,7 +150,7 @@ def _set_ifaces():
 
 	GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
 	ALL_PRESENTATION_ASSETS_INTERFACES = tuple(ALL_PRESENTATION_ASSETS_INTERFACES)
-	
+
 	# set ui settings
 	for iSchema in ALL_PRESENTATION_ASSETS_INTERFACES:
 		for k, v in iSchema.namesAndDescriptions(all=True):

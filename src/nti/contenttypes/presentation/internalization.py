@@ -50,9 +50,6 @@ from .interfaces import INTISlideDeck
 from .interfaces import INTIVideoRoll
 from .interfaces import INTISlideVideo
 from .interfaces import INTIQuestionRef
-from .interfaces import INTIAudioRollRef
-from .interfaces import INTIMediaRollRef
-from .interfaces import INTIVideoRollRef
 from .interfaces import INTIAssignmentRef
 from .interfaces import INTIDiscussionRef
 from .interfaces import INTIQuestionSetRef
@@ -69,10 +66,7 @@ from . import RELATED_WORK_REF
 
 from . import NTI_LESSON_OVERVIEW
 
-from . import AUDIO_ROLL_MIMETYES
-from . import VIDEO_ROLL_MIMETYES
-from . import AUDIO_ROLL_REF_MIMETYES
-from . import VIDEO_ROLL_REF_MIMETYES
+from . import ALL_MEDIA_ROLL_MIME_TYPES
 
 ID = StandardExternalFields.ID
 ITEMS = StandardExternalFields.ITEMS
@@ -197,9 +191,13 @@ class _TargetNTIIDUpdater(_AssetUpdater):
 			if ntiid and not target:
 				parsed['target'] = ntiid
 				parsed.pop('ntiid', None)
+				parsed.pop( NTIID, None )
 		return self
 
 class _NTIMediaRefUpdater(_TargetNTIIDUpdater):
+
+	def fixTarget(self, parsed, transfer=False):
+		return _TargetNTIIDUpdater.fixTarget(self, parsed, transfer=True)
 
 	def fixAll(self, parsed):
 		self.fixTarget(parsed).fixCreator(parsed)
@@ -412,22 +410,6 @@ class _NTIAudioRollUpdater(_NTIMediaRollUpdater):
 class _NTIVideoRollUpdater(_NTIMediaRollUpdater):
 	_ext_iface_upper_bound = INTIVideoRoll
 
-@component.adapter(INTIMediaRollRef)
-class _NTIMediaRollRefUpdater(_TargetNTIIDUpdater):
-	_ext_iface_upper_bound = INTIMediaRollRef
-
-	def fixAll(self, parsed):
-		self.fixTarget(parsed).fixCreator(parsed)
-		return parsed
-
-@component.adapter(INTIAudioRollRef)
-class _NTIAudioRollRefUpdater(_NTIMediaRollRefUpdater):
-	_ext_iface_upper_bound = INTIAudioRollRef
-
-@component.adapter(INTIVideoRollRef)
-class _NTIVideoRollRefUpdater(_NTIMediaRollRefUpdater):
-	_ext_iface_upper_bound = INTIVideoRollRef
-
 @component.adapter(INTICourseOverviewGroup)
 class _NTICourseOverviewGroupUpdater(_AssetUpdater):
 
@@ -542,21 +524,12 @@ def internalization_mediaroll_pre_hook(k, x):
 internalization_audioroll_pre_hook = internalization_mediaroll_pre_hook
 internalization_videoroll_pre_hook = internalization_mediaroll_pre_hook
 
-def internalization_ntiaudiorollref_pre_hook(k, x):
-	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType in AUDIO_ROLL_MIMETYES:
-		x[MIMETYPE] = AUDIO_ROLL_REF_MIMETYES[0]
-
-def internalization_ntivideorollref_pre_hook(k, x):
-	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType in VIDEO_ROLL_MIMETYES:
-		x[MIMETYPE] = VIDEO_ROLL_REF_MIMETYES[0]
-
 def internalization_courseoverview_pre_hook(k, x):
 	if k == ITEMS and isinstance(x, MutableSequence):
 		idx = 0
 		while idx < len(x):
 			item = x[idx]
+			# Swizzle out our concrete mime types for refs.
 			internalization_pollref_pre_hook(None, item)
 			internalization_surveyref_pre_hook(None, item)
 			internalization_ntitimeline_pre_hook(None, item)
@@ -566,8 +539,6 @@ def internalization_courseoverview_pre_hook(k, x):
 			internalization_assignmentref_pre_hook(None, item)
 			internalization_questionsetref_pre_hook(None, item)
 			internalization_relatedworkref_pre_hook(None, item)
-			internalization_ntiaudiorollref_pre_hook(None, item)
-			internalization_ntivideorollref_pre_hook(None, item)
 
 			# do checks
 			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
@@ -592,7 +563,7 @@ def internalization_courseoverview_pre_hook(k, x):
 					internalization_discussionref_pre_hook(None, item)
 
 			# handle media rolls
-			if mimeType in AUDIO_ROLL_REF_MIMETYES or mimeType in VIDEO_ROLL_REF_MIMETYES:
+			if mimeType in ALL_MEDIA_ROLL_MIME_TYPES:
 				internalization_mediaroll_pre_hook(ITEMS, item.get(ITEMS))
 
 			# check next

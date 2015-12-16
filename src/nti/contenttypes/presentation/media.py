@@ -39,14 +39,9 @@ from .interfaces import INTIVideoRoll
 from .interfaces import INTITranscript
 from .interfaces import INTIAudioSource
 from .interfaces import INTIVideoSource
-from .interfaces import INTIAudioRollRef
-from .interfaces import INTIMediaRollRef
-from .interfaces import INTIVideoRollRef
 
 from . import NTI_AUDIO_REF
 from . import NTI_VIDEO_REF
-from . import NTI_AUDIO_ROLL_REF
-from . import NTI_VIDEO_ROLL_REF
 
 @interface.implementer(INTITranscript, IContentTypeAware)
 class NTITranscript(PersistentMixin):
@@ -185,26 +180,6 @@ class NTIMediaRoll(PersistentPresentationAsset):
 			pass
 		return False
 
-@EqHash('ntiid')
-@interface.implementer(INTIMediaRollRef)
-class NTIMediaRollRef(PersistentPresentationAsset):
-	createDirectFieldProperties(INTIMediaRollRef)
-
-	__external_class_name__ = u"MediaRollRef"
-	mime_type = mimeType = u'application/vnd.nextthought.ntimediarollref'
-
-	visibility = EVERYONE
-	nttype = 'NTIMediaRollRef'
-
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(self.nttype)
-		return self.ntiid
-
-	@readproperty
-	def target(self):
-		return self.ntiid
-
 @interface.implementer(INTIAudioRoll)
 class NTIAudioRoll(NTIMediaRoll):
 	createDirectFieldProperties(INTIAudioRoll)
@@ -212,27 +187,9 @@ class NTIAudioRoll(NTIMediaRoll):
 	__external_class_name__ = u"AudioRoll"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
 
-@interface.implementer(INTIAudioRollRef)
-class NTIAudioRollRef(NTIMediaRollRef):
-	createDirectFieldProperties(INTIAudioRollRef)
-
-	__external_class_name__ = u"AudioRollRef"
-	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiorollref'
-
-	nttype = NTI_AUDIO_ROLL_REF
-
 @interface.implementer(INTIVideoRoll)
 class NTIVideoRoll(NTIMediaRoll):
 	createDirectFieldProperties(INTIVideoRoll)
 
 	__external_class_name__ = u"VideoRoll"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoroll'
-
-@interface.implementer(INTIVideoRollRef)
-class NTIVideoRollRef(NTIMediaRollRef):
-	createDirectFieldProperties(INTIVideoRollRef)
-
-	__external_class_name__ = u"VideoRollRef"
-	mime_type = mimeType = u'application/vnd.nextthought.ntivideorollref'
-
-	nttype = NTI_VIDEO_ROLL_REF
