@@ -300,8 +300,8 @@ class INTIAudioRef(INTIMediaRef):
 class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
 					ICreated, IPresentationAsset, IIterable, IVisible):
 
-	Items = ListOrTuple(value_type=Object(INTIMediaRef),
-						title="The media sources", required=False, min_length=1)
+	Items = IndexedIterable(value_type=Object(INTIMediaRef),
+						title="The media sources", required=False, min_length=0)
 
 	def pop(idx):
 		"""
@@ -309,12 +309,12 @@ class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
 		"""
 
 class INTIAudioRoll(INTIMediaRoll):
-	Items = ListOrTuple(value_type=Object(INTIAudioRef),
-						title="The audio sources", required=False, min_length=1)
+	Items = IndexedIterable(value_type=Object(INTIAudioRef),
+						title="The audio sources", required=False, min_length=0)
 
 class INTIVideoRoll(INTIMediaRoll):
-	Items = ListOrTuple(value_type=Object(INTIVideoRef),
-						title="The audio sources", required=False, min_length=1)
+	Items = IndexedIterable(value_type=Object(INTIVideoRef),
+						title="The audio sources", required=False, min_length=0)
 
 class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)
