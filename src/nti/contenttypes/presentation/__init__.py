@@ -39,6 +39,9 @@ from .interfaces import IPresentationAsset
 NTI_AUDIO_REF = 'NTIAudioRef'
 NTI_VIDEO_REF = 'NTIVideoRef'
 
+NTI_AUDIO_ROLL = 'NTIAudioRoll'
+NTI_VIDEO_ROLL = 'NTIVideoRoll'
+
 NTI_VIDEO = NTIVideo = u'NTIVideo'
 NTI_AUDIO = NTIAudio = u'NTIAudio'
 

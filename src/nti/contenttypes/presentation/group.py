@@ -83,3 +83,10 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 		except ValueError:
 			pass
 		return False
+
+	def reset(self, event=True):
+		if event:
+			del self[:]
+		else:
+			del self.items.data[:]
+	clear = reset

@@ -42,6 +42,8 @@ from .interfaces import INTIVideoSource
 
 from . import NTI_AUDIO_REF
 from . import NTI_VIDEO_REF
+from . import NTI_AUDIO_ROLL
+from . import NTI_VIDEO_ROLL
 
 @interface.implementer(INTITranscript, IContentTypeAware)
 class NTITranscript(PersistentMixin):
@@ -139,6 +141,11 @@ class NTIMediaRoll(PersistentPresentationAsset):
 	items = alias('Items')
 	Creator = alias('creator')
 
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(self.nttype)
+		return self.ntiid
+
 	def __getitem__(self, index):
 		item = self.items[index]
 		return item
@@ -184,6 +191,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 class NTIAudioRoll(NTIMediaRoll):
 	createDirectFieldProperties(INTIAudioRoll)
 
+	nttype = NTI_AUDIO_ROLL
 	__external_class_name__ = u"AudioRoll"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
 
@@ -191,5 +199,6 @@ class NTIAudioRoll(NTIMediaRoll):
 class NTIVideoRoll(NTIMediaRoll):
 	createDirectFieldProperties(INTIVideoRoll)
 
+	nttype = NTI_VIDEO_ROLL
 	__external_class_name__ = u"VideoRoll"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoroll'
