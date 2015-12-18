@@ -47,7 +47,6 @@ from nti.schema.field import Object
 from nti.schema.field import Variant
 from nti.schema.field import ValidURI
 from nti.schema.field import ValidText
-from nti.schema.field import ListOrTuple
 from nti.schema.field import ValidTextLine
 from nti.schema.field import IndexedIterable
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
@@ -167,11 +166,11 @@ class ITaggedContent(interface.Interface):
 	Something that can contain tags.
 	"""
 
-	tags = ListOrTuple(title="Tags applied by the user.",
-					   value_type=ValidTextLine(min_length=1, title="A single tag"),
-					   unique=True,
-					   default=(),
-					   required=False)
+	tags = IndexedIterable(title="Tags applied by the user.",
+					  	   value_type=ValidTextLine(min_length=1, title="A single tag"),
+					   	   unique=True,
+					   	   default=(),
+					  	   required=False)
 
 class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnotatable):
 	"""
@@ -241,23 +240,23 @@ class INTIVideoSource(INTIMediaSource):
 	service = Choice(vocabulary=VIDEO_SERVICES_VOCABULARY, title='Video service',
 					 required=True, default=HTML5_VIDEO_SERVICE)
 
-	source = ListOrTuple(Variant((Choice(vocabulary=VIDEO_SOURCES_VOCABULARY),
-								  ValidTextLine())),
-						 title='Video source', required=True, min_length=1)
+	source = IndexedIterable(Variant((Choice(vocabulary=VIDEO_SOURCES_VOCABULARY),
+								  	  ValidTextLine())),
+						 	 title='Video source', required=True, min_length=1)
 
-	type = ListOrTuple(Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
-					   title='Video service types', required=True, min_length=1)
+	type = IndexedIterable(Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
+					  	   title='Video service types', required=True, min_length=1)
 
 class INTIVideo(INTIMedia):
 	subtitle = Bool(title="Subtitle flag", required=False, default=None)
 
 	closed_caption = Bool(title="Close caption flag", required=False, default=None)
 
-	sources = ListOrTuple(value_type=Object(INTIVideoSource),
-						  title="The video sources", required=False, min_length=0)
+	sources = IndexedIterable(value_type=Object(INTIVideoSource),
+						 	  title="The video sources", required=False, min_length=0)
 
-	transcripts = ListOrTuple(value_type=Object(INTITranscript),
-							  title="The transcripts", required=False, min_length=0)
+	transcripts = IndexedIterable(value_type=Object(INTITranscript),
+							  	  title="The transcripts", required=False, min_length=0)
 
 INTIVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -275,19 +274,21 @@ class INTIAudioSource(INTIMediaSource):
 	service = Choice(vocabulary=AUDIO_SERVICES_VOCABULARY, title='Audio service',
 					 required=True, default=HTML5_AUDIO_SERVICE)
 
-	source = ListOrTuple(Variant((Choice(vocabulary=AUDIO_SOURCES_VOCABULARY),
-								  ValidTextLine())),
-						 title='Audio source', required=True, min_length=1)
+	source = IndexedIterable(Variant((Choice(vocabulary=AUDIO_SOURCES_VOCABULARY),
+								 	  ValidTextLine())),
+						 	 title='Audio source', required=True, min_length=1)
 
-	type = ListOrTuple(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
-					   title='Audio service types', required=True, min_length=1)
+	type = IndexedIterable(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
+					   	   title='Audio service types', required=True, min_length=1)
 
 class INTIAudio(INTIMedia):
-	sources = ListOrTuple(value_type=Object(INTIAudioSource),
-						  title="The audio sources", required=False, min_length=1)
+	sources = IndexedIterable(value_type=Object(INTIAudioSource),
+						  	  title="The audio sources", 
+						  	  required=False, min_length=1)
 
-	transcripts = ListOrTuple(value_type=Object(INTITranscript),
-							  title="The transcripts", required=False, min_length=0)
+	transcripts = IndexedIterable(value_type=Object(INTITranscript),
+							  	  title="The transcripts", 
+							  	  required=False, min_length=0)
 
 INTIAudio['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIAudio['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -301,7 +302,7 @@ class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
 					ICreated, IPresentationAsset, IIterable, IVisible):
 
 	Items = IndexedIterable(value_type=Object(INTIMediaRef),
-						title="The media sources", required=False, min_length=0)
+							title="The media sources", required=False, min_length=0)
 
 	def pop(idx):
 		"""
@@ -310,11 +311,11 @@ class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
 
 class INTIAudioRoll(INTIMediaRoll):
 	Items = IndexedIterable(value_type=Object(INTIAudioRef),
-						title="The audio sources", required=False, min_length=0)
+							title="The audio sources", required=False, min_length=0)
 
 class INTIVideoRoll(INTIMediaRoll):
 	Items = IndexedIterable(value_type=Object(INTIVideoRef),
-						title="The audio sources", required=False, min_length=0)
+							title="The audio sources", required=False, min_length=0)
 
 class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)
@@ -524,7 +525,7 @@ class IWillRemovePresentationAssetEvent(IObjectEvent):
 class WillRemovePresentationAssetEvent(ObjectEvent):
 	pass
 
-# : Asset removed from item asset container
+#: Asset removed from item asset container
 TRX_ASSET_REMOVED_FROM_ITEM_ASSET_CONTAINER = u'assetremovedfromitemcontainer'
 
 class IItemRemovedFromItemAssetContainerEvent(IObjectModifiedEvent):
