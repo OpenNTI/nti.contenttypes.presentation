@@ -202,3 +202,10 @@ class NTIVideoRoll(NTIMediaRoll):
 	nttype = NTI_VIDEO_ROLL
 	__external_class_name__ = u"VideoRoll"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideoroll'
+
+def media_to_mediaref(media):
+	if INTIAudio.providedBy(media):
+		result = INTIAudioRef(media)
+	else:
+		result = INTIVideo(media)
+	return result

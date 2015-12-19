@@ -19,14 +19,11 @@ from .interfaces import INTIAudio
 from .interfaces import INTIVideo
 from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
-from .interfaces import INTIAudioRoll
-from .interfaces import INTIVideoRoll
 
 @component.adapter(INTIVideo)
 @interface.implementer(INTIVideoRef)
 def ntivideo_to_ntivideoref(video):
-	result = NTIVideoRef(ntiid=video.ntiid,
-						 target=video.ntiid,
+	result = NTIVideoRef(target=video.ntiid,
 						 poster=video.title,
 						 label=video.title)
 	result.byline = video.byline
@@ -36,8 +33,7 @@ def ntivideo_to_ntivideoref(video):
 @component.adapter(INTIAudio)
 @interface.implementer(INTIAudioRef)
 def ntiaudio_to_ntiaudioref(audio):
-	result = NTIAudioRef(ntiid=audio.ntiid,
-						 target=audio.ntiid)
+	result = NTIAudioRef(target=audio.ntiid)
 	result.byline = audio.byline
 	result.creator = audio.creator
 	return result
