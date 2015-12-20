@@ -200,8 +200,10 @@ class NTIVideoRoll(NTIMediaRoll):
 	createDirectFieldProperties(INTIVideoRoll)
 
 	nttype = NTI_VIDEO_ROLL
-	__external_class_name__ = u"VideoRoll"
-	mime_type = mimeType = u'application/vnd.nextthought.ntivideoroll'
+	# For legacy reasons, these are the classes need for IPAD
+	# and mimetype needed for the webapp to match up.
+	__external_class_name__ = u"ContentVideoCollection"
+	mime_type = mimeType = u'application/vnd.nextthought.videoroll'
 
 def media_to_mediaref(media):
 	if INTIAudio.providedBy(media):
