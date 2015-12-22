@@ -26,7 +26,9 @@ from .interfaces import INTIVideo
 from .interfaces import INTIAudioRef
 from .interfaces import INTIVideoRef
 from .interfaces import INTITimeline
+from .interfaces import INTIAudioRoll
 from .interfaces import INTIMediaRoll
+from .interfaces import INTIVideoRoll
 from .interfaces import INTISlideDeck
 from .interfaces import INTIInquiryRef
 from .interfaces import INTISlideVideo
@@ -108,7 +110,8 @@ QUESTIONSET_REF_MIMETYES = ('application/vnd.nextthought.questionsetref', 'appli
 PACKAGE_CONTAINER_INTERFACES = (INTIAudio, INTIVideo, INTITimeline, INTIRelatedWorkRef,
 								INTISlideDeck, INTISlide, INTISlideVideo)
 
-MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef, INTIVideoRef)
+MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef, INTIVideoRef,
+					INTIVideoRoll, INTIAudioRoll)
 
 REF_INTERFACES = (IMediaRef, INTIAssessmentRef, INTIInquiryRef)
 
