@@ -94,7 +94,7 @@ LESSON_OVERVIEW_MIMETYES = ('application/vnd.nextthought.ntilessonoverview',)
 COURSE_OVERVIEW_GROUP_MIMETYES = ('application/vnd.nextthought.nticourseoverviewgroup',)
 
 AUDIO_ROLL_MIMETYES = ('application/vnd.nextthought.ntiaudioroll','application/vnd.nextthought.audioroll')
-VIDEO_ROLL_MIMETYES = ('application/vnd.nextthought.ntivideoroll','application/vnd.nextthought.videoroll')
+VIDEO_ROLL_MIMETYES = ('application/vnd.nextthought.videoroll', 'application/vnd.nextthought.ntivideoroll')
 ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIMETYES + VIDEO_ROLL_MIMETYES
 
 POLL_REF_MIMETYES = ('application/vnd.nextthought.pollref', 'application/vnd.nextthought.napoll')
