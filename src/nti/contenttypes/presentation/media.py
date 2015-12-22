@@ -209,5 +209,5 @@ def media_to_mediaref(media):
 	if INTIAudio.providedBy(media):
 		result = INTIAudioRef(media)
 	else:
-		result = INTIVideo(media)
+		result = INTIVideoRef(media)
 	return result
