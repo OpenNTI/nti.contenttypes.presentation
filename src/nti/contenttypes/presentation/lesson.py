@@ -107,6 +107,7 @@ class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
 			del self.items[:]
 		else:
 			del self.items.data[:]
+		return result
 	clear = reset
 
 import zope.deferredimport
