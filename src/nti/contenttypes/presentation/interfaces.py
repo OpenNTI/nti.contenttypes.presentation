@@ -299,7 +299,8 @@ class INTIAudioRef(INTIMediaRef):
 	pass
 
 class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
-					ICreated, IPresentationAsset, IIterable, IVisible):
+					ICreated, IPresentationAsset, IIterable, IVisible,
+					IFiniteSequence):
 
 	Items = IndexedIterable(value_type=Object(INTIMediaRef),
 							title="The media sources", required=False, min_length=0)
