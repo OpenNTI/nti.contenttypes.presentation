@@ -187,6 +187,13 @@ class NTIMediaRoll(PersistentPresentationAsset):
 			pass
 		return False
 
+	def reset(self, *args, **kwargs):
+		result = len(self)
+		if self.items:
+			del self.items[:]
+		return result
+	clear = reset
+
 @interface.implementer(INTIAudioRoll)
 class NTIAudioRoll(NTIMediaRoll):
 	createDirectFieldProperties(INTIAudioRoll)

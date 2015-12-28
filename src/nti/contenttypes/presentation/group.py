@@ -51,7 +51,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 		self.items[index] = item
 
 	def __len__(self):
-		result = len(self.items or ()) # include weak refs
+		result = len(self.items or ())  # include weak refs
 		return result
 
 	def __iter__(self):
@@ -85,8 +85,10 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 		return False
 
 	def reset(self, event=True):
+		result = len(self)
 		if event:
 			del self.items[:]
 		else:
 			del self.items.data[:]
+		return result
 	clear = reset

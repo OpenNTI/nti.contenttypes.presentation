@@ -75,7 +75,7 @@ class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
 
 	def append(self, group):
 		assert INTICourseOverviewGroup.providedBy(group)
-		group.__parent__ = self # take ownership
+		group.__parent__ = self  # take ownership
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(group)
 	add = append
@@ -102,8 +102,9 @@ class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
 		return False
 
 	def reset(self, event=True):
+		result = len(self)
 		if event:
-			del self[:]
+			del self.items[:]
 		else:
 			del self.items.data[:]
 	clear = reset
