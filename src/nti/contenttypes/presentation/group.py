@@ -86,7 +86,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 
 	def reset(self, event=True):
 		if event:
-			del self[:]
+			del self.items[:]
 		else:
 			del self.items.data[:]
 	clear = reset
