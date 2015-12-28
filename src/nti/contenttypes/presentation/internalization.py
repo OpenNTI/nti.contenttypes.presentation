@@ -191,7 +191,7 @@ class _TargetNTIIDUpdater(_AssetUpdater):
 			if ntiid and not target:
 				parsed['target'] = ntiid
 				parsed.pop('ntiid', None)
-				parsed.pop( NTIID, None )
+				parsed.pop(NTIID, None)
 		return self
 
 class _NTIMediaRefUpdater(_TargetNTIIDUpdater):
@@ -521,8 +521,13 @@ def internalization_mediaroll_pre_hook(k, x):
 		for item in x:
 			internalization_ntiaudioref_pre_hook(None, item)
 			internalization_ntivideoref_pre_hook(None, item)
+
+def internalization_videoroll_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType == "application/vnd.nextthought.ntivideoroll":
+		x[MIMETYPE] = u"application/vnd.nextthought.videoroll"
+	internalization_mediaroll_pre_hook(k, x)
 internalization_audioroll_pre_hook = internalization_mediaroll_pre_hook
-internalization_videoroll_pre_hook = internalization_mediaroll_pre_hook
 
 def internalization_courseoverview_pre_hook(k, x):
 	if k == ITEMS and isinstance(x, MutableSequence):
