@@ -506,6 +506,14 @@ class IPresentationAssetContainer(IMapping):
 	something like the content library package may be adaptable to this,
 	typically with annotations).
 	"""
+	
+	def pop(k, *args):
+        """
+        remove specified key and return the corresponding value
+        *args may contain a single default value, or may not be supplied.
+        If key is not found, default is returned if given, otherwise 
+        KeyError is raised
+        """
 
 class IPresentationAssetCreatedEvent(IObjectCreatedEvent):
 	principal = interface.Attribute("Creator principal")
