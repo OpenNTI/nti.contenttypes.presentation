@@ -82,6 +82,7 @@ class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
 			# Default to append.
 			self.append(obj)
 		else:
+			obj.__parent__ = self  # take ownership
 			self.items.insert(index, obj)
 
 	def pop(self, index):
