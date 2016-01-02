@@ -91,6 +91,10 @@ class _AssetUpdater(InterfaceObjectIO):
 	def fixAll(self, parsed):
 		self.fixCreator(parsed)
 		return parsed
+	
+	def takeOwnership(self, parent, items):
+		for item in items or ():
+			item.__parent__ = parent
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
@@ -426,7 +430,8 @@ class _NTICourseOverviewGroupUpdater(_AssetUpdater):
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		result = super(_NTICourseOverviewGroupUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-		assert self._ext_replacement().ntiid, "No NTIID provided"
+		self.takeOwnership(self._ext_self, self._ext_self)
+		assert self._ext_self.ntiid, "No NTIID provided"
 		return result
 
 @component.adapter(INTILessonOverview)
@@ -452,6 +457,11 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
 			items = PersistentList(parsed.get(ITEMS) or ())
 			parsed[ITEMS] = items
 		return self.fixCreator(parsed)
+	
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		result = super(_NTILessonOverviewUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		self.takeOwnership(self._ext_self, self._ext_self)
+		return result
 
 def internalization_ntivideo_pre_hook(k, x):
 	if isinstance(x, Mapping) and 'mimeType' in x:

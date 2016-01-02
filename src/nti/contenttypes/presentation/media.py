@@ -151,6 +151,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 		return item
 
 	def __setitem__(self, index, item):
+		assert INTIMediaRef.providedBy(item)
 		self.items[index] = item
 
 	def __len__(self):

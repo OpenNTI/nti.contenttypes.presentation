@@ -9,9 +9,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import uuid
-from hashlib import md5
-
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
@@ -21,8 +18,6 @@ from persistent.list import PersistentList
 from nti.common.property import alias
 
 from nti.coremetadata.mixins import CalendarPublishableMixin
-
-from nti.ntiids.ntiids import make_ntiid
 
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -45,9 +40,7 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 
 	@readproperty
 	def ntiid(self):
-		result = make_ntiid(provider='NTI',
-							nttype=NTI_COURSE_OVERVIEW_SPACER,
-							specific=md5(str(uuid.uuid4())).hexdigest())
+		result = self.generate_ntiid(NTI_COURSE_OVERVIEW_SPACER)
 		self.ntiid = result
 		return result
 
@@ -65,6 +58,8 @@ class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
 		return self.items[index]
 
 	def __setitem__(self, index, item):
+		assert INTICourseOverviewGroup.providedBy(item)
+		item.__parent__ = self  # take ownership
 		self.items[index] = item
 
 	def __len__(self):
@@ -101,12 +96,10 @@ class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
 			pass
 		return False
 
-	def reset(self, event=True):
+	def reset(self, *args, **kwargs):
 		result = len(self)
-		if event:
+		if self.items:
 			del self.items[:]
-		else:
-			del self.items.data[:]
 		return result
 	clear = reset
 
