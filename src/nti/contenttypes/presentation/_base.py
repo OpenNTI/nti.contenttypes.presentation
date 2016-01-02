@@ -51,6 +51,8 @@ class PersistentPresentationAsset(PersistentMixin,
 								  RecordableMixin,
 								  Contained):  # order matters
 	byline = None
+	title = None
+	description = None
 
 	@readproperty
 	def creator(self):
