@@ -7,6 +7,8 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+from copy import copy
+
 from zope import interface
 
 from zope.annotation.interfaces import IAttributeAnnotatable
@@ -226,12 +228,19 @@ class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 	target = ValidNTIID(title="Target NTIID", required=False)
 IMediaRef = INTIMediaRef  # BWC
 
-class INTIMedia(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated,
-				ITitled, IPresentationAsset):
+class IAssetTitled( interface.Interface ):
+	title = ValidTextLine(title="Asset title", required=False, max_length=140)
+
+class IAssetTitleDescribed( IAssetTitled, IDCDescriptiveProperties ):
+	# IDCDescriptiveProperties marker needed for ext adapter.
+	title = copy( IAssetTitled['title'] )
+	title.default = u''
+	description = ValidTextLine(title="Media description", required=False, default=u'')
+
+class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
+				ICreated, IPresentationAsset):
 
 	byline = byline_schema_field(required=False)
-	title = ValidTextLine(title="Media title", required=False, default=u'')
-	description = ValidTextLine(title="Media description", required=False, default=u'')
 
 class INTIVideoSource(INTIMediaSource):
 	width = Int(title="Video width", required=False)
@@ -283,11 +292,11 @@ class INTIAudioSource(INTIMediaSource):
 
 class INTIAudio(INTIMedia):
 	sources = IndexedIterable(value_type=Object(INTIAudioSource),
-						  	  title="The audio sources", 
+						  	  title="The audio sources",
 						  	  required=False, min_length=1)
 
 	transcripts = IndexedIterable(value_type=Object(INTITranscript),
-							  	  title="The transcripts", 
+							  	  title="The transcripts",
 							  	  required=False, min_length=0)
 
 INTIAudio['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -326,21 +335,19 @@ class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slideimage = href_schema_field(title="Slide image source", required=False)
 	slidenumber = Int(title="Slide number", required=True, default=1)
 
-class INTISlideVideo(IDCDescriptiveProperties, INTIIDIdentifiable, ICreated, ITitled, IPresentationAsset):
+class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable, ICreated, IPresentationAsset):
 	byline = byline_schema_field(required=False)
 	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
-	title = ValidTextLine(title="Slide video title", required=False, default=u'')
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 	thumbnail = href_schema_field(title="Slide video thumbnail", required=False)
-	description = ValidTextLine(title="Slide video description", required=False)
 
 INTISlideVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTISlideDeck(IItemAssetContainer, IDCDescriptiveProperties, INTIIDIdentifiable,
-					ICreated, ITitled, IPresentationAsset):
+class INTISlideDeck(IItemAssetContainer, IAssetTitleDescribed, INTIIDIdentifiable,
+					ICreated, IPresentationAsset):
 
 	Slides = IndexedIterable(value_type=Object(INTISlide),
 						 	 title="The slides", required=False, min_length=1)
@@ -351,8 +358,6 @@ class INTISlideDeck(IItemAssetContainer, IDCDescriptiveProperties, INTIIDIdentif
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 
 	byline = byline_schema_field(required=False)
-	title = ValidTextLine(title="Slide deck title", required=False, default=u'')
-	description = ValidTextLine(title="Slide deck description", required=False)
 
 INTISlideDeck['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -418,9 +423,8 @@ IQuestionRef = INTIQuestionRef
 INTIQuestionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIQuestionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTIAssignmentRef(INTIAssessmentRef, ITitled):
+class INTIAssignmentRef(INTIAssessmentRef, IAssetTitled):
 	containerId = ValidNTIID(title="Container NTIID", required=False)
-	title = ValidTextLine(title="Assignment title", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
 
 INTIAssignmentRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -449,12 +453,11 @@ INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	pass
 
-class INTICourseOverviewGroup(IItemAssetContainer, ITitled, INTIIDIdentifiable,
+class INTICourseOverviewGroup(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
 							  IPresentationAsset, IFiniteSequence, IIterable):
 
 	Items = IndexedIterable(value_type=Object(IGroupOverViewable),
 						 	title="The overview items", required=False, min_length=0)
-	title = ValidTextLine(title="Overview title", required=False)
 	accentColor = ValidTextLine(title="Overview color", required=False)
 
 	def append(item):
@@ -472,12 +475,11 @@ INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTILessonOverview(IItemAssetContainer, ITitled, INTIIDIdentifiable,
+class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
 						 IPresentationAsset, IFiniteSequence, IIterable):
 
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
 						 	title="The overview items", required=False, min_length=0)
-	title = ValidTextLine(title="Overview title", required=False)
 	lesson = ValidTextLine(title="Lesson NTIID", required=False)
 
 	def pop(idx):
@@ -506,12 +508,12 @@ class IPresentationAssetContainer(IMapping):
 	something like the content library package may be adaptable to this,
 	typically with annotations).
 	"""
-	
+
 	def pop(k, *args):
 		"""
 		remove specified key and return the corresponding value
 		*args may contain a single default value, or may not be supplied.
-		If key is not found, default is returned if given, otherwise 
+		If key is not found, default is returned if given, otherwise
 		KeyError is raised
 		"""
 
