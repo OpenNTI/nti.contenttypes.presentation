@@ -229,7 +229,7 @@ class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 IMediaRef = INTIMediaRef  # BWC
 
 class IAssetTitled( interface.Interface ):
-	title = ValidTextLine(title="Asset title", required=False, max_length=140)
+	title = ValidTextLine(title="Asset title", required=False, max_length=300)
 
 class IAssetTitleDescribed( IAssetTitled, IDCDescriptiveProperties ):
 	# IDCDescriptiveProperties marker needed for ext adapter.
