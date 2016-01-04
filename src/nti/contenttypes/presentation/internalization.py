@@ -269,6 +269,12 @@ class _NTISlideDeckUpdater(_AssetUpdater):
 
 		return self.parseSlides(parsed).parseVideos(parsed)
 
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		result = super(_NTISlideDeckUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		self.takeOwnership(self._ext_self, self.Slides)
+		self.takeOwnership(self._ext_self, self.Videos)
+		return result
+
 @component.adapter(INTITimeline)
 class _NTITimelineUpdater(_AssetUpdater):
 
