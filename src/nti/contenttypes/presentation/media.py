@@ -87,6 +87,8 @@ class NTIMediaRef(PersistentPresentationAsset):
 	visibility = EVERYONE
 	Creator = alias('creator')
 
+	__name__ = alias('ntiid')
+
 	@readproperty
 	def target(self):
 		return self.ntiid
@@ -152,6 +154,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 
 	def __setitem__(self, index, item):
 		assert INTIMediaRef.providedBy(item)
+		item.__parent__ = self # take ownership
 		self.items[index] = item
 
 	def __len__(self):
@@ -163,6 +166,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 
 	def append(self, item):
 		assert INTIMediaRef.providedBy(item)
+		item.__parent__ = self # take ownership
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(item)
 	add = append
@@ -177,6 +181,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 			# Default to append.
 			self.append(obj)
 		else:
+			obj.__parent__ = self # take ownership
 			self.items.insert(index, obj)
 
 	def remove(self, item):

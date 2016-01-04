@@ -38,6 +38,8 @@ class NTICourseOverViewGroup(PersistentPresentationAsset):
 	items = alias('Items')
 	color = alias('accentColor')
 
+	__name__ = alias('ntiid')
+
 	@readproperty
 	def ntiid(self):
 		self.ntiid = self.generate_ntiid(NTI_COURSE_OVERVIEW_GROUP)

@@ -404,7 +404,19 @@ class _NTICourseOverviewSpacerUpdater(_AssetUpdater):
 
 @component.adapter(INTIMediaRoll)
 class _NTIMediaRollUpdater(_AssetUpdater):
+
 	_ext_iface_upper_bound = INTIMediaRoll
+
+	def fixAll(self, parsed):
+		if ITEMS in parsed:
+			items = PersistentList(parsed.get(ITEMS) or ())
+			parsed[ITEMS] = items
+		return super(_NTIMediaRollUpdater, self).fixAll(parsed)
+
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		result = super(_NTIMediaRollUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		self.takeOwnership(self._ext_self, self._ext_self)
+		return result
 
 @component.adapter(INTIAudioRoll)
 class _NTIAudioRollUpdater(_NTIMediaRollUpdater):

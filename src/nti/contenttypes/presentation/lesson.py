@@ -53,6 +53,7 @@ class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
 	mime_type = mimeType = u"application/vnd.nextthought.ntilessonoverview"
 
 	items = alias('Items')
+	__name__ = alias('ntiid')
 
 	def __getitem__(self, index):
 		return self.items[index]
