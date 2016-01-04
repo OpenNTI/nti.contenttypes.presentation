@@ -53,6 +53,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 
 	def __setitem__(self, index, item):
 		assert IGroupOverViewable.providedBy(item)
+		item.__parent__ = self  # take ownership
 		self.items[index] = item
 
 	def __len__(self):
@@ -64,6 +65,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 
 	def append(self, item):
 		assert IGroupOverViewable.providedBy(item)
+		item.__parent__ = self  # take ownership
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(item)
 	add = append
@@ -75,6 +77,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 			# Default to append.
 			self.append(obj)
 		else:
+			obj.__parent__ = self  # take ownership
 			self.items.insert(index, obj)
 
 	def pop(self, index):
