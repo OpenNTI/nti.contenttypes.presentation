@@ -380,7 +380,7 @@ class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICre
 	description = ValidText(title="Slide video description", required=False)
 	icon = href_schema_field(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
-	label = ValidTextLine(title="The label", required=False, default=u'')
+	label = ValidTextLine(title="The label", required=False, default=u'', max_length=140)
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
 
