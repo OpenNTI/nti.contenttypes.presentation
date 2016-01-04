@@ -61,8 +61,9 @@ NTI_SLIDE_VIDEO = NTISlideVideo = u'NTISlideVideo'
 JSON_TIMELINE = u'JSON:Timeline'
 TIMELINE = NTI_TIMELINE = NTITimeline = u'Timeline'
 
+RELATED_WORK_REF = 'RelatedWorkRef'
+NTI_RELATED_WORK_REF = 'NTIRelatedWorkRef'
 RELATED_WORK = NTI_RELATED_WORK = 'RelatedWork'
-RELATED_WORK_REF = NTI_RELATED_WORK_REF = 'RelatedWorkRef'
 
 ENROLLED_COURSE_ROOT = 'EnrolledCourseRoot'
 ENROLLED_COURSE_SECTION = 'EnrolledCourseSection'
