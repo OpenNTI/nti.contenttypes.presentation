@@ -36,6 +36,7 @@ from nti.coremetadata.interfaces import ITitled
 from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import ILastModified
+from nti.coremetadata.interfaces import IRecordableContainer
 
 from nti.namedfile.interfaces import INamedFile
 
@@ -454,7 +455,8 @@ class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresenta
 	pass
 
 class INTICourseOverviewGroup(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
-							  IPresentationAsset, IFiniteSequence, IIterable):
+							  IPresentationAsset, IFiniteSequence, IIterable,
+							  IRecordableContainer):
 
 	Items = IndexedIterable(value_type=Object(IGroupOverViewable),
 						 	title="The overview items", required=False, min_length=0)
@@ -476,7 +478,8 @@ INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
-						 IPresentationAsset, IFiniteSequence, IIterable):
+						 IPresentationAsset, IFiniteSequence, IIterable,
+						 IRecordableContainer):
 
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
 						 	title="The overview items", required=False, min_length=0)

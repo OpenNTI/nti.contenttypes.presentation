@@ -17,6 +17,8 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.coremetadata.mixins import RecordableContainerMixin
+
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -29,7 +31,7 @@ from . import NTI_COURSE_OVERVIEW_GROUP
 
 @EqHash('ntiid')
 @interface.implementer(INTICourseOverviewGroup)
-class NTICourseOverViewGroup(PersistentPresentationAsset):
+class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMixin):
 	createDirectFieldProperties(INTICourseOverviewGroup)
 
 	__external_class_name__ = u"CourseOverviewGroup"

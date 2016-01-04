@@ -18,6 +18,7 @@ from persistent.list import PersistentList
 from nti.common.property import alias
 
 from nti.coremetadata.mixins import CalendarPublishableMixin
+from nti.coremetadata.mixins import RecordableContainerMixin
 
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -46,7 +47,8 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 
 @EqHash('ntiid')
 @interface.implementer(INTILessonOverview)
-class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin):
+class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin,
+						RecordableContainerMixin):
 	createDirectFieldProperties(INTILessonOverview)
 
 	__external_class_name__ = u"LessonOverView"

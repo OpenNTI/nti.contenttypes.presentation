@@ -13,6 +13,9 @@ from hamcrest import is_not
 from hamcrest import has_length
 from hamcrest import assert_that
 
+from nti.testing.matchers import validly_provides
+from nti.testing.matchers import verifiably_provides
+
 import unittest
 
 from zope import interface
@@ -23,10 +26,15 @@ from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
 
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
+from nti.contenttypes.presentation.interfaces import INTILessonOverview
+from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
 from nti.schema.interfaces import find_most_derived_interface
+
+from ..group import NTICourseOverViewGroup
+from ..lesson import NTILessonOverView
 
 class TestModule(unittest.TestCase):
 
@@ -49,3 +57,13 @@ class TestModule(unittest.TestCase):
 			interface.alsoProvides(obj, iface)
 			provided = find_most_derived_interface(obj, IPresentationAsset)
 			assert_that(iface_of_asset(obj), is_(provided))
+
+	def test_group(self):
+		group = NTICourseOverViewGroup()
+		assert_that(group, validly_provides(INTICourseOverviewGroup))
+		assert_that(group, verifiably_provides(INTICourseOverviewGroup))
+
+	def test_lesson(self):
+		lesson = NTILessonOverView()
+		assert_that(lesson, validly_provides(INTILessonOverview))
+		assert_that(lesson, verifiably_provides(INTILessonOverview))
