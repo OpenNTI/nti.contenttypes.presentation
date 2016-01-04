@@ -42,6 +42,8 @@ class NTISlide(PersistentPresentationAsset):
 	end = video_end = alias('slidevideoend')
 	start = video_start = alias('slidevideostart')
 
+	__name__= alias('ntiid')
+
 @EqHash('ntiid')
 @interface.implementer(INTISlideVideo)
 class NTISlideVideo(PersistentPresentationAsset):
@@ -53,6 +55,8 @@ class NTISlideVideo(PersistentPresentationAsset):
 	Creator = alias('creator')
 	video = alias('video_ntiid')
 	slide_deck = deck = alias('slidedeckid')
+
+	__name__= alias('ntiid')
 
 @EqHash('ntiid')
 @interface.implementer(INTISlideDeck)
@@ -67,12 +71,15 @@ class NTISlideDeck(PersistentPresentationAsset):
 	Creator = alias('creator')
 	id = alias('slidedeckid')
 	
+	__name__= alias('ntiid')
+
 	@CachedProperty("lastModified")
 	def Items(self):
 		result = list(chain(self.slides or (), self.videos or ()))
 		return result
 
 	def append(self, item):
+		item.__parent__ = self # take owership
 		if INTISlide.providedBy(item):
 			self.slides = PersistentList() if self.slides is None else self.slides
 			self.slides.append(item)
