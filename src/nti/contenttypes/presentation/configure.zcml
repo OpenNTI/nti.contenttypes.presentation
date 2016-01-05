@@ -50,7 +50,15 @@
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 
 	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
-				for=".interfaces.INTICourseOverviewGroup" />
+			 for=".interfaces.INTICourseOverviewGroup" />
+
+	<adapter factory=".externalization._NTIRelatedWorkRefExternalizer"
+			 for=".interfaces.INTIRelatedWorkRef"
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
+
+	<adapter factory=".externalization._NTITimelineExternalizer"
+			 for=".interfaces.INTITimeline"
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
 
 	<!-- Internalization -->
 	<adapter factory=".internalization._NTIVideoUpdater"

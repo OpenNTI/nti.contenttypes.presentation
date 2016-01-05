@@ -9,14 +9,21 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from zope import component
 from zope import interface
 
 from nti.externalization.interfaces import IInternalObjectIO
 from nti.externalization.interfaces import StandardExternalFields
+from nti.externalization.interfaces import IInternalObjectExternalizer
+
+from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.externalization.externalization import toExternalObject
 
 from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
+
+from .interfaces import INTITimeline
+from .interfaces import INTIRelatedWorkRef
 
 OID = StandardExternalFields.OID
 CLASS = StandardExternalFields.CLASS
@@ -46,3 +53,26 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
 		return result
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
+@component.adapter(INTIRelatedWorkRef)
+@interface.implementer(IInternalObjectExternalizer)
+class _NTIRelatedWorkRefExternalizer(object):
+
+	def __init__(self, obj):
+		self.obj = obj
+
+	def toExternalObject(self, **kwargs):
+		result = InterfaceObjectIO(self.obj, INTIRelatedWorkRef).toExternalObject(**kwargs)
+		result['href'] = self.obj.href
+		return result
+
+@component.adapter(INTITimeline)
+@interface.implementer(IInternalObjectExternalizer)
+class _NTITimelineExternalizer(object):
+
+	def __init__(self, obj):
+		self.obj = obj
+
+	def toExternalObject(self, **kwargs):
+		result = InterfaceObjectIO(self.obj, INTITimeline).toExternalObject(**kwargs)
+		result['href'] = self.obj.href
+		return result
