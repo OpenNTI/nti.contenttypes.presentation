@@ -50,9 +50,11 @@ class PersistentMixin(SchemaConfigured,
 class PersistentPresentationAsset(PersistentMixin,
 								  RecordableMixin,
 								  Contained):  # order matters
-	byline = None
 	title = None
+	byline = None
 	description = None
+
+	parameters = {}  # IContentTypeAware
 
 	@readproperty
 	def creator(self):
