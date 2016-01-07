@@ -47,14 +47,16 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 
 @EqHash('ntiid')
 @interface.implementer(INTILessonOverview)
-class NTILessonOverView(PersistentPresentationAsset, CalendarPublishableMixin,
-						RecordableContainerMixin):
+class NTILessonOverView(CalendarPublishableMixin,
+						RecordableContainerMixin,
+						PersistentPresentationAsset):
 	createDirectFieldProperties(INTILessonOverview)
 
 	__external_class_name__ = u"LessonOverView"
 	mime_type = mimeType = u"application/vnd.nextthought.ntilessonoverview"
 
 	items = alias('Items')
+
 	__name__ = alias('ntiid')
 
 	def __getitem__(self, index):
