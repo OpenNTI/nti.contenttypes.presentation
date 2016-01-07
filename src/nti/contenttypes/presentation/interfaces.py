@@ -230,7 +230,7 @@ class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 IMediaRef = INTIMediaRef  # BWC
 
 class IAssetTitled( interface.Interface ):
-	title = ValidTextLine(title="Asset title", required=False, max_length=220)
+	title = ValidTextLine(title="Asset title", required=False, max_length=400)
 
 class IAssetTitleDescribed( IAssetTitled, IDCDescriptiveProperties ):
 	# IDCDescriptiveProperties marker needed for ext adapter.
@@ -381,7 +381,7 @@ class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICre
 	description = ValidText(title="Slide video description", required=False)
 	icon = href_schema_field(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
-	label = ValidTextLine(title="The label", required=False, default=u'', max_length=220)
+	label = ValidTextLine(title="The label", required=False, default=u'', max_length=400)
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
 
