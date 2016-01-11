@@ -39,7 +39,7 @@ from .interfaces import IPresentationAsset
 class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject):
 
-	parameters = {}
+	parameters = {} # IContentTypeAware
 
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
@@ -53,8 +53,6 @@ class PersistentPresentationAsset(PersistentMixin,
 	title = None
 	byline = None
 	description = None
-
-	parameters = {}  # IContentTypeAware
 
 	@readproperty
 	def creator(self):
