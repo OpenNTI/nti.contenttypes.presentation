@@ -404,6 +404,8 @@ class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ITitl
 
 INTIDiscussionRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIDiscussionRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTIDiscussionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTIDiscussionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	target = ValidNTIID(title="Target NTIID", required=True)
