@@ -17,6 +17,8 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation.interfaces import INTIMediaRef
+
 from nti.coremetadata.mixins import RecordableContainerMixin
 
 from nti.schema.schema import EqHash
@@ -63,22 +65,36 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 	def __iter__(self):
 		return iter(self.items or ())
 
-	def append(self, item):
+	def _validate_insert(self, item):
 		assert IGroupOverViewable.providedBy(item)
+		# We do not allow duplicate refs in the same group, since clients
+		# do not have access to media refs, only the underlying media obj.
+		# This avoids confusion in some operations.
+		if INTIMediaRef.providedBy( item ):
+			new_target = getattr(item, 'target', '')
+			if new_target:
+				for child in self:
+					if getattr(child, 'target', '') == new_target:
+						raise ValueError( 'Cannot have two equal refs in the same group' )
+
+	def append(self, item):
+		self._validate_insert( item )
 		item.__parent__ = self  # take ownership
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(item)
 	add = append
 
-	def insert(self, index, obj):
+	def insert(self, index, item):
 		# Remove from our list if it exists, and then insert at.
-		self.remove(obj)
+		self.remove(item)
+		# Only validate after remove.
+		self._validate_insert( item )
 		if index is None or index >= len(self):
 			# Default to append.
-			self.append(obj)
+			self.append(item)
 		else:
-			obj.__parent__ = self  # take ownership
-			self.items.insert(index, obj)
+			item.__parent__ = self  # take ownership
+			self.items.insert(index, item)
 
 	def pop(self, index):
 		self.items.pop(index)
