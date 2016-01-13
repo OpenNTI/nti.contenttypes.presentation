@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from functools import total_ordering
+
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
@@ -19,31 +21,30 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation import NTI_AUDIO_REF
+from nti.contenttypes.presentation import NTI_VIDEO_REF
+from nti.contenttypes.presentation import NTI_AUDIO_ROLL
+from nti.contenttypes.presentation import NTI_VIDEO_ROLL
+
+from nti.contenttypes.presentation._base import PersistentMixin
+from nti.contenttypes.presentation._base import PersistentPresentationAsset
+
+from nti.contenttypes.presentation.interfaces import EVERYONE
+from nti.contenttypes.presentation.interfaces import INTIAudio
+from nti.contenttypes.presentation.interfaces import INTIMedia
+from nti.contenttypes.presentation.interfaces import INTIVideo
+from nti.contenttypes.presentation.interfaces import INTIAudioRef
+from nti.contenttypes.presentation.interfaces import INTIMediaRef
+from nti.contenttypes.presentation.interfaces import INTIVideoRef
+from nti.contenttypes.presentation.interfaces import INTIAudioRoll
+from nti.contenttypes.presentation.interfaces import INTIMediaRoll
+from nti.contenttypes.presentation.interfaces import INTIVideoRoll
+from nti.contenttypes.presentation.interfaces import INTITranscript
+from nti.contenttypes.presentation.interfaces import INTIAudioSource
+from nti.contenttypes.presentation.interfaces import INTIVideoSource
+
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
-
-from ._base import PersistentMixin
-from ._base import PersistentPresentationAsset
-
-from .interfaces import EVERYONE
-
-from .interfaces import INTIAudio
-from .interfaces import INTIMedia
-from .interfaces import INTIVideo
-from .interfaces import INTIAudioRef
-from .interfaces import INTIMediaRef
-from .interfaces import INTIVideoRef
-from .interfaces import INTIAudioRoll
-from .interfaces import INTIMediaRoll
-from .interfaces import INTIVideoRoll
-from .interfaces import INTITranscript
-from .interfaces import INTIAudioSource
-from .interfaces import INTIVideoSource
-
-from . import NTI_AUDIO_REF
-from . import NTI_VIDEO_REF
-from . import NTI_AUDIO_ROLL
-from . import NTI_VIDEO_ROLL
 
 @interface.implementer(INTITranscript, IContentTypeAware)
 class NTITranscript(PersistentMixin):
@@ -66,6 +67,7 @@ class NTIVideoSource(PersistentMixin):
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
 
+@total_ordering
 @EqHash('ntiid')
 @interface.implementer(INTIMedia)
 class NTIMedia(PersistentPresentationAsset):
@@ -75,6 +77,18 @@ class NTIMedia(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntimedia'
 
 	Creator = alias('creator')
+
+	def __lt__(self, other):
+		try:
+			return (self.mimeType, self.title) < (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
+
+	def __gt__(self, other):
+		try:
+			return (self.mimeType, self.title) > (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
 
 @interface.implementer(INTIMediaRef)
 class NTIMediaRef(PersistentPresentationAsset):
@@ -154,7 +168,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 
 	def __setitem__(self, index, item):
 		assert INTIMediaRef.providedBy(item)
-		item.__parent__ = self # take ownership
+		item.__parent__ = self  # take ownership
 		self.items[index] = item
 
 	def __len__(self):
@@ -166,7 +180,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 
 	def append(self, item):
 		assert INTIMediaRef.providedBy(item)
-		item.__parent__ = self # take ownership
+		item.__parent__ = self  # take ownership
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(item)
 	add = append
@@ -181,7 +195,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 			# Default to append.
 			self.append(obj)
 		else:
-			obj.__parent__ = self # take ownership
+			obj.__parent__ = self  # take ownership
 			self.items.insert(index, obj)
 
 	def remove(self, item):

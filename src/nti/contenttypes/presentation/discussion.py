@@ -11,10 +11,19 @@ logger = __import__('logging').getLogger(__name__)
 
 import uuid
 from urlparse import urlparse
+from functools import total_ordering
 
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
+
+from nti.contenttypes.presentation import NTI_COURSE_BUNDLE
+from nti.contenttypes.presentation import NTI_DISCUSSION_REF
+from nti.contenttypes.presentation import NTI_COURSE_BUNDLE_REF
+
+from nti.contenttypes.presentation._base import PersistentPresentationAsset
+
+from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 
 from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid
@@ -23,14 +32,7 @@ from nti.ntiids.ntiids import make_specific_safe
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from ._base import PersistentPresentationAsset
-
-from .interfaces import INTIDiscussionRef
-
-from . import NTI_COURSE_BUNDLE
-from . import NTI_DISCUSSION_REF
-from . import NTI_COURSE_BUNDLE_REF
-
+@total_ordering
 @EqHash('ntiid')
 @interface.implementer(INTIDiscussionRef)
 class NTIDiscussionRef(PersistentPresentationAsset):
@@ -43,11 +45,11 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 	def ntiid(self):
 		self.ntiid = self.generate_ntiid(NTI_DISCUSSION_REF)
 		return self.ntiid
-	
+
 	@readproperty
 	def id(self):
 		return self.ntiid
-	
+
 	@readproperty
 	def target(self):
 		return self.ntiid
@@ -55,6 +57,18 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 	def isCourseBundle(self):
 		return is_nti_course_bundle(self.id or self.ntiid)
 	is_nti_course_bundle = isCourseBundle
+
+	def __lt__(self, other):
+		try:
+			return (self.mimeType, self.title) < (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
+
+	def __gt__(self, other):
+		try:
+			return (self.mimeType, self.title) > (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
 
 def is_nti_course_bundle(iden):
 	cmpns = urlparse(iden) if iden else None

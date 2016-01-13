@@ -10,15 +10,16 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 from itertools import chain
+from functools import total_ordering
 
 from zope import interface
 
 from persistent.list import PersistentList
 
 from nti.common.property import alias
-from nti.common.property import CachedProperty 
+from nti.common.property import CachedProperty
 
-from nti.schema.schema import EqHash 
+from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from ._base import PersistentPresentationAsset
@@ -42,7 +43,7 @@ class NTISlide(PersistentPresentationAsset):
 	end = video_end = alias('slidevideoend')
 	start = video_start = alias('slidevideostart')
 
-	__name__= alias('ntiid')
+	__name__ = alias('ntiid')
 
 @EqHash('ntiid')
 @interface.implementer(INTISlideVideo)
@@ -56,8 +57,9 @@ class NTISlideVideo(PersistentPresentationAsset):
 	video = alias('video_ntiid')
 	slide_deck = deck = alias('slidedeckid')
 
-	__name__= alias('ntiid')
+	__name__ = alias('ntiid')
 
+@total_ordering
 @EqHash('ntiid')
 @interface.implementer(INTISlideDeck)
 class NTISlideDeck(PersistentPresentationAsset):
@@ -70,8 +72,8 @@ class NTISlideDeck(PersistentPresentationAsset):
 	videos = alias('Videos')
 	Creator = alias('creator')
 	id = alias('slidedeckid')
-	
-	__name__= alias('ntiid')
+
+	__name__ = alias('ntiid')
 
 	@CachedProperty("lastModified")
 	def Items(self):
@@ -79,7 +81,7 @@ class NTISlideDeck(PersistentPresentationAsset):
 		return result
 
 	def append(self, item):
-		item.__parent__ = self # take owership
+		item.__parent__ = self  # take owership
 		if INTISlide.providedBy(item):
 			self.slides = PersistentList() if self.slides is None else self.slides
 			self.slides.append(item)
@@ -87,7 +89,7 @@ class NTISlideDeck(PersistentPresentationAsset):
 			self.videos = PersistentList() if self.videos is None else self.videos
 			self.videos.append(item)
 	add = append
-		
+
 	def remove(self, item):
 		result = True
 		try:
@@ -100,3 +102,15 @@ class NTISlideDeck(PersistentPresentationAsset):
 		except ValueError:
 			result = False
 		return result
+
+	def __lt__(self, other):
+		try:
+			return (self.mimeType, self.title) < (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
+
+	def __gt__(self, other):
+		try:
+			return (self.mimeType, self.title) > (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented

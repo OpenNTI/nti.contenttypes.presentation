@@ -11,6 +11,7 @@ logger = __import__('logging').getLogger(__name__)
 
 import uuid
 from hashlib import md5
+from functools import total_ordering
 
 from zope import interface
 
@@ -19,6 +20,8 @@ from zope.cachedescriptors.property import readproperty
 from zope.container.contained import Contained
 
 from zope.mimetype.interfaces import IContentTypeAware
+
+from nti.contenttypes.presentation.interfaces import IPresentationAsset
 
 from nti.coremetadata.interfaces import ICreated
 
@@ -34,8 +37,6 @@ from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.field import SchemaConfigured
 
-from .interfaces import IPresentationAsset
-
 class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject):
 
@@ -46,6 +47,7 @@ class PersistentMixin(SchemaConfigured,
 		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
 
 @WithRepr
+@total_ordering
 @interface.implementer(IPresentationAsset, IContentTypeAware, ICreated)
 class PersistentPresentationAsset(PersistentMixin,
 								  RecordableMixin,
@@ -66,3 +68,15 @@ class PersistentPresentationAsset(PersistentMixin,
 							nttype=nttype,
 							specific=specific)
 		return result
+
+	def __lt__(self, other):
+		try:
+			return (self.mimeType, self.ntiid) < (other.mimeType, other.ntiid)
+		except AttributeError:
+			return NotImplemented
+
+	def __gt__(self, other):
+		try:
+			return (self.mimeType, self.ntiid) > (other.mimeType, other.ntiid)
+		except AttributeError:
+			return NotImplemented
