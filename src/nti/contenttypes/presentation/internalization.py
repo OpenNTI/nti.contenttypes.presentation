@@ -19,6 +19,37 @@ from zope import interface
 
 from persistent.list import PersistentList
 
+from nti.contenttypes.presentation import TIMELINE
+from nti.contenttypes.presentation import JSON_TIMELINE
+from nti.contenttypes.presentation import RELATED_WORK
+from nti.contenttypes.presentation import RELATED_WORK_REF
+from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
+from nti.contenttypes.presentation import ALL_MEDIA_ROLL_MIME_TYPES
+
+from nti.contenttypes.presentation.discussion import is_nti_course_bundle
+
+from nti.contenttypes.presentation.interfaces import INTIAudio
+from nti.contenttypes.presentation.interfaces import INTIVideo
+from nti.contenttypes.presentation.interfaces import INTISlide
+from nti.contenttypes.presentation.interfaces import INTIPollRef
+from nti.contenttypes.presentation.interfaces import INTIAudioRef
+from nti.contenttypes.presentation.interfaces import INTITimeline
+from nti.contenttypes.presentation.interfaces import INTIVideoRef
+from nti.contenttypes.presentation.interfaces import INTIAudioRoll
+from nti.contenttypes.presentation.interfaces import INTIMediaRoll
+from nti.contenttypes.presentation.interfaces import INTISurveyRef
+from nti.contenttypes.presentation.interfaces import INTISlideDeck
+from nti.contenttypes.presentation.interfaces import INTIVideoRoll
+from nti.contenttypes.presentation.interfaces import INTISlideVideo
+from nti.contenttypes.presentation.interfaces import INTIQuestionRef
+from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
+from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
+from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
+from nti.contenttypes.presentation.interfaces import INTILessonOverview
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
+from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
+
 from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.externalization.interfaces import IInternalObjectUpdater
@@ -32,41 +63,6 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import is_ntiid_of_type
 from nti.ntiids.ntiids import is_ntiid_of_types
 from nti.ntiids.ntiids import is_valid_ntiid_string
-
-from .discussion import is_nti_course_bundle
-from .discussion import make_discussionref_ntiid_from_bundle_id
-
-from .interfaces import INTIAudio
-from .interfaces import INTIVideo
-from .interfaces import INTISlide
-from .interfaces import INTIPollRef
-from .interfaces import INTIAudioRef
-from .interfaces import INTITimeline
-from .interfaces import INTIVideoRef
-from .interfaces import INTIAudioRoll
-from .interfaces import INTIMediaRoll
-from .interfaces import INTISurveyRef
-from .interfaces import INTISlideDeck
-from .interfaces import INTIVideoRoll
-from .interfaces import INTISlideVideo
-from .interfaces import INTIQuestionRef
-from .interfaces import INTIAssignmentRef
-from .interfaces import INTIDiscussionRef
-from .interfaces import INTIQuestionSetRef
-from .interfaces import INTILessonOverview
-from .interfaces import INTIRelatedWorkRef
-from .interfaces import INTICourseOverviewGroup
-from .interfaces import INTICourseOverviewSpacer
-
-from . import TIMELINE
-from . import JSON_TIMELINE
-
-from . import RELATED_WORK
-from . import RELATED_WORK_REF
-
-from . import NTI_LESSON_OVERVIEW
-
-from . import ALL_MEDIA_ROLL_MIME_TYPES
 
 ID = StandardExternalFields.ID
 ITEMS = StandardExternalFields.ITEMS
@@ -322,7 +318,7 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 			parsed['id'] = iden  # reset in case
 			ntiid = ntiid_check(parsed.get(NTIID) or parsed.get('ntiid'))
 			if not ntiid:
-				parsed[NTIID] = make_discussionref_ntiid_from_bundle_id(iden)
+				parsed.pop(NTIID, None)
 
 		# remove target fields if empty
 		target = self.getTargetNTIID(parsed)

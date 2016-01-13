@@ -9,7 +9,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import uuid
 from urlparse import urlparse
 from functools import total_ordering
 
@@ -19,7 +18,6 @@ from zope.cachedescriptors.property import readproperty
 
 from nti.contenttypes.presentation import NTI_COURSE_BUNDLE
 from nti.contenttypes.presentation import NTI_DISCUSSION_REF
-from nti.contenttypes.presentation import NTI_COURSE_BUNDLE_REF
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
 
@@ -27,7 +25,6 @@ from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 
 from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid
-from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
@@ -52,7 +49,7 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 
 	@readproperty
 	def target(self):
-		return self.ntiid
+		return self.id or self.ntiid
 
 	def isCourseBundle(self):
 		return is_nti_course_bundle(self.id or self.ntiid)
@@ -82,10 +79,4 @@ def make_discussionref_ntiid(ntiid):
 	else:
 		nttype = NTI_DISCUSSION_REF
 	ntiid = make_ntiid(nttype=nttype, base=ntiid)
-	return ntiid
-
-def make_discussionref_ntiid_from_bundle_id(iden):
-	provider = str(uuid.uuid4()).split('-')[0].upper()
-	path = make_specific_safe(iden[len(NTI_COURSE_BUNDLE_REF):])
-	ntiid = make_ntiid(provider=provider, nttype=NTI_DISCUSSION_REF, specific=path)
 	return ntiid

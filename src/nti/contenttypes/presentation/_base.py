@@ -37,6 +37,14 @@ from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.field import SchemaConfigured
 
+def generate_ntiid(nttype):
+	digest = md5(str(uuid.uuid4())).hexdigest()
+	specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
+	result = make_ntiid(provider='NTI',
+						nttype=nttype,
+						specific=specific)
+	return result
+
 class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject):
 
@@ -62,12 +70,7 @@ class PersistentPresentationAsset(PersistentMixin,
 
 	@classmethod
 	def generate_ntiid(cls, nttype):
-		digest = md5(str(uuid.uuid4())).hexdigest()
-		specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
-		result = make_ntiid(provider='NTI',
-							nttype=nttype,
-							specific=specific)
-		return result
+		return generate_ntiid(nttype)
 
 	def __lt__(self, other):
 		try:
