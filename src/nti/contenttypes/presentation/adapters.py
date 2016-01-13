@@ -12,13 +12,13 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from .media import NTIAudioRef
-from .media import NTIVideoRef
+from nti.contenttypes.presentation.interfaces import INTIAudio
+from nti.contenttypes.presentation.interfaces import INTIVideo
+from nti.contenttypes.presentation.interfaces import INTIAudioRef
+from nti.contenttypes.presentation.interfaces import INTIVideoRef
 
-from .interfaces import INTIAudio
-from .interfaces import INTIVideo
-from .interfaces import INTIAudioRef
-from .interfaces import INTIVideoRef
+from nti.contenttypes.presentation.media import NTIAudioRef
+from nti.contenttypes.presentation.media import NTIVideoRef
 
 @component.adapter(INTIVideo)
 @interface.implementer(INTIVideoRef)

@@ -16,51 +16,77 @@ from zope import interface
 
 from zope.interface.interfaces import IMethod
 
+from nti.contenttypes.presentation.interfaces import IMediaRef
+from nti.contenttypes.presentation.interfaces import INTIAudio
+from nti.contenttypes.presentation.interfaces import INTIMedia
+from nti.contenttypes.presentation.interfaces import INTISlide
+from nti.contenttypes.presentation.interfaces import INTIVideo
+from nti.contenttypes.presentation.interfaces import INTIAudioRef
+from nti.contenttypes.presentation.interfaces import INTIVideoRef
+from nti.contenttypes.presentation.interfaces import INTITimeline
+from nti.contenttypes.presentation.interfaces import INTIAudioRoll
+from nti.contenttypes.presentation.interfaces import INTIMediaRoll
+from nti.contenttypes.presentation.interfaces import INTIVideoRoll
+from nti.contenttypes.presentation.interfaces import INTISlideDeck
+from nti.contenttypes.presentation.interfaces import INTIInquiryRef
+from nti.contenttypes.presentation.interfaces import INTISlideVideo
+from nti.contenttypes.presentation.interfaces import INTIMediaSource
+from nti.contenttypes.presentation.interfaces import INTIAssessmentRef
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+from nti.contenttypes.presentation.interfaces import IGroupOverViewable
+from nti.contenttypes.presentation.interfaces import IPresentationAsset
+
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 
-from .interfaces import IMediaRef
-from .interfaces import INTIAudio
-from .interfaces import INTIMedia
-from .interfaces import INTISlide
-from .interfaces import INTIVideo
-from .interfaces import INTIAudioRef
-from .interfaces import INTIVideoRef
-from .interfaces import INTITimeline
-from .interfaces import INTIAudioRoll
-from .interfaces import INTIMediaRoll
-from .interfaces import INTIVideoRoll
-from .interfaces import INTISlideDeck
-from .interfaces import INTIInquiryRef
-from .interfaces import INTISlideVideo
-from .interfaces import INTIMediaSource
-from .interfaces import INTIAssessmentRef
-from .interfaces import INTIRelatedWorkRef
-from .interfaces import IGroupOverViewable
-from .interfaces import IPresentationAsset
-
+#: Audio Ref NTIID type
 NTI_AUDIO_REF = 'NTIAudioRef'
+
+#: Video Ref NTIID type
 NTI_VIDEO_REF = 'NTIVideoRef'
 
+#: Audio Roll NTIID type
 NTI_AUDIO_ROLL = 'NTIAudioRoll'
+
+#: Video Roll NTIID type
 NTI_VIDEO_ROLL = 'NTIVideoRoll'
 
-NTI_VIDEO = NTIVideo = u'NTIVideo'
+#: Audio NTIID type
 NTI_AUDIO = NTIAudio = u'NTIAudio'
 
+#: Video NTIID type
+NTI_VIDEO = NTIVideo = u'NTIVideo'
+
+#: Poll Ref NTIID type
 NTI_POLL_REF = 'NTIPollRef'
+
+#: Survey Ref NTIID type
 NTI_SURVEY_REF = 'NTISurveyRef'
 
+#: Question Ref NTIID type
 NTI_QUESTION_REF = 'NTIQuestionRef'
+
+#: Assigment Ref NTIID type
 NTI_ASSIGNMENT_REF = 'NTIAssignmentRef'
+
+#: QuestionSet Ref NTIID type
 NTI_QUESTION_SET_REF = 'NTIQuestionSetRef'
 
+#: Slide NTIID type
 NTI_SLIDE = NTISlide = u'NTISlide'
+
+#: Slide Deck NTIID type
 NTI_SLIDE_DECK = NTISlideDeck = u'NTISlideDeck'
+
+#: Slide Slide Video NTIID type
 NTI_SLIDE_VIDEO = NTISlideVideo = u'NTISlideVideo'
 
+#: JSON Timeline NTIID type
 JSON_TIMELINE = u'JSON:Timeline'
+
+#: Timeline NTIID type
 TIMELINE = NTI_TIMELINE = NTITimeline = u'Timeline'
 
+#: Related Work Ref NTIID type
 RELATED_WORK_REF = 'RelatedWorkRef'
 NTI_RELATED_WORK_REF = 'NTIRelatedWorkRef'
 RELATED_WORK = NTI_RELATED_WORK = 'RelatedWork'

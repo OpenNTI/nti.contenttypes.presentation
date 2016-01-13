@@ -9,32 +9,35 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from functools import total_ordering
+
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation import NTI_POLL_REF
+from nti.contenttypes.presentation import NTI_SURVEY_REF
+from nti.contenttypes.presentation import NTI_QUESTION_REF
+from nti.contenttypes.presentation import NTI_ASSIGNMENT_REF
+from nti.contenttypes.presentation import NTI_QUESTION_SET_REF
+
+from nti.contenttypes.presentation._base import PersistentPresentationAsset
+
+from nti.contenttypes.presentation.interfaces import INTIPollRef
+from nti.contenttypes.presentation.interfaces import INTISurveyRef
+from nti.contenttypes.presentation.interfaces import INTIQuestionRef
+from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
+from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
+
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
-
-from ._base import PersistentPresentationAsset
-
-from .interfaces import INTIPollRef
-from .interfaces import INTISurveyRef
-from .interfaces import INTIQuestionRef
-from .interfaces import INTIAssignmentRef
-from .interfaces import INTIQuestionSetRef
-
-from . import NTI_POLL_REF
-from . import NTI_SURVEY_REF
-from . import NTI_QUESTION_REF
-from . import NTI_ASSIGNMENT_REF
-from . import NTI_QUESTION_SET_REF
 
 import zope.deferredimport
 zope.deferredimport.initialize()
 
+@total_ordering
 @EqHash('ntiid')
 class NTIAssessmentRef(PersistentPresentationAsset):
 
@@ -49,6 +52,18 @@ class NTIAssessmentRef(PersistentPresentationAsset):
 	@readproperty
 	def target(self):
 		return self.ntiid
+	
+	def __lt__(self, other):
+		try:
+			return (self.mimeType, self.label) < (other.mimeType, other.label)
+		except AttributeError:
+			return NotImplemented
+
+	def __gt__(self, other):
+		try:
+			return (self.mimeType, self.label) > (other.mimeType, other.label)
+		except AttributeError:
+			return NotImplemented
 
 @interface.implementer(INTIAssignmentRef)
 class NTIAssignmentRef(NTIAssessmentRef):
@@ -59,6 +74,18 @@ class NTIAssignmentRef(NTIAssessmentRef):
 
 	nttype = NTI_ASSIGNMENT_REF 
 	ContainerId = alias('containerId')
+
+	def __lt__(self, other):
+		try:
+			return (self.mimeType, self.title) < (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
+
+	def __gt__(self, other):
+		try:
+			return (self.mimeType, self.title) > (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
 
 @interface.implementer(INTIQuestionSetRef)
 class NTIQuestionSetRef(NTIAssessmentRef):

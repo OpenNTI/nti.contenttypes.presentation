@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from functools import total_ordering
+
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
@@ -17,19 +19,19 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_SPACER
+
+from nti.contenttypes.presentation._base import PersistentPresentationAsset
+
+from nti.contenttypes.presentation.interfaces import INTILessonOverview
+from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
+from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
+
 from nti.coremetadata.mixins import CalendarPublishableMixin
 from nti.coremetadata.mixins import RecordableContainerMixin
 
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
-
-from ._base import PersistentPresentationAsset
-
-from .interfaces import INTILessonOverview
-from .interfaces import INTICourseOverviewGroup
-from .interfaces import INTICourseOverviewSpacer
-
-from . import NTI_COURSE_OVERVIEW_SPACER
 
 @EqHash('ntiid')
 @interface.implementer(INTICourseOverviewSpacer)
@@ -45,6 +47,7 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 		self.ntiid = result
 		return result
 
+@total_ordering
 @EqHash('ntiid')
 @interface.implementer(INTILessonOverview)
 class NTILessonOverView(CalendarPublishableMixin,
@@ -108,6 +111,18 @@ class NTILessonOverView(CalendarPublishableMixin,
 			del self.items[:]
 		return result
 	clear = reset
+	
+	def __lt__(self, other):
+		try:
+			return (self.mimeType, self.title) < (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
+
+	def __gt__(self, other):
+		try:
+			return (self.mimeType, self.title) > (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
 
 import zope.deferredimport
 zope.deferredimport.initialize()

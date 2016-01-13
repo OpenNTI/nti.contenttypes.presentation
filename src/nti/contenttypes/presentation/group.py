@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from functools import total_ordering
+
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
@@ -17,20 +19,20 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_GROUP
+
+from nti.contenttypes.presentation._base import PersistentPresentationAsset
+
 from nti.contenttypes.presentation.interfaces import INTIMediaRef
+from nti.contenttypes.presentation.interfaces import IGroupOverViewable
+from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
 from nti.coremetadata.mixins import RecordableContainerMixin
 
 from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from ._base import PersistentPresentationAsset
-
-from .interfaces import IGroupOverViewable
-from .interfaces import INTICourseOverviewGroup
-
-from . import NTI_COURSE_OVERVIEW_GROUP
-
+@total_ordering
 @EqHash('ntiid')
 @interface.implementer(INTICourseOverviewGroup)
 class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMixin):
@@ -70,15 +72,15 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 		# We do not allow duplicate refs in the same group, since clients
 		# do not have access to media refs, only the underlying media obj.
 		# This avoids confusion in some operations.
-		if INTIMediaRef.providedBy( item ):
+		if INTIMediaRef.providedBy(item):
 			new_target = getattr(item, 'target', '')
 			if new_target:
 				for child in self:
 					if getattr(child, 'target', '') == new_target:
-						raise ValueError( 'Cannot have two equal refs in the same group' )
+						raise ValueError('Cannot have two equal refs in the same group')
 
 	def append(self, item):
-		self._validate_insert( item )
+		self._validate_insert(item)
 		item.__parent__ = self  # take ownership
 		self.items = PersistentList() if self.items is None else self.items
 		self.items.append(item)
@@ -88,7 +90,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 		# Remove from our list if it exists, and then insert at.
 		self.remove(item)
 		# Only validate after remove.
-		self._validate_insert( item )
+		self._validate_insert(item)
 		if index is None or index >= len(self):
 			# Default to append.
 			self.append(item)
@@ -114,3 +116,15 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 			del self.items[:]
 		return result
 	clear = reset
+
+	def __lt__(self, other):
+		try:
+			return (self.mimeType, self.title) < (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
+
+	def __gt__(self, other):
+		try:
+			return (self.mimeType, self.title) > (other.mimeType, other.title)
+		except AttributeError:
+			return NotImplemented
