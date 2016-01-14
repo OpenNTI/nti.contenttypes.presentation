@@ -32,6 +32,8 @@ from zope.schema import vocabulary
 
 from dolmen.builtins.interfaces import IIterable
 
+from nti.common.property import alias
+
 from nti.coremetadata.interfaces import ITitled
 from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
@@ -555,8 +557,41 @@ class IItemRemovedFromItemAssetContainerEvent(IObjectModifiedEvent):
 class ItemRemovedFromItemAssetContainerEvent(ObjectModifiedEvent):
 	pass
 
+#: Overview group moved recorder transaction type.
+TRX_OVERVIEW_GROUP_MOVE_TYPE = u'overviewgroupmoved'
+
+class IOverviewGroupMovedEvent(IObjectEvent):
+	pass
+
+@interface.implementer(IOverviewGroupMovedEvent)
+class OverviewGroupMovedEvent(ObjectEvent):
+
+	group = alias('object')
+
+	def __init__(self, obj, principal=None, index=None):
+		super(OverviewGroupMovedEvent, self).__init__(obj)
+		self.index = index
+		self.principal = principal
+
+#: Asset moved recorder transaction type.
+TRX_ASSET_MOVE_TYPE = u'presentationassetmoved'
+
+class IPresentationAssetMovedEvent(IObjectEvent):
+	pass
+
+@interface.implementer(IPresentationAssetMovedEvent)
+class PresentationAssetMovedEvent(ObjectEvent):
+
+	asset = alias('object')
+
+	def __init__(self, obj, principal=None, index=None):
+		super(PresentationAssetMovedEvent, self).__init__(obj)
+		self.index = index
+		self.principal = principal
+
 import zope.deferredimport
 zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
 	"Import from INTIRelatedWorkRef instead",
 	INTIRelatedWork='nnti.contenttypes.presentation.interfaces:INTIRelatedWorkRef')
+
