@@ -48,6 +48,7 @@ from nti.schema.field import Choice
 from nti.schema.field import Number
 from nti.schema.field import Object
 from nti.schema.field import Variant
+from nti.schema.field import Iterable
 from nti.schema.field import ValidURI
 from nti.schema.field import ValidText
 from nti.schema.field import ValidTextLine
@@ -359,6 +360,9 @@ class INTISlideDeck(IItemAssetContainer, IAssetTitleDescribed, INTIIDIdentifiabl
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 
 	byline = byline_schema_field(required=False)
+	
+	Items = Iterable(title='All items in the slide deck', readonly=True, required=False)
+	Items.setTaggedValue('_ext_excluded_out', True)
 
 INTISlideDeck['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
