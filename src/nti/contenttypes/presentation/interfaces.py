@@ -7,6 +7,8 @@
 from __future__ import print_function, unicode_literals, absolute_import, division
 __docformat__ = "restructuredtext en"
 
+logger = __import__('logging').getLogger(__name__)
+
 from copy import copy
 
 from zope import interface
@@ -237,7 +239,7 @@ class IAssetTitled( interface.Interface ):
 
 class IAssetTitleDescribed( IAssetTitled, IDCDescriptiveProperties ):
 	# IDCDescriptiveProperties marker needed for ext adapter.
-	title = copy( IAssetTitled['title'] )
+	title = copy(IAssetTitled['title'])
 	title.default = u''
 	description = ValidTextLine(title="Media description", required=False, default=u'')
 
