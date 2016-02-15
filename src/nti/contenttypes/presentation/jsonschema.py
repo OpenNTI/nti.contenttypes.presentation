@@ -8,3 +8,12 @@ from __future__ import print_function, unicode_literals, absolute_import, divisi
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
+
+from nti.schema.jsonschema import JsonSchemafier
+
+class BaseJsonSchemafier(JsonSchemafier):
+
+    def allow_field(self, name, field):
+        if name.startswith('_'):
+            return False
+        return True
