@@ -178,6 +178,13 @@ class NTIMediaRoll(PersistentPresentationAsset):
 	def __iter__(self):
 		return iter(self.items or ())
 
+	def __contains__(self, obj):
+		ntiid = getattr(obj, 'ntiid', None) or str(obj)
+		for item in self:
+			if item.ntiid == ntiid:
+				return True
+		return False
+
 	def append(self, item):
 		assert INTIMediaRef.providedBy(item)
 		item.__parent__ = self  # take ownership
