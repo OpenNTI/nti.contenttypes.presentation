@@ -67,6 +67,13 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 	def __iter__(self):
 		return iter(self.items or ())
 
+	def __contains__(self, obj):
+		ntiid = getattr(obj, 'ntiid', None) or str(obj)
+		for item in self:
+			if item.ntiid == ntiid:
+				return True
+		return False
+		
 	def _validate_insert(self, item):
 		assert IGroupOverViewable.providedBy(item)
 		# We do not allow duplicate refs in the same group, since clients

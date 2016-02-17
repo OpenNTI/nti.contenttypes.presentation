@@ -76,6 +76,13 @@ class NTILessonOverView(CalendarPublishableMixin,
 	def __iter__(self):
 		return iter(self.items or ())
 
+	def __contains__(self, obj):
+		ntiid = getattr(obj, 'ntiid', None) or str(obj)
+		for item in self:
+			if item.ntiid == ntiid:
+				return True
+		return False
+
 	def append(self, group):
 		assert INTICourseOverviewGroup.providedBy(group)
 		group.__parent__ = self  # take ownership

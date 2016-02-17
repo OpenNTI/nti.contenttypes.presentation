@@ -201,6 +201,11 @@ class IItemAssetContainer(interface.Interface):
 
 		:return True if object was removed
 		"""
+		
+	def __contains__(item):
+		"""
+		return is the specified item is in this container
+		"""
 
 class IGroupOverViewable(interface.Interface):
 	"""
@@ -472,16 +477,6 @@ class INTICourseOverviewGroup(IItemAssetContainer, IAssetTitled, INTIIDIdentifia
 						 	title="The overview items", required=False, min_length=0)
 	accentColor = ValidTextLine(title="Overview color", required=False)
 
-	def append(item):
-		"""
-		Add an item
-		"""
-
-	def remove(item):
-		"""
-		remove the specified item
-		"""
-
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -528,6 +523,16 @@ class IPresentationAssetContainer(IMapping):
 		*args may contain a single default value, or may not be supplied.
 		If key is not found, default is returned if given, otherwise
 		KeyError is raised
+		"""
+
+class IPresentationAssetAffiliations(interface.Interface):
+	"""
+	subscriber for a presentation asset containers
+	"""
+
+	def containers(item):
+		"""
+		return the containers that refer to specified item
 		"""
 
 class IPresentationAssetCreatedEvent(IObjectCreatedEvent):

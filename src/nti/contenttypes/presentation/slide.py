@@ -103,6 +103,13 @@ class NTISlideDeck(PersistentPresentationAsset):
 			result = False
 		return result
 
+	def __contains__(self, obj):
+		ntiid = getattr(obj, 'ntiid', None) or str(obj)
+		for item in self.Items:
+			if item.ntiid == ntiid:
+				return True
+		return False
+
 	def __lt__(self, other):
 		try:
 			return (self.mimeType, self.title) < (other.mimeType, other.title)
