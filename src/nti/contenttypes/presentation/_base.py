@@ -48,6 +48,7 @@ def generate_ntiid(nttype):
 class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject):
 
+	jsonschema = u''
 	parameters = {} # IContentTypeAware
 
 	def __init__(self, *args, **kwargs):
