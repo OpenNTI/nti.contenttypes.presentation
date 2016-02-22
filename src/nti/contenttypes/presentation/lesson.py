@@ -106,10 +106,9 @@ class NTILessonOverView(CalendarPublishableMixin,
 
 	def remove(self, group):
 		try:
-			if self.items:
-				self.items.remove(group)
-				return True
-		except ValueError:
+			self.items.remove(group)
+			return True
+		except (AttributeError, ValueError):
 			pass
 		return False
 

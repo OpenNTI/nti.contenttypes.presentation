@@ -100,7 +100,7 @@ class NTISlideDeck(PersistentPresentationAsset):
 				self.videos.remove(item)
 			else:
 				result = False
-		except ValueError:
+		except (AttributeError, ValueError):
 			result = False
 		return result
 

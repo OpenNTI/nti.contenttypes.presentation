@@ -117,10 +117,9 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 
 	def remove(self, item):
 		try:
-			if self.items:
-				self.items.remove(item)
-				return True
-		except ValueError:
+			self.items.remove(item)
+			return True
+		except (AttributeError, ValueError):
 			pass
 		return False
 
