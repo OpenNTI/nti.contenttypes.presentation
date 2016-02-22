@@ -19,6 +19,7 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation import MessageFactory as _
 from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_GROUP
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
@@ -29,8 +30,14 @@ from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
 from nti.coremetadata.mixins import RecordableContainerMixin
 
-from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+from nti.schema.schema import EqHash
+
+class DuplicateReference(ValueError):
+	
+	def __init__(self):
+		super(DuplicateReference, self).__init__(_('Cannot have two equal refs in the same group'))
 
 @total_ordering
 @EqHash('ntiid')
@@ -84,7 +91,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 			if new_target:
 				for child in self:
 					if getattr(child, 'target', '') == new_target:
-						raise ValueError('Cannot have two equal refs in the same group')
+						raise DuplicateReference()
 
 	def append(self, item):
 		self._validate_insert(item)
