@@ -43,8 +43,9 @@ from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
 
-from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+from nti.schema.schema import EqHash
 
 @interface.implementer(INTITranscript, IContentTypeAware)
 class NTITranscript(PersistentMixin):

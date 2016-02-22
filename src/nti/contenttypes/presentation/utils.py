@@ -11,43 +11,43 @@ logger = __import__('logging').getLogger(__name__)
 
 from collections import Mapping
 
+from nti.contenttypes.presentation import AUDIO_MIMETYES
+from nti.contenttypes.presentation import VIDEO_MIMETYES
+from nti.contenttypes.presentation import POLL_REF_MIMETYES
+from nti.contenttypes.presentation import TIMELINE_MIMETYES
+from nti.contenttypes.presentation import AUDIO_REF_MIMETYES
+from nti.contenttypes.presentation import VIDEO_REF_MIMETYES
+from nti.contenttypes.presentation import SURVEY_REF_MIMETYES
+from nti.contenttypes.presentation import QUESTION_REF_MIMETYES
+from nti.contenttypes.presentation import ASSIGNMENT_REF_MIMETYES
+from nti.contenttypes.presentation import DISCUSSION_REF_MIMETYES
+from nti.contenttypes.presentation import LESSON_OVERVIEW_MIMETYES
+from nti.contenttypes.presentation import QUESTIONSET_REF_MIMETYES
+from nti.contenttypes.presentation import ALL_MEDIA_ROLL_MIME_TYPES
+from nti.contenttypes.presentation import RELATED_WORK_REF_MIMETYES
+from nti.contenttypes.presentation import COURSE_OVERVIEW_GROUP_MIMETYES
+
+from nti.contenttypes.presentation.internalization import internalization_pollref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_ntiaudio_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_ntivideo_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_mediaroll_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_surveyref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_ntiaudioref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_ntivideoref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_ntitimeline_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_questionref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_assignmentref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_discussionref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_courseoverview_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_lessonoverview_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_questionsetref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_relatedworkref_pre_hook
+
 from nti.externalization.interfaces import StandardExternalFields
 
 from nti.externalization.internalization import pre_hook
 from nti.externalization.internalization import find_factory_for
 from nti.externalization.internalization import update_from_external_object
-
-from .internalization import internalization_pollref_pre_hook
-from .internalization import internalization_ntiaudio_pre_hook
-from .internalization import internalization_ntivideo_pre_hook
-from .internalization import internalization_mediaroll_pre_hook
-from .internalization import internalization_surveyref_pre_hook
-from .internalization import internalization_ntiaudioref_pre_hook
-from .internalization import internalization_ntivideoref_pre_hook
-from .internalization import internalization_ntitimeline_pre_hook
-from .internalization import internalization_questionref_pre_hook
-from .internalization import internalization_assignmentref_pre_hook
-from .internalization import internalization_discussionref_pre_hook
-from .internalization import internalization_courseoverview_pre_hook
-from .internalization import internalization_lessonoverview_pre_hook
-from .internalization import internalization_questionsetref_pre_hook
-from .internalization import internalization_relatedworkref_pre_hook
-
-from . import AUDIO_MIMETYES
-from . import VIDEO_MIMETYES
-from . import POLL_REF_MIMETYES
-from . import TIMELINE_MIMETYES
-from . import AUDIO_REF_MIMETYES
-from . import VIDEO_REF_MIMETYES
-from . import SURVEY_REF_MIMETYES
-from . import QUESTION_REF_MIMETYES
-from . import ASSIGNMENT_REF_MIMETYES
-from . import DISCUSSION_REF_MIMETYES
-from . import LESSON_OVERVIEW_MIMETYES
-from . import QUESTIONSET_REF_MIMETYES
-from . import ALL_MEDIA_ROLL_MIME_TYPES
-from . import RELATED_WORK_REF_MIMETYES
-from . import COURSE_OVERVIEW_GROUP_MIMETYES
 
 MIMETYPE = StandardExternalFields.MIMETYPE
 

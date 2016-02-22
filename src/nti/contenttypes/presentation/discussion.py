@@ -26,8 +26,9 @@ from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid
 
-from nti.schema.schema import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+from nti.schema.schema import EqHash
 
 @total_ordering
 @EqHash('ntiid')

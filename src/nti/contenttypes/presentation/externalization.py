@@ -12,18 +12,18 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
-from nti.externalization.interfaces import IInternalObjectIO
-from nti.externalization.interfaces import StandardExternalFields
-from nti.externalization.interfaces import IInternalObjectExternalizer
+from nti.contenttypes.presentation.interfaces import INTITimeline
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+
+from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
 
 from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.externalization.externalization import toExternalObject
 
-from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
-
-from .interfaces import INTITimeline
-from .interfaces import INTIRelatedWorkRef
+from nti.externalization.interfaces import IInternalObjectIO
+from nti.externalization.interfaces import StandardExternalFields
+from nti.externalization.interfaces import IInternalObjectExternalizer
 
 OID = StandardExternalFields.OID
 CLASS = StandardExternalFields.CLASS

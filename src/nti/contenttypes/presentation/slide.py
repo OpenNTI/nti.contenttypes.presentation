@@ -19,14 +19,15 @@ from persistent.list import PersistentList
 from nti.common.property import alias
 from nti.common.property import CachedProperty
 
-from nti.schema.schema import EqHash
+from nti.contenttypes.presentation._base import PersistentPresentationAsset
+
+from nti.contenttypes.presentation.interfaces import INTISlide
+from nti.contenttypes.presentation.interfaces import INTISlideDeck
+from nti.contenttypes.presentation.interfaces import INTISlideVideo
+
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from ._base import PersistentPresentationAsset
-
-from .interfaces import INTISlide
-from .interfaces import INTISlideDeck
-from .interfaces import INTISlideVideo
+from nti.schema.schema import EqHash 
 
 @EqHash('ntiid')
 @interface.implementer(INTISlide)
