@@ -5,7 +5,6 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.schema.interfaces import find_most_derived_interface
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -39,6 +38,7 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.field import SchemaConfigured
+from nti.schema.interfaces import find_most_derived_interface
 
 def generate_ntiid(nttype):
 	digest = md5(str(uuid.uuid4())).hexdigest()
@@ -52,7 +52,6 @@ class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject):
 
 	jsonschema = u''
-	parameters = {} # IContentTypeAware
 
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
@@ -67,7 +66,8 @@ class PersistentPresentationAsset(PersistentMixin,
 	title = None
 	byline = None
 	description = None
-
+	parameters = {} # IContentTypeAware
+		
 	@readproperty
 	def creator(self):
 		return self.byline
