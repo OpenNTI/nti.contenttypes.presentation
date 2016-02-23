@@ -41,6 +41,9 @@ from nti.contenttypes.presentation.interfaces import IPresentationAsset
 
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 
+#: Fields attribute 
+FIELDS = 'Fields'
+
 #: Audio Ref NTIID type
 NTI_AUDIO_REF = 'NTIAudioRef'
 

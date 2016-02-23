@@ -8,12 +8,15 @@ __docformat__ = "restructuredtext en"
 # pylint: disable=W0212,R0904
 
 from hamcrest import is_
+from hamcrest import has_key
 from hamcrest import has_entry
 from hamcrest import has_length
 from hamcrest import assert_that
 from hamcrest import has_entries
 
 import unittest
+
+from nti.contenttypes.presentation import FIELDS
 
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
@@ -26,6 +29,8 @@ class TestJsonSchema(unittest.TestCase):
 	def test_relatedwork(self):
 		a = NTIRelatedWorkRef()
 		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		schema = schema[FIELDS]
 		assert_that(schema, has_length(12))
 		for field in ('href', 'icon'):
 			assert_that(schema, has_entry(field, has_entry('type', 'Variant')))

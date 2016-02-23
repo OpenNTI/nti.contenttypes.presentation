@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -13,11 +14,15 @@ from zope import interface
 
 from zope.schema.interfaces import IObject
 
+from nti.contenttypes.presentation import FIELDS
+
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
 
 from nti.coremetadata.interfaces import ICreatedTime
 from nti.coremetadata.interfaces import ILastModified
+
+from nti.externalization.interfaces import LocatedExternalDict
 
 from nti.schema.interfaces import IVariant
 from nti.schema.jsonschema import JsonSchemafier
@@ -56,5 +61,7 @@ class BaseJsonSchemafier(JsonSchemafier):
 class PresentationAssetJsonSchemafier(object):
     
     def make_schema(self, schema=IPresentationAsset):
-        result = BaseJsonSchemafier(schema)
-        return result.make_schema()
+        result = LocatedExternalDict()
+        maker = BaseJsonSchemafier(schema)
+        result[FIELDS] = maker.make_schema()
+        return result
