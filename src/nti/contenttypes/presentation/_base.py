@@ -48,6 +48,11 @@ def generate_ntiid(nttype):
 						specific=specific)
 	return result
 
+def make_schema(name=u'', schema=None):
+	schemafier = component.getUtility(IPresentationAssetJsonSchemafier, name=name)
+	result = schemafier.make_schema(schema=schema)
+	return result
+
 class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject):
 
@@ -89,8 +94,6 @@ class PersistentPresentationAsset(PersistentMixin,
 			return NotImplemented
 		
 	def schema(self):
-		schemafier = component.getUtility(IPresentationAssetJsonSchemafier,
-										  name=self.jsonschema)
 		schema = find_most_derived_interface(self, IPresentationAsset)
-		result = schemafier.make_schema(schema=schema)
+		result = make_schema(schema=schema)
 		return result
