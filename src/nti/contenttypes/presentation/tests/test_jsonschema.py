@@ -21,17 +21,19 @@ from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
 class TestJsonSchema(unittest.TestCase):
 
-    layer = SharedConfiguringTestLayer
+	layer = SharedConfiguringTestLayer
 
-    def test_relatedwork(self):
-        a = NTIRelatedWorkRef()
-        schema = a.schema()
-        assert_that(schema, has_length(12))
-        for field in ('href', 'icon'):
-            assert_that(schema, has_entry(field, has_entry('type', 'Variant')))        
-            assert_that(schema, has_entry(field, has_entry('name', is_(field))))
-            assert_that(schema, has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
-        
-        assert_that(schema, has_entry('visibility', 
-                                      has_entries('base_type', 'string',
-                                                  'choices', has_length(5))))   
+	def test_relatedwork(self):
+		a = NTIRelatedWorkRef()
+		schema = a.schema()
+		assert_that(schema, has_length(12))
+		for field in ('href', 'icon'):
+			assert_that(schema, has_entry(field, has_entry('type', 'Variant')))
+			assert_that(schema, has_entry(field, has_entry('name', is_(field))))
+			assert_that(schema, has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
+
+		assert_that(schema, has_entry('target', has_entry('min_length', is_(0))))
+		assert_that(schema, has_entry('section', has_entry('min_length', is_(0))))
+		assert_that(schema, has_entry('visibility',
+									  has_entries('base_type', 'string',
+												  'choices', has_length(5))))

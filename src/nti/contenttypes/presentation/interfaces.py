@@ -385,6 +385,8 @@ class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 	description = ValidTextLine(title="Timeline description", required=False)
 	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
 
+INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
+
 class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICreated,
 						 IPresentationAsset, IVisible):
 	href = href_schema_field(title="Related work href", required=False, default=u'')
@@ -424,6 +426,8 @@ class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPres
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 IAssessmentRef = INTIAssessmentRef
+
+INTIAssessmentRef['target'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 class INTIQuestionSetRef(INTIAssessmentRef):
 	question_count = Int(title="Question count", required=False)
