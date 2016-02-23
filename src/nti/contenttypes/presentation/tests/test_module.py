@@ -25,16 +25,17 @@ from nti.contenttypes.presentation import PACKAGE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
 
+from nti.contenttypes.presentation.group import NTICourseOverViewGroup
+
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
-from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
+from nti.contenttypes.presentation.lesson import NTILessonOverView
 
 from nti.schema.interfaces import find_most_derived_interface
 
-from ..group import NTICourseOverViewGroup
-from ..lesson import NTILessonOverView
+from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
 class TestModule(unittest.TestCase):
 

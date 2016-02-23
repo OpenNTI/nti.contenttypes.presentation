@@ -11,6 +11,8 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from zope.schema.interfaces import IObject
+
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
 
@@ -20,6 +22,8 @@ from nti.coremetadata.interfaces import ILastModified
 from nti.schema.interfaces import IVariant
 from nti.schema.jsonschema import JsonSchemafier
 from nti.schema.jsonschema import ui_type_from_field
+from nti.schema.jsonschema import ui_type_from_field_iface
+from nti.schema.jsonschema import iface_ui_type as interface_ui_type
 
 class BaseJsonSchemafier(JsonSchemafier):
 
@@ -33,9 +37,19 @@ class BaseJsonSchemafier(JsonSchemafier):
     def ui_types_from_field(self, field):
         ui_type, ui_base_type = super(BaseJsonSchemafier, self).ui_types_from_field(field)
         if IVariant.providedBy(field) and not ui_base_type:
-            base_types = map(lambda x:ui_type_from_field(x)[1], field.fields)
-            if 'string' in base_types:
-                ui_base_type = 'string'
+            base_types = set()
+            for field in field.fields:
+                base = ui_type_from_field(field)[1]
+                if not base and IObject.providedBy(field):
+                    base =   ui_type_from_field_iface(field.schema) \
+                          or interface_ui_type(field.schema)  
+                if base:
+                    base_types.add(base.lower())
+            if base_types:
+                base_types = sorted(base_types, reverse=True)
+                ui_base_type = base_types[0] if len(base_types) == 1 else base_types
+            else:
+                ui_base_type = ui_type
         return ui_type, ui_base_type
 
 @interface.implementer(IPresentationAssetJsonSchemafier)
