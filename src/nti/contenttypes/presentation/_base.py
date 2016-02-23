@@ -95,5 +95,5 @@ class PersistentPresentationAsset(PersistentMixin,
 		
 	def schema(self):
 		schema = find_most_derived_interface(self, IPresentationAsset)
-		result = make_schema(schema=schema)
+		result = make_schema(name=self.jsonschema, schema=schema)
 		return result
