@@ -9,6 +9,11 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from zope import interface
+
+from nti.contenttypes.presentation.interfaces import IPresentationAsset
+from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
+
 from nti.coremetadata.interfaces import ICreatedTime
 from nti.coremetadata.interfaces import ILastModified
 
@@ -32,3 +37,10 @@ class BaseJsonSchemafier(JsonSchemafier):
             if 'string' in base_types:
                 ui_base_type = 'string'
         return ui_type, ui_base_type
+
+@interface.implementer(IPresentationAssetJsonSchemafier)
+class PresentationAssetJsonSchemafier(object):
+    
+    def make_schema(self, schema=IPresentationAsset):
+        result = BaseJsonSchemafier(schema)
+        return result.make_schema()

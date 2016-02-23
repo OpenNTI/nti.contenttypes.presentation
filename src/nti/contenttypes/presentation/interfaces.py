@@ -535,6 +535,18 @@ class IPresentationAssetAffiliations(interface.Interface):
 		return the containers that refer to specified item
 		"""
 
+class IPresentationAssetJsonSchemafier(interface.Interface):
+	"""
+	Marker interface for a presentation asset Json Schemafier utility
+	"""
+
+	def make_schema(schema=IPresentationAsset):
+		"""
+		Create the JSON schema.
+		
+		schema: The zope schema to use.
+		"""
+
 class IPresentationAssetCreatedEvent(IObjectCreatedEvent):
 	principal = interface.Attribute("Creator principal")
 	externalValue = interface.Attribute("External object")

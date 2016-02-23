@@ -5,6 +5,7 @@
 """
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.schema.interfaces import find_most_derived_interface
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -13,6 +14,7 @@ import uuid
 from hashlib import md5
 from functools import total_ordering
 
+from zope import component
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
@@ -22,6 +24,7 @@ from zope.container.contained import Contained
 from zope.mimetype.interfaces import IContentTypeAware
 
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
+from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
 
 from nti.coremetadata.interfaces import ICreated
 
@@ -84,3 +87,10 @@ class PersistentPresentationAsset(PersistentMixin,
 			return (self.mimeType, self.ntiid) > (other.mimeType, other.ntiid)
 		except AttributeError:
 			return NotImplemented
+		
+	def schema(self):
+		schemafier = component.getUtility(IPresentationAssetJsonSchemafier,
+										  name=self.jsonschema)
+		schema = find_most_derived_interface(self, IPresentationAsset)
+		result = schemafier.make_schema(schema=schema)
+		return result
