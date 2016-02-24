@@ -20,6 +20,8 @@ from nti.contenttypes.presentation import FIELDS
 
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
+from nti.contenttypes.presentation.timeline import NTITimeLine
+
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
 class TestJsonSchema(unittest.TestCase):
@@ -42,3 +44,14 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_entry('visibility',
 									  has_entries('base_type', 'string',
 												  'choices', has_length(5))))
+
+	def test_timeline(self):
+		a = NTITimeLine()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		schema = schema[FIELDS]
+		assert_that(schema, has_length(7))
+		for field in ('href', 'icon'):
+			assert_that(schema, has_entry(field, has_entry('type', 'Variant')))
+			assert_that(schema, has_entry(field, has_entry('name', is_(field))))
+			assert_that(schema, has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
