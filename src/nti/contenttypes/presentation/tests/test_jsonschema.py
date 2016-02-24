@@ -39,6 +39,7 @@ class TestJsonSchema(unittest.TestCase):
 			assert_that(schema, has_entry(field, has_entry('name', is_(field))))
 			assert_that(schema, has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
 
+		assert_that(schema, has_entry('byline', has_entry('base_type', is_('string'))))
 		assert_that(schema, has_entry('target', has_entry('min_length', is_(0))))
 		assert_that(schema, has_entry('section', has_entry('min_length', is_(0))))
 		assert_that(schema, has_entry('visibility',
