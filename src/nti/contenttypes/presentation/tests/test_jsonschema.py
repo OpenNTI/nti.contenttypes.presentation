@@ -20,6 +20,9 @@ from nti.contenttypes.presentation import FIELDS
 
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
+from nti.contenttypes.presentation.slide import NTISlide
+from nti.contenttypes.presentation.slide import NTISlideVideo
+
 from nti.contenttypes.presentation.timeline import NTITimeLine
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
@@ -33,7 +36,7 @@ class TestJsonSchema(unittest.TestCase):
 		schema = a.schema()
 		assert_that(schema, has_key(FIELDS))
 		schema = schema[FIELDS]
-		assert_that(schema, has_length(11))
+		assert_that(schema, has_length(10))
 		for field in ('href', 'icon'):
 			assert_that(schema, has_entry(field, has_entry('type', 'Variant')))
 			assert_that(schema, has_entry(field, has_entry('name', is_(field))))
@@ -56,3 +59,23 @@ class TestJsonSchema(unittest.TestCase):
 			assert_that(schema, has_entry(field, has_entry('type', 'Variant')))
 			assert_that(schema, has_entry(field, has_entry('name', is_(field))))
 			assert_that(schema, has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
+			
+	def test_slide(self):
+		a = NTISlide()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		schema = schema[FIELDS]
+		assert_that(schema, has_length(7))
+		assert_that(schema, has_entry('slideimage', has_entry('type', 'Variant')))
+		assert_that(schema, has_entry('slidenumber', has_entry('type', 'int')))
+		assert_that(schema, has_entry('slidenumber', has_entry('base_type', 'int')))
+		assert_that(schema, has_entry('slidevideostart', has_entry('type', 'Number')))
+		assert_that(schema, has_entry('slidevideostart', has_entry('base_type', 'float')))
+		assert_that(schema, has_entry('slideimage', has_entry('base_type', [u'string', 'namedfile'])))
+		
+	def test_slidevideo(self):
+		a = NTISlideVideo()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		schema = schema[FIELDS]
+		assert_that(schema, has_length(7))
