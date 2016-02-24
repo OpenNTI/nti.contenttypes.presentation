@@ -19,8 +19,10 @@ from nti.contenttypes.presentation import FIELDS
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
 
+from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import ICreatedTime
 from nti.coremetadata.interfaces import ILastModified
+from nti.coremetadata.interfaces import IRecordableContainer
 
 from nti.externalization.interfaces import LocatedExternalDict
 
@@ -34,8 +36,10 @@ class BaseJsonSchemafier(JsonSchemafier):
 
     def allow_field(self, name, field):
         if     name.startswith('_') \
+            or name in IRecordable \
             or name in ICreatedTime \
-            or name in ILastModified:
+            or name in ILastModified \
+            or name in IRecordableContainer:
             return False
         return True
 
