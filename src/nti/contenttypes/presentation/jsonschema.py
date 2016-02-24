@@ -49,10 +49,12 @@ class BaseJsonSchemafier(JsonSchemafier):
             base_types = set()
             for field in field.fields:
                 base = ui_type_from_field(field)[1]
-                if not base and IObject.providedBy(field):
-                    base =   ui_type_from_field_iface(field.schema) \
-                          or interface_ui_type(field.schema)  
-                if base and base not in ("nterface",):
+                if      not base \
+                    and IObject.providedBy(field) \
+                    and field.schema is not interface.Interface:
+                    base =      ui_type_from_field_iface(field.schema) \
+                            or  interface_ui_type(field.schema)
+                if base:
                     base_types.add(base.lower())
             if base_types:
                 base_types = sorted(base_types, reverse=True)
