@@ -30,7 +30,7 @@ from nti.schema.interfaces import IVariant
 from nti.schema.jsonschema import JsonSchemafier
 from nti.schema.jsonschema import ui_type_from_field
 from nti.schema.jsonschema import ui_type_from_field_iface
-from nti.schema.jsonschema import iface_ui_type as interface_ui_type
+from nti.schema.jsonschema import interface_to_ui_type as iface_2_ui_type
 
 class BaseJsonSchemafier(JsonSchemafier):
 
@@ -52,8 +52,7 @@ class BaseJsonSchemafier(JsonSchemafier):
                 if      not base \
                     and IObject.providedBy(field) \
                     and field.schema is not interface.Interface:
-                    base =      ui_type_from_field_iface(field.schema) \
-                            or  interface_ui_type(field.schema)
+                    base = ui_type_from_field_iface(field.schema) or iface_2_ui_type(field.schema)
                 if base:
                     base_types.add(base.lower())
             if base_types:
