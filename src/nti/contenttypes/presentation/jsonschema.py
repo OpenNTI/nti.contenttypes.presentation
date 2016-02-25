@@ -17,8 +17,7 @@ from zope.schema.interfaces import IObject
 
 from nti.contenttypes.presentation import FIELDS
 from nti.contenttypes.presentation import ACCEPTS
-from nti.contenttypes.presentation import SLIDE_MIMETYES
-from nti.contenttypes.presentation import SLIDE_VIDEO_MIMETYES
+from nti.contenttypes.presentation import interface_to_mime_type
 
 from nti.contenttypes.presentation._base import make_schema
 
@@ -103,6 +102,6 @@ class SlideDeckJsonSchemafier(PresentationAssetJsonSchemafier):
     def make_schema(self, schema=INTISlideDeck):
         result = super(SlideDeckJsonSchemafier, self).make_schema(INTISlideDeck)
         accepts = result[ACCEPTS] = {}
-        accepts[SLIDE_MIMETYES[0]] = make_schema(schema=INTISlide).get(FIELDS)
-        accepts[SLIDE_VIDEO_MIMETYES[0]] = make_schema(schema=INTISlideVideo).get(FIELDS)
+        for iface in (INTISlide, INTISlideVideo):
+            accepts[interface_to_mime_type().get(iface)] = make_schema(schema=iface).get(FIELDS)
         return result

@@ -211,6 +211,7 @@ class IGroupOverViewable(interface.Interface):
 	"""
 	marker interface for things that can be part of a course overview group
 	"""
+IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
 class INTITranscript(ILastModified):
 	src = href_schema_field(title="Transcript source", required=True)
@@ -617,4 +618,3 @@ zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
 	"Import from INTIRelatedWorkRef instead",
 	INTIRelatedWork='nnti.contenttypes.presentation.interfaces:INTIRelatedWorkRef')
-

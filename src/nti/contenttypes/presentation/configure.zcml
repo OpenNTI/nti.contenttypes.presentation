@@ -10,7 +10,7 @@
 	<include package="zope.security" />
 
 	<include package="nti.mimetype" />
-
+	
 	<!-- Adapters -->
 	<adapter factory=".adapters.ntivideo_to_ntivideoref"
 			 for=".interfaces.INTIVideo"

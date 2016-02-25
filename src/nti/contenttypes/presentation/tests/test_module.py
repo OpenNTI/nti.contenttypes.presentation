@@ -21,6 +21,7 @@ import unittest
 from zope import interface
 
 from nti.contenttypes.presentation import iface_of_asset
+from nti.contenttypes.presentation import interface_to_mime_type
 from nti.contenttypes.presentation import PACKAGE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
@@ -68,3 +69,7 @@ class TestModule(unittest.TestCase):
 		lesson = NTILessonOverView()
 		assert_that(lesson, validly_provides(INTILessonOverview))
 		assert_that(lesson, verifiably_provides(INTILessonOverview))
+		
+	def test_factories(self):
+		m = interface_to_mime_type()
+		assert_that(m, has_length(23))
