@@ -48,7 +48,8 @@ def generate_ntiid(nttype):
 						specific=specific)
 	return result
 
-def make_schema(name=u'', schema=None):
+def make_schema(schema):
+	name = schema.queryTaggedValue('_ext_jsonschema') or u''
 	schemafier = component.getUtility(IPresentationAssetJsonSchemafier, name=name)
 	result = schemafier.make_schema(schema=schema)
 	return result
@@ -95,5 +96,5 @@ class PersistentPresentationAsset(PersistentMixin,
 		
 	def schema(self):
 		schema = find_most_derived_interface(self, IPresentationAsset)
-		result = make_schema(name=self.jsonschema, schema=schema)
+		result = make_schema(schema=schema)
 		return result

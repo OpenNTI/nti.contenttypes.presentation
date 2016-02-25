@@ -51,6 +51,8 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 	items = alias('Items')
 	color = alias('accentColor')
 
+	jsonschema = u'overviewgroup'
+
 	__name__ = alias('ntiid')
 
 	@readproperty

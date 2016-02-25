@@ -72,4 +72,4 @@ class TestModule(unittest.TestCase):
 		
 	def test_factories(self):
 		m = interface_to_mime_type()
-		assert_that(m, has_length(23))
+		assert_that(m, has_length(24))

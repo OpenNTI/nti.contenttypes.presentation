@@ -15,14 +15,15 @@ from zope import interface
 from zope.schema.interfaces import IList
 from zope.schema.interfaces import IObject
 
-from nti.contenttypes.presentation import FIELDS
+from nti.contenttypes.presentation import FIELDS, GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ACCEPTS
 from nti.contenttypes.presentation import MEDIA_REF_INTERFACES
 from nti.contenttypes.presentation import interface_to_mime_type
 
 from nti.contenttypes.presentation._base import make_schema
 
-from nti.contenttypes.presentation.interfaces import INTISlide
+from nti.contenttypes.presentation.interfaces import INTISlide,\
+    INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import INTIAudioRef
 from nti.contenttypes.presentation.interfaces import INTIVideoRef
 from nti.contenttypes.presentation.interfaces import INTIAudioRoll
@@ -148,4 +149,18 @@ class AudioRollJsonSchemafier(MediaRollJsonSchemafier):
     
     def make_schema(self, schema=INTIAudioRoll):
         result = super(AudioRollJsonSchemafier, self).make_schema(INTIAudioRoll)
+        return result
+
+@interface.implementer(IPresentationAssetJsonSchemafier)
+class CourseOverviewGroupJsonSchemafier(PresentationAssetJsonSchemafier):
+    
+    ref_interfaces = GROUP_OVERVIEWABLE_INTERFACES
+    
+    def make_schema(self, schema=INTICourseOverviewGroup):
+        result = super(CourseOverviewGroupJsonSchemafier, self).make_schema(INTICourseOverviewGroup)
+        accepts = result[ACCEPTS] = {}
+        for iface in self.ref_interfaces:
+            accepts[interface_to_mime_type().get(iface)] = make_schema(schema=iface).get(FIELDS)
+        fields = result[FIELDS]
+        fields[ITEMS]['base_type'] = sorted(accepts.keys())
         return result

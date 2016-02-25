@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from nti.contenttypes.presentation.group import NTICourseOverViewGroup
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -151,3 +152,14 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_key(ACCEPTS))
 		accepts = schema[ACCEPTS]
 		assert_that(accepts, has_length(1))
+
+	def test_overviewgroup(self):
+		a = NTICourseOverViewGroup()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		fields = schema[FIELDS]
+		assert_that(fields, has_length(4))
+		assert_that(fields, has_entry('Items', has_entry('base_type', has_length(14))))
+		assert_that(schema, has_key(ACCEPTS))
+		accepts = schema[ACCEPTS]
+		assert_that(accepts, has_length(14))

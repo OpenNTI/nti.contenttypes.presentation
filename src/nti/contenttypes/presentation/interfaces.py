@@ -184,6 +184,7 @@ class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnot
 	"""
 	marker interface for all presentation assests
 	"""
+IPresentationAsset.setTaggedValue('_ext_jsonschema', u'')
 
 class IAssetRef(ICreated):
 	target = interface.Attribute("target object id")
@@ -330,14 +331,17 @@ class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
 		"""
 		remove the item at the specified index
 		"""
+INTIMediaRoll.setTaggedValue('_ext_jsonschema', u'mediaroll')
 
 class INTIAudioRoll(INTIMediaRoll):
 	Items = IndexedIterable(value_type=Object(INTIAudioRef),
 							title="The audio sources", required=False, min_length=0)
+INTIAudioRoll.setTaggedValue('_ext_jsonschema', u'audioroll')
 
 class INTIVideoRoll(INTIMediaRoll):
 	Items = IndexedIterable(value_type=Object(INTIVideoRef),
 							title="The audio sources", required=False, min_length=0)
+INTIVideoRoll.setTaggedValue('_ext_jsonschema', u'videoroll')
 
 class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)
@@ -373,6 +377,8 @@ class INTISlideDeck(IItemAssetContainer, IAssetTitleDescribed, INTIIDIdentifiabl
 	
 	Items = Iterable(title='All items in the slide deck', readonly=True, required=False)
 	Items.setTaggedValue('_ext_excluded_out', True)
+
+INTISlideDeck.setTaggedValue('_ext_jsonschema', u'slidedeck')
 
 INTISlideDeck['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -481,6 +487,8 @@ class INTICourseOverviewGroup(IItemAssetContainer, IAssetTitled, INTIIDIdentifia
 	Items = IndexedIterable(value_type=Object(IGroupOverViewable),
 						 	title="The overview items", required=False, min_length=0)
 	accentColor = ValidTextLine(title="Overview color", required=False)
+
+INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
 
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)

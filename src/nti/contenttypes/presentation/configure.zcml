@@ -26,7 +26,8 @@
 	<utility factory=".jsonschema.MediaRollJsonSchemafier" name="mediaroll" />
 	<utility factory=".jsonschema.VideoRollJsonSchemafier" name="videoroll" />
 	<utility factory=".jsonschema.AudioRollJsonSchemafier" name="audioroll" />
-	
+	<utility factory=".jsonschema.CourseOverviewGroupJsonSchemafier" name="overviewgroup" />
+
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />
 	<include package="nti.externalization" />
@@ -51,6 +52,7 @@
 						 .interfaces.INTILessonOverview
 						 .interfaces.INTISurveyRef
 						 .interfaces.INTIPollRef
+						 .interfaces.INTIMediaRoll
 						 .interfaces.INTIAudioRoll
 						 .interfaces.INTIVideoRoll
 						 .interfaces.INTICourseOverviewSpacer"
