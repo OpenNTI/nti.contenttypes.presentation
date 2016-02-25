@@ -19,6 +19,8 @@ import unittest
 from nti.contenttypes.presentation import FIELDS
 from nti.contenttypes.presentation import ACCEPTS
 
+from nti.contenttypes.presentation.discussion import NTIDiscussionRef
+
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
 from nti.contenttypes.presentation.slide import NTISlide
@@ -99,3 +101,11 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(accepts, has_key('application/vnd.nextthought.slide'))
 		assert_that(accepts, has_key('application/vnd.nextthought.ntislidevideo'))
 
+	def test_discussionref(self):
+		a = NTIDiscussionRef()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		schema = schema[FIELDS]
+		assert_that(schema, has_length(6))
+		assert_that(schema, has_entry('icon', has_entry('base_type', [u'string', 'namedfile'])))
+				
