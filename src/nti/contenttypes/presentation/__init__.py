@@ -210,19 +210,19 @@ def _set_ifaces():
 _set_ifaces()
 del _set_ifaces
 
-INTERFACE_TO_MIMETYPE = None
+_INTERFACE_TO_MIMETYPE = None
 def interface_to_mime_type():
-	global INTERFACE_TO_MIMETYPE
-	if not INTERFACE_TO_MIMETYPE:
-		INTERFACE_TO_MIMETYPE = {}
+	global _INTERFACE_TO_MIMETYPE
+	if not _INTERFACE_TO_MIMETYPE:
+		_INTERFACE_TO_MIMETYPE = {}
 		for mimeType, factory in list(component.getUtilitiesFor(IMimeObjectFactory)):
 			try:
 				invokable = factory._callable # private
 				interfaces = tuple(factory.getInterfaces())
 				if __name__ in invokable.__module__:
 					# first interface is the externalizable object
-					INTERFACE_TO_MIMETYPE[interfaces[0]] = mimeType
+					_INTERFACE_TO_MIMETYPE[interfaces[0]] = mimeType
 					interfaces[0].setTaggedValue('_ext_mime_type', mimeType)
 			except AttributeError:
 				pass
-	return INTERFACE_TO_MIMETYPE
+	return _INTERFACE_TO_MIMETYPE
