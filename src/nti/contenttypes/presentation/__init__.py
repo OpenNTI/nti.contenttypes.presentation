@@ -44,6 +44,9 @@ from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 #: Fields attribute 
 FIELDS = 'Fields'
 
+#: Accepts attribute 
+ACCEPTS = 'Accepts'
+
 #: Audio Ref NTIID type
 NTI_AUDIO_REF = 'NTIAudioRef'
 
