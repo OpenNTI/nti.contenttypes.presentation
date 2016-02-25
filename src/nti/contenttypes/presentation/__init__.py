@@ -153,8 +153,10 @@ QUESTIONSET_REF_MIMETYES = ('application/vnd.nextthought.questionsetref', 'appli
 PACKAGE_CONTAINER_INTERFACES = (INTIAudio, INTIVideo, INTITimeline, INTIRelatedWorkRef,
 								INTISlideDeck, INTISlide, INTISlideVideo)
 
-MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef, INTIVideoRef,
-					INTIVideoRoll, INTIAudioRoll)
+ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef, INTIVideoRef,
+						INTIVideoRoll, INTIAudioRoll)
+
+MEDIA_REF_INTERFACES = (INTIAudioRef, INTIVideoRef)
 
 REF_INTERFACES = (IMediaRef, INTIAssessmentRef, INTIInquiryRef)
 

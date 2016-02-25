@@ -155,6 +155,8 @@ class NTIMediaRoll(PersistentPresentationAsset):
 	__external_class_name__ = u"MediaRoll"
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediaroll'
 
+	jsonschema = u'mediaroll'
+	
 	items = alias('Items')
 	Creator = alias('creator')
 
@@ -229,6 +231,8 @@ class NTIAudioRoll(NTIMediaRoll):
 	__external_class_name__ = u"AudioRoll"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
 
+	jsonschema = u'audioroll'
+	
 @interface.implementer(INTIVideoRoll)
 class NTIVideoRoll(NTIMediaRoll):
 	createDirectFieldProperties(INTIVideoRoll)
@@ -238,6 +242,8 @@ class NTIVideoRoll(NTIMediaRoll):
 	# and mimetype needed for the webapp to match up.
 	__external_class_name__ = u"ContentVideoCollection"
 	mime_type = mimeType = u'application/vnd.nextthought.videoroll'
+
+	jsonschema = u'videoroll'
 
 def media_to_mediaref(media):
 	if INTIAudio.providedBy(media):

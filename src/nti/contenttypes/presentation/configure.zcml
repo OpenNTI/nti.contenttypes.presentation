@@ -23,7 +23,10 @@
 	<!-- Utilities -->
 	<utility factory=".jsonschema.PresentationAssetJsonSchemafier" />
 	<utility factory=".jsonschema.SlideDeckJsonSchemafier" name="slidedeck" />
-		
+	<utility factory=".jsonschema.MediaRollJsonSchemafier" name="mediaroll" />
+	<utility factory=".jsonschema.VideoRollJsonSchemafier" name="videoroll" />
+	<utility factory=".jsonschema.AudioRollJsonSchemafier" name="audioroll" />
+	
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />
 	<include package="nti.externalization" />

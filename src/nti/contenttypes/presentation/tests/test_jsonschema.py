@@ -21,6 +21,10 @@ from nti.contenttypes.presentation import ACCEPTS
 
 from nti.contenttypes.presentation.discussion import NTIDiscussionRef
 
+from nti.contenttypes.presentation.media import NTIVideoRef
+from nti.contenttypes.presentation.media import NTIMediaRoll
+from nti.contenttypes.presentation.media import NTIVideoRoll
+
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
 from nti.contenttypes.presentation.slide import NTISlide
@@ -91,9 +95,9 @@ class TestJsonSchema(unittest.TestCase):
 		fields = schema[FIELDS]
 		assert_that(fields, has_length(7))
 		assert_that(fields, has_entry('Slides', has_entry('type', 'List')))
-		assert_that(fields, has_entry('Slides', has_entry('base_type', 'NTISlide')))
+		assert_that(fields, has_entry('Slides', has_entry('base_type', 'application/vnd.nextthought.slide')))
 		assert_that(fields, has_entry('Videos', has_entry('type', 'List')))
-		assert_that(fields, has_entry('Videos', has_entry('base_type', 'NTISlideVideo')))
+		assert_that(fields, has_entry('Videos', has_entry('base_type', 'application/vnd.nextthought.ntislidevideo')))
 		
 		assert_that(schema, has_key(ACCEPTS))
 		accepts = schema[ACCEPTS]
@@ -108,4 +112,42 @@ class TestJsonSchema(unittest.TestCase):
 		schema = schema[FIELDS]
 		assert_that(schema, has_length(6))
 		assert_that(schema, has_entry('icon', has_entry('base_type', [u'string', 'namedfile'])))
-				
+		
+	def test_videoref(self):
+		a = NTIVideoRef()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		schema = schema[FIELDS]
+		assert_that(schema, has_length(5))
+		assert_that(schema, has_entry('target', has_entry('min_length', is_(0))))
+		assert_that(schema, has_entry('visibility',
+									  has_entries('base_type', 'string',
+												  'choices', has_length(5))))
+
+	def test_mediaroll(self):
+		a = NTIMediaRoll()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		fields = schema[FIELDS]
+		assert_that(fields, has_length(3))
+		assert_that(fields, has_entry('Items', has_entry('base_type', 
+														 [u'application/vnd.nextthought.ntiaudioref', 
+														  u'application/vnd.nextthought.ntivideoref'])))
+		assert_that(schema, has_key(ACCEPTS))
+		accepts = schema[ACCEPTS]
+		assert_that(accepts, has_length(2))
+
+	def test_videoroll(self):
+		a = NTIVideoRoll()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		fields = schema[FIELDS]
+		assert_that(fields, has_length(3))
+		assert_that(fields, has_entry('visibility',
+									  has_entries('base_type', 'string',
+												  'choices', has_length(5))))
+		assert_that(fields, has_entry('Items', has_entry('base_type',
+														 u'application/vnd.nextthought.ntivideoref')))
+		assert_that(schema, has_key(ACCEPTS))
+		accepts = schema[ACCEPTS]
+		assert_that(accepts, has_length(1))
