@@ -17,10 +17,12 @@ from hamcrest import has_entries
 import unittest
 
 from nti.contenttypes.presentation import FIELDS
+from nti.contenttypes.presentation import ACCEPTS
 
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
 from nti.contenttypes.presentation.slide import NTISlide
+from nti.contenttypes.presentation.slide import NTISlideDeck
 from nti.contenttypes.presentation.slide import NTISlideVideo
 
 from nti.contenttypes.presentation.timeline import NTITimeLine
@@ -79,3 +81,21 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_key(FIELDS))
 		schema = schema[FIELDS]
 		assert_that(schema, has_length(7))
+		
+	def test_slidedeck(self):
+		a = NTISlideDeck()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		fields = schema[FIELDS]
+		assert_that(fields, has_length(7))
+		assert_that(fields, has_entry('Slides', has_entry('type', 'List')))
+		assert_that(fields, has_entry('Slides', has_entry('base_type', 'NTISlide')))
+		assert_that(fields, has_entry('Videos', has_entry('type', 'List')))
+		assert_that(fields, has_entry('Videos', has_entry('base_type', 'NTISlideVideo')))
+		
+		assert_that(schema, has_key(ACCEPTS))
+		accepts = schema[ACCEPTS]
+		assert_that(accepts, has_length(2))
+		assert_that(accepts, has_key('application/vnd.nextthought.slide'))
+		assert_that(accepts, has_key('application/vnd.nextthought.ntislidevideo'))
+

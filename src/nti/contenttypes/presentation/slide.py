@@ -69,6 +69,8 @@ class NTISlideDeck(PersistentPresentationAsset):
 	__external_class_name__ = u"NTISlideDeck"
 	mime_type = mimeType = u'application/vnd.nextthought.ntislidedeck'
 
+	jsonschema = u'slidedeck'
+	
 	slides = alias('Slides')
 	videos = alias('Videos')
 	Creator = alias('creator')

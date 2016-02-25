@@ -123,6 +123,10 @@ NTI_COURSE_OVERVIEW_SPACER = u'NTICourseOverviewSpacer'
 LESSON_OVERVIEW = u'LessonOverview'
 NTI_LESSON_OVERVIEW = u'NTILessonOverview'
 
+SLIDE_MIMETYES = ('application/vnd.nextthought.slide',)
+SLIDE_DECK_MIMETYES = ('application/vnd.nextthought.ntislidedeck',)
+SLIDE_VIDEO_MIMETYES = ('application/vnd.nextthought.ntislidevideo',)
+
 AUDIO_MIMETYES = ('application/vnd.nextthought.ntiaudio',)
 VIDEO_MIMETYES = ('application/vnd.nextthought.ntivideo',)
 AUDIO_REF_MIMETYES = ('application/vnd.nextthought.ntiaudioref',)

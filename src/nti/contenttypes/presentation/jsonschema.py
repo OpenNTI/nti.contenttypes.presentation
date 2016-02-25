@@ -12,10 +12,19 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope import interface
 
+from zope.schema.interfaces import IList
 from zope.schema.interfaces import IObject
 
 from nti.contenttypes.presentation import FIELDS
+from nti.contenttypes.presentation import ACCEPTS
+from nti.contenttypes.presentation import SLIDE_MIMETYES
+from nti.contenttypes.presentation import SLIDE_VIDEO_MIMETYES
 
+from nti.contenttypes.presentation._base import make_schema
+
+from nti.contenttypes.presentation.interfaces import INTISlide
+from nti.contenttypes.presentation.interfaces import INTISlideDeck
+from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
 
@@ -41,27 +50,42 @@ class BaseJsonSchemafier(JsonSchemafier):
             or name in IRecordable \
             or name in ICreatedTime \
             or name in ILastModified \
-            or name in IRecordableContainer:
+            or name in IRecordableContainer \
+            or field.queryTaggedValue('_ext_excluded_out'):
             return False
         return True
+
+    def _process_object(self, field):
+        if      IObject.providedBy(field) \
+            and field.schema is not interface.Interface:
+            base = ui_type_from_field_iface(field.schema) or iface_2_ui_type(field.schema)
+            return base
+        return None
+
+    def _process_variant(self, field, ui_type):
+        base_types = set()
+        for field in field.fields:
+            base = ui_type_from_field(field)[1]
+            if not base:
+                base = self._process_object(field)
+            if base:
+                base_types.add(base.lower())
+        if base_types:
+            base_types = sorted(base_types, reverse=True)
+            ui_base_type = base_types[0] if len(base_types) == 1 else base_types
+        else:
+            ui_base_type = ui_type
+        return ui_base_type
 
     def ui_types_from_field(self, field):
         ui_type, ui_base_type = super(BaseJsonSchemafier, self).ui_types_from_field(field)
         if IVariant.providedBy(field) and not ui_base_type:
-            base_types = set()
-            for field in field.fields:
-                base = ui_type_from_field(field)[1]
-                if      not base \
-                    and IObject.providedBy(field) \
-                    and field.schema is not interface.Interface:
-                    base = ui_type_from_field_iface(field.schema) or iface_2_ui_type(field.schema)
-                if base:
-                    base_types.add(base.lower())
-            if base_types:
-                base_types = sorted(base_types, reverse=True)
-                ui_base_type = base_types[0] if len(base_types) == 1 else base_types
-            else:
-                ui_base_type = ui_type
+            ui_base_type = self._process_variant(field, ui_type)
+        elif IList.providedBy(field) and not ui_base_type:
+            if IObject.providedBy(field.value_type):
+                ui_base_type = self._process_object(field.value_type)
+            elif IVariant.providedBy(field.value_type):
+                ui_base_type = self._process_variant(field, ui_type)
         return ui_type, ui_base_type
 
 @interface.implementer(IPresentationAssetJsonSchemafier)
@@ -71,4 +95,14 @@ class PresentationAssetJsonSchemafier(object):
         result = LocatedExternalDict()
         maker = BaseJsonSchemafier(schema)
         result[FIELDS] = maker.make_schema()
+        return result
+
+@interface.implementer(IPresentationAssetJsonSchemafier)
+class SlideDeckJsonSchemafier(PresentationAssetJsonSchemafier):
+    
+    def make_schema(self, schema=INTISlideDeck):
+        result = super(SlideDeckJsonSchemafier, self).make_schema(INTISlideDeck)
+        accepts = result[ACCEPTS] = {}
+        accepts[SLIDE_MIMETYES[0]] = make_schema(schema=INTISlide).get(FIELDS)
+        accepts[SLIDE_VIDEO_MIMETYES[0]] = make_schema(schema=INTISlideVideo).get(FIELDS)
         return result
