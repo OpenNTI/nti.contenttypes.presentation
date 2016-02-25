@@ -15,15 +15,14 @@ from zope import interface
 from zope.schema.interfaces import IList
 from zope.schema.interfaces import IObject
 
-from nti.contenttypes.presentation import FIELDS, GROUP_OVERVIEWABLE_INTERFACES
+from nti.contenttypes.presentation import FIELDS
 from nti.contenttypes.presentation import ACCEPTS
 from nti.contenttypes.presentation import MEDIA_REF_INTERFACES
-from nti.contenttypes.presentation import interface_to_mime_type
+from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 
 from nti.contenttypes.presentation._base import make_schema
 
-from nti.contenttypes.presentation.interfaces import INTISlide,\
-    INTICourseOverviewGroup
+from nti.contenttypes.presentation.interfaces import INTISlide
 from nti.contenttypes.presentation.interfaces import INTIAudioRef
 from nti.contenttypes.presentation.interfaces import INTIVideoRef
 from nti.contenttypes.presentation.interfaces import INTIAudioRoll
@@ -32,6 +31,7 @@ from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
+from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
 
 from nti.coremetadata.interfaces import ICreated
@@ -67,7 +67,7 @@ class BaseJsonSchemafier(JsonSchemafier):
     def _process_object(self, field):
         if      IObject.providedBy(field) \
             and field.schema is not interface.Interface:
-            base =      interface_to_mime_type().get(field.schema) \
+            base =      field.schema.queryTaggedValue('_ext_mime_type') \
                     or  ui_type_from_field_iface(field.schema) \
                     or  iface_2_ui_type(field.schema)
             return base
@@ -115,7 +115,8 @@ class SlideDeckJsonSchemafier(PresentationAssetJsonSchemafier):
         result = super(SlideDeckJsonSchemafier, self).make_schema(INTISlideDeck)
         accepts = result[ACCEPTS] = {}
         for iface in (INTISlide, INTISlideVideo):
-            accepts[interface_to_mime_type().get(iface)] = make_schema(schema=iface).get(FIELDS)
+            mimeType = iface.getTaggedValue('_ext_mime_type')
+            accepts[mimeType] = make_schema(schema=iface).get(FIELDS)
         return result
 
 @interface.implementer(IPresentationAssetJsonSchemafier)
@@ -127,7 +128,8 @@ class MediaRollJsonSchemafier(PresentationAssetJsonSchemafier):
         result = super(MediaRollJsonSchemafier, self).make_schema(schema)
         accepts = result[ACCEPTS] = {}
         for iface in self.ref_interfaces:
-            accepts[interface_to_mime_type().get(iface)] = make_schema(schema=iface).get(FIELDS)
+            mimeType = iface.getTaggedValue('_ext_mime_type')
+            accepts[mimeType] = make_schema(schema=iface).get(FIELDS)
         fields = result[FIELDS]
         base_types = sorted(accepts.keys())
         fields[ITEMS]['base_type'] = base_types if len(base_types) > 1 else base_types[0]
@@ -160,7 +162,8 @@ class CourseOverviewGroupJsonSchemafier(PresentationAssetJsonSchemafier):
         result = super(CourseOverviewGroupJsonSchemafier, self).make_schema(INTICourseOverviewGroup)
         accepts = result[ACCEPTS] = {}
         for iface in self.ref_interfaces:
-            accepts[interface_to_mime_type().get(iface)] = make_schema(schema=iface).get(FIELDS)
+            mimeType = iface.getTaggedValue('_ext_mime_type')
+            accepts[mimeType] = make_schema(schema=iface).get(FIELDS)
         fields = result[FIELDS]
         fields[ITEMS]['base_type'] = sorted(accepts.keys())
         return result

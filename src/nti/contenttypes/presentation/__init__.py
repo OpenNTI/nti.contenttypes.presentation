@@ -12,8 +12,10 @@ logger = __import__('logging').getLogger(__name__)
 import zope.i18nmessageid
 MessageFactory = zope.i18nmessageid.MessageFactory(__name__)
 
+import os
 import sys
 import inspect
+import importlib
 
 from zope import component
 from zope import interface
@@ -176,7 +178,7 @@ def _set_ifaces():
 	GROUP_OVERVIEWABLE_INTERFACES = set()
 	ALL_PRESENTATION_ASSETS_INTERFACES = set()
 
-	m = sys.modules[IGroupOverViewable.__module__]
+	module = sys.modules[IGroupOverViewable.__module__]
 
 	def _overview_item_predicate(item):
 		result = bool(type(item) == interface.interface.InterfaceClass and \
@@ -193,10 +195,10 @@ def _set_ifaces():
 								   INTIMediaSource, INTIMedia, INTIMediaRoll))
 		return result
 
-	for _, item in inspect.getmembers(m, _overview_item_predicate):
+	for _, item in inspect.getmembers(module, _overview_item_predicate):
 		GROUP_OVERVIEWABLE_INTERFACES.add(item)
 
-	for _, item in inspect.getmembers(m, _presentationasset_item_predicate):
+	for _, item in inspect.getmembers(module, _presentationasset_item_predicate):
 		ALL_PRESENTATION_ASSETS_INTERFACES.add(item)
 
 	GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
@@ -209,22 +211,29 @@ def _set_ifaces():
 				continue
 			iSchema[k].setTaggedValue(TAG_HIDDEN_IN_UI, True)
 
+	# main package name
+	package = '.'.join(module.__name__.split('.')[:-1])
+	
+	# set mimetypes on interfaces
+	for name in os.listdir(os.path.dirname(__file__)):
+		if 		name in ('__init__.py', 'jsonschema.py', 'externalization.py') \
+			or	name[-3:] != '.py':
+			continue
+
+		try:
+			module = package + '.' + name[:-3]
+			module = importlib.import_module(module)
+		except ImportError:
+			continue
+		
+		for _, item in inspect.getmembers(module):
+			try:
+				mimeType = getattr(item, 'mimeType', getattr(item, 'mime_type'))
+				# first interface is the externalizable object
+				interfaces = tuple(item.__implemented__.interfaces())
+				interfaces[0].setTaggedValue('_ext_mime_type', mimeType)
+			except (AttributeError, TypeError):
+				pass
+			
 _set_ifaces()
 del _set_ifaces
-
-_INTERFACE_TO_MIMETYPE = None
-def interface_to_mime_type():
-	global _INTERFACE_TO_MIMETYPE
-	if not _INTERFACE_TO_MIMETYPE:
-		_INTERFACE_TO_MIMETYPE = {}
-		for mimeType, factory in list(component.getUtilitiesFor(IMimeObjectFactory)):
-			try:
-				invokable = factory._callable # private
-				interfaces = tuple(factory.getInterfaces())
-				if __name__ in invokable.__module__:
-					# first interface is the externalizable object
-					_INTERFACE_TO_MIMETYPE[interfaces[0]] = mimeType
-					interfaces[0].setTaggedValue('_ext_mime_type', mimeType)
-			except AttributeError:
-				pass
-	return _INTERFACE_TO_MIMETYPE

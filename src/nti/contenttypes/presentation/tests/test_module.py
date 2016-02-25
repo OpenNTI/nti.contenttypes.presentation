@@ -16,12 +16,13 @@ from hamcrest import assert_that
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
 
+import sys
+import inspect
 import unittest
 
 from zope import interface
 
 from nti.contenttypes.presentation import iface_of_asset
-from nti.contenttypes.presentation import interface_to_mime_type
 from nti.contenttypes.presentation import PACKAGE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
@@ -69,7 +70,14 @@ class TestModule(unittest.TestCase):
 		lesson = NTILessonOverView()
 		assert_that(lesson, validly_provides(INTILessonOverview))
 		assert_that(lesson, verifiably_provides(INTILessonOverview))
-		
+
 	def test_factories(self):
-		m = interface_to_mime_type()
-		assert_that(m, has_length(24))
+
+		def _ext_mime_type_predicate(item):
+			result = bool(type(item) == interface.interface.InterfaceClass) \
+					and item.queryTaggedValue('_ext_mime_type')
+			return result
+
+		module = sys.modules[INTILessonOverview.__module__]
+		members = list(inspect.getmembers(module, _ext_mime_type_predicate))
+		assert_that(members, has_length(33))
