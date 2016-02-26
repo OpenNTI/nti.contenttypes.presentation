@@ -12,12 +12,9 @@ logger = __import__('logging').getLogger(__name__)
 import zope.i18nmessageid
 MessageFactory = zope.i18nmessageid.MessageFactory(__name__)
 
-import os
 import sys
 import inspect
-import importlib
 
-from zope import component
 from zope import interface
 
 from zope.interface.interfaces import IMethod
@@ -41,8 +38,6 @@ from nti.contenttypes.presentation.interfaces import INTIAssessmentRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
-
-from nti.externalization.interfaces import IMimeObjectFactory
 
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 
@@ -210,31 +205,11 @@ def _set_ifaces():
 			if IMethod.providedBy(v) or v.queryTaggedValue(TAG_HIDDEN_IN_UI) is not None:
 				continue
 			iSchema[k].setTaggedValue(TAG_HIDDEN_IN_UI, True)
-
-	# main package name
-	package = '.'.join(module.__name__.split('.')[:-1])
-	
-	# set mimetypes on interfaces
-	for name in os.listdir(os.path.dirname(__file__)):
-		# ignore modules we may have trouble importing
-		if 		name in ('__init__.py', 'jsonschema.py', 'externalization.py') \
-			or	name[-3:] != '.py':
-			continue
-
-		try:
-			module = package + '.' + name[:-3]
-			module = importlib.import_module(module)
-		except ImportError:
-			continue
-		
-		for _, item in inspect.getmembers(module):
-			try:
-				mimeType = getattr(item, 'mimeType', getattr(item, 'mime_type'))
-				# first interface is the externalizable object
-				interfaces = tuple(item.__implemented__.interfaces())
-				interfaces[0].setTaggedValue('_ext_mime_type', mimeType)
-			except (AttributeError, TypeError):
-				pass
 			
 _set_ifaces()
 del _set_ifaces
+
+# make sure all constants have been loaded
+from nti.contenttypes.presentation._patch import patch
+patch()
+del patch
