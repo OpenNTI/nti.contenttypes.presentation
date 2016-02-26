@@ -180,14 +180,18 @@ class TestJsonSchema(unittest.TestCase):
 		accepts = schema[ACCEPTS]
 		assert_that(accepts, has_length(1))
 
-	def xtest_video_source(self):
+	def test_video_source(self):
 		a = NTIVideoSource()
 		schema = a.schema()
 		assert_that(schema, has_key(FIELDS))
 		fields = schema[FIELDS]
 		assert_that(fields, has_length(7))
-		assert_that(fields, has_entry('Items', has_entry('base_type',
-														 'application/vnd.nextthought.nticourseoverviewgroup')))
-		assert_that(schema, has_key(ACCEPTS))
-		accepts = schema[ACCEPTS]
-		assert_that(accepts, has_length(1))
+		assert_that(fields, has_entry('source',
+									  has_entries('base_type', 'string',
+												  'choices', has_length(3),
+												  'type', 'List')))
+		assert_that(fields, has_entry('type',
+									  has_entries('base_type', 'string',
+												  'choices', has_length(5),
+												  'type', 'List')))
+		assert_that(fields, has_entry('thumbnail', has_entry('base_type', [u'string', 'namedfile'])))

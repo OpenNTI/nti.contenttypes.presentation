@@ -116,9 +116,22 @@ class MediaSourceJsonSchemaMaker(BaseJsonSchemaMaker):
 
 	def post_process_field(self, name, field, item_schema):
 		super(MediaSourceJsonSchemaMaker, self).post_process_field(name, field, item_schema)
-		if name == 'type':
+
+		# handle type field
+		if 		name == 'type' \
+			and IList.providedBy(field) \
+			and IChoice.providedBy(field.value_type):
 			choices, _ = process_choice_field(field.value_type)
 			item_schema['choices'] = sorted(choices)
+
+		# handle source field
+		if 		name == 'source' \
+			and IList.providedBy(field) \
+			and IVariant.providedBy(field.value_type):
+			for x in field.value_type.fields:
+				if IChoice.providedBy(x):
+					choices, _ = process_choice_field(x)
+					item_schema['choices'] = sorted(choices)
 
 @interface.implementer(IPresentationAssetJsonSchemafier)
 class PresentationAssetJsonSchemafier(object):
