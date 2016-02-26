@@ -9,11 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import uuid
-from hashlib import md5
 from functools import total_ordering
 
-from zope import component
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
@@ -22,8 +19,9 @@ from zope.container.contained import Contained
 
 from zope.mimetype.interfaces import IContentTypeAware
 
+from nti.contenttypes.presentation.common import make_schema
+from nti.contenttypes.presentation.common import generate_ntiid
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
-from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
 
 from nti.coremetadata.interfaces import ICreated
 
@@ -33,26 +31,8 @@ from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
 from nti.externalization.representation import WithRepr
 
-from nti.ntiids.ntiids import TYPE_UUID
-from nti.ntiids.ntiids import make_ntiid
-from nti.ntiids.ntiids import make_specific_safe
-
 from nti.schema.field import SchemaConfigured
 from nti.schema.interfaces import find_most_derived_interface
-
-def generate_ntiid(nttype):
-	digest = md5(str(uuid.uuid4())).hexdigest()
-	specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
-	result = make_ntiid(provider='NTI',
-						nttype=nttype,
-						specific=specific)
-	return result
-
-def make_schema(schema):
-	name = schema.queryTaggedValue('_ext_jsonschema') or u''
-	schemafier = component.getUtility(IPresentationAssetJsonSchemafier, name=name)
-	result = schemafier.make_schema(schema=schema)
-	return result
 
 class PersistentMixin(SchemaConfigured,
 					  PersistentCreatedModDateTrackingObject):

@@ -27,6 +27,8 @@
 	<utility factory=".jsonschema.VideoRollJsonSchemafier" name="videoroll" />
 	<utility factory=".jsonschema.AudioRollJsonSchemafier" name="audioroll" />
 	<utility factory=".jsonschema.LessonOverviewJsonSchemafier" name="lesson" />
+	<utility factory=".jsonschema.AudioSourceJsonSchemafier" name="audioource" />
+	<utility factory=".jsonschema.VideoSourceJsonSchemafier" name="videoource" />
 	<utility factory=".jsonschema.CourseOverviewGroupJsonSchemafier" name="overviewgroup" />
 
 	<!-- Externalization -->

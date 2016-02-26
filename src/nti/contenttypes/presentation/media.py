@@ -29,6 +29,8 @@ from nti.contenttypes.presentation import NTI_VIDEO_ROLL
 from nti.contenttypes.presentation._base import PersistentMixin
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
 
+from nti.contenttypes.presentation.common import make_schema
+
 from nti.contenttypes.presentation.interfaces import EVERYONE
 from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTIMedia
@@ -54,6 +56,10 @@ class NTITranscript(PersistentMixin):
 	__external_class_name__ = u"Transcript"
 	mime_type = mimeType = u'application/vnd.nextthought.ntitranscript'
 
+	def schema(self):
+		result = make_schema(schema=INTITranscript)
+		return result
+
 @interface.implementer(INTIAudioSource, IContentTypeAware)
 class NTIAudioSource(PersistentMixin):
 	createDirectFieldProperties(INTIAudioSource)
@@ -61,12 +67,20 @@ class NTIAudioSource(PersistentMixin):
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiosource'
 
+	def schema(self):
+		result = make_schema(schema=INTIAudioSource)
+		return result
+
 @interface.implementer(INTIVideoSource, IContentTypeAware)
 class NTIVideoSource(PersistentMixin):
 	createDirectFieldProperties(INTIVideoSource)
 
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
+
+	def schema(self):
+		result = make_schema(schema=INTIVideoSource)
+		return result
 
 @total_ordering
 @EqHash('ntiid')
@@ -156,7 +170,7 @@ class NTIMediaRoll(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntimediaroll'
 
 	jsonschema = u'mediaroll'
-	
+
 	items = alias('Items')
 	Creator = alias('creator')
 
@@ -232,7 +246,7 @@ class NTIAudioRoll(NTIMediaRoll):
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
 
 	jsonschema = u'audioroll'
-	
+
 @interface.implementer(INTIVideoRoll)
 class NTIVideoRoll(NTIMediaRoll):
 	createDirectFieldProperties(INTIVideoRoll)

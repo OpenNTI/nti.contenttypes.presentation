@@ -269,6 +269,8 @@ class INTIVideoSource(INTIMediaSource):
 	type = IndexedIterable(Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
 					  	   title='Video service types', required=True, min_length=1)
 
+INTIVideoSource.setTaggedValue('_ext_jsonschema', u'videoource')
+
 class INTIVideo(INTIMedia):
 	subtitle = Bool(title="Subtitle flag", required=False, default=None)
 
@@ -302,6 +304,8 @@ class INTIAudioSource(INTIMediaSource):
 
 	type = IndexedIterable(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
 					   	   title='Audio service types', required=True, min_length=1)
+
+INTIAudioSource.setTaggedValue('_ext_jsonschema', u'audioource')
 
 class INTIAudio(INTIMedia):
 	sources = IndexedIterable(value_type=Object(INTIAudioSource),

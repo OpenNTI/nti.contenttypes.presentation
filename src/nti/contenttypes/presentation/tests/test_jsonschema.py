@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from nti.contenttypes.presentation.group import NTICourseOverViewGroup
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -22,11 +21,14 @@ from nti.contenttypes.presentation import ACCEPTS
 
 from nti.contenttypes.presentation.discussion import NTIDiscussionRef
 
+from nti.contenttypes.presentation.group import NTICourseOverViewGroup
+
 from nti.contenttypes.presentation.lesson import NTILessonOverView
 
 from nti.contenttypes.presentation.media import NTIVideoRef
 from nti.contenttypes.presentation.media import NTIMediaRoll
 from nti.contenttypes.presentation.media import NTIVideoRoll
+from nti.contenttypes.presentation.media import NTIVideoSource
 
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
@@ -178,3 +180,14 @@ class TestJsonSchema(unittest.TestCase):
 		accepts = schema[ACCEPTS]
 		assert_that(accepts, has_length(1))
 
+	def xtest_video_source(self):
+		a = NTIVideoSource()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		fields = schema[FIELDS]
+		assert_that(fields, has_length(7))
+		assert_that(fields, has_entry('Items', has_entry('base_type',
+														 'application/vnd.nextthought.nticourseoverviewgroup')))
+		assert_that(schema, has_key(ACCEPTS))
+		accepts = schema[ACCEPTS]
+		assert_that(accepts, has_length(1))
