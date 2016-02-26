@@ -30,6 +30,7 @@ from nti.contenttypes.presentation.interfaces import INTIMediaRoll
 from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
+from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
@@ -109,34 +110,44 @@ class PresentationAssetJsonSchemafier(object):
         return result
 
 @interface.implementer(IPresentationAssetJsonSchemafier)
-class SlideDeckJsonSchemafier(PresentationAssetJsonSchemafier):
+class ItemContainerJsonSchemafier(PresentationAssetJsonSchemafier):
     
-    def make_schema(self, schema=INTISlideDeck):
-        result = super(SlideDeckJsonSchemafier, self).make_schema(INTISlideDeck)
-        accepts = result[ACCEPTS] = {}
-        for iface in (INTISlide, INTISlideVideo):
-            mimeType = iface.getTaggedValue('_ext_mime_type')
-            accepts[mimeType] = make_schema(schema=iface).get(FIELDS)
-        return result
-
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class MediaRollJsonSchemafier(PresentationAssetJsonSchemafier):
-    
-    ref_interfaces = MEDIA_REF_INTERFACES
+    has_items = True
+    ref_interfaces = ()
         
-    def make_schema(self, schema=INTIMediaRoll):
-        result = super(MediaRollJsonSchemafier, self).make_schema(schema)
+    def make_schema(self, schema=IPresentationAsset):
+        result = super(ItemContainerJsonSchemafier, self).make_schema(schema)
         accepts = result[ACCEPTS] = {}
         for iface in self.ref_interfaces:
             mimeType = iface.getTaggedValue('_ext_mime_type')
             accepts[mimeType] = make_schema(schema=iface).get(FIELDS)
-        fields = result[FIELDS]
-        base_types = sorted(accepts.keys())
-        fields[ITEMS]['base_type'] = base_types if len(base_types) > 1 else base_types[0]
+        if self.has_items:
+            fields = result[FIELDS]
+            base_types = sorted(accepts.keys())
+            fields[ITEMS]['base_type'] = base_types if len(base_types) > 1 else base_types[0]
         return result
 
 @interface.implementer(IPresentationAssetJsonSchemafier)
-class VideoRollJsonSchemafier(MediaRollJsonSchemafier):
+class SlideDeckJsonSchemafier(ItemContainerJsonSchemafier):
+    
+    has_items = False
+    ref_interfaces = (INTISlide, INTISlideVideo)
+     
+    def make_schema(self, schema=INTISlideDeck):
+        result = super(SlideDeckJsonSchemafier, self).make_schema(INTISlideDeck)
+        return result
+
+@interface.implementer(IPresentationAssetJsonSchemafier)
+class MediaRollJsonSchemafier(ItemContainerJsonSchemafier):
+    
+    ref_interfaces = MEDIA_REF_INTERFACES
+        
+    def make_schema(self, schema=INTIMediaRoll):
+        result = super(MediaRollJsonSchemafier, self).make_schema(INTIMediaRoll)
+        return result
+
+@interface.implementer(IPresentationAssetJsonSchemafier)
+class VideoRollJsonSchemafier(ItemContainerJsonSchemafier):
     
     ref_interfaces = (INTIVideoRef,)
     
@@ -145,7 +156,7 @@ class VideoRollJsonSchemafier(MediaRollJsonSchemafier):
         return result
 
 @interface.implementer(IPresentationAssetJsonSchemafier)
-class AudioRollJsonSchemafier(MediaRollJsonSchemafier):
+class AudioRollJsonSchemafier(ItemContainerJsonSchemafier):
     
     ref_interfaces = (INTIAudioRef,)
     
@@ -154,16 +165,19 @@ class AudioRollJsonSchemafier(MediaRollJsonSchemafier):
         return result
 
 @interface.implementer(IPresentationAssetJsonSchemafier)
-class CourseOverviewGroupJsonSchemafier(PresentationAssetJsonSchemafier):
+class CourseOverviewGroupJsonSchemafier(ItemContainerJsonSchemafier):
     
     ref_interfaces = GROUP_OVERVIEWABLE_INTERFACES
     
     def make_schema(self, schema=INTICourseOverviewGroup):
         result = super(CourseOverviewGroupJsonSchemafier, self).make_schema(INTICourseOverviewGroup)
-        accepts = result[ACCEPTS] = {}
-        for iface in self.ref_interfaces:
-            mimeType = iface.getTaggedValue('_ext_mime_type')
-            accepts[mimeType] = make_schema(schema=iface).get(FIELDS)
-        fields = result[FIELDS]
-        fields[ITEMS]['base_type'] = sorted(accepts.keys())
+        return result
+
+@interface.implementer(IPresentationAssetJsonSchemafier)
+class LessonOverviewJsonSchemafier(ItemContainerJsonSchemafier):
+    
+    ref_interfaces = (INTICourseOverviewGroup,)
+    
+    def make_schema(self, schema=INTILessonOverview):
+        result = super(LessonOverviewJsonSchemafier, self).make_schema(INTILessonOverview)
         return result

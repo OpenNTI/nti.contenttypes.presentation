@@ -22,6 +22,8 @@ from nti.contenttypes.presentation import ACCEPTS
 
 from nti.contenttypes.presentation.discussion import NTIDiscussionRef
 
+from nti.contenttypes.presentation.lesson import NTILessonOverView
+
 from nti.contenttypes.presentation.media import NTIVideoRef
 from nti.contenttypes.presentation.media import NTIMediaRoll
 from nti.contenttypes.presentation.media import NTIVideoRoll
@@ -163,3 +165,16 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_key(ACCEPTS))
 		accepts = schema[ACCEPTS]
 		assert_that(accepts, has_length(14))
+
+	def test_lesson(self):
+		a = NTILessonOverView()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		fields = schema[FIELDS]
+		assert_that(fields, has_length(4))
+		assert_that(fields, has_entry('Items', has_entry('base_type',
+														 'application/vnd.nextthought.nticourseoverviewgroup')))
+		assert_that(schema, has_key(ACCEPTS))
+		accepts = schema[ACCEPTS]
+		assert_that(accepts, has_length(1))
+

@@ -507,6 +507,7 @@ class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
 		"""
 		remove the group at the specified index
 		"""
+INTILessonOverview.setTaggedValue('_ext_jsonschema', u'lesson')
 
 INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTILessonOverview['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)

@@ -216,6 +216,7 @@ def _set_ifaces():
 	
 	# set mimetypes on interfaces
 	for name in os.listdir(os.path.dirname(__file__)):
+		# ignore modules we may have trouble importing
 		if 		name in ('__init__.py', 'jsonschema.py', 'externalization.py') \
 			or	name[-3:] != '.py':
 			continue
