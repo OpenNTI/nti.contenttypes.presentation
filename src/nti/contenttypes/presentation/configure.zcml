@@ -21,15 +21,15 @@
 			 provides=".interfaces.INTIAudioRef" />
 
 	<!-- Utilities -->
-	<utility factory=".jsonschema.PresentationAssetJsonSchemafier" />
-	<utility factory=".jsonschema.SlideDeckJsonSchemafier" name="slidedeck" />
-	<utility factory=".jsonschema.MediaRollJsonSchemafier" name="mediaroll" />
-	<utility factory=".jsonschema.VideoRollJsonSchemafier" name="videoroll" />
-	<utility factory=".jsonschema.AudioRollJsonSchemafier" name="audioroll" />
-	<utility factory=".jsonschema.LessonOverviewJsonSchemafier" name="lesson" />
-	<utility factory=".jsonschema.AudioSourceJsonSchemafier" name="audioource" />
-	<utility factory=".jsonschema.VideoSourceJsonSchemafier" name="videoource" />
-	<utility factory=".jsonschema.CourseOverviewGroupJsonSchemafier" name="overviewgroup" />
+	<utility factory=".jsonschema.PresentationAssetJsonSchemaMaker" />
+	<utility factory=".jsonschema.SlideDeckJsonSchemaMaker" name="slidedeck" />
+	<utility factory=".jsonschema.MediaRollJsonSchemaMaker" name="mediaroll" />
+	<utility factory=".jsonschema.VideoRollJsonSchemaMaker" name="videoroll" />
+	<utility factory=".jsonschema.AudioRollJsonSchemaMaker" name="audioroll" />
+	<utility factory=".jsonschema.LessonOverviewJsonSchemaMaker" name="lesson" />
+	<utility factory=".jsonschema.AudioSourceJsonSchemaMaker" name="audiosource" />
+	<utility factory=".jsonschema.VideoSourceJsonSchemaMaker" name="videosource" />
+	<utility factory=".jsonschema.CourseOverviewGroupJsonSchemaMaker" name="overviewgroup" />
 
 	<!-- Externalization -->
 	<include package="nti.externalization" file="meta.zcml" />

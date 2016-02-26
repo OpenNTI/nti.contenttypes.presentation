@@ -14,7 +14,7 @@ from hashlib import md5
 
 from zope import component
 
-from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
+from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemaMaker
 
 from nti.ntiids.ntiids import TYPE_UUID
 from nti.ntiids.ntiids import make_ntiid
@@ -30,6 +30,6 @@ def generate_ntiid(nttype):
 
 def make_schema(schema):
 	name = schema.queryTaggedValue('_ext_jsonschema') or u''
-	schemafier = component.getUtility(IPresentationAssetJsonSchemafier, name=name)
+	schemafier = component.getUtility(IPresentationAssetJsonSchemaMaker, name=name)
 	result = schemafier.make_schema(schema=schema)
 	return result

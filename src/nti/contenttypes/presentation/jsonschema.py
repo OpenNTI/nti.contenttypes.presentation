@@ -37,7 +37,7 @@ from nti.contenttypes.presentation.interfaces import INTIVideoSource
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
-from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemafier
+from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemaMaker
 
 from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
@@ -55,11 +55,11 @@ from nti.schema.jsonschema import process_choice_field
 from nti.schema.jsonschema import interface_to_ui_type
 from nti.schema.jsonschema import ui_type_from_field_iface
 
-from nti.schema.jsonschema import JsonSchemafier as JsonSchemaMaker
+from nti.schema.jsonschema import JsonSchemafier
 
 ITEMS = StandardExternalFields.ITEMS
 
-class BaseJsonSchemaMaker(JsonSchemaMaker):
+class BaseJsonSchemafier(JsonSchemafier):
 
 	def allow_field(self, name, field):
 		if	 name.startswith('_') \
@@ -100,7 +100,7 @@ class BaseJsonSchemaMaker(JsonSchemaMaker):
 		return ui_base_type
 
 	def ui_types_from_field(self, field):
-		ui_type, ui_base_type = super(BaseJsonSchemaMaker, self).ui_types_from_field(field)
+		ui_type, ui_base_type = super(BaseJsonSchemafier, self).ui_types_from_field(field)
 		if IVariant.providedBy(field) and not ui_base_type:
 			ui_base_type = self._process_variant(field, ui_type)
 		elif IList.providedBy(field) and not ui_base_type:
@@ -112,10 +112,10 @@ class BaseJsonSchemaMaker(JsonSchemaMaker):
 				ui_base_type = self._process_variant(field.value_type, ui_type)
 		return ui_type, ui_base_type
 
-class MediaSourceJsonSchemaMaker(BaseJsonSchemaMaker):
+class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 
 	def post_process_field(self, name, field, item_schema):
-		super(MediaSourceJsonSchemaMaker, self).post_process_field(name, field, item_schema)
+		super(MediaSourceJsonSchemafier, self).post_process_field(name, field, item_schema)
 
 		# handle type field
 		if 		name == 'type' \
@@ -133,10 +133,10 @@ class MediaSourceJsonSchemaMaker(BaseJsonSchemaMaker):
 					choices, _ = process_choice_field(x)
 					item_schema['choices'] = sorted(choices)
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class PresentationAssetJsonSchemafier(object):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class PresentationAssetJsonSchemaMaker(object):
 
-	maker = BaseJsonSchemaMaker
+	maker = BaseJsonSchemafier
 
 	def make_schema(self, schema=IPresentationAsset):
 		result = LocatedExternalDict()
@@ -144,14 +144,14 @@ class PresentationAssetJsonSchemafier(object):
 		result[FIELDS] = maker.make_schema()
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class ItemContainerJsonSchemafier(PresentationAssetJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class ItemContainerJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
 
 	has_items = True
 	ref_interfaces = ()
 
 	def make_schema(self, schema=IPresentationAsset):
-		result = super(ItemContainerJsonSchemafier, self).make_schema(schema)
+		result = super(ItemContainerJsonSchemaMaker, self).make_schema(schema)
 		accepts = result[ACCEPTS] = {}
 		for iface in self.ref_interfaces:
 			mimeType = iface.getTaggedValue('_ext_mime_type')
@@ -162,85 +162,85 @@ class ItemContainerJsonSchemafier(PresentationAssetJsonSchemafier):
 			fields[ITEMS]['base_type'] = base_types if len(base_types) > 1 else base_types[0]
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class SlideDeckJsonSchemafier(ItemContainerJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class SlideDeckJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	has_items = False
 	ref_interfaces = (INTISlide, INTISlideVideo)
 
 	def make_schema(self, schema=INTISlideDeck):
-		result = super(SlideDeckJsonSchemafier, self).make_schema(INTISlideDeck)
+		result = super(SlideDeckJsonSchemaMaker, self).make_schema(INTISlideDeck)
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class AudioSourceJsonSchemafier(PresentationAssetJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class AudioSourceJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
 
-	maker = MediaSourceJsonSchemaMaker
+	maker = MediaSourceJsonSchemafier
 
 	def make_schema(self, schema=INTIAudioSource):
-		result = super(AudioSourceJsonSchemafier, self).make_schema(INTIAudioSource)
+		result = super(AudioSourceJsonSchemaMaker, self).make_schema(INTIAudioSource)
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class VideoSourceJsonSchemafier(PresentationAssetJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class VideoSourceJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
 
-	maker = MediaSourceJsonSchemaMaker
+	maker = MediaSourceJsonSchemafier
 
 	def make_schema(self, schema=INTIVideoSource):
-		result = super(VideoSourceJsonSchemafier, self).make_schema(INTIVideoSource)
+		result = super(VideoSourceJsonSchemaMaker, self).make_schema(INTIVideoSource)
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class VideoJsonSchemafier(ItemContainerJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class VideoJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	has_items = False
 	ref_interfaces = (INTITranscript, INTIVideoSource)
 
 	def make_schema(self, schema=INTIVideo):
-		result = super(VideoJsonSchemafier, self).make_schema(INTIVideo)
+		result = super(VideoJsonSchemaMaker, self).make_schema(INTIVideo)
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class MediaRollJsonSchemafier(ItemContainerJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class MediaRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = MEDIA_REF_INTERFACES
 
 	def make_schema(self, schema=INTIMediaRoll):
-		result = super(MediaRollJsonSchemafier, self).make_schema(INTIMediaRoll)
+		result = super(MediaRollJsonSchemaMaker, self).make_schema(INTIMediaRoll)
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class VideoRollJsonSchemafier(ItemContainerJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class VideoRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = (INTIVideoRef,)
 
 	def make_schema(self, schema=INTIVideoRoll):
-		result = super(VideoRollJsonSchemafier, self).make_schema(INTIVideoRoll)
+		result = super(VideoRollJsonSchemaMaker, self).make_schema(INTIVideoRoll)
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class AudioRollJsonSchemafier(ItemContainerJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class AudioRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = (INTIAudioRef,)
 
 	def make_schema(self, schema=INTIAudioRoll):
-		result = super(AudioRollJsonSchemafier, self).make_schema(INTIAudioRoll)
+		result = super(AudioRollJsonSchemaMaker, self).make_schema(INTIAudioRoll)
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class CourseOverviewGroupJsonSchemafier(ItemContainerJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class CourseOverviewGroupJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = GROUP_OVERVIEWABLE_INTERFACES
 
 	def make_schema(self, schema=INTICourseOverviewGroup):
-		result = super(CourseOverviewGroupJsonSchemafier, self).make_schema(INTICourseOverviewGroup)
+		result = super(CourseOverviewGroupJsonSchemaMaker, self).make_schema(INTICourseOverviewGroup)
 		return result
 
-@interface.implementer(IPresentationAssetJsonSchemafier)
-class LessonOverviewJsonSchemafier(ItemContainerJsonSchemafier):
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class LessonOverviewJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = (INTICourseOverviewGroup,)
 
 	def make_schema(self, schema=INTILessonOverview):
-		result = super(LessonOverviewJsonSchemafier, self).make_schema(INTILessonOverview)
+		result = super(LessonOverviewJsonSchemaMaker, self).make_schema(INTILessonOverview)
 		return result

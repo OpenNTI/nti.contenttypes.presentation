@@ -269,7 +269,7 @@ class INTIVideoSource(INTIMediaSource):
 	type = IndexedIterable(Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
 					  	   title='Video service types', required=True, min_length=1)
 
-INTIVideoSource.setTaggedValue('_ext_jsonschema', u'videoource')
+INTIVideoSource.setTaggedValue('_ext_jsonschema', u'videosource')
 
 class INTIVideo(INTIMedia):
 	subtitle = Bool(title="Subtitle flag", required=False, default=None)
@@ -305,7 +305,7 @@ class INTIAudioSource(INTIMediaSource):
 	type = IndexedIterable(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
 					   	   title='Audio service types', required=True, min_length=1)
 
-INTIAudioSource.setTaggedValue('_ext_jsonschema', u'audioource')
+INTIAudioSource.setTaggedValue('_ext_jsonschema', u'audiosource')
 
 class INTIAudio(INTIMedia):
 	sources = IndexedIterable(value_type=Object(INTIAudioSource),
@@ -553,9 +553,9 @@ class IPresentationAssetAffiliations(interface.Interface):
 		return the containers that refer to specified item
 		"""
 
-class IPresentationAssetJsonSchemafier(interface.Interface):
+class IPresentationAssetJsonSchemaMaker(interface.Interface):
 	"""
-	Marker interface for a presentation asset Json Schemafier utility
+	Marker interface for a presentation asset Json Schema maker utility
 	"""
 
 	def make_schema(schema=IPresentationAsset):
