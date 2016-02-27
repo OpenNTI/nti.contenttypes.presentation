@@ -50,10 +50,10 @@ from nti.externalization.interfaces import StandardExternalFields
 
 from nti.schema.interfaces import IVariant
 
-from nti.schema.jsonschema import ui_type_from_field
-from nti.schema.jsonschema import process_choice_field
-from nti.schema.jsonschema import interface_to_ui_type
-from nti.schema.jsonschema import ui_type_from_field_iface
+from nti.schema.jsonschema import get_ui_types_from_field
+from nti.schema.jsonschema import get_ui_type_from_interface
+from nti.schema.jsonschema import get_data_from_choice_field
+from nti.schema.jsonschema import get_ui_type_from_field_interface
 
 from nti.schema.jsonschema import JsonSchemafier
 
@@ -76,20 +76,20 @@ class BaseJsonSchemafier(JsonSchemafier):
 		if	  IObject.providedBy(field) \
 			and field.schema is not interface.Interface:
 			base =      field.schema.queryTaggedValue('_ext_mime_type') \
-					or  ui_type_from_field_iface(field.schema) \
-					or  interface_to_ui_type(field.schema)
+					or  get_ui_type_from_field_interface(field.schema) \
+					or  get_ui_type_from_interface(field.schema)
 			return base
 		return None
 
 	def _process_variant(self, field, ui_type):
 		base_types = set()
 		for field in field.fields:
-			base = ui_type_from_field(field)[1]
+			base = get_ui_types_from_field(field)[1]
 			if not base:
 				if IObject.providedBy(field):
 					base = self._process_object(field)
 				if IChoice.providedBy(field):
-					_, base = process_choice_field(field)
+					_, base = get_data_from_choice_field(field)
 			if base:
 				base_types.add(base.lower())
 		if base_types:
@@ -99,15 +99,15 @@ class BaseJsonSchemafier(JsonSchemafier):
 			ui_base_type = ui_type
 		return ui_base_type
 
-	def ui_types_from_field(self, field):
-		ui_type, ui_base_type = super(BaseJsonSchemafier, self).ui_types_from_field(field)
+	def get_ui_types_from_field(self, field):
+		ui_type, ui_base_type = super(BaseJsonSchemafier, self).get_ui_types_from_field(field)
 		if IVariant.providedBy(field) and not ui_base_type:
 			ui_base_type = self._process_variant(field, ui_type)
 		elif IList.providedBy(field) and not ui_base_type:
 			if IObject.providedBy(field.value_type):
 				ui_base_type = self._process_object(field.value_type)
 			elif IChoice.providedBy(field.value_type):
-				_, ui_base_type = process_choice_field(field.value_type)
+				_, ui_base_type = get_data_from_choice_field(field.value_type)
 			elif IVariant.providedBy(field.value_type):
 				ui_base_type = self._process_variant(field.value_type, ui_type)
 		return ui_type, ui_base_type
@@ -121,7 +121,7 @@ class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 		if 		name == 'type' \
 			and IList.providedBy(field) \
 			and IChoice.providedBy(field.value_type):
-			choices, _ = process_choice_field(field.value_type)
+			choices, _ = get_data_from_choice_field(field.value_type)
 			item_schema['choices'] = sorted(choices)
 
 		# handle source field
@@ -130,7 +130,7 @@ class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 			and IVariant.providedBy(field.value_type):
 			for x in field.value_type.fields:
 				if IChoice.providedBy(x):
-					choices, _ = process_choice_field(x)
+					choices, _ = get_data_from_choice_field(x)
 					item_schema['choices'] = sorted(choices)
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
