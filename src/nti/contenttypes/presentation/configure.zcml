@@ -22,6 +22,8 @@
 
 	<!-- Utilities -->
 	<utility factory=".jsonschema.PresentationAssetJsonSchemaMaker" />
+	<utility factory=".jsonschema.AudioJsonSchemaMaker" name="audio" />
+	<utility factory=".jsonschema.VideoJsonSchemaMaker" name="video" />
 	<utility factory=".jsonschema.SlideDeckJsonSchemaMaker" name="slidedeck" />
 	<utility factory=".jsonschema.MediaRollJsonSchemaMaker" name="mediaroll" />
 	<utility factory=".jsonschema.VideoRollJsonSchemaMaker" name="videoroll" />

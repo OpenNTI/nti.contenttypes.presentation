@@ -22,6 +22,7 @@ from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 
 from nti.contenttypes.presentation.common import make_schema
 
+from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTISlide
 from nti.contenttypes.presentation.interfaces import INTIVideo
 from nti.contenttypes.presentation.interfaces import INTIAudioRef
@@ -198,6 +199,16 @@ class VideoJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	def make_schema(self, schema=INTIVideo):
 		result = super(VideoJsonSchemaMaker, self).make_schema(INTIVideo)
+		return result
+
+@interface.implementer(IPresentationAssetJsonSchemaMaker)
+class AudioJsonSchemaMaker(ItemContainerJsonSchemaMaker):
+
+	has_items = False
+	ref_interfaces = (INTITranscript, INTIAudioSource)
+
+	def make_schema(self, schema=INTIAudio):
+		result = super(AudioJsonSchemaMaker, self).make_schema(INTIAudio)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)

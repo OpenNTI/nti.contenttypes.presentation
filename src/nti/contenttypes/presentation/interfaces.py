@@ -282,6 +282,8 @@ class INTIVideo(INTIMedia):
 	transcripts = IndexedIterable(value_type=Object(INTITranscript),
 							  	  title="The transcripts", required=False, min_length=0)
 
+INTIVideo.setTaggedValue('_ext_jsonschema', u'video')
+
 INTIVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTIVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -315,6 +317,8 @@ class INTIAudio(INTIMedia):
 	transcripts = IndexedIterable(value_type=Object(INTITranscript),
 							  	  title="The transcripts",
 							  	  required=False, min_length=0)
+
+INTIAudio.setTaggedValue('_ext_jsonschema', u'audio')
 
 INTIAudio['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIAudio['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)

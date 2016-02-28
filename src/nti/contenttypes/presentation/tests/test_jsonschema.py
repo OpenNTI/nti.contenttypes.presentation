@@ -211,4 +211,6 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(fields, has_entry('transcripts',
 									  has_entries('base_type', 'application/vnd.nextthought.ntitranscript',
 												  'type', 'List')))
-
+		assert_that(schema, has_key(ACCEPTS))
+		accepts = schema[ACCEPTS]
+		assert_that(accepts, has_length(2))
