@@ -25,6 +25,7 @@ from nti.contenttypes.presentation.group import NTICourseOverViewGroup
 
 from nti.contenttypes.presentation.lesson import NTILessonOverView
 
+from nti.contenttypes.presentation.media import NTIVideo
 from nti.contenttypes.presentation.media import NTIVideoRef
 from nti.contenttypes.presentation.media import NTIMediaRoll
 from nti.contenttypes.presentation.media import NTIVideoRoll
@@ -195,3 +196,19 @@ class TestJsonSchema(unittest.TestCase):
 												  'choices', has_length(5),
 												  'type', 'List')))
 		assert_that(fields, has_entry('thumbnail', has_entry('base_type', [u'string', 'namedfile'])))
+
+	def test_video(self):
+		a = NTIVideo()
+		schema = a.schema()
+		assert_that(schema, has_key(FIELDS))
+		fields = schema[FIELDS]
+		assert_that(fields, has_length(8))
+		assert_that(fields, has_entry('closed_caption',
+									  has_entries('base_type', 'bool')))
+		assert_that(fields, has_entry('sources',
+									  has_entries('base_type', 'application/vnd.nextthought.ntivideosource',
+												  'type', 'List')))
+		assert_that(fields, has_entry('transcripts',
+									  has_entries('base_type', 'application/vnd.nextthought.ntitranscript',
+												  'type', 'List')))
+
