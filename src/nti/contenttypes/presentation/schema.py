@@ -36,12 +36,12 @@ def CompoundModeledContentBody(required=False):
 class VisibilityField(ValidTextLine):
 
 	def __init__(self, *args, **kw):
-		kw['required'] = False
-		kw.pop('default', None)
+		kw.pop('default', None) # don't validate on creation
 		super(VisibilityField, self).__init__(*args, **kw)
 
 	@property
 	def _options(self):
+		# to avoid circular imports
 		from nti.contenttypes.presentation.common import get_visibility_options
 		return get_visibility_options()
 
