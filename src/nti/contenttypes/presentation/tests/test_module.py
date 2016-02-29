@@ -87,4 +87,4 @@ class TestModule(unittest.TestCase):
 		
 	def test_visibility_options(self):
 		options = get_visibility_options()
-		assert_that(options, has_length(greater_than_or_equal_to(3)))
+		assert_that(options, has_length(greater_than_or_equal_to(4)))

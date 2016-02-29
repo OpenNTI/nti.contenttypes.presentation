@@ -61,6 +61,7 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_entry('section', has_entry('min_length', is_(0))))
 		assert_that(schema, has_entry('visibility',
 									  has_entries('base_type', 'string',
+												  'type', 'Choice',
 												  'choices', has_length(5))))
 
 	def test_timeline(self):
