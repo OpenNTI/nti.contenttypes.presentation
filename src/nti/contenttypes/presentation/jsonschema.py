@@ -53,7 +53,6 @@ from nti.schema.interfaces import IVariant
 
 from nti.schema.jsonschema import get_ui_types_from_field
 from nti.schema.jsonschema import get_ui_type_from_interface
-from nti.schema.jsonschema import get_data_from_choice_field
 from nti.schema.jsonschema import get_ui_type_from_field_interface
 
 from nti.schema.jsonschema import JsonSchemafier
@@ -90,7 +89,7 @@ class BaseJsonSchemafier(JsonSchemafier):
 				if IObject.providedBy(field):
 					base = self._process_object(field)
 				if IChoice.providedBy(field):
-					_, base = get_data_from_choice_field(field)
+					_, base = self.get_data_from_choice_field(field)
 			if base:
 				base_types.add(base.lower())
 		if base_types:
@@ -108,10 +107,13 @@ class BaseJsonSchemafier(JsonSchemafier):
 			if IObject.providedBy(field.value_type):
 				ui_base_type = self._process_object(field.value_type)
 			elif IChoice.providedBy(field.value_type):
-				_, ui_base_type = get_data_from_choice_field(field.value_type)
+				_, ui_base_type = self.get_data_from_choice_field(field.value_type)
 			elif IVariant.providedBy(field.value_type):
 				ui_base_type = self._process_variant(field.value_type, ui_type)
 		return ui_type, ui_base_type
+	
+	def post_process_field(self, name, field, item_schema):
+		super(BaseJsonSchemafier, self).post_process_field(name, field, item_schema)
 
 class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 
@@ -122,7 +124,7 @@ class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 		if 		name == 'type' \
 			and IList.providedBy(field) \
 			and IChoice.providedBy(field.value_type):
-			choices, _ = get_data_from_choice_field(field.value_type)
+			choices, _ = self.get_data_from_choice_field(field.value_type)
 			item_schema['choices'] = sorted(choices)
 
 		# handle source field
@@ -131,7 +133,7 @@ class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 			and IVariant.providedBy(field.value_type):
 			for x in field.value_type.fields:
 				if IChoice.providedBy(x):
-					choices, _ = get_data_from_choice_field(x)
+					choices, _ = self.get_data_from_choice_field(x)
 					item_schema['choices'] = sorted(choices)
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)

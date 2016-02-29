@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from zope.schema.interfaces import ConstraintNotSatisfied
+
 from nti.schema.field import Variant
 from nti.schema.field import ValidText
 from nti.schema.field import ValidTextLine
@@ -17,7 +19,7 @@ from nti.schema.field import ListOrTupleFromObject
 def CompoundModeledContentBody(required=False):
 	"""
 	Returns a :class:`zope.schema.interfaces.IField` representing
-	the a compound body 
+	the a compound body
 	"""
 
 	return ListOrTupleFromObject(
@@ -30,3 +32,20 @@ def CompoundModeledContentBody(required=False):
 					min_length=1,
 					required=required,
 					__name__='body')
+
+class VisibilityField(ValidTextLine):
+
+	def __init__(self, *args, **kw):
+		kw['required'] = False
+		kw.pop('default', None)
+		super(VisibilityField, self).__init__(*args, **kw)
+
+	@property
+	def _options(self):
+		from nti.contenttypes.presentation.common import get_visibility_options
+		return get_visibility_options()
+
+	def _validate(self, value):
+		super(VisibilityField, self)._validate(value)
+		if value and value not in self._options:
+			raise ConstraintNotSatisfied(value, self.__name__)
