@@ -13,7 +13,14 @@ import uuid
 from hashlib import md5
 
 from zope import component
+from zope import interface
 
+from nti.contenttypes.presentation.interfaces import CREDIT
+from nti.contenttypes.presentation.interfaces import PUBLIC
+from nti.contenttypes.presentation.interfaces import EVERYONE
+from nti.contenttypes.presentation.interfaces import PURCHASED
+
+from nti.contenttypes.presentation.interfaces import IVisibilityOptionsProvider
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemaMaker
 
 from nti.ntiids.ntiids import TYPE_UUID
@@ -33,3 +40,19 @@ def make_schema(schema):
 	schemafier = component.getUtility(IPresentationAssetJsonSchemaMaker, name=name)
 	result = schemafier.make_schema(schema=schema)
 	return result
+
+@interface.implementer(IVisibilityOptionsProvider)
+class DefaultVisibilityOptionProvider(object):
+
+	def __init__(self, *args):
+		pass
+
+	def iter_options(self):
+		result = (EVERYONE, PUBLIC, CREDIT, PURCHASED) 
+		return result
+
+def get_visibility_options():
+	result = set()
+	for _, provider in component.getUtilitiesFor(IVisibilityOptionsProvider):
+		result.update(provider.iter_options())
+	return tuple(result)

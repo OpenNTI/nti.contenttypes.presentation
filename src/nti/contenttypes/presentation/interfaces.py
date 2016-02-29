@@ -229,6 +229,16 @@ class INTIMediaSource(ILastModified):
 	service = ValidTextLine(title="Source service", required=True)
 	thumbnail = href_schema_field(title="Source thumbnail", required=False)
 
+class IVisibilityOptionsProvider(interface.Interface):
+	"""
+	Utility for an asset visibility options
+	"""
+
+	def iter_options(self):
+		"""
+		Return an iterable of visibility options
+		"""
+
 class IVisible(interface.Interface):
 	"""
 	marker interface for things that have visibility

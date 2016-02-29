@@ -21,6 +21,8 @@
 			 provides=".interfaces.INTIAudioRef" />
 
 	<!-- Utilities -->
+	<utility factory=".common.DefaultVisibilityOptionProvider" />
+
 	<utility factory=".jsonschema.PresentationAssetJsonSchemaMaker" />
 	<utility factory=".jsonschema.AudioJsonSchemaMaker" name="audio" />
 	<utility factory=".jsonschema.VideoJsonSchemaMaker" name="video" />

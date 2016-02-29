@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
+from hamcrest.library.number.ordering_comparison import greater_than_or_equal_to
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -26,6 +27,8 @@ from nti.contenttypes.presentation import iface_of_asset
 from nti.contenttypes.presentation import PACKAGE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
+
+from nti.contenttypes.presentation.common import get_visibility_options 
 
 from nti.contenttypes.presentation.group import NTICourseOverViewGroup
 
@@ -81,3 +84,7 @@ class TestModule(unittest.TestCase):
 		module = sys.modules[INTILessonOverview.__module__]
 		members = list(inspect.getmembers(module, _ext_mime_type_predicate))
 		assert_that(members, has_length(33))
+		
+	def test_visibility_options(self):
+		options = get_visibility_options()
+		assert_that(options, has_length(greater_than_or_equal_to(3)))
