@@ -25,6 +25,7 @@ def _patch():
 	for name in os.listdir(os.path.dirname(__file__)):
 		# ignore modules we may have trouble importing
 		if 		name in ('__init__.py', 
+						 '_patch.py',
 						 'jsonschema.py', 
 						 'externalization.py',
 						 'internalization.py') \
