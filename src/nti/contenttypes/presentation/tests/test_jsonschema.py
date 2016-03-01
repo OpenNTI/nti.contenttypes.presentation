@@ -13,6 +13,7 @@ from hamcrest import has_entry
 from hamcrest import has_length
 from hamcrest import assert_that
 from hamcrest import has_entries
+from hamcrest import greater_than_or_equal_to
 
 import unittest
 
@@ -62,7 +63,7 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_entry('visibility',
 									  has_entries('base_type', 'string',
 												  'type', 'Choice',
-												  'choices', has_length(5))))
+												  'choices', has_length(greater_than_or_equal_to(4)))))
 
 	def test_timeline(self):
 		a = NTITimeLine()
@@ -129,7 +130,7 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_entry('target', has_entry('min_length', is_(0))))
 		assert_that(schema, has_entry('visibility',
 									  has_entries('base_type', 'string',
-												  'choices', has_length(5))))
+												  'choices', has_length(greater_than_or_equal_to(4)))))
 
 	def test_mediaroll(self):
 		a = NTIMediaRoll()
@@ -152,7 +153,7 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(fields, has_length(3))
 		assert_that(fields, has_entry('visibility',
 									  has_entries('base_type', 'string',
-												  'choices', has_length(5))))
+												  'choices', has_length(greater_than_or_equal_to(4)))))
 		assert_that(fields, has_entry('Items', has_entry('base_type',
 														 u'application/vnd.nextthought.ntivideoref')))
 		assert_that(schema, has_key(ACCEPTS))

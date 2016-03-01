@@ -21,6 +21,7 @@ from nti.contenttypes.presentation import MEDIA_REF_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 
 from nti.contenttypes.presentation.common import make_schema
+from nti.contenttypes.presentation.common import get_visibility_options
 
 from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTISlide
@@ -39,6 +40,8 @@ from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemaMaker
+
+from nti.contenttypes.presentation.schema import VisibilityField
 
 from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
@@ -114,6 +117,9 @@ class BaseJsonSchemafier(JsonSchemafier):
 	
 	def post_process_field(self, name, field, item_schema):
 		super(BaseJsonSchemafier, self).post_process_field(name, field, item_schema)
+		if isinstance(field, VisibilityField):
+			item_schema['type'] = 'Choice'
+			item_schema['choices'] = sorted(get_visibility_options())
 
 class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 

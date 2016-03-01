@@ -36,6 +36,8 @@ from dolmen.builtins.interfaces import IIterable
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation.schema import VisibilityField
+
 from nti.coremetadata.interfaces import ITitled
 from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
@@ -243,8 +245,8 @@ class IVisible(interface.Interface):
 	"""
 	marker interface for things that have visibility
 	"""
-	visibility = Choice(vocabulary=VISIBILITY_VOCABULARY, title='Media ref visibility',
-					 	required=False, default=EVERYONE)
+	visibility = VisibilityField(title='Media ref visibility',
+					 	         required=False)
 
 class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 				   IPresentationAsset, IVisible):
