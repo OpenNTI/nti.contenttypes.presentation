@@ -193,6 +193,10 @@ class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnot
 	"""
 IPresentationAsset.setTaggedValue('_ext_jsonschema', u'')
 
+class IPackagePresentationAsset(IPresentationAsset):
+	pass
+IPackagePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
+
 class IAssetRef(ICreated):
 	target = interface.Attribute("target object id")
 
@@ -268,7 +272,7 @@ class IAssetTitleDescribed( IAssetTitled, IDCDescriptiveProperties ):
 	description = ValidTextLine(title="Media description", required=False, default=u'')
 
 class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
-				ICreated, IPresentationAsset):
+				ICreated, IPackagePresentationAsset):
 
 	byline = byline_schema_field(required=False)
 
@@ -368,7 +372,7 @@ class INTIVideoRoll(INTIMediaRoll):
 							title="The audio sources", required=False, min_length=0)
 INTIVideoRoll.setTaggedValue('_ext_jsonschema', u'videoroll')
 
-class INTISlide(INTIIDIdentifiable, IPresentationAsset):
+class INTISlide(INTIIDIdentifiable, IPackagePresentationAsset):
 	slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 	slidevideostart = Number(title="Video start", required=False, default=0)
@@ -376,7 +380,7 @@ class INTISlide(INTIIDIdentifiable, IPresentationAsset):
 	slideimage = href_schema_field(title="Slide image source", required=False)
 	slidenumber = Int(title="Slide number", required=True, default=1)
 
-class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable, ICreated, IPresentationAsset):
+class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable, ICreated, IPackagePresentationAsset):
 	byline = byline_schema_field(required=False)
 	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
@@ -388,7 +392,7 @@ INTISlideVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTISlideDeck(IItemAssetContainer, IAssetTitleDescribed, INTIIDIdentifiable,
-					ICreated, IPresentationAsset):
+					ICreated, IPackagePresentationAsset):
 
 	Slides = IndexedIterable(value_type=Object(INTISlide),
 						 	 title="The slides", required=False, min_length=1)
@@ -410,7 +414,7 @@ INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
+class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPackagePresentationAsset):
 	label = ValidTextLine(title="The label", required=True, default=u'')
 	href = href_schema_field(title="Resource href", required=False, default=u'')
 	icon = href_schema_field(title="Icon href", required=False)
@@ -420,7 +424,7 @@ class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICreated,
-						 IPresentationAsset, IVisible):
+						 IPackagePresentationAsset, IVisible):
 	href = href_schema_field(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
 	byline = byline_schema_field(required=False)

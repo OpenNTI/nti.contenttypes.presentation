@@ -38,6 +38,7 @@ from nti.contenttypes.presentation.interfaces import INTIAssessmentRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
+from nti.contenttypes.presentation.interfaces import IPackagePresentationAsset
 
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 
@@ -147,9 +148,6 @@ ASSIGNMENT_REF_MIMETYES = ('application/vnd.nextthought.assignmentref', 'applica
 DISCUSSION_REF_MIMETYES = ('application/vnd.nextthought.discussionref', 'application/vnd.nextthought.discussion')
 QUESTIONSET_REF_MIMETYES = ('application/vnd.nextthought.questionsetref', 'application/vnd.nextthought.naquestionset')
 
-PACKAGE_CONTAINER_INTERFACES = (INTIAudio, INTIVideo, INTITimeline, INTIRelatedWorkRef,
-								INTISlideDeck, INTISlide, INTISlideVideo)
-
 ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef, INTIVideoRef,
 						INTIVideoRoll, INTIAudioRoll)
 
@@ -157,6 +155,7 @@ MEDIA_REF_INTERFACES = (INTIAudioRef, INTIVideoRef)
 
 REF_INTERFACES = (IMediaRef, INTIAssessmentRef, INTIInquiryRef)
 
+PACKAGE_CONTAINER_INTERFACES = None
 GROUP_OVERVIEWABLE_INTERFACES = None
 ALL_PRESENTATION_ASSETS_INTERFACES = None
 
@@ -167,28 +166,41 @@ def iface_of_asset(item):
 	return None
 
 def _set_ifaces():
+	global PACKAGE_CONTAINER_INTERFACES
 	global GROUP_OVERVIEWABLE_INTERFACES
 	global ALL_PRESENTATION_ASSETS_INTERFACES
 
+	PACKAGE_CONTAINER_INTERFACES = set()
 	GROUP_OVERVIEWABLE_INTERFACES = set()
 	ALL_PRESENTATION_ASSETS_INTERFACES = set()
 
 	module = sys.modules[IGroupOverViewable.__module__]
 
+	def _package_item_predicate(item):
+		result = bool(	type(item) == interface.interface.InterfaceClass 
+					and issubclass(item, IPackagePresentationAsset)
+					and item != IPackagePresentationAsset
+					and item not in (INTIMedia,))
+		return result
+	
 	def _overview_item_predicate(item):
-		result = bool(type(item) == interface.interface.InterfaceClass and \
-					  issubclass(item, IGroupOverViewable) and \
-					  item != IGroupOverViewable and \
-					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef))
+		result = bool(	type(item) == interface.interface.InterfaceClass 
+					and issubclass(item, IGroupOverViewable)
+					and item != IGroupOverViewable
+					and item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef))
 		return result
 
 	def _presentationasset_item_predicate(item):
-		result = bool(type(item) == interface.interface.InterfaceClass and \
-					  issubclass(item, IPresentationAsset) and \
-					  item != IPresentationAsset and \
-					  item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
-								   INTIMediaSource, INTIMedia, INTIMediaRoll))
+		result = bool(	type(item) == interface.interface.InterfaceClass
+					and issubclass(item, IPresentationAsset) 
+					and item != IPresentationAsset 
+					and item != IPackagePresentationAsset
+					and item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
+								     INTIMediaSource, INTIMedia, INTIMediaRoll))
 		return result
+
+	for _, item in inspect.getmembers(module, _package_item_predicate):
+		PACKAGE_CONTAINER_INTERFACES.add(item)
 
 	for _, item in inspect.getmembers(module, _overview_item_predicate):
 		GROUP_OVERVIEWABLE_INTERFACES.add(item)
@@ -196,6 +208,7 @@ def _set_ifaces():
 	for _, item in inspect.getmembers(module, _presentationasset_item_predicate):
 		ALL_PRESENTATION_ASSETS_INTERFACES.add(item)
 
+	PACKAGE_CONTAINER_INTERFACES = tuple(PACKAGE_CONTAINER_INTERFACES)
 	GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
 	ALL_PRESENTATION_ASSETS_INTERFACES = tuple(ALL_PRESENTATION_ASSETS_INTERFACES)
 
