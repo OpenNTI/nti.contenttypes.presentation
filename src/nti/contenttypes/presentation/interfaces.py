@@ -148,15 +148,20 @@ AUDIO_SOURCES = (MP3_AUDIO_SOURCE, WAV_AUDIO_SOURCE, OTHER_AUDIO_SOURCE)
 AUDIO_SOURCES_VOCABULARY = \
 	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
 
+#: OU Visibility
 OU = "OU"
-PUBLIC = u'Public'
-CREDIT = "ForCredit"
-EVERYONE = u'everyone'
-PURCHASED = "Purchased"
-VISIBILITY = (PUBLIC, CREDIT, EVERYONE, PURCHASED, OU)
 
-VISIBILITY_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VISIBILITY])
+#: Public Visibility
+PUBLIC = u'Public'
+
+#: Credit Visibility
+CREDIT = "ForCredit"
+
+#: Everyone Visibility
+EVERYONE = u'everyone'
+
+#: Purchased Visibility
+PURCHASED = "Purchased"
 
 def byline_schema_field(required=False):
 	return Variant((ValidTextLine(title="Creator name"),
