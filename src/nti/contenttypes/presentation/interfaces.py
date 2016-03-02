@@ -197,6 +197,10 @@ class IPackagePresentationAsset(IPresentationAsset):
 	pass
 IPackagePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+class ICoursePresentationAsset(IPresentationAsset):
+	pass
+ICoursePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
+
 class IAssetRef(ICreated):
 	target = interface.Attribute("target object id")
 
@@ -258,7 +262,7 @@ class IVisible(interface.Interface):
 					 	         required=False)
 
 class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-				   IPresentationAsset, IVisible):
+				   ICoursePresentationAsset, IVisible):
 	target = ValidNTIID(title="Target NTIID", required=False)
 IMediaRef = INTIMediaRef  # BWC
 
@@ -350,7 +354,7 @@ class INTIAudioRef(INTIMediaRef):
 	pass
 
 class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
-					ICreated, IPresentationAsset, IIterable, IVisible,
+					ICreated, ICoursePresentationAsset, IIterable, IVisible,
 					IFiniteSequence):
 
 	Items = IndexedIterable(value_type=Object(INTIMediaRef),
@@ -436,7 +440,8 @@ class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICre
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
 
-class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ITitled, IPresentationAsset):
+class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, 
+						ITitled, ICoursePresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=False)
 	icon = href_schema_field(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
@@ -458,7 +463,7 @@ INTIDiscussionRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTIDiscussionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIDiscussionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
+class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICoursePresentationAsset):
 	target = ValidNTIID(title="Target NTIID", required=True)
 	label = ValidTextLine(title="The label", required=False, default=u'')
 IAssessmentRef = INTIAssessmentRef
@@ -506,11 +511,11 @@ ISurveyRef = INTISurveyRef
 INTISurveyRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, IPresentationAsset):
+class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, ICoursePresentationAsset):
 	pass
 
 class INTICourseOverviewGroup(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
-							  IPresentationAsset, IFiniteSequence, IIterable,
+							  ICoursePresentationAsset, IFiniteSequence, IIterable,
 							  IRecordableContainer):
 
 	Items = IndexedIterable(value_type=Object(IGroupOverViewable),
@@ -525,7 +530,7 @@ INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
-						 IPresentationAsset, IFiniteSequence, IIterable,
+						 ICoursePresentationAsset, IFiniteSequence, IIterable,
 						 IRecordableContainer):
 
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),

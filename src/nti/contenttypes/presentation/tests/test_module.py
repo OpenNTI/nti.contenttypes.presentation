@@ -23,12 +23,14 @@ import unittest
 
 from zope import interface
 
-from nti.contenttypes.presentation import iface_of_asset
+from nti.contenttypes.presentation import COURSE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import PACKAGE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
 
-from nti.contenttypes.presentation.common import get_visibility_options 
+from nti.contenttypes.presentation import iface_of_asset
+
+from nti.contenttypes.presentation.common import get_visibility_options
 
 from nti.contenttypes.presentation.group import NTICourseOverViewGroup
 
@@ -53,6 +55,7 @@ class TestModule(unittest.TestCase):
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(20))
 
+		assert_that(COURSE_CONTAINER_INTERFACES, has_length(14))
 		assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))
 
 	def test_asset_ifaces(self):
@@ -84,7 +87,7 @@ class TestModule(unittest.TestCase):
 		module = sys.modules[INTILessonOverview.__module__]
 		members = list(inspect.getmembers(module, _ext_mime_type_predicate))
 		assert_that(members, has_length(33))
-		
+
 	def test_visibility_options(self):
 		options = get_visibility_options()
 		assert_that(options, has_length(greater_than_or_equal_to(4)))

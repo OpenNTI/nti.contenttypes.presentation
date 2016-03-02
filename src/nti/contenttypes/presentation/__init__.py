@@ -19,7 +19,7 @@ from zope import interface
 
 from zope.interface.interfaces import IMethod
 
-from nti.contenttypes.presentation.interfaces import IMediaRef
+from nti.contenttypes.presentation.interfaces import IMediaRef, INTIMediaRef
 from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTIMedia
 from nti.contenttypes.presentation.interfaces import INTISlide
@@ -38,6 +38,7 @@ from nti.contenttypes.presentation.interfaces import INTIAssessmentRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
+from nti.contenttypes.presentation.interfaces import ICoursePresentationAsset
 from nti.contenttypes.presentation.interfaces import IPackagePresentationAsset
 
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
@@ -153,6 +154,7 @@ ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef, INTIV
 
 MEDIA_REF_INTERFACES = (INTIAudioRef, INTIVideoRef)
 
+COURSE_CONTAINER_INTERFACES = None
 PACKAGE_CONTAINER_INTERFACES = None
 GROUP_OVERVIEWABLE_INTERFACES = None
 ALL_PRESENTATION_ASSETS_INTERFACES = None
@@ -164,10 +166,12 @@ def iface_of_asset(item):
 	return None
 
 def _set_ifaces():
+	global COURSE_CONTAINER_INTERFACES
 	global PACKAGE_CONTAINER_INTERFACES
 	global GROUP_OVERVIEWABLE_INTERFACES
 	global ALL_PRESENTATION_ASSETS_INTERFACES
 
+	COURSE_CONTAINER_INTERFACES = set()
 	PACKAGE_CONTAINER_INTERFACES = set()
 	GROUP_OVERVIEWABLE_INTERFACES = set()
 	ALL_PRESENTATION_ASSETS_INTERFACES = set()
@@ -181,6 +185,13 @@ def _set_ifaces():
 					and item not in (INTIMedia,))
 		return result
 	
+	def _course_item_predicate(item):
+		result = bool(	type(item) == interface.interface.InterfaceClass 
+					and issubclass(item, ICoursePresentationAsset)
+					and item != ICoursePresentationAsset
+					and item not in (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef))
+		return result
+
 	def _overview_item_predicate(item):
 		result = bool(	type(item) == interface.interface.InterfaceClass 
 					and issubclass(item, IGroupOverViewable)
@@ -192,10 +203,14 @@ def _set_ifaces():
 		result = bool(	type(item) == interface.interface.InterfaceClass
 					and issubclass(item, IPresentationAsset) 
 					and item != IPresentationAsset 
+					and item != ICoursePresentationAsset
 					and item != IPackagePresentationAsset
 					and item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
 								     INTIMediaSource, INTIMedia, INTIMediaRoll))
 		return result
+
+	for _, item in inspect.getmembers(module, _course_item_predicate):
+		COURSE_CONTAINER_INTERFACES.add(item)
 
 	for _, item in inspect.getmembers(module, _package_item_predicate):
 		PACKAGE_CONTAINER_INTERFACES.add(item)
@@ -206,6 +221,7 @@ def _set_ifaces():
 	for _, item in inspect.getmembers(module, _presentationasset_item_predicate):
 		ALL_PRESENTATION_ASSETS_INTERFACES.add(item)
 
+	COURSE_CONTAINER_INTERFACES = tuple(COURSE_CONTAINER_INTERFACES)
 	PACKAGE_CONTAINER_INTERFACES = tuple(PACKAGE_CONTAINER_INTERFACES)
 	GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
 	ALL_PRESENTATION_ASSETS_INTERFACES = tuple(ALL_PRESENTATION_ASSETS_INTERFACES)
