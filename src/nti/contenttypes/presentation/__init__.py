@@ -19,11 +19,12 @@ from zope import interface
 
 from zope.interface.interfaces import IMethod
 
-from nti.contenttypes.presentation.interfaces import IMediaRef, INTIMediaRef
+from nti.contenttypes.presentation.interfaces import IMediaRef
 from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTIMedia
 from nti.contenttypes.presentation.interfaces import INTISlide
 from nti.contenttypes.presentation.interfaces import INTIVideo
+from nti.contenttypes.presentation.interfaces import INTIMediaRef
 from nti.contenttypes.presentation.interfaces import INTIAudioRef
 from nti.contenttypes.presentation.interfaces import INTIVideoRef
 from nti.contenttypes.presentation.interfaces import INTITimeline
