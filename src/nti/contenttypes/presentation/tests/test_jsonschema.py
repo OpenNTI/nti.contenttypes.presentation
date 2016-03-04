@@ -137,7 +137,7 @@ class TestJsonSchema(unittest.TestCase):
 		schema = a.schema()
 		assert_that(schema, has_key(FIELDS))
 		fields = schema[FIELDS]
-		assert_that(fields, has_length(3))
+		assert_that(fields, has_length(2))
 		assert_that(fields, has_entry('Items', has_entry('base_type', 
 														 [u'application/vnd.nextthought.ntiaudioref', 
 														  u'application/vnd.nextthought.ntivideoref'])))
@@ -150,10 +150,7 @@ class TestJsonSchema(unittest.TestCase):
 		schema = a.schema()
 		assert_that(schema, has_key(FIELDS))
 		fields = schema[FIELDS]
-		assert_that(fields, has_length(3))
-		assert_that(fields, has_entry('visibility',
-									  has_entries('base_type', 'string',
-												  'choices', has_length(greater_than_or_equal_to(4)))))
+		assert_that(fields, has_length(2))
 		assert_that(fields, has_entry('Items', has_entry('base_type',
 														 u'application/vnd.nextthought.ntivideoref')))
 		assert_that(schema, has_key(ACCEPTS))
