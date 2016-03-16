@@ -565,6 +565,21 @@ class IPresentationAssetContainer(IMapping):
 	typically with annotations).
 	"""
 
+	def append(item):
+		"""
+		Add an item to this container
+		"""
+
+	def extend(items):
+		"""
+		Add the specified items to this container
+		"""
+
+	def assets():
+		"""
+		return an iterable with all assets this container
+		"""
+
 	def pop(k, *args):
 		"""
 		remove specified key and return the corresponding value
