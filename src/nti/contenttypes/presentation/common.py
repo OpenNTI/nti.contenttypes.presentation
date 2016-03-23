@@ -16,9 +16,7 @@ from zope import component
 from zope import interface
 
 from nti.contenttypes.presentation.interfaces import CREDIT
-from nti.contenttypes.presentation.interfaces import PUBLIC
 from nti.contenttypes.presentation.interfaces import EVERYONE
-from nti.contenttypes.presentation.interfaces import PURCHASED
 
 from nti.contenttypes.presentation.interfaces import IVisibilityOptionsProvider
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemaMaker
@@ -48,7 +46,7 @@ class DefaultVisibilityOptionProvider(object):
 		pass
 
 	def iter_options(self):
-		result = (EVERYONE, PUBLIC, CREDIT, PURCHASED) 
+		result = (EVERYONE, CREDIT) 
 		return result
 
 def get_visibility_options():
