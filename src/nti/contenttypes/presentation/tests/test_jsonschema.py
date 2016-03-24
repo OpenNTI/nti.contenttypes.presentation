@@ -63,7 +63,7 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_entry('visibility',
 									  has_entries('base_type', 'string',
 												  'type', 'Choice',
-												  'choices', has_length(greater_than_or_equal_to(4)))))
+												  'choices', has_length(greater_than_or_equal_to(2)))))
 
 	def test_timeline(self):
 		a = NTITimeLine()
@@ -75,7 +75,7 @@ class TestJsonSchema(unittest.TestCase):
 			assert_that(schema, has_entry(field, has_entry('type', 'Variant')))
 			assert_that(schema, has_entry(field, has_entry('name', is_(field))))
 			assert_that(schema, has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
-			
+
 	def test_slide(self):
 		a = NTISlide()
 		schema = a.schema()
@@ -88,14 +88,14 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_entry('slidevideostart', has_entry('type', 'Number')))
 		assert_that(schema, has_entry('slidevideostart', has_entry('base_type', 'float')))
 		assert_that(schema, has_entry('slideimage', has_entry('base_type', [u'string', 'namedfile'])))
-		
+
 	def test_slidevideo(self):
 		a = NTISlideVideo()
 		schema = a.schema()
 		assert_that(schema, has_key(FIELDS))
 		schema = schema[FIELDS]
 		assert_that(schema, has_length(7))
-		
+
 	def test_slidedeck(self):
 		a = NTISlideDeck()
 		schema = a.schema()
@@ -106,7 +106,7 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(fields, has_entry('Slides', has_entry('base_type', 'application/vnd.nextthought.slide')))
 		assert_that(fields, has_entry('Videos', has_entry('type', 'List')))
 		assert_that(fields, has_entry('Videos', has_entry('base_type', 'application/vnd.nextthought.ntislidevideo')))
-		
+
 		assert_that(schema, has_key(ACCEPTS))
 		accepts = schema[ACCEPTS]
 		assert_that(accepts, has_length(2))
@@ -120,7 +120,7 @@ class TestJsonSchema(unittest.TestCase):
 		schema = schema[FIELDS]
 		assert_that(schema, has_length(6))
 		assert_that(schema, has_entry('icon', has_entry('base_type', [u'string', 'namedfile'])))
-		
+
 	def test_videoref(self):
 		a = NTIVideoRef()
 		schema = a.schema()
@@ -130,7 +130,7 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_entry('target', has_entry('min_length', is_(0))))
 		assert_that(schema, has_entry('visibility',
 									  has_entries('base_type', 'string',
-												  'choices', has_length(greater_than_or_equal_to(4)))))
+												  'choices', has_length(greater_than_or_equal_to(2)))))
 
 	def test_mediaroll(self):
 		a = NTIMediaRoll()
@@ -138,8 +138,8 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_key(FIELDS))
 		fields = schema[FIELDS]
 		assert_that(fields, has_length(2))
-		assert_that(fields, has_entry('Items', has_entry('base_type', 
-														 [u'application/vnd.nextthought.ntiaudioref', 
+		assert_that(fields, has_entry('Items', has_entry('base_type',
+														 [u'application/vnd.nextthought.ntiaudioref',
 														  u'application/vnd.nextthought.ntivideoref'])))
 		assert_that(schema, has_key(ACCEPTS))
 		accepts = schema[ACCEPTS]
