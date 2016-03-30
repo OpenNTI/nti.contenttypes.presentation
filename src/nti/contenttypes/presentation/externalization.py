@@ -94,8 +94,9 @@ class _LessonOverviewExporter(object):
 		if 'ntiid' not in result and NTIID in result:
 			result['ntiid'] = result[NTIID]
 		if IItemAssetContainer.providedBy(asset):
-			items = asset.Items if asset.Items is not None else ()
-			for item, ext in zip(items, result.get(ITEMS, ())):
+			ext_items = result.get(ITEMS) or ()
+			asset_items = asset.Items if asset.Items is not None else ()
+			for item, ext in zip(asset_items, ext_items):
 				self.mimeTyper(item, ext)
 
 	def toExternalObject(self, **kwargs):
