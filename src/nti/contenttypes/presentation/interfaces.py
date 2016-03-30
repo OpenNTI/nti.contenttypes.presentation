@@ -206,6 +206,8 @@ class IAssetRef(ICreated):
 
 class IItemAssetContainer(interface.Interface):
 
+	Items = interface.Attribute("Items in this container")
+	
 	def append(item):
 		"""
 		Add an item
