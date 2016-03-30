@@ -53,7 +53,7 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
 
 	def toExternalObject(self, *args, **kwargs):
 		result = super(_NTICourseOverviewGroupInternalObjectIO, self).toExternalObject(*args, **kwargs)
-		result[ITEMS] = [toExternalObject(x) for x in self._ext_self]
+		result[ITEMS] = [toExternalObject(x, *args, **kwargs) for x in self._ext_self]
 		return result
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
