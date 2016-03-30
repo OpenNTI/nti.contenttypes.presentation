@@ -76,6 +76,10 @@
 			 for=".interfaces.INTITimeline"
 			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
 
+	<adapter factory=".externalization._LessonOverviewExporter"
+			 for=".interfaces.INTILessonOverview"
+			 name="exporter" />
+
 	<!-- Internalization -->
 	<adapter factory=".internalization._NTIVideoUpdater"
 			 for=".interfaces.INTIVideo"

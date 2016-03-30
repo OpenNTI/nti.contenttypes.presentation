@@ -80,7 +80,7 @@ class TestModule(unittest.TestCase):
 	def test_factories(self):
 
 		def _ext_mime_type_predicate(item):
-			result = bool(type(item) == interface.interface.InterfaceClass) \
+			result = 	bool(type(item) == interface.interface.InterfaceClass) \
 					and item.queryTaggedValue('_ext_mime_type')
 			return result
 
