@@ -13,9 +13,10 @@ from zope import component
 from zope import interface
 
 from nti.contenttypes.presentation.interfaces import INTITimeline
-from nti.contenttypes.presentation.interfaces import IItemAssetContainer
-from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+from nti.contenttypes.presentation.interfaces import IItemAssetContainer
 
 from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
 
@@ -94,10 +95,17 @@ class _LessonOverviewExporter(object):
 		if 'ntiid' not in result and NTIID in result:
 			result['ntiid'] = result[NTIID]
 		if IItemAssetContainer.providedBy(asset):
-			ext_items = result.get(ITEMS) or ()
-			asset_items = asset.Items if asset.Items is not None else ()
-			for item, ext in zip(asset_items, ext_items):
-				self.mimeTyper(item, ext)
+			if INTISlideDeck.providedBy(asset):
+				for name in ('Videos', 'Slides'):
+					ext_items = result.get(name) or ()
+					deck_items = getattr(asset, name, None) or ()
+					for item, ext in zip(deck_items, ext_items):
+						self.mimeTyper(item, ext)
+			else:
+				ext_items = result.get(ITEMS) or ()
+				asset_items = asset.Items if asset.Items is not None else ()
+				for item, ext in zip(asset_items, ext_items):
+					self.mimeTyper(item, ext)
 
 	def toExternalObject(self, **kwargs):
 		mod_args = dict(**kwargs)
