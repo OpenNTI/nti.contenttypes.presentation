@@ -19,8 +19,10 @@ from nti.contenttypes.presentation import AUDIO_REF_MIMETYES
 from nti.contenttypes.presentation import VIDEO_REF_MIMETYES
 from nti.contenttypes.presentation import SURVEY_REF_MIMETYES
 from nti.contenttypes.presentation import QUESTION_REF_MIMETYES
+from nti.contenttypes.presentation import TIMELINE_REF_MIMETYES
 from nti.contenttypes.presentation import ASSIGNMENT_REF_MIMETYES
 from nti.contenttypes.presentation import DISCUSSION_REF_MIMETYES
+from nti.contenttypes.presentation import SLIDE_DECK_REF_MIMETYES
 from nti.contenttypes.presentation import LESSON_OVERVIEW_MIMETYES
 from nti.contenttypes.presentation import QUESTIONSET_REF_MIMETYES
 from nti.contenttypes.presentation import ALL_MEDIA_ROLL_MIME_TYPES
@@ -36,12 +38,14 @@ from nti.contenttypes.presentation.internalization import internalization_ntiaud
 from nti.contenttypes.presentation.internalization import internalization_ntivideoref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntitimeline_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_questionref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_slidedeckref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_assignmentref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_discussionref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_courseoverview_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_lessonoverview_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_questionsetref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_relatedworkref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_ntitimelineref_pre_hook
 
 from nti.externalization.interfaces import StandardExternalFields
 
@@ -134,6 +138,12 @@ def create_discussionref_from_external(ext_obj, notify=True, _exec=True):
 										 _exec=_exec)
 	return result
 
+def create_slideckref_from_external(ext_obj, notify=True, _exec=True):
+	result = create_object_from_external(ext_obj,
+										 pre_hook=internalization_slidedeckref_pre_hook,
+										 _exec=_exec)
+	return result
+
 def create_relatedwork_from_external(ext_obj, notify=True, _exec=True):
 	result = create_object_from_external(ext_obj,
 										 notify=notify,
@@ -145,6 +155,12 @@ def create_timelime_from_external(ext_obj, notify=True, _exec=True):
 	result = create_object_from_external(ext_obj,
 										 notify=notify,
 										 pre_hook=internalization_ntitimeline_pre_hook,
+										 _exec=_exec)
+	return result
+
+def create_timelineref_from_external(ext_obj, notify=True, _exec=True):
+	result = create_object_from_external(ext_obj,
+										 pre_hook=internalization_ntitimelineref_pre_hook,
 										 _exec=_exec)
 	return result
 
@@ -179,6 +195,8 @@ def create_from_external(ext_obj, notify=True, _exec=True):
 		result = create_courseoverview_from_external(ext_obj, notify=notify, _exec=_exec)
 	elif mimeType in TIMELINE_MIMETYES:
 		result = create_timelime_from_external(ext_obj, notify=notify, _exec=_exec)
+	elif mimeType in TIMELINE_REF_MIMETYES:
+		result = create_timelineref_from_external(ext_obj, notify=notify, _exec=_exec)
 	elif mimeType in RELATED_WORK_REF_MIMETYES:
 		result = create_relatedwork_from_external(ext_obj, notify=notify, _exec=_exec)
 	elif mimeType in DISCUSSION_REF_MIMETYES:
@@ -193,6 +211,8 @@ def create_from_external(ext_obj, notify=True, _exec=True):
 		result = create_questionsetref_from_external(ext_obj, notify=notify, _exec=_exec)
 	elif mimeType in QUESTION_REF_MIMETYES:
 		result = create_questionref_from_external(ext_obj, notify=notify, _exec=_exec)
+	elif mimeType in SLIDE_DECK_REF_MIMETYES:
+		result = create_slideckref_from_external(ext_obj, notify=notify, _exec=_exec)
 	elif mimeType in VIDEO_REF_MIMETYES:
 		result = create_ntivideoref_from_external(ext_obj, notify=notify, _exec=_exec)
 	elif mimeType in AUDIO_REF_MIMETYES:
@@ -219,8 +239,12 @@ def get_external_pre_hook(ext_obj):
 		result = internalization_courseoverview_pre_hook
 	elif mimeType in TIMELINE_MIMETYES:
 		result = internalization_ntitimeline_pre_hook
+	elif mimeType in TIMELINE_REF_MIMETYES:
+		result = internalization_ntitimelineref_pre_hook
 	elif mimeType in RELATED_WORK_REF_MIMETYES:
 		result = internalization_relatedworkref_pre_hook
+	elif mimeType in SLIDE_DECK_REF_MIMETYES:
+		result = internalization_slidedeckref_pre_hook
 	elif mimeType in DISCUSSION_REF_MIMETYES:
 		result = internalization_discussionref_pre_hook
 	elif mimeType in POLL_REF_MIMETYES:
@@ -245,4 +269,5 @@ def get_external_pre_hook(ext_obj):
 		result = internalization_mediaroll_pre_hook
 	else:
 		result = pre_hook
+
 	return result

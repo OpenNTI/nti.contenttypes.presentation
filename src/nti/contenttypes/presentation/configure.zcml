@@ -20,6 +20,14 @@
 			 for=".interfaces.INTIAudio"
 			 provides=".interfaces.INTIAudioRef" />
 
+	<adapter factory=".adapters.slideck_to_ntislideckref"
+			 for=".interfaces.INTISlideDeck"
+			 provides=".interfaces.INTISlideDeckRef" />
+
+	<adapter factory=".adapters.timeline_to_ntitimelineref"
+			 for=".interfaces.INTITimeline"
+			 provides=".interfaces.INTITimelineRef" />
+
 	<!-- Utilities -->
 	<utility factory=".common.DefaultVisibilityOptionProvider" />
 
@@ -50,7 +58,9 @@
 						 .interfaces.INTISlide
 						 .interfaces.INTISlideDeck
 						 .interfaces.INTISlideVideo
+						 .interfaces.INTISlideDeckRef
 						 .interfaces.INTITimeline
+						 .interfaces.INTITimelineRef
 						 .interfaces.INTIRelatedWorkRef
 						 .interfaces.INTIDiscussionRef
 						 .interfaces.INTIQuestionRef
@@ -117,8 +127,16 @@
 			 for=".interfaces.INTISlideDeck"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
+	<adapter factory=".internalization._NTISlideDeckRefUpdater"
+			 for=".interfaces.INTISlideDeckRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
 	<adapter factory=".internalization._NTITimelineUpdater"
 			 for=".interfaces.INTITimeline"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
+	<adapter factory=".internalization._NTITimelineRefUpdater"
+			 for=".interfaces.INTITimelineRef"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
 	<adapter factory=".internalization._NTIRelatedWorkUpdater"

@@ -14,16 +14,21 @@ from functools import total_ordering
 
 from zope import interface
 
+from zope.cachedescriptors.property import readproperty
+
 from persistent.list import PersistentList
 
 from nti.common.property import alias
 from nti.common.property import CachedProperty
+
+from nti.contenttypes.presentation import NTI_SLIDE_DECK_REF
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
 
 from nti.contenttypes.presentation.interfaces import INTISlide
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
+from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
@@ -124,3 +129,17 @@ class NTISlideDeck(PersistentPresentationAsset):
 			return (self.mimeType, self.title) > (other.mimeType, other.title)
 		except AttributeError:
 			return NotImplemented
+
+@interface.implementer(INTISlideDeckRef)
+class NTISlideDeckRef(PersistentPresentationAsset):
+	createDirectFieldProperties(INTISlideDeckRef)
+
+	__external_class_name__ = u"SlideDeckRef"
+	mime_type = mimeType = u'application/vnd.nextthought.ntislideckref'
+
+	__name__ = alias('ntiid')
+
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(NTI_SLIDE_DECK_REF)
+		return self.ntiid

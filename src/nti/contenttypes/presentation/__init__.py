@@ -92,11 +92,17 @@ NTI_SLIDE_DECK = NTISlideDeck = u'NTISlideDeck'
 #: Slide Slide Video NTIID type
 NTI_SLIDE_VIDEO = NTISlideVideo = u'NTISlideVideo'
 
+#: SlideDeckRef NTIID type
+NTI_SLIDE_DECK_REF  = u'NTISlideDeckRef'
+
 #: JSON Timeline NTIID type
 JSON_TIMELINE = u'JSON:Timeline'
 
 #: Timeline NTIID type
 TIMELINE = NTI_TIMELINE = NTITimeline = u'Timeline'
+
+#: SlideDeckRef NTIID type
+NTI_TIMELIME_REF  = u'NTITimeLineRef'
 
 #: Related Work Ref NTIID type
 RELATED_WORK_REF = 'RelatedWorkRef'
@@ -129,6 +135,10 @@ NTI_LESSON_OVERVIEW = u'NTILessonOverview'
 SLIDE_MIMETYES = ('application/vnd.nextthought.slide',)
 SLIDE_DECK_MIMETYES = ('application/vnd.nextthought.ntislidedeck',)
 SLIDE_VIDEO_MIMETYES = ('application/vnd.nextthought.ntislidevideo',)
+SLIDE_DECK_REF_MIMETYES = ('application/vnd.nextthought.ntislideckref',)
+
+TIMELINE_MIMETYES = ('application/vnd.nextthought.ntitimeline', 'application/vnd.nextthought.timeline')
+TIMELINE_REF_MIMETYES = ('application/vnd.nextthought.ntitimelineref',)
 
 AUDIO_MIMETYES = ('application/vnd.nextthought.ntiaudio',)
 VIDEO_MIMETYES = ('application/vnd.nextthought.ntivideo',)
@@ -143,7 +153,6 @@ VIDEO_ROLL_MIMETYES = ('application/vnd.nextthought.videoroll', 'application/vnd
 ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIMETYES + VIDEO_ROLL_MIMETYES
 
 POLL_REF_MIMETYES = ('application/vnd.nextthought.pollref', 'application/vnd.nextthought.napoll')
-TIMELINE_MIMETYES = ('application/vnd.nextthought.ntitimeline', 'application/vnd.nextthought.timeline')
 SURVEY_REF_MIMETYES = ('application/vnd.nextthought.surveyref', 'application/vnd.nextthought.surveyref')
 QUESTION_REF_MIMETYES = ('application/vnd.nextthought.questionref', 'application/vnd.nextthought.naquestion')
 ASSIGNMENT_REF_MIMETYES = ('application/vnd.nextthought.assignmentref', 'application/vnd.nextthought.assignment')

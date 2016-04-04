@@ -50,12 +50,12 @@ class TestModule(unittest.TestCase):
 
 	def test_ifaces(self):
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
-		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(14))
+		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(16))
 
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
-		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(20))
+		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(22))
 
-		assert_that(COURSE_CONTAINER_INTERFACES, has_length(14))
+		assert_that(COURSE_CONTAINER_INTERFACES, has_length(16))
 		assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))
 
 	def test_asset_ifaces(self):
@@ -86,7 +86,7 @@ class TestModule(unittest.TestCase):
 
 		module = sys.modules[INTILessonOverview.__module__]
 		members = list(inspect.getmembers(module, _ext_mime_type_predicate))
-		assert_that(members, has_length(33))
+		assert_that(members, has_length(37))
 
 	def test_visibility_options(self):
 		options = get_visibility_options()

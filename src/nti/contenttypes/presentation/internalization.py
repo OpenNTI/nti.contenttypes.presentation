@@ -20,10 +20,14 @@ from zope import interface
 from persistent.list import PersistentList
 
 from nti.contenttypes.presentation import TIMELINE
-from nti.contenttypes.presentation import JSON_TIMELINE
 from nti.contenttypes.presentation import RELATED_WORK
+from nti.contenttypes.presentation import JSON_TIMELINE
 from nti.contenttypes.presentation import RELATED_WORK_REF
+from nti.contenttypes.presentation import TIMELINE_MIMETYES
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
+from nti.contenttypes.presentation import SLIDE_DECK_MIMETYES
+from nti.contenttypes.presentation import TIMELINE_REF_MIMETYES
+from nti.contenttypes.presentation import SLIDE_DECK_REF_MIMETYES
 from nti.contenttypes.presentation import ALL_MEDIA_ROLL_MIME_TYPES
 
 from nti.contenttypes.presentation.discussion import is_nti_course_bundle
@@ -42,6 +46,8 @@ from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import INTIQuestionRef
+from nti.contenttypes.presentation.interfaces import INTITimelineRef
+from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
@@ -383,6 +389,24 @@ class _NTIPollRefUpdater(_TargetNTIIDUpdater):
 		self.fixTarget(parsed, transfer=True)
 		return self.fixCreator(parsed)
 
+@component.adapter(INTISlideDeckRef)
+class _NTISlideDeckRefUpdater(_TargetNTIIDUpdater):
+
+	_ext_iface_upper_bound = INTISlideDeckRef
+
+	def fixAll(self, parsed):
+		self.fixTarget(parsed, transfer=True)
+		return self.fixCreator(parsed)
+
+@component.adapter(INTITimelineRef)
+class _NTITimelineRefUpdater(_TargetNTIIDUpdater):
+
+	_ext_iface_upper_bound = INTITimelineRef
+
+	def fixAll(self, parsed):
+		self.fixTarget(parsed, transfer=True)
+		return self.fixCreator(parsed)
+
 @component.adapter(INTISurveyRef)
 class _NTISurveyRefUpdater(_TargetNTIIDUpdater):
 
@@ -522,21 +546,36 @@ def internalization_discussionref_pre_hook(k, x):
 	if mimeType == "application/vnd.nextthought.discussion":
 		x[MIMETYPE] = u"application/vnd.nextthought.discussionref"
 
-def internalization_ntitimeline_pre_hook(k, x):
+def internalization_slidedeckref_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType in SLIDE_DECK_MIMETYES:
+		x[MIMETYPE] = SLIDE_DECK_REF_MIMETYES[0]
+
+def is_time_line(x):
+	result = False
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if ntiid and (JSON_TIMELINE in ntiid or is_ntiid_of_type(ntiid, TIMELINE)):
-			x[MIMETYPE] = "application/vnd.nextthought.ntitimeline"
-	elif mimeType == "application/vnd.nextthought.timeline":
-		x[MIMETYPE] = u"application/vnd.nextthought.ntitimeline"
+			result = True
+	elif mimeType in TIMELINE_MIMETYES:
+		result = True
+	return result
+	
+def internalization_ntitimeline_pre_hook(k, x):
+	if is_time_line(x):
+		x[MIMETYPE] = TIMELINE_MIMETYES[0]
 
+def internalization_ntitimelineref_pre_hook(k, x):
+	if is_time_line(x):
+		x[MIMETYPE] = TIMELINE_REF_MIMETYES[0]
+		
 def internalization_relatedworkref_pre_hook(k, x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if 		ntiid \
-			and ('.relatedworkref.' in ntiid
+			and (	'.relatedworkref.' in ntiid
 				 or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
 			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
 

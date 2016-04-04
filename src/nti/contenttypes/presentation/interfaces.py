@@ -420,6 +420,11 @@ INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+class INTISlideDeckRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
+				   	   ICoursePresentationAsset):
+	target = ValidNTIID(title="Target NTIID", required=False)
+ISlideDeckRef = INTISlideDeckRef  # BWC
+
 class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPackagePresentationAsset):
 	label = ValidTextLine(title="The label", required=True, default=u'')
 	href = href_schema_field(title="Resource href", required=False, default=u'')
@@ -428,6 +433,11 @@ class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPackagePresentationA
 	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
 
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
+
+class INTITimelineRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
+				   	  ICoursePresentationAsset):
+	target = ValidNTIID(title="Target NTIID", required=False)
+ITimelineRef = INTITimelineRef  # BWC
 
 class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICreated,
 						 IPackagePresentationAsset, IVisible):
