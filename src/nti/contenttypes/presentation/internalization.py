@@ -600,11 +600,12 @@ def internalization_courseoverview_pre_hook(k, x):
 			# Swizzle out our concrete mime types for refs.
 			internalization_pollref_pre_hook(None, item)
 			internalization_surveyref_pre_hook(None, item)
-			internalization_ntitimeline_pre_hook(None, item)
 			internalization_ntiaudioref_pre_hook(None, item)
 			internalization_ntivideoref_pre_hook(None, item)
 			internalization_questionref_pre_hook(None, item)
+			internalization_slidedeckref_pre_hook(None, item)
 			internalization_assignmentref_pre_hook(None, item)
+			internalization_ntitimelineref_pre_hook(None, item)
 			internalization_questionsetref_pre_hook(None, item)
 			internalization_relatedworkref_pre_hook(None, item)
 
