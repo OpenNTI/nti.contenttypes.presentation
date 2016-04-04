@@ -59,8 +59,8 @@ class PersistentPresentationAsset(PersistentMixin,
 		return self.byline
 
 	@classmethod
-	def generate_ntiid(cls, nttype):
-		return generate_ntiid(nttype)
+	def generate_ntiid(cls, nttype, provider='NTI'):
+		return generate_ntiid(nttype, provider=provider)
 
 	def __lt__(self, other):
 		try:
