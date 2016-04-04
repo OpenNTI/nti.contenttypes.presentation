@@ -169,11 +169,12 @@ PACKAGE_CONTAINER_INTERFACES = None
 GROUP_OVERVIEWABLE_INTERFACES = None
 ALL_PRESENTATION_ASSETS_INTERFACES = None
 
-def iface_of_asset(item):
+def interface_of_asset(item):
 	for iface in ALL_PRESENTATION_ASSETS_INTERFACES:
 		if iface.providedBy(item):
 			return iface
 	return None
+iface_of_asset = interface_of_asset
 
 def _set_ifaces():
 	global COURSE_CONTAINER_INTERFACES
@@ -187,36 +188,38 @@ def _set_ifaces():
 	ALL_PRESENTATION_ASSETS_INTERFACES = set()
 
 	module = sys.modules[IGroupOverViewable.__module__]
-
+	
+	NO_IMPL_REF_IFACES = (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef)
+	NO_IMPL_IFACES = NO_IMPL_REF_IFACES + (INTIMediaSource, INTIMedia, INTIMediaRoll)
+	
 	def _package_item_predicate(item):
-		result = bool(	type(item) == interface.interface.InterfaceClass 
-					and issubclass(item, IPackagePresentationAsset)
-					and item != IPackagePresentationAsset
-					and item not in (INTIMedia,))
+		result = bool(	  type(item) == interface.interface.InterfaceClass 
+					  and issubclass(item, IPackagePresentationAsset)
+					  and item != IPackagePresentationAsset
+					  and item not in (INTIMedia,))
 		return result
 	
 	def _course_item_predicate(item):
-		result = bool(	type(item) == interface.interface.InterfaceClass 
-					and issubclass(item, ICoursePresentationAsset)
-					and item != ICoursePresentationAsset
-					and item not in (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef))
+		result = bool(    type(item) == interface.interface.InterfaceClass 
+					  and issubclass(item, ICoursePresentationAsset)
+					  and item != ICoursePresentationAsset
+					  and item not in NO_IMPL_REF_IFACES)
 		return result
 
 	def _overview_item_predicate(item):
-		result = bool(	type(item) == interface.interface.InterfaceClass 
-					and issubclass(item, IGroupOverViewable)
-					and item != IGroupOverViewable
-					and item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef))
+		result = bool(	  type(item) == interface.interface.InterfaceClass 
+					  and issubclass(item, IGroupOverViewable)
+					  and item != IGroupOverViewable
+					  and item not in NO_IMPL_REF_IFACES)
 		return result
 
 	def _presentationasset_item_predicate(item):
-		result = bool(	type(item) == interface.interface.InterfaceClass
-					and issubclass(item, IPresentationAsset) 
-					and item != IPresentationAsset 
-					and item != ICoursePresentationAsset
-					and item != IPackagePresentationAsset
-					and item not in (IMediaRef, INTIAssessmentRef, INTIInquiryRef,
-								     INTIMediaSource, INTIMedia, INTIMediaRoll))
+		result = bool(	  type(item) == interface.interface.InterfaceClass
+					  and issubclass(item, IPresentationAsset) 
+					  and item != IPresentationAsset 
+					  and item != ICoursePresentationAsset
+					  and item != IPackagePresentationAsset
+					  and item not in NO_IMPL_IFACES)
 		return result
 
 	for _, item in inspect.getmembers(module, _course_item_predicate):
