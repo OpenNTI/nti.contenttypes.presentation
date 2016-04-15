@@ -32,7 +32,7 @@ from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-from nti.schema.schema import EqHash 
+from nti.schema.schema import EqHash
 
 @EqHash('ntiid')
 @interface.implementer(INTISlide)
@@ -75,7 +75,7 @@ class NTISlideDeck(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntislidedeck'
 
 	jsonschema = u'slidedeck'
-	
+
 	slides = alias('Slides')
 	videos = alias('Videos')
 	Creator = alias('creator')

@@ -207,7 +207,7 @@ class IAssetRef(ICreated):
 class IItemAssetContainer(interface.Interface):
 
 	Items = interface.Attribute("Items in this container")
-	
+
 	def append(item):
 		"""
 		Add an item
@@ -219,7 +219,7 @@ class IItemAssetContainer(interface.Interface):
 
 		:return True if object was removed
 		"""
-		
+
 	def __contains__(item):
 		"""
 		return is the specified item is in this container
@@ -409,7 +409,7 @@ class INTISlideDeck(IItemAssetContainer, IAssetTitleDescribed, INTIIDIdentifiabl
 	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 
 	byline = byline_schema_field(required=False)
-	
+
 	Items = Iterable(title='All items in the slide deck', readonly=True, required=False)
 	Items.setTaggedValue('_ext_excluded_out', True)
 
@@ -452,7 +452,7 @@ class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICre
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
 
-class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, 
+class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 						ITitled, ICoursePresentationAsset):
 	title = ValidTextLine(title="Discussion title", required=False)
 	icon = href_schema_field(title="Discussion icon href", required=False)
@@ -618,7 +618,7 @@ class IPresentationAssetJsonSchemaMaker(interface.Interface):
 	def make_schema(schema=IPresentationAsset):
 		"""
 		Create the JSON schema.
-		
+
 		schema: The zope schema to use.
 		"""
 
@@ -662,10 +662,11 @@ class OverviewGroupMovedEvent(ObjectEvent):
 
 	group = alias('object')
 
-	def __init__(self, obj, principal=None, index=None):
+	def __init__(self, obj, principal=None, index=None, old_parent_ntiid=None):
 		super(OverviewGroupMovedEvent, self).__init__(obj)
 		self.index = index
 		self.principal = principal
+		self.old_parent_ntiid = old_parent_ntiid
 
 #: Asset moved recorder transaction type.
 TRX_ASSET_MOVE_TYPE = u'presentationassetmoved'
@@ -678,10 +679,11 @@ class PresentationAssetMovedEvent(ObjectEvent):
 
 	asset = alias('object')
 
-	def __init__(self, obj, principal=None, index=None):
+	def __init__(self, obj, principal=None, index=None, old_parent_ntiid=None):
 		super(PresentationAssetMovedEvent, self).__init__(obj)
 		self.index = index
 		self.principal = principal
+		self.old_parent_ntiid = old_parent_ntiid
 
 import zope.deferredimport
 zope.deferredimport.initialize()
