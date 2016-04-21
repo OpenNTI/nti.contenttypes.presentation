@@ -201,6 +201,10 @@ class ICoursePresentationAsset(IPresentationAsset):
 	pass
 ICoursePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+class ILegacyPresentationAsset(IPresentationAsset):
+	pass
+ILegacyPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
+
 class IAssetRef(ICreated):
 	target = interface.Attribute("target object id")
 

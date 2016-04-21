@@ -40,6 +40,7 @@ from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import ICoursePresentationAsset
+from nti.contenttypes.presentation.interfaces import ILegacyPresentationAsset
 from nti.contenttypes.presentation.interfaces import IPackagePresentationAsset
 
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
@@ -218,6 +219,7 @@ def _set_ifaces():
 					  and issubclass(item, IPresentationAsset) 
 					  and item != IPresentationAsset 
 					  and item != ICoursePresentationAsset
+					  and item != ILegacyPresentationAsset
 					  and item != IPackagePresentationAsset
 					  and item not in NO_IMPL_IFACES)
 		return result
