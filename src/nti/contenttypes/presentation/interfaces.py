@@ -401,8 +401,7 @@ INTISlideVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTISlideDeck(IItemAssetContainer, IAssetTitleDescribed, INTIIDIdentifiable,
-					ICreated, IPackagePresentationAsset):
+class INTISlideDeck(IItemAssetContainer, INTIMedia):
 
 	Slides = IndexedIterable(value_type=Object(INTISlide),
 						 	 title="The slides", required=False, min_length=1)
@@ -424,8 +423,7 @@ INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
-class INTISlideDeckRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-				   	   ICoursePresentationAsset):
+class INTISlideDeckRef(INTIMediaRef):
 	target = ValidNTIID(title="Target NTIID", required=False)
 ISlideDeckRef = INTISlideDeckRef  # BWC
 

@@ -25,6 +25,8 @@ from nti.contenttypes.presentation import NTI_SLIDE_DECK_REF
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
 
+from nti.contenttypes.presentation.interfaces import EVERYONE
+
 from nti.contenttypes.presentation.interfaces import INTISlide
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
@@ -138,6 +140,8 @@ class NTISlideDeckRef(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntislideckref'
 
 	__name__ = alias('ntiid')
+
+	visibility = EVERYONE
 
 	@readproperty
 	def ntiid(self):
