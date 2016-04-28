@@ -51,6 +51,6 @@ class DefaultVisibilityOptionProvider(object):
 
 def get_visibility_options():
 	result = set()
-	for _, provider in component.getUtilitiesFor(IVisibilityOptionsProvider):
+	for _, provider in list(component.getUtilitiesFor(IVisibilityOptionsProvider)):
 		result.update(provider.iter_options())
 	return tuple(result)
