@@ -19,6 +19,7 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
 from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_SPACER
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
@@ -62,6 +63,11 @@ class NTILessonOverView(CalendarPublishableMixin,
 	items = alias('Items')
 
 	__name__ = alias('ntiid')
+
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(NTI_LESSON_OVERVIEW)
+		return self.ntiid
 
 	def __getitem__(self, index):
 		return self.items[index]

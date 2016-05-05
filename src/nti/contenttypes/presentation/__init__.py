@@ -100,7 +100,8 @@ NTI_SLIDE_DECK_REF  = u'NTISlideDeckRef'
 JSON_TIMELINE = u'JSON:Timeline'
 
 #: Timeline NTIID type
-TIMELINE = NTI_TIMELINE = NTITimeline = u'Timeline'
+NTI_TIMELINE = u'NTITimeline'
+TIMELINE = NTITimeline = u'Timeline'
 
 #: SlideDeckRef NTIID type
 NTI_TIMELIME_REF  = u'NTITimeLineRef'

@@ -17,6 +17,7 @@ from zope.cachedescriptors.property import readproperty
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation import NTI_TIMELINE
 from nti.contenttypes.presentation import NTI_TIMELIME_REF
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
@@ -38,6 +39,11 @@ class NTITimeLine(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.ntitimeline'
 
 	desc = alias('description')
+
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(NTI_TIMELINE)
+		return self.ntiid
 
 	def __lt__(self, other):
 		try:

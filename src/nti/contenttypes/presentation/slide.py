@@ -21,6 +21,9 @@ from persistent.list import PersistentList
 from nti.common.property import alias
 from nti.common.property import CachedProperty
 
+from nti.contenttypes.presentation import NTI_SLIDE
+from nti.contenttypes.presentation import NTI_SLIDE_DECK
+from nti.contenttypes.presentation import NTI_SLIDE_VIDEO
 from nti.contenttypes.presentation import NTI_SLIDE_DECK_REF
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
@@ -53,6 +56,11 @@ class NTISlide(PersistentPresentationAsset):
 
 	__name__ = alias('ntiid')
 
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(NTI_SLIDE)
+		return self.ntiid
+
 @EqHash('ntiid')
 @interface.implementer(INTISlideVideo)
 class NTISlideVideo(PersistentPresentationAsset):
@@ -66,6 +74,11 @@ class NTISlideVideo(PersistentPresentationAsset):
 	slide_deck = deck = alias('slidedeckid')
 
 	__name__ = alias('ntiid')
+
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(NTI_SLIDE_VIDEO)
+		return self.ntiid
 
 @total_ordering
 @EqHash('ntiid')
@@ -84,6 +97,11 @@ class NTISlideDeck(PersistentPresentationAsset):
 	id = alias('slidedeckid')
 
 	__name__ = alias('ntiid')
+
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(NTI_SLIDE_DECK)
+		return self.ntiid
 
 	@CachedProperty("lastModified")
 	def Items(self):

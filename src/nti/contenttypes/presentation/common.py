@@ -26,7 +26,7 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
 
 def generate_ntiid(nttype, provider='NTI'):
-	digest = md5(str(uuid.uuid4())).hexdigest()
+	digest = md5(str(uuid.uuid4())).hexdigest().upper()
 	specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
 	result = make_ntiid(provider=provider,
 						nttype=nttype,

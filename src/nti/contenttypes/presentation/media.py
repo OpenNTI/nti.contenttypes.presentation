@@ -21,6 +21,8 @@ from persistent.list import PersistentList
 
 from nti.common.property import alias
 
+from nti.contenttypes.presentation import NTI_AUDIO
+from nti.contenttypes.presentation import NTI_VIDEO
 from nti.contenttypes.presentation import NTI_AUDIO_REF
 from nti.contenttypes.presentation import NTI_VIDEO_REF
 from nti.contenttypes.presentation import NTI_AUDIO_ROLL
@@ -93,6 +95,13 @@ class NTIMedia(PersistentPresentationAsset):
 
 	Creator = alias('creator')
 
+	nttype = 'NTIMedia'
+
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(self.nttype)
+		return self.ntiid
+
 	def __lt__(self, other):
 		try:
 			return (self.mimeType, self.title) < (other.mimeType, other.title)
@@ -119,6 +128,11 @@ class NTIMediaRef(PersistentPresentationAsset):
 	__name__ = alias('ntiid')
 
 	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(self.nttype)
+		return self.ntiid
+
+	@readproperty
 	def target(self):
 		return self.ntiid
 
@@ -131,6 +145,8 @@ class NTIVideo(NTIMedia):
 
 	closedCaption = closedCaptions = alias('closed_caption')
 
+	nttype = NTI_VIDEO
+
 @interface.implementer(INTIVideoRef)
 class NTIVideoRef(NTIMediaRef):
 	createDirectFieldProperties(INTIVideoRef)
@@ -140,17 +156,14 @@ class NTIVideoRef(NTIMediaRef):
 
 	nttype = NTI_VIDEO_REF
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(self.nttype)
-		return self.ntiid
-
 @interface.implementer(INTIAudio)
 class NTIAudio(NTIMedia):
 	createDirectFieldProperties(INTIAudio)
 
 	__external_class_name__ = u"Audio"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
+
+	nttype = NTI_AUDIO
 
 @interface.implementer(INTIAudioRef)
 class NTIAudioRef(NTIMediaRef):
