@@ -26,4 +26,4 @@ class VisibilityField(ValidTextLine):
 	def _validate(self, value):
 		super(VisibilityField, self)._validate(value)
 		if value and value not in self._options:
-			logger.error("Unsupported visibility value %s", value)
+			logger.debug("Unsupported visibility value %s", value)
