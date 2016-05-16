@@ -43,6 +43,7 @@ from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import ILastModified
 from nti.coremetadata.interfaces import IRecordableContainer
+from nti.coremetadata.interfaces import IObjectJsonSchemaMaker
 
 from nti.namedfile.interfaces import INamedFile
 from nti.namedfile.interfaces import IFileConstrained
@@ -613,17 +614,13 @@ class IPresentationAssetAffiliations(interface.Interface):
 		return the containers that refer to specified item
 		"""
 
-class IPresentationAssetJsonSchemaMaker(interface.Interface):
+class IPresentationAssetJsonSchemaMaker(IObjectJsonSchemaMaker):
 	"""
 	Marker interface for a presentation asset Json Schema maker utility
 	"""
 
 	def make_schema(schema=IPresentationAsset):
-		"""
-		Create the JSON schema.
-
-		schema: The zope schema to use.
-		"""
+		pass
 
 class IPresentationAssetCreatedEvent(IObjectCreatedEvent):
 	principal = interface.Attribute("Creator principal")
