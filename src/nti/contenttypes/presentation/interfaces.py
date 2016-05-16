@@ -45,6 +45,7 @@ from nti.coremetadata.interfaces import ILastModified
 from nti.coremetadata.interfaces import IRecordableContainer
 
 from nti.namedfile.interfaces import INamedFile
+from nti.namedfile.interfaces import IFileConstrained
 
 from nti.ntiids.schema import ValidNTIID
 
@@ -282,7 +283,7 @@ class IAssetTitleDescribed( IAssetTitled, IDCDescriptiveProperties ):
 	description = ValidTextLine(title="Media description", required=False, default=u'')
 
 class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
-				ICreated, IPackagePresentationAsset):
+				ICreated, IPackagePresentationAsset, IFileConstrained):
 
 	byline = byline_schema_field(required=False)
 
@@ -442,7 +443,7 @@ class INTITimelineRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 ITimelineRef = INTITimelineRef  # BWC
 
 class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICreated,
-						 IPackagePresentationAsset, IVisible):
+						 IPackagePresentationAsset, IVisible, IFileConstrained):
 	href = href_schema_field(title="Related work href", required=False, default=u'')
 	target = ValidNTIID(title="Target NTIID", required=False)
 	byline = byline_schema_field(required=False)
@@ -455,7 +456,7 @@ class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICre
 					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
 
 class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-						ITitled, ICoursePresentationAsset):
+						ITitled, ICoursePresentationAsset, IFileConstrained):
 	title = ValidTextLine(title="Discussion title", required=False)
 	icon = href_schema_field(title="Discussion icon href", required=False)
 	label = ValidTextLine(title="The label", required=False, default=u'')
