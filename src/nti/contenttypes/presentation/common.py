@@ -21,7 +21,7 @@ from nti.contenttypes.presentation.interfaces import EVERYONE
 from nti.contenttypes.presentation.interfaces import IVisibilityOptionsProvider
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemaMaker
 
-from nti.coremetadata.jsonschema import make_schema as core_schema_maker
+from nti.coremetadata.utils import make_schema as core_schema_maker
 
 from nti.ntiids.ntiids import TYPE_UUID
 from nti.ntiids.ntiids import make_ntiid
