@@ -619,7 +619,7 @@ class IPresentationAssetJsonSchemaMaker(IObjectJsonSchemaMaker):
 	Marker interface for a presentation asset Json Schema maker utility
 	"""
 
-	def make_schema(schema=IPresentationAsset):
+	def make_schema(schema=IPresentationAsset, user=None):
 		pass
 
 class IPresentationAssetCreatedEvent(IObjectCreatedEvent):

@@ -85,7 +85,7 @@ class PresentationAssetJsonSchemaMaker(object):
 
 	maker = BaseJsonSchemafier
 
-	def make_schema(self, schema=IPresentationAsset):
+	def make_schema(self, schema=IPresentationAsset, user=None):
 		result = LocatedExternalDict()
 		maker = self.maker(schema)
 		result[FIELDS] = maker.make_schema()
@@ -97,8 +97,8 @@ class ItemContainerJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
 	has_items = True
 	ref_interfaces = ()
 
-	def make_schema(self, schema=IPresentationAsset):
-		result = super(ItemContainerJsonSchemaMaker, self).make_schema(schema)
+	def make_schema(self, schema=IPresentationAsset, user=None):
+		result = super(ItemContainerJsonSchemaMaker, self).make_schema(schema, user=user)
 		accepts = result[ACCEPTS] = {}
 		for iface in self.ref_interfaces:
 			mimeType = iface.getTaggedValue('_ext_mime_type')
@@ -115,8 +115,8 @@ class SlideDeckJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 	has_items = False
 	ref_interfaces = (INTISlide, INTISlideVideo)
 
-	def make_schema(self, schema=INTISlideDeck):
-		result = super(SlideDeckJsonSchemaMaker, self).make_schema(INTISlideDeck)
+	def make_schema(self, schema=INTISlideDeck, user=None):
+		result = super(SlideDeckJsonSchemaMaker, self).make_schema(INTISlideDeck, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -124,8 +124,8 @@ class AudioSourceJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
 
 	maker = MediaSourceJsonSchemafier
 
-	def make_schema(self, schema=INTIAudioSource):
-		result = super(AudioSourceJsonSchemaMaker, self).make_schema(INTIAudioSource)
+	def make_schema(self, schema=INTIAudioSource, user=None):
+		result = super(AudioSourceJsonSchemaMaker, self).make_schema(INTIAudioSource, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -133,8 +133,8 @@ class VideoSourceJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
 
 	maker = MediaSourceJsonSchemafier
 
-	def make_schema(self, schema=INTIVideoSource):
-		result = super(VideoSourceJsonSchemaMaker, self).make_schema(INTIVideoSource)
+	def make_schema(self, schema=INTIVideoSource, user=None):
+		result = super(VideoSourceJsonSchemaMaker, self).make_schema(INTIVideoSource, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -143,8 +143,8 @@ class VideoJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 	has_items = False
 	ref_interfaces = (INTITranscript, INTIVideoSource)
 
-	def make_schema(self, schema=INTIVideo):
-		result = super(VideoJsonSchemaMaker, self).make_schema(INTIVideo)
+	def make_schema(self, schema=INTIVideo, user=None):
+		result = super(VideoJsonSchemaMaker, self).make_schema(INTIVideo, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -153,8 +153,8 @@ class AudioJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 	has_items = False
 	ref_interfaces = (INTITranscript, INTIAudioSource)
 
-	def make_schema(self, schema=INTIAudio):
-		result = super(AudioJsonSchemaMaker, self).make_schema(INTIAudio)
+	def make_schema(self, schema=INTIAudio, user=None):
+		result = super(AudioJsonSchemaMaker, self).make_schema(INTIAudio, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -162,8 +162,8 @@ class MediaRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = MEDIA_REF_INTERFACES
 
-	def make_schema(self, schema=INTIMediaRoll):
-		result = super(MediaRollJsonSchemaMaker, self).make_schema(INTIMediaRoll)
+	def make_schema(self, schema=INTIMediaRoll, user=None):
+		result = super(MediaRollJsonSchemaMaker, self).make_schema(INTIMediaRoll, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -171,8 +171,8 @@ class VideoRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = (INTIVideoRef,)
 
-	def make_schema(self, schema=INTIVideoRoll):
-		result = super(VideoRollJsonSchemaMaker, self).make_schema(INTIVideoRoll)
+	def make_schema(self, schema=INTIVideoRoll, user=None):
+		result = super(VideoRollJsonSchemaMaker, self).make_schema(INTIVideoRoll, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -180,8 +180,8 @@ class AudioRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = (INTIAudioRef,)
 
-	def make_schema(self, schema=INTIAudioRoll):
-		result = super(AudioRollJsonSchemaMaker, self).make_schema(INTIAudioRoll)
+	def make_schema(self, schema=INTIAudioRoll, user=None):
+		result = super(AudioRollJsonSchemaMaker, self).make_schema(INTIAudioRoll, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -189,8 +189,8 @@ class CourseOverviewGroupJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = GROUP_OVERVIEWABLE_INTERFACES
 
-	def make_schema(self, schema=INTICourseOverviewGroup):
-		result = super(CourseOverviewGroupJsonSchemaMaker, self).make_schema(INTICourseOverviewGroup)
+	def make_schema(self, schema=INTICourseOverviewGroup, user=None):
+		result = super(CourseOverviewGroupJsonSchemaMaker, self).make_schema(INTICourseOverviewGroup, user=user)
 		return result
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -198,6 +198,6 @@ class LessonOverviewJsonSchemaMaker(ItemContainerJsonSchemaMaker):
 
 	ref_interfaces = (INTICourseOverviewGroup,)
 
-	def make_schema(self, schema=INTILessonOverview):
-		result = super(LessonOverviewJsonSchemaMaker, self).make_schema(INTILessonOverview)
+	def make_schema(self, schema=INTILessonOverview, user=None):
+		result = super(LessonOverviewJsonSchemaMaker, self).make_schema(INTILessonOverview, user=user)
 		return result

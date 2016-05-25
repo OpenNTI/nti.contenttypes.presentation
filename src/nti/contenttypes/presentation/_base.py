@@ -74,7 +74,7 @@ class PersistentPresentationAsset(PersistentMixin,
 		except AttributeError:
 			return NotImplemented
 		
-	def schema(self):
+	def schema(self, user=None):
 		schema = find_most_derived_interface(self, IPresentationAsset)
-		result = make_schema(schema=schema)
+		result = make_schema(schema=schema, user=user)
 		return result

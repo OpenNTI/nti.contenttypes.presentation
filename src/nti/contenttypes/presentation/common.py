@@ -21,6 +21,8 @@ from nti.contenttypes.presentation.interfaces import EVERYONE
 from nti.contenttypes.presentation.interfaces import IVisibilityOptionsProvider
 from nti.contenttypes.presentation.interfaces import IPresentationAssetJsonSchemaMaker
 
+from nti.coremetadata.jsonschema import make_schema as core_schema_maker
+
 from nti.ntiids.ntiids import TYPE_UUID
 from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
@@ -33,10 +35,8 @@ def generate_ntiid(nttype, provider='NTI'):
 						specific=specific)
 	return result
 
-def make_schema(schema):
-	name = schema.queryTaggedValue('_ext_jsonschema') or u''
-	schemafier = component.getUtility(IPresentationAssetJsonSchemaMaker, name=name)
-	result = schemafier.make_schema(schema=schema)
+def make_schema(schema, user=None):
+	result = core_schema_maker(schema, user=user, maker=IPresentationAssetJsonSchemaMaker)
 	return result
 
 @interface.implementer(IVisibilityOptionsProvider)
