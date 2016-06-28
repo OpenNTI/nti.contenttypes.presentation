@@ -22,7 +22,7 @@ from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceO
 
 from nti.externalization.datastructures import InterfaceObjectIO
 
-from nti.externalization.externalization import toExternalObject
+from nti.externalization.externalization import to_external_object
 
 from nti.externalization.interfaces import IInternalObjectIO
 from nti.externalization.interfaces import StandardExternalFields
@@ -54,7 +54,7 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
 
 	def toExternalObject(self, *args, **kwargs):
 		result = super(_NTICourseOverviewGroupInternalObjectIO, self).toExternalObject(*args, **kwargs)
-		result[ITEMS] = [toExternalObject(x, *args, **kwargs) for x in self._ext_self]
+		result[ITEMS] = [to_external_object(x, *args, **kwargs) for x in self._ext_self]
 		return result
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
@@ -98,5 +98,7 @@ class _LessonOverviewExporter(object):
 		mod_args['name'] = ''  # default
 		mod_args['decorate'] = False  # no decoration
 		mod_args['decorate_callback'] = self._decorate_callback
-		result = toExternalObject(self.lesson, **mod_args)
+		result = to_external_object(self.lesson, **mod_args)
+		if ITEMS in result and result[ITEMS] is None:
+			result[ITEMS] = []
 		return result
