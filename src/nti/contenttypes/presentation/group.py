@@ -30,9 +30,9 @@ from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
 from nti.coremetadata.mixins import RecordableContainerMixin
 
-from nti.schema.fieldproperty import createDirectFieldProperties
+from nti.schema.eqhash import EqHash
 
-from nti.schema.schema import EqHash
+from nti.schema.fieldproperty import createDirectFieldProperties
 
 class DuplicateReference(ValueError):
 	

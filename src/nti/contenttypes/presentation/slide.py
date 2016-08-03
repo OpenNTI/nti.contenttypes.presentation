@@ -35,9 +35,9 @@ from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
 
-from nti.schema.fieldproperty import createDirectFieldProperties
+from nti.schema.eqhash import EqHash
 
-from nti.schema.schema import EqHash
+from nti.schema.fieldproperty import createDirectFieldProperties
 
 @EqHash('ntiid')
 @interface.implementer(INTISlide)

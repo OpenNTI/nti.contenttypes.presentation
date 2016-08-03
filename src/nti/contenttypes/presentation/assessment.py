@@ -31,9 +31,9 @@ from nti.contenttypes.presentation.interfaces import INTIQuestionRef
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
 
-from nti.schema.fieldproperty import createDirectFieldProperties
+from nti.schema.eqhash import EqHash
 
-from nti.schema.schema import EqHash
+from nti.schema.fieldproperty import createDirectFieldProperties
 
 import zope.deferredimport
 zope.deferredimport.initialize()

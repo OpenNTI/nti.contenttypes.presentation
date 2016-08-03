@@ -25,9 +25,9 @@ from nti.contenttypes.presentation._base import PersistentPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
 
-from nti.schema.fieldproperty import createDirectFieldProperties
+from nti.schema.eqhash import EqHash 
 
-from nti.schema.schema import EqHash 
+from nti.schema.fieldproperty import createDirectFieldProperties
 
 @total_ordering
 @EqHash('ntiid')
