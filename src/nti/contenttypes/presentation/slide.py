@@ -150,6 +150,7 @@ class NTISlideDeck(PersistentPresentationAsset):
 		except AttributeError:
 			return NotImplemented
 
+@EqHash('ntiid')
 @interface.implementer(INTISlideDeckRef)
 class NTISlideDeckRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlideDeckRef)

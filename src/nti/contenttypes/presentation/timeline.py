@@ -57,6 +57,7 @@ class NTITimeLine(PersistentPresentationAsset):
 		except AttributeError:
 			return NotImplemented
 
+@EqHash('ntiid')
 @interface.implementer(INTITimelineRef)
 class NTITimeLineRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTITimelineRef)

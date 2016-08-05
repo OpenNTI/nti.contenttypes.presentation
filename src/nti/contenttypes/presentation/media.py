@@ -114,6 +114,7 @@ class NTIMedia(PersistentPresentationAsset):
 		except AttributeError:
 			return NotImplemented
 
+@EqHash('ntiid')
 @interface.implementer(INTIMediaRef)
 class NTIMediaRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIMediaRef)
