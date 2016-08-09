@@ -191,7 +191,10 @@ def _set_ifaces():
 
 	module = sys.modules[IGroupOverViewable.__module__]
 	
+	# Ref interfaces that ARE NOT IMPLEMENTED
 	NO_IMPL_REF_IFACES = (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef, INTIMixinRef)
+	
+	# Interfaces that ARE NOT IMPLEMENTED
 	NO_IMPL_IFACES = NO_IMPL_REF_IFACES + (INTIMediaSource, INTIMedia, INTIMediaRoll)
 	
 	def _package_item_predicate(item):
