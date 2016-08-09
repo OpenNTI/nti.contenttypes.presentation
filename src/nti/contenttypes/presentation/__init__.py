@@ -19,7 +19,7 @@ from zope import interface
 
 from zope.interface.interfaces import IMethod
 
-from nti.contenttypes.presentation.interfaces import IMediaRef
+from nti.contenttypes.presentation.interfaces import IMediaRef, INTIMixinRef
 from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTIMedia
 from nti.contenttypes.presentation.interfaces import INTISlide
@@ -191,14 +191,14 @@ def _set_ifaces():
 
 	module = sys.modules[IGroupOverViewable.__module__]
 	
-	NO_IMPL_REF_IFACES = (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef)
+	NO_IMPL_REF_IFACES = (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef, INTIMixinRef)
 	NO_IMPL_IFACES = NO_IMPL_REF_IFACES + (INTIMediaSource, INTIMedia, INTIMediaRoll)
 	
 	def _package_item_predicate(item):
 		result = bool(	  type(item) == interface.interface.InterfaceClass 
 					  and issubclass(item, IPackagePresentationAsset)
 					  and item != IPackagePresentationAsset
-					  and item not in (INTIMedia,))
+					  and item not in (INTIMedia, INTIMixinRef))
 		return result
 	
 	def _course_item_predicate(item):

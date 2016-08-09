@@ -429,30 +429,27 @@ class INTISlideDeckRef(INTIMediaRef):
 	target = ValidNTIID(title="Target NTIID", required=False)
 ISlideDeckRef = INTISlideDeckRef  # BWC
 
-class INTITimeline(IGroupOverViewable, INTIIDIdentifiable, IPackagePresentationAsset):
-	label = ValidTextLine(title="The label", required=True, default=u'')
-	href = href_schema_field(title="Resource href", required=False, default=u'')
-	icon = href_schema_field(title="Icon href", required=False)
-	description = ValidTextLine(title="Timeline description", required=False)
-	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
-
-INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
-
 class INTITimelineRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 				   	  ICoursePresentationAsset):
 	target = ValidNTIID(title="Target NTIID", required=False)
 ITimelineRef = INTITimelineRef  # BWC
 
-class INTIRelatedWorkRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICreated,
-						 IPackagePresentationAsset, IVisible, IFileConstrained):
-	href = href_schema_field(title="Related work href", required=False, default=u'')
+class INTIMixinRef(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable):
+	label = ValidTextLine(title="The label", required=True, default=u'')
+	href = href_schema_field(title="Resource href", required=False, default=u'')
+	icon = href_schema_field(title="Icon href", required=False)
 	target = ValidNTIID(title="Target NTIID", required=False)
+
+class INTITimeline(INTIMixinRef, IGroupOverViewable, IFileConstrained):
+	description = ValidTextLine(title="Timeline description", required=False)
+	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
+INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
+
+class INTIRelatedWorkRef(INTIMixinRef, IAssetRef, ICreated, IVisible, IFileConstrained):
 	byline = byline_schema_field(required=False)
 	section = ValidTextLine(title="Section", required=False)
 	description = ValidText(title="Slide video description", required=False)
-	icon = href_schema_field(title="Related work icon href", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
-	label = ValidTextLine(title="The label", required=False, default=u'')
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
 
