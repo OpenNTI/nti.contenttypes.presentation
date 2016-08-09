@@ -434,18 +434,18 @@ class INTITimelineRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 	target = ValidNTIID(title="Target NTIID", required=False)
 ITimelineRef = INTITimelineRef  # BWC
 
-class INTIMixinRef(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable):
+class INTIDocketMixin(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable):
 	label = ValidTextLine(title="The label", required=True, default=u'')
 	href = href_schema_field(title="Resource href", required=False, default=u'')
 	icon = href_schema_field(title="Icon href", required=False)
 	target = ValidNTIID(title="Target NTIID", required=False)
 
-class INTITimeline(INTIMixinRef, IGroupOverViewable, IFileConstrained):
+class INTITimeline(INTIDocketMixin, IGroupOverViewable, IFileConstrained):
 	description = ValidTextLine(title="Timeline description", required=False)
 	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
-class INTIRelatedWorkRef(INTIMixinRef, IAssetRef, ICreated, IVisible, IFileConstrained):
+class INTIRelatedWorkRef(INTIDocketMixin, IAssetRef, ICreated, IVisible, IFileConstrained):
 	byline = byline_schema_field(required=False)
 	section = ValidTextLine(title="Section", required=False)
 	description = ValidText(title="Slide video description", required=False)
