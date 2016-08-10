@@ -38,6 +38,7 @@ class NTITimeLine(PersistentPresentationAsset):
 	__external_class_name__ = u"Timeline"
 	mime_type = mimeType = u'application/vnd.nextthought.ntitimeline'
 
+	target = None
 	desc = alias('description')
 
 	@readproperty

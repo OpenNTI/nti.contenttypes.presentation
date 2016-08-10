@@ -36,6 +36,8 @@ class NTIRelatedWorkRef(PersistentPresentationAsset):
 	__external_class_name__ = u"RelatedWork"
 	mime_type = mimeType = u'application/vnd.nextthought.relatedworkref'
 
+	target = None
+	
 	Creator = alias('creator')
 	desc = alias('description')
 	target_ntiid = alias('target')
