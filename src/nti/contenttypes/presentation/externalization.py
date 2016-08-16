@@ -67,7 +67,8 @@ class _NTIRelatedWorkRefExternalizer(object):
 
 	def toExternalObject(self, **kwargs):
 		result = InterfaceObjectIO(self.obj, INTIRelatedWorkRef).toExternalObject(**kwargs)
-		result['href'] = self.obj.href
+		if 'href' not in result:
+			result['href'] = self.obj.href
 		return result
 
 @component.adapter(INTITimeline)
@@ -79,7 +80,8 @@ class _NTITimelineExternalizer(object):
 
 	def toExternalObject(self, **kwargs):
 		result = InterfaceObjectIO(self.obj, INTITimeline).toExternalObject(**kwargs)
-		result['href'] = self.obj.href
+		if 'href' not in result:
+			result['href'] = self.obj.href
 		return result
 
 @component.adapter(INTILessonOverview)
