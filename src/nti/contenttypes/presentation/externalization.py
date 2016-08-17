@@ -14,13 +14,9 @@ from collections import Mapping
 from zope import component
 from zope import interface
 
-from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
-from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 
 from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
-
-from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.externalization.externalization import to_external_object
 
@@ -57,32 +53,6 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
 		result[ITEMS] = [to_external_object(x, *args, **kwargs) for x in self._ext_self]
 		return result
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
-
-@component.adapter(INTIRelatedWorkRef)
-@interface.implementer(IInternalObjectExternalizer)
-class _NTIRelatedWorkRefExternalizer(object):
-
-	def __init__(self, obj):
-		self.obj = obj
-
-	def toExternalObject(self, **kwargs):
-		result = InterfaceObjectIO(self.obj, INTIRelatedWorkRef).toExternalObject(**kwargs)
-		if 'href' not in result:
-			result['href'] = self.obj.href
-		return result
-
-@component.adapter(INTITimeline)
-@interface.implementer(IInternalObjectExternalizer)
-class _NTITimelineExternalizer(object):
-
-	def __init__(self, obj):
-		self.obj = obj
-
-	def toExternalObject(self, **kwargs):
-		result = InterfaceObjectIO(self.obj, INTITimeline).toExternalObject(**kwargs)
-		if 'href' not in result:
-			result['href'] = self.obj.href
-		return result
 
 @component.adapter(INTILessonOverview)
 @interface.implementer(IInternalObjectExternalizer)
