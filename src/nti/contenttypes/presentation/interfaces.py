@@ -627,7 +627,19 @@ class IPresentationAssetCreatedEvent(IObjectCreatedEvent):
 class PresentationAssetCreatedEvent(ObjectCreatedEvent):
 
 	def __init__(self, obj, principal=None, externalValue=None):
-		self.object = obj
+		super(PresentationAssetCreatedEvent, self)__init__(obj)
+		self.principal = principal
+		self.externalValue = externalValue
+
+class IWillUpdatePresentationAssetEvent(IObjectEvent):
+	principal = interface.Attribute("Updater principal")
+	externalValue = interface.Attribute("External object")
+
+@interface.implementer(IWillUpdatePresentationAssetEvent)
+class WillUpdatePresentationAssetEvent(ObjectEvent):
+
+	def __init__(self, obj, principal=None, externalValue=None):
+		super(WillUpdatePresentationAssetEvent, self)__init__(obj)
 		self.principal = principal
 		self.externalValue = externalValue
 
