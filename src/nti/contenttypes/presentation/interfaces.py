@@ -627,7 +627,7 @@ class IPresentationAssetCreatedEvent(IObjectCreatedEvent):
 class PresentationAssetCreatedEvent(ObjectCreatedEvent):
 
 	def __init__(self, obj, principal=None, externalValue=None):
-		super(PresentationAssetCreatedEvent, self)__init__(obj)
+		super(PresentationAssetCreatedEvent, self).__init__(obj)
 		self.principal = principal
 		self.externalValue = externalValue
 
@@ -639,7 +639,7 @@ class IWillUpdatePresentationAssetEvent(IObjectEvent):
 class WillUpdatePresentationAssetEvent(ObjectEvent):
 
 	def __init__(self, obj, principal=None, externalValue=None):
-		super(WillUpdatePresentationAssetEvent, self)__init__(obj)
+		super(WillUpdatePresentationAssetEvent, self).__init__(obj)
 		self.principal = principal
 		self.externalValue = externalValue
 
