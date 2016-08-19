@@ -173,7 +173,7 @@ class TestJsonSchema(unittest.TestCase):
 		schema = a.schema()
 		assert_that(schema, has_key(FIELDS))
 		fields = schema[FIELDS]
-		assert_that(fields, has_length(4))
+		assert_that(fields, has_length(7))
 		assert_that(fields, has_entry('Items', has_entry('base_type',
 														 'application/vnd.nextthought.nticourseoverviewgroup')))
 		assert_that(schema, has_key(ACCEPTS))

@@ -40,6 +40,7 @@ from nti.coremetadata.interfaces import ITitled
 from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import ILastModified
+from nti.coremetadata.interfaces import ICalendarPublishable
 from nti.coremetadata.interfaces import IRecordableContainer
 from nti.coremetadata.interfaces import IObjectJsonSchemaMaker
 
@@ -544,7 +545,7 @@ INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
 						 ICoursePresentationAsset, IFiniteSequence, IIterable,
-						 IRecordableContainer):
+						 IRecordableContainer, ICalendarPublishable):
 
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
 						 	title="The overview items", required=False, min_length=0)
