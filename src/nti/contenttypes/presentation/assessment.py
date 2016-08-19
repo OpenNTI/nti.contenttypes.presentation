@@ -15,8 +15,6 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
-from nti.common.property import alias
-
 from nti.contenttypes.presentation import NTI_POLL_REF
 from nti.contenttypes.presentation import NTI_SURVEY_REF
 from nti.contenttypes.presentation import NTI_QUESTION_REF
@@ -30,6 +28,8 @@ from nti.contenttypes.presentation.interfaces import INTISurveyRef
 from nti.contenttypes.presentation.interfaces import INTIQuestionRef
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
+
+from nti.property.property import alias
 
 from nti.schema.eqhash import EqHash
 

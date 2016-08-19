@@ -34,8 +34,6 @@ from zope.schema import vocabulary
 
 from dolmen.builtins.interfaces import IIterable
 
-from nti.common.property import alias
-
 from nti.contenttypes.presentation.schema import VisibilityField
 
 from nti.coremetadata.interfaces import ITitled
@@ -49,6 +47,8 @@ from nti.namedfile.interfaces import INamedFile
 from nti.namedfile.interfaces import IFileConstrained
 
 from nti.ntiids.schema import ValidNTIID
+
+from nti.property.property import alias
 
 from nti.schema.field import Int
 from nti.schema.field import Bool

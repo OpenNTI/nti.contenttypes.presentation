@@ -53,13 +53,13 @@ setup(
 		'zope.interface',
 		'zope.schema',
 		'zope.security',
-		'nti.common',
 		'nti.coremetadata',
 		'nti.dublincore',
 		'nti.externalization',
 		'nti.mimetype',
 		'nti.namedfile',
 		'nti.ntiids',
+		'nti.property',
 		'nti.schema'
 	],
 	extras_require={

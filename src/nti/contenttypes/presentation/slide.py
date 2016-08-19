@@ -18,9 +18,6 @@ from zope.cachedescriptors.property import readproperty
 
 from persistent.list import PersistentList
 
-from nti.common.property import alias
-from nti.common.property import CachedProperty
-
 from nti.contenttypes.presentation import NTI_SLIDE
 from nti.contenttypes.presentation import NTI_SLIDE_DECK
 from nti.contenttypes.presentation import NTI_SLIDE_VIDEO
@@ -34,6 +31,9 @@ from nti.contenttypes.presentation.interfaces import INTISlide
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
+
+from nti.property.property import alias
+from nti.property.property import CachedProperty
 
 from nti.schema.eqhash import EqHash
 

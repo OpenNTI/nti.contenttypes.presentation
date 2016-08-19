@@ -15,8 +15,6 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
-from nti.common.property import alias
-
 from nti.contenttypes.presentation import NTI_TIMELINE
 from nti.contenttypes.presentation import NTI_TIMELIME_REF
 
@@ -24,6 +22,8 @@ from nti.contenttypes.presentation._base import PersistentPresentationAsset
 
 from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
+
+from nti.property.property import alias
 
 from nti.schema.eqhash import EqHash 
 

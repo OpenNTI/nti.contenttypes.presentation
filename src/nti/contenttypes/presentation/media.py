@@ -19,8 +19,6 @@ from zope.mimetype.interfaces import IContentTypeAware
 
 from persistent.list import PersistentList
 
-from nti.common.property import alias
-
 from nti.contenttypes.presentation import NTI_AUDIO
 from nti.contenttypes.presentation import NTI_VIDEO
 from nti.contenttypes.presentation import NTI_AUDIO_REF
@@ -46,6 +44,8 @@ from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
+
+from nti.property.property import alias
 
 from nti.schema.eqhash import EqHash
 

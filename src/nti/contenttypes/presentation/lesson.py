@@ -17,8 +17,6 @@ from zope.cachedescriptors.property import readproperty
 
 from persistent.list import PersistentList
 
-from nti.common.property import alias
-
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
 from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_SPACER
 
@@ -30,6 +28,8 @@ from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
 
 from nti.coremetadata.mixins import CalendarPublishableMixin
 from nti.coremetadata.mixins import RecordableContainerMixin
+
+from nti.property.property import alias
 
 from nti.schema.eqhash import EqHash
 
