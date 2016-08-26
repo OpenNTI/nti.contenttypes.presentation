@@ -29,6 +29,8 @@ from nti.contenttypes.presentation import SLIDE_DECK_MIMETYES
 from nti.contenttypes.presentation import TIMELINE_REF_MIMETYES
 from nti.contenttypes.presentation import SLIDE_DECK_REF_MIMETYES
 from nti.contenttypes.presentation import ALL_MEDIA_ROLL_MIME_TYPES
+from nti.contenttypes.presentation import RELATED_WORK_REF_MIMETYES
+from nti.contenttypes.presentation import RELATED_WORK_REF_POINTER_MIMETYES
 
 from nti.contenttypes.presentation.discussion import is_nti_course_bundle
 
@@ -55,6 +57,7 @@ from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 
 from nti.externalization.datastructures import InterfaceObjectIO
 
@@ -407,6 +410,15 @@ class _NTITimelineRefUpdater(_TargetNTIIDUpdater):
 		self.fixTarget(parsed, transfer=True)
 		return self.fixCreator(parsed)
 
+@component.adapter(INTIRelatedWorkRefPointer)
+class _NTIRelatedWorkRefPointerUpdater(_TargetNTIIDUpdater):
+
+	_ext_iface_upper_bound = INTIRelatedWorkRefPointer
+
+	def fixAll(self, parsed):
+		self.fixTarget(parsed, transfer=True)
+		return self.fixCreator(parsed)
+
 @component.adapter(INTISurveyRef)
 class _NTISurveyRefUpdater(_TargetNTIIDUpdater):
 
@@ -569,16 +581,28 @@ def internalization_ntitimeline_pre_hook(k, x):
 def internalization_ntitimelineref_pre_hook(k, x):
 	if is_time_line(x):
 		x[MIMETYPE] = TIMELINE_REF_MIMETYES[0]
-		
-def internalization_relatedworkref_pre_hook(k, x):
+
+def is_relatedwork_ref(x):
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
 		if 		ntiid \
 			and (	'.relatedworkref.' in ntiid
 				 or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
-			x[MIMETYPE] = "application/vnd.nextthought.relatedworkref"
+			result = True
+	elif mimeType in RELATED_WORK_REF_MIMETYES:
+		result = True
+	return result
 
+def internalization_relatedworkref_pre_hook(k, x):
+	if is_relatedwork_ref(x):
+		x[MIMETYPE] = RELATED_WORK_REF_MIMETYES[0]
+
+def internalization_relatedworkrefpointer_pre_hook(k, x):
+	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
+	if mimeType in RELATED_WORK_REF_POINTER_MIMETYES:
+		x[MIMETYPE] = RELATED_WORK_REF_POINTER_MIMETYES[0]
+		
 def internalization_mediaroll_pre_hook(k, x):
 	if k == ITEMS and isinstance(x, MutableSequence):
 		for item in x:
@@ -607,8 +631,9 @@ def internalization_courseoverview_pre_hook(k, x):
 			internalization_assignmentref_pre_hook(None, item)
 			internalization_ntitimelineref_pre_hook(None, item)
 			internalization_questionsetref_pre_hook(None, item)
-			internalization_relatedworkref_pre_hook(None, item)
-
+			internalization_relatedworkref_pre_hook(None, item) # TODO: remove
+			# internalization_relatedworkrefpointer_pre_hook(None, item)
+			
 			# do checks
 			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
 

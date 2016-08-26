@@ -163,10 +163,10 @@ class TestJsonSchema(unittest.TestCase):
 		assert_that(schema, has_key(FIELDS))
 		fields = schema[FIELDS]
 		assert_that(fields, has_length(4))
-		assert_that(fields, has_entry('Items', has_entry('base_type', has_length(16))))
+		assert_that(fields, has_entry('Items', has_entry('base_type', has_length(17))))
 		assert_that(schema, has_key(ACCEPTS))
 		accepts = schema[ACCEPTS]
-		assert_that(accepts, has_length(16))
+		assert_that(accepts, has_length(17))
 
 	def test_lesson(self):
 		a = NTILessonOverView()

@@ -28,6 +28,10 @@
 			 for=".interfaces.INTITimeline"
 			 provides=".interfaces.INTITimelineRef" />
 
+	<adapter factory=".adapters.relatedworkref_to_relatedworkrefpointer"
+			 for=".interfaces.INTIRelatedWorkRef"
+			 provides=".interfaces.INTIRelatedWorkRefPointer" />
+
 	<!-- Utilities -->
 	<utility factory=".common.DefaultVisibilityOptionProvider" />
 
@@ -72,7 +76,8 @@
 						 .interfaces.INTIMediaRoll
 						 .interfaces.INTIAudioRoll
 						 .interfaces.INTIVideoRoll
-						 .interfaces.INTICourseOverviewSpacer"
+						 .interfaces.INTICourseOverviewSpacer
+						 .interfaces.INTIRelatedWorkRefPointer"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 
 	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
@@ -133,6 +138,10 @@
 
 	<adapter factory=".internalization._NTIRelatedWorkUpdater"
 			 for=".interfaces.INTIRelatedWorkRef"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
+	<adapter factory=".internalization._NTIRelatedWorkRefPointerUpdater"
+			 for=".interfaces.INTIRelatedWorkRefPointer"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
 	<adapter factory=".internalization._NTIDiscussionRefUpdater"

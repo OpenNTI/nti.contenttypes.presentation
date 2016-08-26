@@ -112,6 +112,9 @@ RELATED_WORK_REF = 'RelatedWorkRef'
 NTI_RELATED_WORK_REF = 'NTIRelatedWorkRef'
 RELATED_WORK = NTI_RELATED_WORK = 'RelatedWork'
 
+#: Related Workf Ref Pointer NTIID type
+NTI_RELATED_WORK_REF_POINTER = u'NTIRelatedWorkRefPointer'
+
 ENROLLED_COURSE_ROOT = 'EnrolledCourseRoot'
 ENROLLED_COURSE_SECTION = 'EnrolledCourseSection'
 
@@ -147,7 +150,10 @@ AUDIO_MIMETYES = ('application/vnd.nextthought.ntiaudio',)
 VIDEO_MIMETYES = ('application/vnd.nextthought.ntivideo',)
 AUDIO_REF_MIMETYES = ('application/vnd.nextthought.ntiaudioref',)
 VIDEO_REF_MIMETYES = ('application/vnd.nextthought.ntivideoref',)
+
 RELATED_WORK_REF_MIMETYES = ('application/vnd.nextthought.relatedworkref',)
+RELATED_WORK_REF_POINTER_MIMETYES = ('application/vnd.nextthought.relatedworkrefpointer',)
+
 LESSON_OVERVIEW_MIMETYES = ('application/vnd.nextthought.ntilessonoverview',)
 COURSE_OVERVIEW_GROUP_MIMETYES = ('application/vnd.nextthought.nticourseoverviewgroup',)
 

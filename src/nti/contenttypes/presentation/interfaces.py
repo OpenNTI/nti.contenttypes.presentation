@@ -435,6 +435,10 @@ class INTITimelineRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 	target = ValidNTIID(title="Target NTIID", required=False)
 ITimelineRef = INTITimelineRef  # BWC
 
+class INTIRelatedWorkRefPointer(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
+				   	 			ICoursePresentationAsset):
+	target = ValidNTIID(title="Target NTIID", required=False)
+
 class INTIDocketMixin(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable):
 	label = ValidTextLine(title="The label", required=True, default=u'')
 	href = href_schema_field(title="Resource href", required=False, default=u'')

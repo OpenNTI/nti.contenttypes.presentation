@@ -20,9 +20,13 @@ from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
 from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 
 from nti.contenttypes.presentation.media import NTIAudioRef
 from nti.contenttypes.presentation.media import NTIVideoRef
+
+from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRefPointer
 
 from nti.contenttypes.presentation.slide import NTISlideDeckRef
 
@@ -60,4 +64,12 @@ def timeline_to_ntitimelineref(timeline):
 	result = NTITimeLineRef(target=timeline.ntiid)
 	result.byline = timeline.byline
 	result.creator = timeline.creator
+	return result
+
+@component.adapter(INTIRelatedWorkRef)
+@interface.implementer(INTIRelatedWorkRefPointer)
+def relatedworkref_to_relatedworkrefpointer(context):
+	result = NTIRelatedWorkRefPointer(target=context.ntiid)
+	result.byline = context.byline
+	result.creator = context.creator
 	return result

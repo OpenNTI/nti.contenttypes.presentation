@@ -16,10 +16,12 @@ from zope import interface
 from zope.cachedescriptors.property import readproperty
 
 from nti.contenttypes.presentation import NTI_RELATED_WORK_REF
+from nti.contenttypes.presentation import NTI_RELATED_WORK_REF_POINTER
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
 
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 
 from nti.property.property import alias
 
@@ -63,6 +65,21 @@ class NTIRelatedWorkRef(PersistentPresentationAsset):
 			return (self.mimeType, self.label) > (other.mimeType, other.label)
 		except AttributeError:
 			return NotImplemented
+
+@EqHash('ntiid')
+@interface.implementer(INTIRelatedWorkRefPointer)
+class NTIRelatedWorkRefPointer(PersistentPresentationAsset):
+	createDirectFieldProperties(INTIRelatedWorkRefPointer)
+
+	__external_class_name__ = u"RelatedWorkRefPointer"
+	mime_type = mimeType = u'application/vnd.nextthought.relatedworkrefpointer'
+
+	__name__ = alias('ntiid')
+
+	@readproperty
+	def ntiid(self):
+		self.ntiid = self.generate_ntiid(NTI_RELATED_WORK_REF_POINTER)
+		return self.ntiid
 
 import zope.deferredimport
 zope.deferredimport.initialize()

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals, absolute_import, division
-from hamcrest.library.number.ordering_comparison import greater_than_or_equal_to
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -13,6 +12,7 @@ from hamcrest import none
 from hamcrest import is_not
 from hamcrest import has_length
 from hamcrest import assert_that
+from hamcrest import greater_than_or_equal_to
 
 from nti.testing.matchers import validly_provides
 from nti.testing.matchers import verifiably_provides
@@ -50,12 +50,12 @@ class TestModule(unittest.TestCase):
 
 	def test_ifaces(self):
 		assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
-		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(16))
+		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(17))
 
 		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
-		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(22))
+		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(23))
 
-		assert_that(COURSE_CONTAINER_INTERFACES, has_length(16))
+		assert_that(COURSE_CONTAINER_INTERFACES, has_length(17))
 		assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))
 
 	def test_asset_ifaces(self):
@@ -86,7 +86,7 @@ class TestModule(unittest.TestCase):
 
 		module = sys.modules[INTILessonOverview.__module__]
 		members = list(inspect.getmembers(module, _ext_mime_type_predicate))
-		assert_that(members, has_length(37))
+		assert_that(members, has_length(38))
 
 	def test_visibility_options(self):
 		options = get_visibility_options()
