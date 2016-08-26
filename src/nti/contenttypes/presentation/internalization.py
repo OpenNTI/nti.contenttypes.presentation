@@ -583,6 +583,7 @@ def internalization_ntitimelineref_pre_hook(k, x):
 		x[MIMETYPE] = TIMELINE_REF_MIMETYES[0]
 
 def is_relatedwork_ref(x):
+	result = False
 	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
 	if not mimeType:
 		ntiid = x.get('ntiid') or x.get(NTIID) if isinstance(x, Mapping) else None
