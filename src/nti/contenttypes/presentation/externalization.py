@@ -16,6 +16,10 @@ from zope import interface
 
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 
+from nti.coremetadata.interfaces import IRecordable
+from nti.coremetadata.interfaces import IPublishable
+from nti.coremetadata.interfaces import IRecordableContainer
+
 from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
 
 from nti.externalization.externalization import to_external_object
@@ -64,6 +68,12 @@ class _LessonOverviewExporter(object):
 	def _decorate_callback(self, obj, result):
 		if isinstance(result, Mapping) and MIMETYPE not in result:
 			decorateMimeType(obj, result)
+			if IRecordable.providedBy(obj):
+				result['isLocked'] = obj.isLocked()
+			if IRecordableContainer.providedBy(obj):
+				result['isChildOrderLocked'] = obj.isChildOrderLocked()
+			if IPublishable.providedBy(obj):
+				result['isPublished'] = obj.isPublished()
 
 	def toExternalObject(self, **kwargs):
 		mod_args = dict(**kwargs)
