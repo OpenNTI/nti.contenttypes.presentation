@@ -600,8 +600,7 @@ def internalization_relatedworkref_pre_hook(k, x):
 		x[MIMETYPE] = RELATED_WORK_REF_MIMETYES[0]
 
 def internalization_relatedworkrefpointer_pre_hook(k, x):
-	mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-	if mimeType in RELATED_WORK_REF_POINTER_MIMETYES:
+	if is_relatedwork_ref(x):
 		x[MIMETYPE] = RELATED_WORK_REF_POINTER_MIMETYES[0]
 		
 def internalization_mediaroll_pre_hook(k, x):
@@ -632,8 +631,7 @@ def internalization_courseoverview_pre_hook(k, x):
 			internalization_assignmentref_pre_hook(None, item)
 			internalization_ntitimelineref_pre_hook(None, item)
 			internalization_questionsetref_pre_hook(None, item)
-			internalization_relatedworkref_pre_hook(None, item) # TODO: remove
-			# internalization_relatedworkrefpointer_pre_hook(None, item)
+			internalization_relatedworkrefpointer_pre_hook(None, item)
 			
 			# do checks
 			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
