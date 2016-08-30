@@ -9,8 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import re
 import uuid
-from hashlib import md5
 
 from zope import component
 from zope import interface
@@ -28,7 +28,7 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
 
 def generate_ntiid(nttype, provider='NTI'):
-	digest = md5(str(uuid.uuid4())).hexdigest().upper()
+	digest = re.sub('-', '', str(uuid.uuid4())).upper()
 	specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
 	result = make_ntiid(provider=provider,
 						nttype=nttype,
