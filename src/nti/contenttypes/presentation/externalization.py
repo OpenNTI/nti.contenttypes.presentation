@@ -14,7 +14,10 @@ from collections import Mapping
 from zope import component
 from zope import interface
 
+from nti.contenttypes.presentation.interfaces import INTITimelineRef
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
+from nti.contenttypes.presentation.interfaces import IPresentationAsset
+from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 
 from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import IPublishable
@@ -65,15 +68,29 @@ class _LessonOverviewExporter(object):
 	def __init__(self, obj):
 		self.lesson = obj
 
+	def _decorat_object(self, obj, result):
+		decorateMimeType(obj, result)
+		if IRecordable.providedBy(obj):
+			result['isLocked'] = obj.isLocked()
+		if IRecordableContainer.providedBy(obj):
+			result['isChildOrderLocked'] = obj.isChildOrderLocked()
+		if IPublishable.providedBy(obj):
+			result['isPublished'] = obj.isPublished()
+
 	def _decorate_callback(self, obj, result):
 		if isinstance(result, Mapping) and MIMETYPE not in result:
-			decorateMimeType(obj, result)
-			if IRecordable.providedBy(obj):
-				result['isLocked'] = obj.isLocked()
-			if IRecordableContainer.providedBy(obj):
-				result['isChildOrderLocked'] = obj.isChildOrderLocked()
-			if IPublishable.providedBy(obj):
-				result['isPublished'] = obj.isPublished()
+			self._decorat_object(obj, result)
+
+	def _process_group(self, group, result, ext_params):
+		items = result.get(ITEMS) or ()
+		for idx, asset in enumerate(group):
+			if 		INTITimelineRef.providedBy(asset) \
+				or	INTIRelatedWorkRefPointer.providedBy(asset):
+				name = asset.target or u''
+				source = component.queryUtility(IPresentationAsset, name=name)
+				if source is not None: # replace refs with concrete obj
+					ext_obj = to_external_object(source, **ext_params)
+					items[idx] = ext_obj
 
 	def toExternalObject(self, **kwargs):
 		mod_args = dict(**kwargs)
@@ -81,6 +98,10 @@ class _LessonOverviewExporter(object):
 		mod_args['decorate'] = False  # no decoration
 		mod_args['decorate_callback'] = self._decorate_callback
 		result = to_external_object(self.lesson, **mod_args)
+		# make sure we have items
 		if ITEMS in result and result[ITEMS] is None:
 			result[ITEMS] = []
+		# process groups
+		for group, ext_obj in zip(self.lesson, result.get(ITEMS) or ()):
+			self._process_group(group, ext_obj, mod_args)
 		return result
