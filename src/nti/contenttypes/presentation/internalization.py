@@ -622,6 +622,8 @@ def internalization_courseoverview_pre_hook(k, x):
 		while idx < len(x):
 			item = x[idx]
 			# Swizzle out our concrete mime types for refs.
+			# don't include timelineref or relatedworkrefs pointers
+			# as we need the definitions during import
 			internalization_pollref_pre_hook(None, item)
 			internalization_surveyref_pre_hook(None, item)
 			internalization_ntiaudioref_pre_hook(None, item)
@@ -629,10 +631,8 @@ def internalization_courseoverview_pre_hook(k, x):
 			internalization_questionref_pre_hook(None, item)
 			internalization_slidedeckref_pre_hook(None, item)
 			internalization_assignmentref_pre_hook(None, item)
-			internalization_ntitimelineref_pre_hook(None, item)
 			internalization_questionsetref_pre_hook(None, item)
-			internalization_relatedworkrefpointer_pre_hook(None, item)
-			
+
 			# do checks
 			mimeType = item.get(MIMETYPE) if isinstance(item, Mapping) else None
 
