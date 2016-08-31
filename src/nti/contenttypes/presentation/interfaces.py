@@ -196,7 +196,13 @@ class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnot
 	"""
 IPresentationAsset.setTaggedValue('_ext_jsonschema', u'')
 
-class IPackagePresentationAsset(IPresentationAsset):
+class IConcreteAsset(IPresentationAsset):
+	"""
+	Marker interface for non-ref (concrete) types
+	"""
+IConcreteAsset.setTaggedValue('_ext_is_marker_interface', True)
+
+class IPackagePresentationAsset(IConcreteAsset):
 	pass
 IPackagePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
@@ -363,7 +369,7 @@ class INTIAudioRef(INTIMediaRef):
 	pass
 
 class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
-					ICreated, ICoursePresentationAsset, IIterable,
+					ICreated, ICoursePresentationAsset, IIterable, IConcreteAsset,
 					IFiniteSequence):
 
 	Items = IndexedIterable(value_type=Object(INTIMediaRef),
@@ -534,7 +540,7 @@ class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, ICoursePr
 
 class INTICourseOverviewGroup(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
 							  ICoursePresentationAsset, IFiniteSequence, IIterable,
-							  IRecordableContainer):
+							  IRecordableContainer, IConcreteAsset):
 
 	Items = IndexedIterable(value_type=Object(IGroupOverViewable),
 						 	title="The overview items", required=False, min_length=0)
@@ -549,7 +555,7 @@ INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
 						 ICoursePresentationAsset, IFiniteSequence, IIterable,
-						 IRecordableContainer, ICalendarPublishable):
+						 IRecordableContainer, ICalendarPublishable, IConcreteAsset):
 
 	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
 						 	title="The overview items", required=False, min_length=0)
