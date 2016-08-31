@@ -32,6 +32,7 @@ from nti.contenttypes.presentation.interfaces import INTIAudioRoll
 from nti.contenttypes.presentation.interfaces import INTIMediaRoll
 from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
+from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTIInquiryRef
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import INTIDocketMixin
@@ -199,16 +200,18 @@ def _set_ifaces():
 	module = sys.modules[IGroupOverViewable.__module__]
 	
 	# Ref interfaces that ARE NOT IMPLEMENTED
-	NO_IMPL_REF_IFACES = (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef, INTIDocketMixin)
+	NO_IMPL_REF_IFACES = (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef, 
+						  INTIDocketMixin)
 	
 	# Interfaces that ARE NOT IMPLEMENTED
-	NO_IMPL_IFACES = NO_IMPL_REF_IFACES + (INTIMediaSource, INTIMedia, INTIMediaRoll)
+	NO_IMPL_IFACES = NO_IMPL_REF_IFACES + (INTIMediaSource, INTIMedia, 
+										   INTIMediaRoll, IConcreteAsset)
 	
 	def _package_item_predicate(item):
 		result = bool(	  type(item) == interface.interface.InterfaceClass 
 					  and issubclass(item, IPackagePresentationAsset)
 					  and item != IPackagePresentationAsset
-					  and item not in (INTIMedia, INTIDocketMixin))
+					  and item not in (INTIMedia, INTIDocketMixin, IConcreteAsset))
 		return result
 	
 	def _course_item_predicate(item):
