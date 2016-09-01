@@ -203,21 +203,40 @@ class IConcreteAsset(IPresentationAsset):
 IConcreteAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 class IPackagePresentationAsset(IConcreteAsset):
-	pass
+	"""
+	Marker interface for assets whose home are content packages
+	"""
 IPackagePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 class ICoursePresentationAsset(IPresentationAsset):
-	pass
+	"""
+	Marker interface for assets whose home are courses
+	"""
 ICoursePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 class ILegacyPresentationAsset(IPresentationAsset):
-	pass
+	"""
+	Marker interface for assets that come from legacy courses/packages
+	"""
 ILegacyPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
-class IAssetRef(ICreated):
+class IPointer(interface.Interface):
+	"""
+	Marker interface for objects that point to another"
+	"""
 	target = interface.Attribute("target object id")
+IPointer.setTaggedValue('_ext_is_marker_interface', True)
+	
+class IAssetRef(IPresentationAsset, IPointer):
+	"""
+	Marker interface for pointer-presentation assets
+	"""
+IAssetRef.setTaggedValue('_ext_is_marker_interface', True)
 
 class IItemAssetContainer(interface.Interface):
+	"""
+	Base interface for assets that containt other assets
+	"""
 
 	Items = interface.Attribute("Items in this container")
 
@@ -445,7 +464,7 @@ class INTIRelatedWorkRefPointer(IAssetRef, IGroupOverViewable, INTIIDIdentifiabl
 				   	 			ICoursePresentationAsset):
 	target = ValidNTIID(title="Target NTIID", required=False)
 
-class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable):
+class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable, IPointer):
 	label = ValidTextLine(title="The label", required=True, default=u'')
 	href = href_schema_field(title="Resource href", required=False, default=u'')
 	icon = href_schema_field(title="Icon href", required=False)

@@ -19,6 +19,7 @@ from zope import interface
 
 from zope.interface.interfaces import IMethod
 
+from nti.contenttypes.presentation.interfaces import IAssetRef
 from nti.contenttypes.presentation.interfaces import IMediaRef
 from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTIMedia
@@ -35,7 +36,7 @@ from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTIInquiryRef
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
-from nti.contenttypes.presentation.interfaces import INTIDocketMixin
+from nti.contenttypes.presentation.interfaces import INTIDocketAsset
 from nti.contenttypes.presentation.interfaces import INTIMediaSource
 from nti.contenttypes.presentation.interfaces import INTIAssessmentRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
@@ -201,7 +202,7 @@ def _set_ifaces():
 	
 	# Ref interfaces that ARE NOT IMPLEMENTED
 	NO_IMPL_REF_IFACES = (INTIMediaRef, INTIAssessmentRef, INTIInquiryRef, 
-						  INTIDocketMixin)
+						  INTIDocketAsset, IAssetRef)
 	
 	# Interfaces that ARE NOT IMPLEMENTED
 	NO_IMPL_IFACES = NO_IMPL_REF_IFACES + (INTIMediaSource, INTIMedia, 
@@ -211,7 +212,7 @@ def _set_ifaces():
 		result = bool(	  type(item) == interface.interface.InterfaceClass 
 					  and issubclass(item, IPackagePresentationAsset)
 					  and item != IPackagePresentationAsset
-					  and item not in (INTIMedia, INTIDocketMixin, IConcreteAsset))
+					  and item not in (INTIMedia, INTIDocketAsset, IConcreteAsset))
 		return result
 	
 	def _course_item_predicate(item):
