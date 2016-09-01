@@ -445,24 +445,26 @@ class INTIRelatedWorkRefPointer(IAssetRef, IGroupOverViewable, INTIIDIdentifiabl
 				   	 			ICoursePresentationAsset):
 	target = ValidNTIID(title="Target NTIID", required=False)
 
-class INTIDocketMixin(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable):
+class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable):
 	label = ValidTextLine(title="The label", required=True, default=u'')
 	href = href_schema_field(title="Resource href", required=False, default=u'')
 	icon = href_schema_field(title="Icon href", required=False)
 	target = ValidNTIID(title="Target NTIID", required=False)
+INTIDocketMixin = INTIDocketAsset
 
-class INTITimeline(INTIDocketMixin, IGroupOverViewable, IFileConstrained):
+class INTITimeline(INTIDocketAsset, IGroupOverViewable, IFileConstrained):
 	description = ValidTextLine(title="Timeline description", required=False)
 	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
-class INTIRelatedWorkRef(INTIDocketMixin, IAssetRef, ICreated, IVisible, IFileConstrained):
+class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible, IFileConstrained):
 	byline = byline_schema_field(required=False)
 	section = ValidTextLine(title="Section", required=False)
 	description = ValidText(title="Slide video description", required=False)
 	type = ValidTextLine(title="The target mimetype", required=False)
 	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
 					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
+	target = ValidTextLine(title="Related work target", required=False)
 
 class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
 						ITitled, ICoursePresentationAsset, IFileConstrained):
