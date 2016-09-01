@@ -100,6 +100,7 @@ class _AssetUpdater(InterfaceObjectIO):
 	def takeOwnership(self, parent, items):
 		for item in items or ():
 			item.__parent__ = parent
+		return self
 
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		self.fixAll(parsed)
@@ -122,6 +123,11 @@ class _NTIMediaUpdater(_AssetUpdater):
 	def fixAll(self, parsed):
 		self.fixCreator(parsed).parseTranscripts(parsed)
 		return parsed
+
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		result = super(_NTIMediaUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		self.takeOwnership(self._ext_self, getattr(self._ext_self, 'transcripts', None))
+		return result
 
 @component.adapter(INTIVideo)
 class _NTIVideoUpdater(_NTIMediaUpdater):
@@ -150,6 +156,11 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
 		self.parseSources(parsed).parseTranscripts(parsed).fixCloseCaption(parsed).fixCreator(parsed)
 		return parsed
 
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		result = super(_NTIVideoUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		self.takeOwnership(self._ext_self, getattr(self._ext_self, 'sources', None))
+		return result
+
 @component.adapter(INTIAudio)
 class _NTIAudioUpdater(_NTIMediaUpdater):
 
@@ -169,6 +180,11 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 	def fixAll(self, parsed):
 		self.fixCreator(parsed).parseSources(parsed).parseTranscripts(parsed)
 		return parsed
+
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		result = super(_NTIAudioUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		self.takeOwnership(self._ext_self, getattr(self._ext_self, 'sources', None))
+		return result
 
 class _TargetNTIIDUpdater(_AssetUpdater):
 
