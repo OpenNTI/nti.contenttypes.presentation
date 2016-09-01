@@ -15,6 +15,8 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
+from zope.container.contained import Contained
+
 from zope.mimetype.interfaces import IContentTypeAware
 
 from persistent.list import PersistentList
@@ -52,7 +54,7 @@ from nti.schema.eqhash import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 @interface.implementer(INTITranscript, IContentTypeAware)
-class NTITranscript(PersistentMixin):
+class NTITranscript(PersistentMixin, Contained):
 	createDirectFieldProperties(INTITranscript)
 
 	__external_class_name__ = u"Transcript"
@@ -63,7 +65,7 @@ class NTITranscript(PersistentMixin):
 		return result
 
 @interface.implementer(INTIAudioSource, IContentTypeAware)
-class NTIAudioSource(PersistentMixin):
+class NTIAudioSource(PersistentMixin, Contained):
 	createDirectFieldProperties(INTIAudioSource)
 
 	__external_class_name__ = u"VideoSource"
@@ -74,7 +76,7 @@ class NTIAudioSource(PersistentMixin):
 		return result
 
 @interface.implementer(INTIVideoSource, IContentTypeAware)
-class NTIVideoSource(PersistentMixin):
+class NTIVideoSource(PersistentMixin, Contained):
 	createDirectFieldProperties(INTIVideoSource)
 
 	__external_class_name__ = u"VideoSource"
