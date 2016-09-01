@@ -54,7 +54,7 @@ class NTIDiscussionRef(PersistentPresentationAsset):
 
 	def isCourseBundle(self):
 		return is_nti_course_bundle(self.id or self.ntiid)
-	is_nti_course_bundle = isCourseBundle
+	is_course_bundle = is_nti_course_bundle = isCourseBundle
 
 	def __lt__(self, other):
 		try:
