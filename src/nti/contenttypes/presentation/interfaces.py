@@ -244,7 +244,7 @@ class IGroupOverViewable(interface.Interface):
 	"""
 IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
-class INTITranscript(ILastModified):
+class INTITranscript(ILastModified, IContained):
 	src = href_schema_field(title="Transcript source", required=True)
 	srcjsonp = href_schema_field(title="Transcript source jsonp", required=False)
 	lang = ValidTextLine(title="Transcript language", required=True, default='en')
@@ -255,7 +255,7 @@ class INTITranscript(ILastModified):
 class INTIIDIdentifiable(interface.Interface):
 	ntiid = ValidNTIID(title="Item NTIID", required=False, default=None)
 
-class INTIMediaSource(ILastModified):
+class INTIMediaSource(ILastModified, IContained):
 	service = ValidTextLine(title="Source service", required=True)
 	thumbnail = href_schema_field(title="Source thumbnail", required=False)
 
