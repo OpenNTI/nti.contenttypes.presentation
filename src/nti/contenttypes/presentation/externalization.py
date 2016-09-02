@@ -14,10 +14,9 @@ from collections import Mapping
 from zope import component
 from zope import interface
 
-from nti.contenttypes.presentation.interfaces import INTITimelineRef
+from nti.contenttypes.presentation.interfaces import IPointer
+from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
-from nti.contenttypes.presentation.interfaces import IPresentationAsset
-from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 
 from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import IPublishable
@@ -84,13 +83,10 @@ class _LessonOverviewExporter(object):
 	def _process_group(self, group, result, ext_params):
 		items = result.get(ITEMS) or ()
 		for idx, asset in enumerate(group):
-			if 		INTITimelineRef.providedBy(asset) \
-				or	INTIRelatedWorkRefPointer.providedBy(asset):
-				name = asset.target or u''
-				source = component.queryUtility(IPresentationAsset, name=name)
-				if source is not None: # replace refs with concrete obj
-					ext_obj = to_external_object(source, **ext_params)
-					items[idx] = ext_obj
+			if IPointer.providedBy(asset):
+				source = IConcreteAsset(asset, asset)
+				ext_obj = to_external_object(source, **ext_params)
+				items[idx] = ext_obj
 
 	def toExternalObject(self, **kwargs):
 		mod_args = dict(**kwargs)
