@@ -9,8 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import re
-import uuid
+import os
+from datetime import datetime
 
 from zope import component
 from zope import interface
@@ -27,9 +27,13 @@ from nti.ntiids.ntiids import TYPE_UUID
 from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
 
+os.urandom(1)
+
 def generate_ntiid(nttype, provider='NTI'):
-	digest = re.sub('-', '', str(uuid.uuid4())).upper()
-	specific = make_specific_safe(TYPE_UUID + ".%s" % digest)
+	now = datetime.utcnow()
+	dstr = now.strftime("%Y-%m-%d %H:%M:%S %f")
+	rand = os.urandom(10).encode('hex').upper()
+	specific = make_specific_safe("%s_%s_%s" % (TYPE_UUID, dstr, rand))
 	result = make_ntiid(provider=provider,
 						nttype=nttype,
 						specific=specific)
