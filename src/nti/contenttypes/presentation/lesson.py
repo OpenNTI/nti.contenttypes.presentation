@@ -31,11 +31,8 @@ from nti.coremetadata.mixins import RecordableContainerMixin
 
 from nti.property.property import alias
 
-from nti.schema.eqhash import EqHash
-
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-@EqHash('ntiid')
 @interface.implementer(INTICourseOverviewSpacer)
 class NTICourseOverViewSpacer(PersistentPresentationAsset):
 	createDirectFieldProperties(INTICourseOverviewSpacer)
