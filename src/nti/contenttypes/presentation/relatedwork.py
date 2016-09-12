@@ -30,7 +30,6 @@ from nti.schema.eqhash import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 @total_ordering
-@EqHash('ntiid')
 @interface.implementer(INTIRelatedWorkRef)
 class NTIRelatedWorkRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIRelatedWorkRef)
@@ -39,7 +38,7 @@ class NTIRelatedWorkRef(PersistentPresentationAsset):
 	mime_type = mimeType = u'application/vnd.nextthought.relatedworkref'
 
 	target = None
-	
+
 	Creator = alias('creator')
 	desc = alias('description')
 	target_ntiid = alias('target')
@@ -66,7 +65,7 @@ class NTIRelatedWorkRef(PersistentPresentationAsset):
 		except AttributeError:
 			return NotImplemented
 
-@EqHash('ntiid')
+@EqHash('target')
 @interface.implementer(INTIRelatedWorkRefPointer)
 class NTIRelatedWorkRefPointer(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIRelatedWorkRefPointer)

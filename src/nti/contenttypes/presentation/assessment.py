@@ -31,29 +31,26 @@ from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
 
 from nti.property.property import alias
 
-from nti.schema.eqhash import EqHash
-
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 import zope.deferredimport
 zope.deferredimport.initialize()
 
 @total_ordering
-@EqHash('ntiid')
 class NTIAssessmentRef(PersistentPresentationAsset):
 
 	nttype = 'NTIAssessmentRef'
 	target_ntiid = alias('target')
-	
+
 	@readproperty
 	def ntiid(self):
 		self.ntiid = self.generate_ntiid(self.nttype)
 		return self.ntiid
-	
+
 	@readproperty
 	def target(self):
 		return self.ntiid
-	
+
 	def __lt__(self, other):
 		try:
 			return (self.mimeType, self.label) < (other.mimeType, other.label)
@@ -73,7 +70,7 @@ class NTIAssignmentRef(NTIAssessmentRef):
 	__external_class_name__ = u"AssignmentRef"
 	mime_type = mimeType = u"application/vnd.nextthought.assignmentref"
 
-	nttype = NTI_ASSIGNMENT_REF 
+	nttype = NTI_ASSIGNMENT_REF
 	ContainerId = alias('containerId')
 
 	def __lt__(self, other):
@@ -95,8 +92,8 @@ class NTIQuestionSetRef(NTIAssessmentRef):
 	__external_class_name__ = u"QuestionSetRef"
 	mime_type = mimeType = u"application/vnd.nextthought.questionsetref"
 
-	nttype = NTI_QUESTION_SET_REF 
-	
+	nttype = NTI_QUESTION_SET_REF
+
 zope.deferredimport.deprecated(
 	"Import from NTIQuestionSetRef instead",
 	NTQuestionSetRef='nti.contenttypes.presentation.assessment:NTIQuestionSetRef')
@@ -107,8 +104,8 @@ class NTIQuestionRef(NTIAssessmentRef):
 
 	__external_class_name__ = u"QuestionRef"
 	mime_type = mimeType = u"application/vnd.nextthought.questionref"
-	
-	nttype = NTI_QUESTION_REF 
+
+	nttype = NTI_QUESTION_REF
 
 zope.deferredimport.deprecated(
 	"Import from NTIQuestionRef instead",
@@ -121,7 +118,7 @@ class NTISurveyRef(NTIAssessmentRef):
 	__external_class_name__ = u"SurveyRef"
 	mime_type = mimeType = u"application/vnd.nextthought.surveyref"
 
-	nttype = NTI_SURVEY_REF 
+	nttype = NTI_SURVEY_REF
 	ContainerId = alias('containerId')
 
 @interface.implementer(INTIPollRef)
@@ -130,5 +127,5 @@ class NTIPollRef(NTIAssessmentRef):
 
 	__external_class_name__ = u"PollRef"
 	mime_type = mimeType = u"application/vnd.nextthought.pollref"
-	
-	nttype = NTI_POLL_REF 
+
+	nttype = NTI_POLL_REF

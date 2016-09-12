@@ -26,12 +26,9 @@ from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid
 
-from nti.schema.eqhash import EqHash
-
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 @total_ordering
-@EqHash('ntiid')
 @interface.implementer(INTIDiscussionRef)
 class NTIDiscussionRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIDiscussionRef)

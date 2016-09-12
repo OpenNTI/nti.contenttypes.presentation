@@ -50,7 +50,6 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 		return result
 
 @total_ordering
-@EqHash('ntiid')
 @interface.implementer(INTILessonOverview)
 class NTILessonOverView(CalendarPublishableMixin,
 						RecordableContainerMixin,
@@ -124,7 +123,7 @@ class NTILessonOverView(CalendarPublishableMixin,
 			del self.items[:]
 		return result
 	clear = reset
-	
+
 	def __lt__(self, other):
 		try:
 			return (self.mimeType, self.title) < (other.mimeType, other.title)

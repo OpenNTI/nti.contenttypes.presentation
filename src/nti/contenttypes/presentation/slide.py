@@ -39,7 +39,6 @@ from nti.schema.eqhash import EqHash
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-@EqHash('ntiid')
 @interface.implementer(INTISlide)
 class NTISlide(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlide)
@@ -61,7 +60,6 @@ class NTISlide(PersistentPresentationAsset):
 		self.ntiid = self.generate_ntiid(NTI_SLIDE)
 		return self.ntiid
 
-@EqHash('ntiid')
 @interface.implementer(INTISlideVideo)
 class NTISlideVideo(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlideVideo)
@@ -81,7 +79,6 @@ class NTISlideVideo(PersistentPresentationAsset):
 		return self.ntiid
 
 @total_ordering
-@EqHash('ntiid')
 @interface.implementer(INTISlideDeck)
 class NTISlideDeck(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlideDeck)
@@ -150,7 +147,7 @@ class NTISlideDeck(PersistentPresentationAsset):
 		except AttributeError:
 			return NotImplemented
 
-@EqHash('ntiid')
+@EqHash('target')
 @interface.implementer(INTISlideDeckRef)
 class NTISlideDeckRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTISlideDeckRef)

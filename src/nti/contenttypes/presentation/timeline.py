@@ -25,12 +25,11 @@ from nti.contenttypes.presentation.interfaces import INTITimelineRef
 
 from nti.property.property import alias
 
-from nti.schema.eqhash import EqHash 
+from nti.schema.eqhash import EqHash
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 @total_ordering
-@EqHash('ntiid')
 @interface.implementer(INTITimeline)
 class NTITimeLine(PersistentPresentationAsset):
 	createDirectFieldProperties(INTITimeline)
@@ -58,7 +57,7 @@ class NTITimeLine(PersistentPresentationAsset):
 		except AttributeError:
 			return NotImplemented
 
-@EqHash('ntiid')
+@EqHash('target')
 @interface.implementer(INTITimelineRef)
 class NTITimeLineRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTITimelineRef)

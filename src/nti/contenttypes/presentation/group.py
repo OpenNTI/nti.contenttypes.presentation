@@ -35,12 +35,11 @@ from nti.schema.eqhash import EqHash
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 class DuplicateReference(ValueError):
-	
+
 	def __init__(self):
 		super(DuplicateReference, self).__init__(_('Cannot have two equal refs in the same group'))
 
 @total_ordering
-@EqHash('ntiid')
 @interface.implementer(INTICourseOverviewGroup)
 class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMixin):
 	createDirectFieldProperties(INTICourseOverviewGroup)
@@ -82,7 +81,7 @@ class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMix
 			if item.ntiid == ntiid:
 				return True
 		return False
-		
+
 	def _validate_insert(self, item):
 		assert IGroupOverViewable.providedBy(item)
 		# We do not allow duplicate refs in the same group, since clients

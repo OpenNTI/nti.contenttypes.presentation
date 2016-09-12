@@ -87,7 +87,6 @@ class NTIVideoSource(PersistentMixin, Contained):
 		return result
 
 @total_ordering
-@EqHash('ntiid')
 @interface.implementer(INTIMedia)
 class NTIMedia(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIMedia)
@@ -116,7 +115,7 @@ class NTIMedia(PersistentPresentationAsset):
 		except AttributeError:
 			return NotImplemented
 
-@EqHash('ntiid')
+@EqHash('target')
 @interface.implementer(INTIMediaRef)
 class NTIMediaRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIMediaRef)
@@ -177,7 +176,6 @@ class NTIAudioRef(NTIMediaRef):
 
 	nttype = NTI_AUDIO_REF
 
-@EqHash('ntiid')
 @interface.implementer(INTIMediaRoll)
 class NTIMediaRoll(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIMediaRoll)
