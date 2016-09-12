@@ -12,12 +12,14 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from nti.contenttypes.presentation.interfaces import IAssetRef
 from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTIVideo
 from nti.contenttypes.presentation.interfaces import INTIAudioRef
 from nti.contenttypes.presentation.interfaces import INTIVideoRef
 from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
+from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
 from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
@@ -72,4 +74,21 @@ def relatedworkref_to_relatedworkrefpointer(context):
 	result = NTIRelatedWorkRefPointer(target=context.ntiid)
 	result.byline = context.byline
 	result.creator = context.creator
+	return result
+
+@interface.implementer(IAssetRef)
+@component.adapter(IConcreteAsset)
+def concrete_to_reference(context):
+	if INTIRelatedWorkRef.providedBy(context):
+		result = INTIRelatedWorkRefPointer(context)
+	elif INTITimeline.providedBy(context):
+		result = INTITimelineRef(context)
+	elif INTISlideDeck.providedBy(context):
+		result = INTISlideDeckRef(context)
+	elif INTIAudio.providedBy(context):
+		result = INTIAudioRef(context)
+	elif INTIVideo.providedBy(context):
+		result = INTIVideoRef(context)
+	else:
+		result = None
 	return result

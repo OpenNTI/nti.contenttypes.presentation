@@ -32,6 +32,10 @@
 			 for=".interfaces.INTIRelatedWorkRef"
 			 provides=".interfaces.INTIRelatedWorkRefPointer" />
 
+	<adapter factory=".adapters.concrete_to_reference"
+			 for=".interfaces.IConcreteAsset"
+			 provides=".interfaces.IAssetRef" />
+
 	<!-- Utilities -->
 	<utility factory=".common.DefaultVisibilityOptionProvider" />
 
