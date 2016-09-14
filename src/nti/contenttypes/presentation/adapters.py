@@ -14,8 +14,10 @@ from zope import interface
 
 from nti.contenttypes.presentation.interfaces import IAssetRef
 from nti.contenttypes.presentation.interfaces import INTIAudio
+from nti.contenttypes.presentation.interfaces import INTIMedia
 from nti.contenttypes.presentation.interfaces import INTIVideo
 from nti.contenttypes.presentation.interfaces import INTIAudioRef
+from nti.contenttypes.presentation.interfaces import INTIMediaRef
 from nti.contenttypes.presentation.interfaces import INTIVideoRef
 from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
@@ -50,6 +52,15 @@ def ntiaudio_to_ntiaudioref(audio):
 	result = NTIAudioRef(target=audio.ntiid)
 	result.byline = audio.byline
 	result.creator = audio.creator
+	return result
+
+@component.adapter(INTIMedia)
+@interface.implementer(INTIMediaRef)
+def ntimedia_to_ntimediaref(media):
+	if INTIAudio.providedBy(media):
+		result = INTIAudioRef(media)
+	else:
+		result = INTIVideoRef(media)
 	return result
 
 @component.adapter(INTISlideDeck)

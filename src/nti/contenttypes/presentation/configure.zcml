@@ -20,6 +20,10 @@
 			 for=".interfaces.INTIAudio"
 			 provides=".interfaces.INTIAudioRef" />
 
+	<adapter factory=".adapters.ntimedia_to_ntimediaref"
+			 for=".interfaces.INTIMedia"
+			 provides=".interfaces.INTIMediaRef" />
+
 	<adapter factory=".adapters.slideck_to_ntislideckref"
 			 for=".interfaces.INTISlideDeck"
 			 provides=".interfaces.INTISlideDeckRef" />
