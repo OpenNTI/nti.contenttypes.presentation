@@ -57,13 +57,14 @@ def make_schema(schema, user=None):
 
 @interface.implementer(IVisibilityOptionsProvider)
 class DefaultVisibilityOptionProvider(object):
+	
+	__slots__ = ()
 
 	def __init__(self, *args):
 		pass
 
 	def iter_options(self):
-		result = (EVERYONE, CREDIT) 
-		return result
+		return (EVERYONE, CREDIT) 
 
 def get_visibility_options():
 	result = set()
