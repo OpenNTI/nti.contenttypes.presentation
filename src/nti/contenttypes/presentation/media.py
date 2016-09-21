@@ -148,6 +148,12 @@ class NTIVideo(NTIMedia):
 	closedCaption = closedCaptions = alias('closed_caption')
 
 	nttype = NTI_VIDEO
+	
+	def __setattr__(self, name, value):
+		super(NTIVideo, self).__setattr__(name, value)
+		if name in ("sources", "transcripts"):
+			for x in getattr(self, name, None) or ():
+				x.__parent__ = self  # take ownership
 
 @interface.implementer(INTIVideoRef)
 class NTIVideoRef(NTIMediaRef):
@@ -166,6 +172,12 @@ class NTIAudio(NTIMedia):
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
 
 	nttype = NTI_AUDIO
+	
+	def __setattr__(self, name, value):
+		super(NTIAudio, self).__setattr__(name, value)
+		if name in ("sources", "transcripts"):
+			for x in getattr(self, name, None) or ():
+				x.__parent__ = self  # take ownership
 
 @interface.implementer(INTIAudioRef)
 class NTIAudioRef(NTIMediaRef):
