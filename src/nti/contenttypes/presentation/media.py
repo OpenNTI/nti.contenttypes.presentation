@@ -27,6 +27,9 @@ from nti.contenttypes.presentation import NTI_AUDIO_REF
 from nti.contenttypes.presentation import NTI_VIDEO_REF
 from nti.contenttypes.presentation import NTI_AUDIO_ROLL
 from nti.contenttypes.presentation import NTI_VIDEO_ROLL
+from nti.contenttypes.presentation import NTI_TRANSCRIPT
+from nti.contenttypes.presentation import NTI_AUDIO_SOURCE
+from nti.contenttypes.presentation import NTI_VIDEO_SOURCE
 
 from nti.contenttypes.presentation._base import PersistentMixin
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
@@ -49,9 +52,43 @@ from nti.contenttypes.presentation.interfaces import INTIVideoSource
 
 from nti.property.property import alias
 
+from nti.ntiids.ntiids import get_parts
+from nti.ntiids.ntiids import make_ntiid
+from nti.ntiids.ntiids import make_specific_safe
+
 from nti.schema.eqhash import EqHash
 
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+def compute_part_ntiid(part, nttype, field):
+	parent = part.__parent__
+	base_ntiid = getattr(parent, 'ntiid', None)
+	parent_parts = getattr(parent, field, None) or None
+	if base_ntiid and parent_parts:
+		# Gather all child parts ntiids.
+		parent_part_ids = set()
+		for child_part in parent_parts or ():
+			child_part_ntiid = child_part.__dict__.get('ntiid')
+			parent_part_ids.add(child_part_ntiid)
+		parent_part_ids.discard(None)
+
+		uid = make_specific_safe(str(0)) 
+		parts = get_parts(base_ntiid)
+
+		# Iterate until we find an ntiid that does not collide.
+		idx = 0
+		while True:
+			specific = "%s.%s" % (parts.specific, uid)
+			result = make_ntiid(parts.date,
+								parts.provider,
+								nttype,
+								specific)
+			if result not in parent_part_ids:
+				break
+			idx += 1
+			uid = idx
+		return result
+	return None
 
 @interface.implementer(INTITranscript, IContentTypeAware)
 class NTITranscript(PersistentMixin, Contained):
@@ -59,6 +96,13 @@ class NTITranscript(PersistentMixin, Contained):
 
 	__external_class_name__ = u"Transcript"
 	mime_type = mimeType = u'application/vnd.nextthought.ntitranscript'
+
+	@readproperty
+	def ntiid(self):
+		result = compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
+		if result:
+			self.ntiid = result
+		return result
 
 	def schema(self):
 		result = make_schema(schema=INTITranscript)
@@ -71,6 +115,13 @@ class NTIAudioSource(PersistentMixin, Contained):
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiosource'
 
+	@readproperty
+	def ntiid(self):
+		result = compute_part_ntiid(self, NTI_AUDIO_SOURCE, 'sources')
+		if result:
+			self.ntiid = result
+		return result
+
 	def schema(self):
 		result = make_schema(schema=INTIAudioSource)
 		return result
@@ -81,6 +132,13 @@ class NTIVideoSource(PersistentMixin, Contained):
 
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
+
+	@readproperty
+	def ntiid(self):
+		result = compute_part_ntiid(self, NTI_VIDEO_SOURCE, 'sources')
+		if result:
+			self.ntiid = result
+		return result
 
 	def schema(self):
 		result = make_schema(schema=INTIVideoSource)
@@ -148,7 +206,7 @@ class NTIVideo(NTIMedia):
 	closedCaption = closedCaptions = alias('closed_caption')
 
 	nttype = NTI_VIDEO
-	
+
 	def __setattr__(self, name, value):
 		super(NTIVideo, self).__setattr__(name, value)
 		if name in ("sources", "transcripts"):
@@ -172,7 +230,7 @@ class NTIAudio(NTIMedia):
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
 
 	nttype = NTI_AUDIO
-	
+
 	def __setattr__(self, name, value):
 		super(NTIAudio, self).__setattr__(name, value)
 		if name in ("sources", "transcripts"):
