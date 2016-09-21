@@ -72,6 +72,15 @@ NTI_AUDIO = NTIAudio = u'NTIAudio'
 #: Video NTIID type
 NTI_VIDEO = NTIVideo = u'NTIVideo'
 
+#: Transcript NTIID type
+NTI_TRANSCRIPT = u'NTITranscript'
+
+#: Audio source NTIID type
+NTI_AUDIO_SOURCE = u'NTIAudioSource'
+
+#: Video source NTIID type
+NTI_VIDEO_SOURCE = u'NTIVideoSource'
+
 #: Poll Ref NTIID type
 NTI_POLL_REF = 'NTIPollRef'
 
