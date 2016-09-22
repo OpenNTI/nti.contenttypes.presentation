@@ -40,6 +40,10 @@
 			 for=".interfaces.IConcreteAsset"
 			 provides=".interfaces.IAssetRef" />
 
+	<adapter factory=".lesson._LessonPublicationConstraintsFactory"
+			 for=".interfaces.INTILessonOverview"
+			 provides=".interfaces.ILessonPublicationConstraints" />
+
 	<!-- Utilities -->
 	<utility factory=".common.DefaultVisibilityOptionProvider" />
 

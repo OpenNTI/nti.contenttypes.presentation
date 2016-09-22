@@ -15,6 +15,10 @@ from zope import interface
 
 from zope.annotation.interfaces import IAttributeAnnotatable
 
+from zope.container.constraints import contains
+
+from zope.container.interfaces import IContainerNamesContainer
+
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 
 from zope.interface.common.mapping import IMapping
@@ -590,6 +594,18 @@ INTILessonOverview.setTaggedValue('_ext_jsonschema', u'lesson')
 
 INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTILessonOverview['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+
+class ILessonPublicationConstraints(IContainerNamesContainer,
+									ICreated,
+									ILastModified):
+	"""
+	Defines a container for lesson publication constraints
+	"""
+
+	contains(str('.ILessonPublicationConstraint'))
+	__setitem__.__doc__ = None
+
+	Items = IndexedIterable(title="The contained constraint items")
 
 class ILessonPublicationConstraint(interface.Interface):
 	"""

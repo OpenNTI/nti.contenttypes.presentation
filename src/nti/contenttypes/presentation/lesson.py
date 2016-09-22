@@ -11,11 +11,18 @@ logger = __import__('logging').getLogger(__name__)
 
 from functools import total_ordering
 
+from zope import component
 from zope import interface
+
+from zope.annotation import factory as an_factory
 
 from zope.cachedescriptors.property import readproperty
 
+from zope.container.constraints import checkObject
+
 from zope.container.contained import Contained
+
+from zope.container.ordered import OrderedContainer
 
 from zope.mimetype.interfaces import IContentTypeAware
 
@@ -29,6 +36,7 @@ from nti.contenttypes.presentation._base import PersistentPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
+from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
 
 from nti.coremetadata.mixins import CalendarPublishableMixin
@@ -153,6 +161,33 @@ class AssignmentCompletionConstraint(SchemaConfigured,
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
 		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
+
+@component.adapter(INTILessonOverview)
+@interface.implementer(ILessonPublicationConstraints)
+class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject, 
+								   OrderedContainer):
+	
+	def __setitem__(self, key, value):
+		count = len(self)
+		key = '%d' % count
+		while key in self:
+			count += 1
+			key = '%d' % count
+
+		checkObject(self, key, value)
+		super(LessonPublicationConstraints, self).__setitem__(key, value)
+		self.updateLastMod()
+			
+	def append(self, value):
+		self['ignore'] = value
+
+	@property
+	def Items(self):
+		return list(self.values())
+
+LESSON_PUBLICATION_CONSTRAINTS_KEY = 'LessonPublicationConstraints'
+_LessonPublicationConstraintsFactory = an_factory(LessonPublicationConstraints,
+												  LESSON_PUBLICATION_CONSTRAINTS_KEY)
 
 import zope.deferredimport
 zope.deferredimport.initialize()
