@@ -596,15 +596,18 @@ class ILessonPublicationConstraint(interface.Interface):
 	Defines a constraint for determining whether a lesson
 	is publishable or not 
 	"""
-	def is_satisfied(lesson):
-		pass 
-	
+
 class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
 	"""
 	A publication constraint that is satisfied if all its
 	referenced assignments are either completed or closed.
 	"""
-	assignments = Iterable(title='NTIIDs of assignment references')
+	assignments = IndexedIterable(title="Assignments NTIIDs.",
+					  	   		  value_type=ValidNTIID(min_length=1, title="A single NTIID"),
+					   	   		  unique=True,
+					   	   		  default=(),
+					  	   		  required=True,
+					  	   		  min_length=1)
 
 class IPresentationVisibility(interface.Interface):
 	"""
