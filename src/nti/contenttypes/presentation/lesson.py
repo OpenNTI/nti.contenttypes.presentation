@@ -30,8 +30,11 @@ from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstr
 from nti.coremetadata.mixins import CalendarPublishableMixin
 from nti.coremetadata.mixins import RecordableContainerMixin
 
+from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
+
 from nti.property.property import alias
 
+from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 @interface.implementer(INTICourseOverviewSpacer)
@@ -135,8 +138,13 @@ class NTILessonOverView(CalendarPublishableMixin,
 			return NotImplemented
 		
 @interface.implementer(IAssignmentCompletionConstraint)
-class AssignmentCompletionConstraint(object):
+class AssignmentCompletionConstraint(SchemaConfigured, 
+									 PersistentCreatedModDateTrackingObject):
 	createDirectFieldProperties(IAssignmentCompletionConstraint)
+
+	def __init__(self, *args, **kwargs):
+		SchemaConfigured.__init__(self, *args, **kwargs)
+		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
 
 import zope.deferredimport
 zope.deferredimport.initialize()
