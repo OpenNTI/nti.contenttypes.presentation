@@ -25,6 +25,7 @@ from nti.contenttypes.presentation._base import PersistentPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
+from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
 
 from nti.coremetadata.mixins import CalendarPublishableMixin
 from nti.coremetadata.mixins import RecordableContainerMixin
@@ -132,6 +133,10 @@ class NTILessonOverView(CalendarPublishableMixin,
 			return (self.mimeType, self.title) > (other.mimeType, other.title)
 		except AttributeError:
 			return NotImplemented
+		
+@interface.implementer(IAssignmentCompletionConstraint)
+class AssignmentCompletionConstraint(object):
+	createDirectFieldProperties(IAssignmentCompletionConstraint)
 
 import zope.deferredimport
 zope.deferredimport.initialize()
