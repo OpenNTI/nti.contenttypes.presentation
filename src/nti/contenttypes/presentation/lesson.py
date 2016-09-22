@@ -17,6 +17,8 @@ from zope.cachedescriptors.property import readproperty
 
 from zope.container.contained import Contained
 
+from zope.mimetype.interfaces import IContentTypeAware
+
 from persistent.list import PersistentList
 
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
@@ -139,12 +141,15 @@ class NTILessonOverView(CalendarPublishableMixin,
 		except AttributeError:
 			return NotImplemented
 		
-@interface.implementer(IAssignmentCompletionConstraint)
+@interface.implementer(IAssignmentCompletionConstraint, IContentTypeAware)
 class AssignmentCompletionConstraint(SchemaConfigured, 
 									 PersistentCreatedModDateTrackingObject,
 									 Contained):
 	createDirectFieldProperties(IAssignmentCompletionConstraint)
 
+	parameters = {} # IContentTypeAware
+	mime_type = mimeType = u"application/vnd.nextthought.lesson.assignmentcompletionconstraint"
+	
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
 		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)

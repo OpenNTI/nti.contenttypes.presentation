@@ -605,7 +605,6 @@ class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
 	assignments = IndexedIterable(title="Assignments NTIIDs.",
 					  	   		  value_type=ValidNTIID(min_length=1, title="A single NTIID"),
 					   	   		  unique=True,
-					   	   		  default=(),
 					  	   		  required=True,
 					  	   		  min_length=1)
 

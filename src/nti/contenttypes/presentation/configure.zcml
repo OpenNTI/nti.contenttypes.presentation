@@ -85,7 +85,9 @@
 						 .interfaces.INTIAudioRoll
 						 .interfaces.INTIVideoRoll
 						 .interfaces.INTICourseOverviewSpacer
-						 .interfaces.INTIRelatedWorkRefPointer"
+						 .interfaces.INTIRelatedWorkRefPointer
+						 .interfaces.ILessonPublicationConstraint
+						 .interfaces.IAssignmentCompletionConstraint"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 
 	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
