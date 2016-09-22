@@ -591,6 +591,21 @@ INTILessonOverview.setTaggedValue('_ext_jsonschema', u'lesson')
 INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTILessonOverview['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+class ILessonPublicationConstraint(interface.Interface):
+	"""
+	Defines a constraint for determining whether a lesson
+	is publishable or not 
+	"""
+	def is_satisfied(lesson):
+		pass 
+	
+class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
+	"""
+	A publication constraint that is satisfied if all its
+	referenced assignments are either completed or closed.
+	"""
+	assignments = Iterable(title='NTIIDs of assignment references')
+
 class IPresentationVisibility(interface.Interface):
 	"""
 	marker interface to return the visibility for an object.
