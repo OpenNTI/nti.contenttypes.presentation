@@ -607,7 +607,7 @@ class ILessonPublicationConstraints(IContainerNamesContainer,
 
 	Items = IndexedIterable(title="The contained constraint items")
 
-class ILessonPublicationConstraint(interface.Interface):
+class ILessonPublicationConstraint(ICreated, ILastModified):
 	"""
 	Defines a constraint for determining whether a lesson
 	is publishable or not 

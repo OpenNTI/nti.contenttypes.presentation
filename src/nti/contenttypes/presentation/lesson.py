@@ -162,11 +162,13 @@ class AssignmentCompletionConstraint(SchemaConfigured,
 		SchemaConfigured.__init__(self, *args, **kwargs)
 		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
 
-@component.adapter(INTILessonOverview)
+@component.adapter(INTILessonOverview, IContentTypeAware)
 @interface.implementer(ILessonPublicationConstraints)
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject, 
-								   OrderedContainer):
+								   OrderedContainer,
+								   Contained):
 	
+	parameters = {} # IContentTypeAware
 	__external_class_name__ = u"LessonPublicationConstraints"
 	mime_type = mimeType = u"application/vnd.nextthought.lesson.publicationconstraints"
 
