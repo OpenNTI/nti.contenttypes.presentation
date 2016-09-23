@@ -36,6 +36,7 @@ from nti.contenttypes.presentation._base import PersistentPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
+from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
 
@@ -150,15 +151,11 @@ class NTILessonOverView(CalendarPublishableMixin,
 			return (self.mimeType, self.title) > (other.mimeType, other.title)
 		except AttributeError:
 			return NotImplemented
-		
-@interface.implementer(IAssignmentCompletionConstraint, IContentTypeAware)
-class AssignmentCompletionConstraint(SchemaConfigured, 
-									 PersistentCreatedModDateTrackingObject,
-									 Contained):
-	createDirectFieldProperties(IAssignmentCompletionConstraint)
-
-	mime_type = mimeType = u"application/vnd.nextthought.lesson.assignmentcompletionconstraint"
 	
+@interface.implementer(ILessonPublicationConstraint, IContentTypeAware)
+class LessonCompletionConstraint(SchemaConfigured, 
+								 PersistentCreatedModDateTrackingObject,
+								 Contained):
 	creator = SYSTEM_USER_ID
 
 	parameters = {} # IContentTypeAware
@@ -166,6 +163,12 @@ class AssignmentCompletionConstraint(SchemaConfigured,
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
 		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
+	
+@interface.implementer(IAssignmentCompletionConstraint)
+class AssignmentCompletionConstraint(LessonCompletionConstraint):
+	createDirectFieldProperties(IAssignmentCompletionConstraint)
+
+	mime_type = mimeType = u"application/vnd.nextthought.lesson.assignmentcompletionconstraint"
 
 @component.adapter(INTILessonOverview, IContentTypeAware)
 @interface.implementer(ILessonPublicationConstraints)
