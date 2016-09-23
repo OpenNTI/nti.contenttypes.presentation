@@ -56,8 +56,6 @@ from nti.ntiids.ntiids import get_parts
 from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
 
-from nti.schema.eqhash import EqHash
-
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 def compute_part_ntiid(part, nttype, field):
@@ -72,7 +70,7 @@ def compute_part_ntiid(part, nttype, field):
 			parent_part_ids.add(child_part_ntiid)
 		parent_part_ids.discard(None)
 
-		uid = make_specific_safe(str(0)) 
+		uid = make_specific_safe(str(0))
 		parts = get_parts(base_ntiid)
 
 		# Iterate until we find an ntiid that does not collide.
@@ -173,7 +171,6 @@ class NTIMedia(PersistentPresentationAsset):
 		except AttributeError:
 			return NotImplemented
 
-@EqHash('target')
 @interface.implementer(INTIMediaRef)
 class NTIMediaRef(PersistentPresentationAsset):
 	createDirectFieldProperties(INTIMediaRef)
