@@ -39,6 +39,8 @@ from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
 
+from nti.coremetadata.interfaces import SYSTEM_USER_ID
+
 from nti.coremetadata.mixins import CalendarPublishableMixin
 from nti.coremetadata.mixins import RecordableContainerMixin
 
@@ -155,8 +157,11 @@ class AssignmentCompletionConstraint(SchemaConfigured,
 									 Contained):
 	createDirectFieldProperties(IAssignmentCompletionConstraint)
 
-	parameters = {} # IContentTypeAware
 	mime_type = mimeType = u"application/vnd.nextthought.lesson.assignmentcompletionconstraint"
+	
+	creator = SYSTEM_USER_ID
+
+	parameters = {} # IContentTypeAware
 	
 	def __init__(self, *args, **kwargs):
 		SchemaConfigured.__init__(self, *args, **kwargs)
