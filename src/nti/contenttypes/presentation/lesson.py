@@ -167,6 +167,9 @@ class AssignmentCompletionConstraint(SchemaConfigured,
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject, 
 								   OrderedContainer):
 	
+	__external_class_name__ = u"LessonPublicationConstraints"
+	mime_type = mimeType = u"application/vnd.nextthought.lesson.publicationconstraints"
+
 	def __setitem__(self, key, value):
 		count = len(self)
 		key = '%d' % count
