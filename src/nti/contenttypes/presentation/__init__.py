@@ -149,6 +149,8 @@ NTI_COURSE_OVERVIEW_SPACER = u'NTICourseOverviewSpacer'
 LESSON_OVERVIEW = u'LessonOverview'
 NTI_LESSON_OVERVIEW = u'NTILessonOverview'
 
+NTI_LESSON_COMPLETION_CONSTRAINT = u'NTILessonCompletionConstraint'
+
 SLIDE_MIMETYES = ('application/vnd.nextthought.slide',)
 SLIDE_DECK_MIMETYES = ('application/vnd.nextthought.ntislidedeck',)
 SLIDE_VIDEO_MIMETYES = ('application/vnd.nextthought.ntislidevideo',)

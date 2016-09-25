@@ -30,6 +30,7 @@ from persistent.list import PersistentList
 
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
 from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_SPACER
+from nti.contenttypes.presentation import NTI_LESSON_COMPLETION_CONSTRAINT
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
 
@@ -46,6 +47,10 @@ from nti.coremetadata.mixins import CalendarPublishableMixin
 from nti.coremetadata.mixins import RecordableContainerMixin
 
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
+
+from nti.ntiids.ntiids import get_parts
+from nti.ntiids.ntiids import make_ntiid
+from nti.ntiids.ntiids import make_specific_safe
 
 from nti.property.property import alias
 
@@ -151,32 +156,14 @@ class NTILessonOverView(CalendarPublishableMixin,
 			return (self.mimeType, self.title) > (other.mimeType, other.title)
 		except AttributeError:
 			return NotImplemented
-	
-@interface.implementer(ILessonPublicationConstraint, IContentTypeAware)
-class LessonCompletionConstraint(SchemaConfigured, 
-								 PersistentCreatedModDateTrackingObject,
-								 Contained):
-	creator = SYSTEM_USER_ID
-
-	parameters = {} # IContentTypeAware
-	
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
-	
-@interface.implementer(IAssignmentCompletionConstraint)
-class AssignmentCompletionConstraint(LessonCompletionConstraint):
-	createDirectFieldProperties(IAssignmentCompletionConstraint)
-
-	mime_type = mimeType = u"application/vnd.nextthought.lesson.assignmentcompletionconstraint"
 
 @component.adapter(INTILessonOverview, IContentTypeAware)
 @interface.implementer(ILessonPublicationConstraints)
-class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject, 
+class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 								   OrderedContainer,
 								   Contained):
-	
-	parameters = {} # IContentTypeAware
+
+	parameters = {}  # IContentTypeAware
 	__external_class_name__ = u"LessonPublicationConstraints"
 	mime_type = mimeType = u"application/vnd.nextthought.lesson.publicationconstraints"
 
@@ -190,7 +177,7 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 		checkObject(self, key, value)
 		super(LessonPublicationConstraints, self).__setitem__(key, value)
 		self.updateLastMod()
-			
+
 	def append(self, value):
 		self['ignore'] = value
 
@@ -201,6 +188,39 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 LESSON_PUBLICATION_CONSTRAINTS_KEY = 'LessonPublicationConstraints'
 _LessonPublicationConstraintsFactory = an_factory(LessonPublicationConstraints,
 												  LESSON_PUBLICATION_CONSTRAINTS_KEY)
+
+@interface.implementer(ILessonPublicationConstraint, IContentTypeAware)
+class LessonCompletionConstraint(SchemaConfigured,
+								 PersistentCreatedModDateTrackingObject,
+								 Contained):
+	creator = SYSTEM_USER_ID
+
+	parameters = {}  # IContentTypeAware
+
+	def __init__(self, *args, **kwargs):
+		SchemaConfigured.__init__(self, *args, **kwargs)
+		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
+
+	@readproperty
+	def ntiid(self):
+		lesson = getattr(self.__parent__, '__parent__', None)
+		base_ntiid = getattr(lesson, 'ntiid', None)
+		if base_ntiid and self.__name__:
+			parts = get_parts(base_ntiid)
+			specific = make_specific_safe("%s.%s" % (parts.specific, self.__name__))
+			result = make_ntiid(date=parts.date,
+								specific=specific,
+								provider=parts.provider,
+								nttype=NTI_LESSON_COMPLETION_CONSTRAINT)
+			self.ntiid = result
+			return result
+		return None
+
+@interface.implementer(IAssignmentCompletionConstraint)
+class AssignmentCompletionConstraint(LessonCompletionConstraint):
+	createDirectFieldProperties(IAssignmentCompletionConstraint)
+
+	mime_type = mimeType = u"application/vnd.nextthought.lesson.assignmentcompletionconstraint"
 
 import zope.deferredimport
 zope.deferredimport.initialize()
