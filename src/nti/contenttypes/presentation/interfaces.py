@@ -605,7 +605,12 @@ class ILessonPublicationConstraints(IContainerNamesContainer,
 	contains(str('.ILessonPublicationConstraint'))
 	__setitem__.__doc__ = None
 
-	Items = IndexedIterable(title="The contained constraint items")
+	Items = IndexedIterable(title="The contained constraint items", readonly=True)
+	
+	def append(constraint):
+		"""
+		Add the specified contraint to this container
+		"""
 
 class ILessonPublicationConstraint(ICreated, ILastModified):
 	"""
