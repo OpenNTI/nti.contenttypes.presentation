@@ -17,6 +17,7 @@ from zope import interface
 from nti.contenttypes.presentation.interfaces import IPointer
 from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
+from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 
 from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import IPublishable
@@ -27,6 +28,7 @@ from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceO
 from nti.externalization.externalization import to_external_object
 
 from nti.externalization.interfaces import IInternalObjectIO
+from nti.externalization.interfaces import LocatedExternalDict
 from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.interfaces import IInternalObjectExternalizer
 
@@ -100,4 +102,35 @@ class _LessonOverviewExporter(object):
 		# process groups
 		for group, ext_obj in zip(self.lesson, result.get(ITEMS) or ()):
 			self._process_group(group, ext_obj, mod_args)
+		return result
+
+@component.adapter(ILessonPublicationConstraints)
+@interface.implementer(IInternalObjectExternalizer)
+class _LessonPublicationConstraintsExporter(object):
+
+	def __init__(self, obj):
+		self.constraints = obj
+
+	def _decorate_callback(self, obj, result):
+		if isinstance(result, Mapping) and MIMETYPE not in result:
+			decorateMimeType(obj, result)
+
+	def toExternalObject(self, **kwargs):
+		mod_args = dict(**kwargs)
+		mod_args['name'] = ''  # default
+		mod_args['decorate'] = False  # no decoration
+		mod_args['decorate_callback'] = self._decorate_callback
+		# output 
+		result = LocatedExternalDict()
+		clazz = getattr(self.constraints, '__external_class_name__', None)
+		if clazz:
+			result[StandardExternalFields.CLASS] = clazz
+		else:
+			result[StandardExternalFields.CLASS] = self.constraints.__class__.__name__
+		decorateMimeType(self.constraints, result)
+		# process items
+		items = result[ITEMS] = []
+		for constraint in self.constraints.Items:
+			ext_obj = to_external_object(constraint, **mod_args)
+			items.append(ext_obj)
 		return result

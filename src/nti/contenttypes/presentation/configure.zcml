@@ -101,6 +101,10 @@
 			 for=".interfaces.INTILessonOverview"
 			 name="exporter" />
 
+	<adapter factory=".externalization._LessonPublicationConstraintsExporter"
+			 for=".interfaces.ILessonPublicationConstraints"
+			 name="exporter" />
+
 	<!-- Internalization -->
 	<adapter factory=".internalization._NTIVideoUpdater"
 			 for=".interfaces.INTIVideo"
