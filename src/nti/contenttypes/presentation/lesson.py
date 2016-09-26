@@ -50,7 +50,6 @@ from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
 from nti.ntiids.ntiids import get_parts
 from nti.ntiids.ntiids import make_ntiid
-from nti.ntiids.ntiids import make_specific_safe
 
 from nti.property.property import alias
 
@@ -207,7 +206,7 @@ class LessonCompletionConstraint(SchemaConfigured,
 		base_ntiid = getattr(lesson, 'ntiid', None)
 		if base_ntiid and self.__name__:
 			parts = get_parts(base_ntiid)
-			specific = make_specific_safe("%s.%s" % (parts.specific, self.__name__))
+			specific = "%s.%s" % (parts.specific, self.__name__)
 			result = make_ntiid(date=parts.date,
 								specific=specific,
 								provider=parts.provider,
