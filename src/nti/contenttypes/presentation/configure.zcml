@@ -198,6 +198,10 @@
 			 for=".interfaces.INTILessonOverview"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
+	<adapter factory=".internalization._LessonPublicationConstraintsUpdater"
+			 for=".interfaces.ILessonPublicationConstraints"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
 	<!-- Mime factories -->
 	<ext:registerMimeFactories module=".group" />
 

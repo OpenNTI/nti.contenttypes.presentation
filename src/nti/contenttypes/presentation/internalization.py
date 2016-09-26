@@ -58,6 +58,8 @@ from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
+from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraint
+from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 
 from nti.externalization.datastructures import InterfaceObjectIO
 
@@ -78,6 +80,8 @@ ITEMS = StandardExternalFields.ITEMS
 NTIID = StandardExternalFields.NTIID
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
+
+# assets
 
 def ntiid_check(s):
 	s = s.strip() if s else s
@@ -529,6 +533,8 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
 		self.takeOwnership(self._ext_self, self._ext_self)
 		return result
 
+# pre-hooks
+
 def internalization_ntivideo_pre_hook(k, x):
 	if isinstance(x, Mapping) and 'mimeType' in x:
 		x[MIMETYPE] = x.pop('mimeType')
@@ -684,3 +690,22 @@ def internalization_lessonoverview_pre_hook(k, x):
 			items = item.get(ITEMS) if isinstance(item, Mapping) else None
 			if items is not None:
 				internalization_courseoverview_pre_hook(ITEMS, items)
+
+# lesson constraints
+
+@interface.implementer(IInternalObjectUpdater)
+@component.adapter(ILessonPublicationConstraints)
+class _LessonPublicationConstraintsUpdater(InterfaceObjectIO):
+
+	def updateFromExternalObject(self, parsed, *args, **kwargs):
+		result = super(_LessonPublicationConstraintsUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+		items = parsed.get(ITEMS)
+		for ext_obj in items or ():
+			if isinstance(ext_obj, Mapping):
+				item = find_factory_for(ext_obj)()
+				update_from_external_object(item, ext_obj)
+			else:
+				item = ext_obj
+			if ILessonPublicationConstraint.providedBy(item):
+				self._ext_self.append(item)
+		return result
