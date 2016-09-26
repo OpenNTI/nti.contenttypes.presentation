@@ -40,7 +40,7 @@
 			 for=".interfaces.IConcreteAsset"
 			 provides=".interfaces.IAssetRef" />
 
-	<adapter factory=".lesson._LessonPublicationConstraintsFactory"
+	<adapter factory=".lesson.constraints_for_lesson"
 			 for=".interfaces.INTILessonOverview"
 			 provides=".interfaces.ILessonPublicationConstraints" />
 

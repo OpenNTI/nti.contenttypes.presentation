@@ -14,7 +14,7 @@ from functools import total_ordering
 from zope import component
 from zope import interface
 
-from zope.annotation import factory as an_factory
+from zope.annotation.interfaces import IAnnotations
 
 from zope.cachedescriptors.property import readproperty
 
@@ -25,6 +25,8 @@ from zope.container.contained import Contained
 from zope.container.ordered import OrderedContainer
 
 from zope.mimetype.interfaces import IContentTypeAware
+
+from ZODB.interfaces import IConnection
 
 from persistent.list import PersistentList
 
@@ -184,9 +186,24 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 	def Items(self):
 		return list(self.values())
 
-LESSON_PUBLICATION_CONSTRAINTS_KEY = 'LessonPublicationConstraints'
-_LessonPublicationConstraintsFactory = an_factory(LessonPublicationConstraints,
-												  LESSON_PUBLICATION_CONSTRAINTS_KEY)
+@component.adapter(INTILessonOverview)
+@interface.implementer(ILessonPublicationConstraints)
+def constraints_for_lesson(lesson, create=True):
+	constraints = None
+	annotations = IAnnotations(lesson)
+	try:
+		KEY = 'LessonPublicationConstraints'
+		constraints = annotations[KEY]
+	except KeyError:
+		if create:
+			constraints = LessonPublicationConstraints()
+			annotations[KEY] = constraints
+			constraints.__name__ = KEY
+			constraints.__parent__ = lesson
+			connection = IConnection(lesson, None)
+			if connection is not None:
+				connection.add(constraints)
+	return constraints
 
 @interface.implementer(ILessonPublicationConstraint, IContentTypeAware)
 class LessonCompletionConstraint(SchemaConfigured,
