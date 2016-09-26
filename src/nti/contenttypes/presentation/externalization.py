@@ -99,6 +99,11 @@ class _LessonOverviewExporter(object):
 		# make sure we have items
 		if ITEMS in result and result[ITEMS] is None:
 			result[ITEMS] = []
+		constraints = ILessonPublicationConstraints(self.lesson)
+		if constraints:
+			result['PublicationConstraints'] = to_external_object(constraints,
+																  name='exporter', 
+																  decorate=False)
 		# process groups
 		for group, ext_obj in zip(self.lesson, result.get(ITEMS) or ()):
 			self._process_group(group, ext_obj, mod_args)
