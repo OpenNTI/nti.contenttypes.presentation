@@ -19,6 +19,8 @@ from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 
+from nti.contenttypes.presentation.lesson import constraints_for_lesson
+
 from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import IPublishable
 from nti.coremetadata.interfaces import IRecordableContainer
@@ -99,7 +101,7 @@ class _LessonOverviewExporter(object):
 		# make sure we have items
 		if ITEMS in result and result[ITEMS] is None:
 			result[ITEMS] = []
-		constraints = ILessonPublicationConstraints(self.lesson)
+		constraints = constraints_for_lesson(self.lesson, False)
 		if constraints:
 			result['PublicationConstraints'] = to_external_object(constraints,
 																  name='exporter', 
