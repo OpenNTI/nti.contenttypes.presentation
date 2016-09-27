@@ -40,10 +40,10 @@ def current_principal():
 		result = SYSTEM_USER_NAME
 	return result
 	
-def generate_ntiid(nttype, provider='NTI'):
-	now = datetime.utcnow()
+def generate_ntiid(nttype, provider='NTI', now=None):
+	now = datetime.utcnow() if now is None else now
 	principal = current_principal()
-	dstr = now.strftime("%Y%m%d %H%M%S %f")
+	dstr = now.strftime("%Y%m%d%H%M%S %f")
 	rand = os.urandom(4).encode('hex').upper()
 	specific = make_specific_safe("%s_%s_%s" % (principal, dstr, rand))
 	result = make_ntiid(provider=provider,
