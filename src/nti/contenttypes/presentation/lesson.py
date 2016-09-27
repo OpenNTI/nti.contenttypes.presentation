@@ -181,6 +181,10 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 
 	def append(self, value):
 		self['ignore'] = value
+		
+	def extend(self, values):
+		for value in values or ():
+			self.append(value)
 
 	@property
 	def Items(self):

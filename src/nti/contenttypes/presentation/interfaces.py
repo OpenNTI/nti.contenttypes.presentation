@@ -613,6 +613,11 @@ class ILessonPublicationConstraints(IContainerNamesContainer,
 		Add the specified contraint to this container
 		"""
 
+	def extend(constraints):
+		"""
+		Add the specified contraints to this container
+		"""
+
 class ILessonPublicationConstraint(ICreated, ILastModified):
 	"""
 	Defines a constraint for determining whether a lesson
