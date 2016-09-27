@@ -27,10 +27,11 @@ from nti.coremetadata.interfaces import IRecordableContainer
 
 from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
 
+from nti.externalization.datastructures import InterfaceObjectIO
+
 from nti.externalization.externalization import to_external_object
 
 from nti.externalization.interfaces import IInternalObjectIO
-from nti.externalization.interfaces import LocatedExternalDict
 from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.interfaces import IInternalObjectExternalizer
 
@@ -103,9 +104,7 @@ class _LessonOverviewExporter(object):
 			result[ITEMS] = []
 		constraints = constraints_for_lesson(self.lesson, False)
 		if constraints:
-			result['PublicationConstraints'] = to_external_object(constraints,
-																  name='exporter', 
-																  decorate=False)
+			result['PublicationConstraints'] = to_external_object(constraints, **mod_args)
 		# process groups
 		for group, ext_obj in zip(self.lesson, result.get(ITEMS) or ()):
 			self._process_group(group, ext_obj, mod_args)
@@ -113,31 +112,15 @@ class _LessonOverviewExporter(object):
 
 @component.adapter(ILessonPublicationConstraints)
 @interface.implementer(IInternalObjectExternalizer)
-class _LessonPublicationConstraintsExporter(object):
+class _LessonPublicationConstraintsExternalizer(object):
 
-	def __init__(self, obj):
-		self.constraints = obj
-
-	def _decorate_callback(self, obj, result):
-		if isinstance(result, Mapping) and MIMETYPE not in result:
-			decorateMimeType(obj, result)
+	def __init__(self, context):
+		self.context = context
 
 	def toExternalObject(self, **kwargs):
-		mod_args = dict(**kwargs)
-		mod_args['name'] = ''  # default
-		mod_args['decorate'] = False  # no decoration
-		mod_args['decorate_callback'] = self._decorate_callback
-		# output 
-		result = LocatedExternalDict()
-		clazz = getattr(self.constraints, '__external_class_name__', None)
-		if clazz:
-			result[StandardExternalFields.CLASS] = clazz
-		else:
-			result[StandardExternalFields.CLASS] = self.constraints.__class__.__name__
-		decorateMimeType(self.constraints, result)
-		# process items
+		result = InterfaceObjectIO(self.context, ILessonPublicationConstraints).toExternalObject(**kwargs)
 		items = result[ITEMS] = []
-		for constraint in self.constraints.Items:
-			ext_obj = to_external_object(constraint, **mod_args)
+		for constraint in self.context.Items:
+			ext_obj = to_external_object(constraint, **kwargs)
 			items.append(ext_obj)
 		return result

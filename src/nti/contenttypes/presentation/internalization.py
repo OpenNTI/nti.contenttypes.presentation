@@ -697,6 +697,8 @@ def internalization_lessonoverview_pre_hook(k, x):
 @component.adapter(ILessonPublicationConstraints)
 class _LessonPublicationConstraintsUpdater(InterfaceObjectIO):
 
+	_ext_iface_upper_bound = ILessonPublicationConstraints
+	
 	def updateFromExternalObject(self, parsed, *args, **kwargs):
 		result = super(_LessonPublicationConstraintsUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
 		items = parsed.get(ITEMS)

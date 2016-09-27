@@ -91,6 +91,7 @@
 						 .interfaces.INTICourseOverviewSpacer
 						 .interfaces.INTIRelatedWorkRefPointer
 						 .interfaces.ILessonPublicationConstraint
+						 .interfaces.ILessonPublicationConstraints
 						 .interfaces.IAssignmentCompletionConstraint"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 
@@ -101,9 +102,9 @@
 			 for=".interfaces.INTILessonOverview"
 			 name="exporter" />
 
-	<adapter factory=".externalization._LessonPublicationConstraintsExporter"
+	<adapter factory=".externalization._LessonPublicationConstraintsExternalizer"
 			 for=".interfaces.ILessonPublicationConstraints"
-			 name="exporter" />
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
 
 	<!-- Internalization -->
 	<adapter factory=".internalization._NTIVideoUpdater"
