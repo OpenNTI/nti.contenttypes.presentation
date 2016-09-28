@@ -39,6 +39,7 @@ from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import INTIDocketAsset
 from nti.contenttypes.presentation.interfaces import INTIMediaSource
 from nti.contenttypes.presentation.interfaces import INTIAssessmentRef
+from nti.contenttypes.presentation.interfaces import IUserCreatedAsset
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
@@ -244,6 +245,7 @@ def _set_ifaces():
 		result = bool(	  type(item) == interface.interface.InterfaceClass
 					  and issubclass(item, IPresentationAsset) 
 					  and item != IPresentationAsset 
+					  and item != IUserCreatedAsset
 					  and item != ICoursePresentationAsset
 					  and item != ILegacyPresentationAsset
 					  and item != IPackagePresentationAsset

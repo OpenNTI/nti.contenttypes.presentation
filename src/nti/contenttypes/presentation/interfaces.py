@@ -206,6 +206,12 @@ class IConcreteAsset(IPresentationAsset):
 	"""
 IConcreteAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+class IUserCreatedAsset(IPresentationAsset):
+	"""
+	Marker interface for user created asset
+	"""
+IUserCreatedAsset.setTaggedValue('_ext_is_marker_interface', True)
+
 class IPackagePresentationAsset(IConcreteAsset):
 	"""
 	Marker interface for assets whose home are content packages
