@@ -197,6 +197,11 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 	def Items(self):
 		return list(self.values())
 
+	# compatible methods
+
+	def _len(self):
+		return len(self)
+
 @component.adapter(INTILessonOverview)
 @interface.implementer(ILessonPublicationConstraints)
 def constraints_for_lesson(lesson, create=True):
