@@ -705,7 +705,7 @@ class _LessonPublicationConstraintsUpdater(InterfaceObjectIO):
 		for ext_obj in items or ():
 			if isinstance(ext_obj, Mapping):
 				item = find_factory_for(ext_obj)()
-				update_from_external_object(item, ext_obj)
+				update_from_external_object(item, ext_obj, *args, **kwargs)
 			else:
 				item = ext_obj
 			if ILessonPublicationConstraint.providedBy(item):

@@ -18,15 +18,15 @@ from zope.annotation.interfaces import IAnnotations
 
 from zope.cachedescriptors.property import readproperty
 
-from zope.container.constraints import checkObject
-
 from zope.container.contained import Contained
 
-from zope.container.ordered import OrderedContainer
+from zope.location.location import locate
 
 from zope.mimetype.interfaces import IContentTypeAware
 
 from ZODB.interfaces import IConnection
+
+from zc.dict import OrderedDict
 
 from persistent.list import PersistentList
 
@@ -161,30 +161,37 @@ class NTILessonOverView(CalendarPublishableMixin,
 @component.adapter(INTILessonOverview, IContentTypeAware)
 @interface.implementer(ILessonPublicationConstraints)
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
-								   OrderedContainer,
-								   Contained):
+								   OrderedDict):
 
 	parameters = {}  # IContentTypeAware
+
 	__external_class_name__ = u"LessonPublicationConstraints"
 	mime_type = mimeType = u"application/vnd.nextthought.lesson.publicationconstraints"
 
-	def __setitem__(self, key, value):
+	def _get_key(self):
 		count = len(self)
 		key = '%d' % count
 		while key in self:
 			count += 1
 			key = '%d' % count
+		return key
 
-		checkObject(self, key, value)
-		super(LessonPublicationConstraints, self).__setitem__(key, value)
+	def __setitem__(self, key, value):
+		key = self._get_key()
+		locate(value, self, key)
+		OrderedDict.__setitem__(self, key, value)
 		self.updateLastMod()
 
-	def append(self, value):
-		self['ignore'] = value
-		
-	def extend(self, values):
-		for value in values or ():
-			self.append(value)
+	def __delitem__(self, key):
+		OrderedDict.__delitem__(self, key)
+		self.updateLastMod()
+
+	def append(self, item):
+		self['ignore'] = item
+
+	def extend(self, items):
+		for item in items or ():
+			self.append(item)
 
 	@property
 	def Items(self):
@@ -210,16 +217,12 @@ def constraints_for_lesson(lesson, create=True):
 	return constraints
 
 @interface.implementer(ILessonPublicationConstraint, IContentTypeAware)
-class LessonCompletionConstraint(SchemaConfigured,
-								 PersistentCreatedModDateTrackingObject,
+class LessonCompletionConstraint(PersistentCreatedModDateTrackingObject,
+								 SchemaConfigured,
 								 Contained):
-	creator = SYSTEM_USER_ID
 
 	parameters = {}  # IContentTypeAware
-
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
+	creator = SYSTEM_USER_ID
 
 	@readproperty
 	def ntiid(self):
