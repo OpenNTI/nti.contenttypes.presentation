@@ -200,7 +200,7 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 	# compatible methods
 
 	def _len(self):
-		return len(self)
+		return OrderedDict.__len__(self)
 
 @component.adapter(INTILessonOverview)
 @interface.implementer(ILessonPublicationConstraints)
