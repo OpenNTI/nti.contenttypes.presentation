@@ -15,9 +15,6 @@ from datetime import datetime
 from zope import component
 from zope import interface
 
-from zope.security.interfaces import NoInteraction 
-from zope.security.management import getInteraction
-
 from nti.coremetadata.interfaces import SYSTEM_USER_NAME
 
 from nti.contenttypes.presentation.interfaces import CREDIT
@@ -32,20 +29,12 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
 
 os.urandom(1)
-
-def current_principal():
-	try:
-		result = getInteraction().participations[0].principal.id
-	except (NoInteraction, IndexError, AttributeError):
-		result = SYSTEM_USER_NAME
-	return result
 	
 def generate_ntiid(nttype, provider='NTI', now=None):
 	now = datetime.utcnow() if now is None else now
-	principal = current_principal()
 	dstr = now.strftime("%Y%m%d%H%M%S %f")
 	rand = os.urandom(4).encode('hex').upper()
-	specific = make_specific_safe("%s_%s_%s" % (principal, dstr, rand))
+	specific = make_specific_safe("%s_%s_%s" % (SYSTEM_USER_NAME, dstr, rand))
 	result = make_ntiid(provider=provider,
 						nttype=nttype,
 						specific=specific)
