@@ -97,10 +97,7 @@ class NTITranscript(PersistentMixin, Contained):
 
 	@readproperty
 	def ntiid(self):
-		result = compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
-		if result:
-			self.ntiid = result
-		return result
+		return compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
 
 	def schema(self):
 		result = make_schema(schema=INTITranscript)
@@ -115,10 +112,7 @@ class NTIAudioSource(PersistentMixin, Contained):
 
 	@readproperty
 	def ntiid(self):
-		result = compute_part_ntiid(self, NTI_AUDIO_SOURCE, 'sources')
-		if result:
-			self.ntiid = result
-		return result
+		return compute_part_ntiid(self, NTI_AUDIO_SOURCE, 'sources')
 
 	def schema(self):
 		result = make_schema(schema=INTIAudioSource)
