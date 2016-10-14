@@ -52,6 +52,7 @@ setup(
 		'zope.deferredimport',
 		'zope.dublincore',
 		'zope.i18nmessageid',
+		'zope.intid',
 		'zope.interface',
 		'zope.schema',
 		'zope.security',

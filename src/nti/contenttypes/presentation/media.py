@@ -53,6 +53,7 @@ from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
 
+from nti.property.property import Lazy
 from nti.property.property import alias
 
 from nti.ntiids.ntiids import get_parts
@@ -102,7 +103,7 @@ class NTITranscript(PersistentMixin, Contained):
 	__external_class_name__ = u"Transcript"
 	mime_type = mimeType = u'application/vnd.nextthought.ntitranscript'
 
-	@readproperty
+	@Lazy
 	def ntiid(self):
 		return compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
 
@@ -117,7 +118,7 @@ class NTIAudioSource(PersistentMixin, Contained):
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiosource'
 
-	@readproperty
+	@Lazy
 	def ntiid(self):
 		return compute_part_ntiid(self, NTI_AUDIO_SOURCE, 'sources')
 
@@ -132,12 +133,9 @@ class NTIVideoSource(PersistentMixin, Contained):
 	__external_class_name__ = u"VideoSource"
 	mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
 
-	@readproperty
+	@Lazy
 	def ntiid(self):
-		result = compute_part_ntiid(self, NTI_VIDEO_SOURCE, 'sources')
-		if result:
-			self.ntiid = result
-		return result
+		return compute_part_ntiid(self, NTI_VIDEO_SOURCE, 'sources')
 
 	def schema(self):
 		result = make_schema(schema=INTIVideoSource)
