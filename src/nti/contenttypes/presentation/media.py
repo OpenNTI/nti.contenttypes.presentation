@@ -68,7 +68,7 @@ def compute_part_ntiid(part, nttype, field):
 	base_ntiid = getattr(parent, 'ntiid', None)
 	parent_parts = getattr(parent, field, None)
 	if base_ntiid and parent_parts and intids is not None:
-		doc_id = intids.queryId(part)
+		doc_id = intids.queryId(parent)
 		if doc_id is None:
 			return None
 		# Gather all child parts ntiids.
