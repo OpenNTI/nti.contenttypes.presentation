@@ -11,14 +11,11 @@ logger = __import__('logging').getLogger(__name__)
 
 from functools import total_ordering
 
-from zope import component
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
 from zope.container.contained import Contained
-
-from zope.intid.interfaces import IIntIds
 
 from zope.mimetype.interfaces import IContentTypeAware
 
@@ -64,16 +61,12 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 def compute_part_ntiid(part, nttype, field):
 	parent = part.__parent__
-	intids = component.queryUtility(IIntIds)
 	base_ntiid = getattr(parent, 'ntiid', None)
-	parent_parts = getattr(parent, field, None)
-	if base_ntiid and parent_parts and intids is not None:
-		doc_id = intids.queryId(parent)
-		if doc_id is None:
-			return None
+	parent_parts = getattr(parent, field, None) or None
+	if base_ntiid and parent_parts:
 		# Gather all child parts ntiids.
 		parent_part_ids = set()
-		for child_part in parent_parts:
+		for child_part in parent_parts or ():
 			child_part_ntiid = child_part.__dict__.get('ntiid')
 			parent_part_ids.add(child_part_ntiid)
 		parent_part_ids.discard(None)
@@ -84,7 +77,7 @@ def compute_part_ntiid(part, nttype, field):
 		# Iterate until we find an ntiid that does not collide.
 		idx = 0
 		while True:
-			specific = "%s.%s" % (doc_id, uid)
+			specific = "%s.%s" % (parts.specific, uid)
 			result = make_ntiid(parts.date,
 								parts.provider,
 								nttype,
