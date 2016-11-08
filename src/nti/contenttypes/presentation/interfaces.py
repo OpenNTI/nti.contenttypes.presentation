@@ -645,11 +645,10 @@ class ISurveyCompletionConstraint(ILessonPublicationConstraint):
 	referenced surveys are either completed or closed.
 	"""
 	surveys = IndexedIterable(title='Survey NTIIDs',
-							value_type=ValidNTIID(min_length=1, title='A single NTIID'),
-							unique=True,
-							required=True,
-							min_length=1)
-	
+							  value_type=ValidNTIID(min_length=1, title='A single NTIID'),
+							  unique=True,
+							  required=True,
+							  min_length=1)
 
 class IPresentationVisibility(interface.Interface):
 	"""
