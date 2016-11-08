@@ -42,6 +42,7 @@ from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
+from nti.contenttypes.presentation.interfaces import ISurveyCompletionConstraint
 
 from nti.coremetadata.interfaces import SYSTEM_USER_ID
 
@@ -244,6 +245,13 @@ class AssignmentCompletionConstraint(LessonCompletionConstraint):
 	createDirectFieldProperties(IAssignmentCompletionConstraint)
 
 	mime_type = mimeType = u"application/vnd.nextthought.lesson.assignmentcompletionconstraint"
+	
+	
+@interface.implementer(ISurveyCompletionConstraint)
+class SurveyCompletionConstraint(LessonCompletionConstraint):
+	createDirectFieldProperties(ISurveyCompletionConstraint)
+	
+	mime_type = mimeType = u"application/vnd.nextthought.lesson.surveycompletionconstraint"
 
 import zope.deferredimport
 zope.deferredimport.initialize()

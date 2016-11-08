@@ -86,7 +86,7 @@ class TestModule(unittest.TestCase):
 
 		module = sys.modules[INTILessonOverview.__module__]
 		members = list(inspect.getmembers(module, _ext_mime_type_predicate))
-		assert_that(members, has_length(40))
+		assert_that(members, has_length(41))
 
 	def test_visibility_options(self):
 		options = get_visibility_options()

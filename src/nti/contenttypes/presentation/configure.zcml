@@ -92,7 +92,8 @@
 						 .interfaces.INTIRelatedWorkRefPointer
 						 .interfaces.ILessonPublicationConstraint
 						 .interfaces.ILessonPublicationConstraints
-						 .interfaces.IAssignmentCompletionConstraint"
+						 .interfaces.IAssignmentCompletionConstraint
+						 .interfaces.ISurveyCompletionConstraint"
 		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
 
 	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
