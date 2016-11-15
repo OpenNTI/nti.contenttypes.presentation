@@ -228,6 +228,12 @@ class ILegacyPresentationAsset(IPresentationAsset):
 	"""
 ILegacyPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+class IContentBackedPresentationAsset(IPresentationAsset):
+	"""
+	Marker interface for assets that come from content backed sources
+	"""
+IContentBackedPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
+
 class IPointer(interface.Interface):
 	"""
 	Marker interface for objects that point to another"
