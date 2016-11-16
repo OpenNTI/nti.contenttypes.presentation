@@ -204,7 +204,7 @@ class IConcreteAsset(IPresentationAsset):
 	"""
 IConcreteAsset.setTaggedValue('_ext_is_marker_interface', True)
 
-class IUserCreatedAsset(IPresentationAsset):
+class IUserCreatedAsset(interface.Interface):
 	"""
 	Marker interface for user created asset
 	"""
@@ -228,7 +228,7 @@ class ILegacyPresentationAsset(IPresentationAsset):
 	"""
 ILegacyPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
-class IContentBackedPresentationAsset(IPresentationAsset):
+class IContentBackedPresentationAsset(interface.Interface):
 	"""
 	Marker interface for assets that come from content backed sources
 	"""
@@ -240,7 +240,7 @@ class IPointer(interface.Interface):
 	"""
 	target = interface.Attribute("target object id")
 IPointer.setTaggedValue('_ext_is_marker_interface', True)
-	
+
 class IAssetRef(IPresentationAsset, IPointer):
 	"""
 	Marker interface for pointer-presentation assets
@@ -631,7 +631,7 @@ class ILessonPublicationConstraints(IMapping,
 class ILessonPublicationConstraint(ICreated, ILastModified):
 	"""
 	Defines a constraint for determining whether a lesson
-	is publishable or not 
+	is publishable or not
 	"""
 
 class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
@@ -644,7 +644,7 @@ class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
 					   	   		  unique=True,
 					  	   		  required=True,
 					  	   		  min_length=1)
-	
+
 class ISurveyCompletionConstraint(ILessonPublicationConstraint):
 	"""
 	A publication constraint that is satisfied if all its

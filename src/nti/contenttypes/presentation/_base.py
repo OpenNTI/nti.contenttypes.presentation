@@ -53,7 +53,7 @@ class PersistentPresentationAsset(PersistentMixin,
 	byline = None
 	description = None
 	parameters = {} # IContentTypeAware
-		
+
 	@readproperty
 	def creator(self):
 		return self.byline
@@ -73,7 +73,7 @@ class PersistentPresentationAsset(PersistentMixin,
 			return (self.mimeType, self.ntiid) > (other.mimeType, other.ntiid)
 		except AttributeError:
 			return NotImplemented
-		
+
 	def schema(self, user=None):
 		schema = find_most_derived_interface(self, IPresentationAsset)
 		result = make_schema(schema=schema, user=user)
