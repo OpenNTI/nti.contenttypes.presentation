@@ -51,7 +51,7 @@ setup(
 		'nti.namedfile',
 		'nti.ntiids',
 		'nti.property',
-		'nti.schema'
+		'nti.schema',
 		'six',
 		'persistent',
 		'zope.annotation',
