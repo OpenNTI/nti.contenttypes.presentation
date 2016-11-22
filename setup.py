@@ -44,6 +44,14 @@ setup(
 	tests_require=TESTS_REQUIRE,
 	install_requires=[
 		'setuptools',
+		'nti.coremetadata',
+		'nti.dublincore',
+		'nti.externalization',
+		'nti.mimetype',
+		'nti.namedfile',
+		'nti.ntiids',
+		'nti.property',
+		'nti.schema'
 		'six',
 		'persistent',
 		'zope.annotation',
@@ -55,15 +63,7 @@ setup(
 		'zope.intid',
 		'zope.interface',
 		'zope.schema',
-		'zope.security',
-		'nti.coremetadata',
-		'nti.dublincore',
-		'nti.externalization',
-		'nti.mimetype',
-		'nti.namedfile',
-		'nti.ntiids',
-		'nti.property',
-		'nti.schema'
+		'zope.security'
 	],
 	extras_require={
 		'test': TESTS_REQUIRE,
