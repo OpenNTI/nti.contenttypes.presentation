@@ -36,12 +36,13 @@ from zope.schema import vocabulary
 
 from dolmen.builtins.interfaces import IIterable
 
+from nti.base.interfaces import ITitled
+from nti.base.interfaces import ICreated
+from nti.base.interfaces import ILastModified
+
 from nti.contenttypes.presentation.schema import VisibilityField
 
-from nti.coremetadata.interfaces import ITitled
-from nti.coremetadata.interfaces import ICreated
 from nti.coremetadata.interfaces import IRecordable
-from nti.coremetadata.interfaces import ILastModified
 from nti.coremetadata.interfaces import ICalendarPublishable
 from nti.coremetadata.interfaces import IRecordableContainer
 from nti.coremetadata.interfaces import IObjectJsonSchemaMaker
