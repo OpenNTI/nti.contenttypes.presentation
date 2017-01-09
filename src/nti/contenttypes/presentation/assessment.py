@@ -36,96 +36,102 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 import zope.deferredimport
 zope.deferredimport.initialize()
 
+
 @total_ordering
 class NTIAssessmentRef(PersistentPresentationAsset):
 
-	nttype = 'NTIAssessmentRef'
-	target_ntiid = alias('target')
+    nttype = 'NTIAssessmentRef'
+    target_ntiid = alias('target')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(self.nttype)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(self.nttype)
+        return self.ntiid
 
-	@readproperty
-	def target(self):
-		return self.ntiid
+    @readproperty
+    def target(self):
+        return self.ntiid
 
-	def __lt__(self, other):
-		try:
-			return (self.mimeType, self.label) < (other.mimeType, other.label)
-		except AttributeError:
-			return NotImplemented
+    def __lt__(self, other):
+        try:
+            return (self.mimeType, self.label) < (other.mimeType, other.label)
+        except AttributeError:
+            return NotImplemented
 
-	def __gt__(self, other):
-		try:
-			return (self.mimeType, self.label) > (other.mimeType, other.label)
-		except AttributeError:
-			return NotImplemented
+    def __gt__(self, other):
+        try:
+            return (self.mimeType, self.label) > (other.mimeType, other.label)
+        except AttributeError:
+            return NotImplemented
+
 
 @interface.implementer(INTIAssignmentRef)
 class NTIAssignmentRef(NTIAssessmentRef):
-	createDirectFieldProperties(INTIAssignmentRef)
+    createDirectFieldProperties(INTIAssignmentRef)
 
-	__external_class_name__ = u"AssignmentRef"
-	mime_type = mimeType = u"application/vnd.nextthought.assignmentref"
+    __external_class_name__ = u"AssignmentRef"
+    mime_type = mimeType = u"application/vnd.nextthought.assignmentref"
 
-	nttype = NTI_ASSIGNMENT_REF
-	ContainerId = alias('containerId')
+    nttype = NTI_ASSIGNMENT_REF
+    ContainerId = alias('containerId')
 
-	def __lt__(self, other):
-		try:
-			return (self.mimeType, self.title) < (other.mimeType, other.title)
-		except AttributeError:
-			return NotImplemented
+    def __lt__(self, other):
+        try:
+            return (self.mimeType, self.title) < (other.mimeType, other.title)
+        except AttributeError:
+            return NotImplemented
 
-	def __gt__(self, other):
-		try:
-			return (self.mimeType, self.title) > (other.mimeType, other.title)
-		except AttributeError:
-			return NotImplemented
+    def __gt__(self, other):
+        try:
+            return (self.mimeType, self.title) > (other.mimeType, other.title)
+        except AttributeError:
+            return NotImplemented
+
 
 @interface.implementer(INTIQuestionSetRef)
 class NTIQuestionSetRef(NTIAssessmentRef):
-	createDirectFieldProperties(INTIQuestionSetRef)
+    createDirectFieldProperties(INTIQuestionSetRef)
 
-	__external_class_name__ = u"QuestionSetRef"
-	mime_type = mimeType = u"application/vnd.nextthought.questionsetref"
+    __external_class_name__ = u"QuestionSetRef"
+    mime_type = mimeType = u"application/vnd.nextthought.questionsetref"
 
-	nttype = NTI_QUESTION_SET_REF
+    nttype = NTI_QUESTION_SET_REF
 
 zope.deferredimport.deprecated(
-	"Import from NTIQuestionSetRef instead",
-	NTQuestionSetRef='nti.contenttypes.presentation.assessment:NTIQuestionSetRef')
+    "Import from NTIQuestionSetRef instead",
+    NTQuestionSetRef='nti.contenttypes.presentation.assessment:NTIQuestionSetRef')
+
 
 @interface.implementer(INTIQuestionRef)
 class NTIQuestionRef(NTIAssessmentRef):
-	createDirectFieldProperties(INTIQuestionRef)
+    createDirectFieldProperties(INTIQuestionRef)
 
-	__external_class_name__ = u"QuestionRef"
-	mime_type = mimeType = u"application/vnd.nextthought.questionref"
+    __external_class_name__ = u"QuestionRef"
+    mime_type = mimeType = u"application/vnd.nextthought.questionref"
 
-	nttype = NTI_QUESTION_REF
+    nttype = NTI_QUESTION_REF
 
 zope.deferredimport.deprecated(
-	"Import from NTIQuestionRef instead",
-	NTQuestionRef='nti.contenttypes.presentation.assessment:NTIQuestionRef')
+    "Import from NTIQuestionRef instead",
+    NTQuestionRef='nti.contenttypes.presentation.assessment:NTIQuestionRef')
+
 
 @interface.implementer(INTISurveyRef)
 class NTISurveyRef(NTIAssessmentRef):
-	createDirectFieldProperties(INTISurveyRef)
+    createDirectFieldProperties(INTISurveyRef)
 
-	__external_class_name__ = u"SurveyRef"
-	mime_type = mimeType = u"application/vnd.nextthought.surveyref"
+    __external_class_name__ = u"SurveyRef"
+    mime_type = mimeType = u"application/vnd.nextthought.surveyref"
 
-	nttype = NTI_SURVEY_REF
-	ContainerId = alias('containerId')
+    nttype = NTI_SURVEY_REF
+    ContainerId = alias('containerId')
+
 
 @interface.implementer(INTIPollRef)
 class NTIPollRef(NTIAssessmentRef):
-	createDirectFieldProperties(INTIPollRef)
+    createDirectFieldProperties(INTIPollRef)
 
-	__external_class_name__ = u"PollRef"
-	mime_type = mimeType = u"application/vnd.nextthought.pollref"
+    __external_class_name__ = u"PollRef"
+    mime_type = mimeType = u"application/vnd.nextthought.pollref"
 
-	nttype = NTI_POLL_REF
+    nttype = NTI_POLL_REF

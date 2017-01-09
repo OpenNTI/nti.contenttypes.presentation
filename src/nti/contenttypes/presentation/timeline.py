@@ -29,45 +29,47 @@ from nti.schema.eqhash import EqHash
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
+
 @total_ordering
 @interface.implementer(INTITimeline)
 class NTITimeLine(PersistentPresentationAsset):
-	createDirectFieldProperties(INTITimeline)
+    createDirectFieldProperties(INTITimeline)
 
-	__external_class_name__ = u"Timeline"
-	mime_type = mimeType = u'application/vnd.nextthought.ntitimeline'
+    __external_class_name__ = u"Timeline"
+    mime_type = mimeType = u'application/vnd.nextthought.ntitimeline'
 
-	target = None
-	desc = alias('description')
+    target = None
+    desc = alias('description')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(NTI_TIMELINE)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(NTI_TIMELINE)
+        return self.ntiid
 
-	def __lt__(self, other):
-		try:
-			return (self.mimeType, self.label) < (other.mimeType, other.label)
-		except AttributeError:
-			return NotImplemented
+    def __lt__(self, other):
+        try:
+            return (self.mimeType, self.label) < (other.mimeType, other.label)
+        except AttributeError:
+            return NotImplemented
 
-	def __gt__(self, other):
-		try:
-			return (self.mimeType, self.label) > (other.mimeType, other.label)
-		except AttributeError:
-			return NotImplemented
+    def __gt__(self, other):
+        try:
+            return (self.mimeType, self.label) > (other.mimeType, other.label)
+        except AttributeError:
+            return NotImplemented
+
 
 @EqHash('target')
 @interface.implementer(INTITimelineRef)
 class NTITimeLineRef(PersistentPresentationAsset):
-	createDirectFieldProperties(INTITimelineRef)
+    createDirectFieldProperties(INTITimelineRef)
 
-	__external_class_name__ = u"TimelineRef"
-	mime_type = mimeType = u'application/vnd.nextthought.ntitimelineref'
+    __external_class_name__ = u"TimelineRef"
+    mime_type = mimeType = u'application/vnd.nextthought.ntitimelineref'
 
-	__name__ = alias('ntiid')
+    __name__ = alias('ntiid')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(NTI_TIMELIME_REF)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(NTI_TIMELIME_REF)
+        return self.ntiid

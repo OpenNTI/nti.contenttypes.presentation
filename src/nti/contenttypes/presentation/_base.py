@@ -34,47 +34,48 @@ from nti.externalization.representation import WithRepr
 from nti.schema.field import SchemaConfigured
 from nti.schema.interfaces import find_most_derived_interface
 
+
 class PersistentMixin(SchemaConfigured,
-					  PersistentCreatedModDateTrackingObject):
+                      PersistentCreatedModDateTrackingObject):
 
-	jsonschema = u''
+    jsonschema = u''
 
-	def __init__(self, *args, **kwargs):
-		SchemaConfigured.__init__(self, *args, **kwargs)
-		PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        SchemaConfigured.__init__(self, *args, **kwargs)
+        PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
+
 
 @WithRepr
 @total_ordering
 @interface.implementer(IPresentationAsset, IContentTypeAware, ICreated)
 class PersistentPresentationAsset(PersistentMixin,
-								  RecordableMixin,
-								  Contained):  # order matters
-	title = None
-	byline = None
-	description = None
-	parameters = {} # IContentTypeAware
+                                  RecordableMixin,
+                                  Contained):  # order matters
+    title = None
+    byline = None
+    description = None
+    parameters = {}  # IContentTypeAware
 
-	@readproperty
-	def creator(self):
-		return self.byline
+    @readproperty
+    def creator(self):
+        return self.byline
 
-	@classmethod
-	def generate_ntiid(cls, nttype, provider='NTI'):
-		return generate_ntiid(nttype, provider=provider)
+    @classmethod
+    def generate_ntiid(cls, nttype, provider='NTI'):
+        return generate_ntiid(nttype, provider=provider)
 
-	def __lt__(self, other):
-		try:
-			return (self.mimeType, self.ntiid) < (other.mimeType, other.ntiid)
-		except AttributeError:
-			return NotImplemented
+    def __lt__(self, other):
+        try:
+            return (self.mimeType, self.ntiid) < (other.mimeType, other.ntiid)
+        except AttributeError:
+            return NotImplemented
 
-	def __gt__(self, other):
-		try:
-			return (self.mimeType, self.ntiid) > (other.mimeType, other.ntiid)
-		except AttributeError:
-			return NotImplemented
+    def __gt__(self, other):
+        try:
+            return (self.mimeType, self.ntiid) > (other.mimeType, other.ntiid)
+        except AttributeError:
+            return NotImplemented
 
-	def schema(self, user=None):
-		schema = find_most_derived_interface(self, IPresentationAsset)
-		result = make_schema(schema=schema, user=user)
-		return result
+    def schema(self, user=None):
+        schema = find_most_derived_interface(self, IPresentationAsset)
+        return make_schema(schema=schema, user=user)

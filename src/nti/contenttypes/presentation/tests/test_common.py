@@ -17,10 +17,12 @@ from nti.contenttypes.presentation.common import generate_ntiid
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
+
 class TestCommon(unittest.TestCase):
 
-	layer = SharedConfiguringTestLayer
+    layer = SharedConfiguringTestLayer
 
-	def test_generate_ntiid(self):
-		ntiid = generate_ntiid('FOO', now=datetime.fromtimestamp(1000))
-		assert_that(ntiid, starts_with('tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'))
+    def test_generate_ntiid(self):
+        ntiid = generate_ntiid('FOO', now=datetime.fromtimestamp(1000))
+        assert_that(ntiid, starts_with(
+            'tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'))

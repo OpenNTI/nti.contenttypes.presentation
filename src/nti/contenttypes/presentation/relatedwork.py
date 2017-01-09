@@ -29,59 +29,61 @@ from nti.schema.eqhash import EqHash
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
+
 @total_ordering
 @interface.implementer(INTIRelatedWorkRef)
 class NTIRelatedWorkRef(PersistentPresentationAsset):
-	createDirectFieldProperties(INTIRelatedWorkRef)
+    createDirectFieldProperties(INTIRelatedWorkRef)
 
-	__external_class_name__ = u"RelatedWork"
-	mime_type = mimeType = u'application/vnd.nextthought.relatedworkref'
+    __external_class_name__ = u"RelatedWork"
+    mime_type = mimeType = u'application/vnd.nextthought.relatedworkref'
 
-	target = None
+    target = None
 
-	Creator = alias('creator')
-	desc = alias('description')
-	target_ntiid = alias('target')
-	targetMimeType = target_mime_type = alias('type')
+    Creator = alias('creator')
+    desc = alias('description')
+    target_ntiid = alias('target')
+    targetMimeType = target_mime_type = alias('type')
 
-	nttype = NTI_RELATED_WORK_REF
+    nttype = NTI_RELATED_WORK_REF
 
-	__name__ = alias('ntiid')
+    __name__ = alias('ntiid')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(self.nttype)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(self.nttype)
+        return self.ntiid
 
-	def __lt__(self, other):
-		try:
-			return (self.mimeType, self.label) < (other.mimeType, other.label)
-		except AttributeError:
-			return NotImplemented
+    def __lt__(self, other):
+        try:
+            return (self.mimeType, self.label) < (other.mimeType, other.label)
+        except AttributeError:
+            return NotImplemented
 
-	def __gt__(self, other):
-		try:
-			return (self.mimeType, self.label) > (other.mimeType, other.label)
-		except AttributeError:
-			return NotImplemented
+    def __gt__(self, other):
+        try:
+            return (self.mimeType, self.label) > (other.mimeType, other.label)
+        except AttributeError:
+            return NotImplemented
+
 
 @EqHash('target')
 @interface.implementer(INTIRelatedWorkRefPointer)
 class NTIRelatedWorkRefPointer(PersistentPresentationAsset):
-	createDirectFieldProperties(INTIRelatedWorkRefPointer)
+    createDirectFieldProperties(INTIRelatedWorkRefPointer)
 
-	__external_class_name__ = u"RelatedWorkRefPointer"
-	mime_type = mimeType = u'application/vnd.nextthought.relatedworkrefpointer'
+    __external_class_name__ = u"RelatedWorkRefPointer"
+    mime_type = mimeType = u'application/vnd.nextthought.relatedworkrefpointer'
 
-	__name__ = alias('ntiid')
+    __name__ = alias('ntiid')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(NTI_RELATED_WORK_REF_POINTER)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(NTI_RELATED_WORK_REF_POINTER)
+        return self.ntiid
 
 import zope.deferredimport
 zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
-	"Import from NTIRelatedWorkRef instead",
-	NTIRelatedWork='nti.contenttypes.presentation.relatedwork:NTIRelatedWorkRef')
+    "Import from NTIRelatedWorkRef instead",
+    NTIRelatedWork='nti.contenttypes.presentation.relatedwork:NTIRelatedWorkRef')

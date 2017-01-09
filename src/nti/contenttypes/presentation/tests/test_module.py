@@ -44,50 +44,51 @@ from nti.schema.interfaces import find_most_derived_interface
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
+
 class TestModule(unittest.TestCase):
 
-	layer = SharedConfiguringTestLayer
+    layer = SharedConfiguringTestLayer
 
-	def test_ifaces(self):
-		assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
-		assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(17))
+    def test_ifaces(self):
+        assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
+        assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(17))
 
-		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
-		assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(23))
+        assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
+        assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(23))
 
-		assert_that(COURSE_CONTAINER_INTERFACES, has_length(17))
-		assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))
+        assert_that(COURSE_CONTAINER_INTERFACES, has_length(17))
+        assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))
 
-	def test_asset_ifaces(self):
-		class Foo(object):
-			pass
-		for iface in ALL_PRESENTATION_ASSETS_INTERFACES:
-			obj = Foo()
-			interface.alsoProvides(obj, iface)
-			provided = find_most_derived_interface(obj, IPresentationAsset)
-			assert_that(iface_of_asset(obj), is_(provided))
+    def test_asset_ifaces(self):
+        class Foo(object):
+            pass
+        for iface in ALL_PRESENTATION_ASSETS_INTERFACES:
+            obj = Foo()
+            interface.alsoProvides(obj, iface)
+            provided = find_most_derived_interface(obj, IPresentationAsset)
+            assert_that(iface_of_asset(obj), is_(provided))
 
-	def test_group(self):
-		group = NTICourseOverViewGroup()
-		assert_that(group, validly_provides(INTICourseOverviewGroup))
-		assert_that(group, verifiably_provides(INTICourseOverviewGroup))
+    def test_group(self):
+        group = NTICourseOverViewGroup()
+        assert_that(group, validly_provides(INTICourseOverviewGroup))
+        assert_that(group, verifiably_provides(INTICourseOverviewGroup))
 
-	def test_lesson(self):
-		lesson = NTILessonOverView()
-		assert_that(lesson, validly_provides(INTILessonOverview))
-		assert_that(lesson, verifiably_provides(INTILessonOverview))
+    def test_lesson(self):
+        lesson = NTILessonOverView()
+        assert_that(lesson, validly_provides(INTILessonOverview))
+        assert_that(lesson, verifiably_provides(INTILessonOverview))
 
-	def test_factories(self):
+    def test_factories(self):
 
-		def _ext_mime_type_predicate(item):
-			result = 	bool(type(item) == interface.interface.InterfaceClass) \
-					and item.queryTaggedValue('_ext_mime_type')
-			return result
+        def _ext_mime_type_predicate(item):
+            result =  bool(type(item) == interface.interface.InterfaceClass) \
+                and item.queryTaggedValue('_ext_mime_type')
+            return result
 
-		module = sys.modules[INTILessonOverview.__module__]
-		members = list(inspect.getmembers(module, _ext_mime_type_predicate))
-		assert_that(members, has_length(41))
+        module = sys.modules[INTILessonOverview.__module__]
+        members = list(inspect.getmembers(module, _ext_mime_type_predicate))
+        assert_that(members, has_length(41))
 
-	def test_visibility_options(self):
-		options = get_visibility_options()
-		assert_that(options, has_length(greater_than_or_equal_to(2)))
+    def test_visibility_options(self):
+        options = get_visibility_options()
+        assert_that(options, has_length(greater_than_or_equal_to(2)))

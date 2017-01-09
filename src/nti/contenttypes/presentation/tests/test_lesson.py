@@ -33,36 +33,44 @@ from nti.externalization.internalization import update_from_external_object
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
+
 class TestLesson(unittest.TestCase):
 
-	layer = SharedConfiguringTestLayer
+    layer = SharedConfiguringTestLayer
 
-	def test_constraints(self):
-		constraints = LessonPublicationConstraints()
-		assert_that(constraints, validly_provides(ILessonPublicationConstraints))
-		assert_that(constraints, verifiably_provides(ILessonPublicationConstraints))
+    def test_constraints(self):
+        constraints = LessonPublicationConstraints()
+        assert_that(
+            constraints, validly_provides(ILessonPublicationConstraints))
+        assert_that(
+            constraints, verifiably_provides(ILessonPublicationConstraints))
 
-	def test_assignment_completion_constraint(self):
-		constraint = AssignmentCompletionConstraint(assignments=["tag:nextthought.com,2011-10:OU-NAQ-BIO"])
-		assert_that(constraint, validly_provides(IAssignmentCompletionConstraint))
-		assert_that(constraint, verifiably_provides(IAssignmentCompletionConstraint))
+    def test_assignment_completion_constraint(self):
+        constraint = AssignmentCompletionConstraint(
+            assignments=["tag:nextthought.com,2011-10:OU-NAQ-BIO"])
+        assert_that(
+            constraint, validly_provides(IAssignmentCompletionConstraint))
+        assert_that(
+            constraint, verifiably_provides(IAssignmentCompletionConstraint))
 
-	def test_io(self):
-		constraints = LessonPublicationConstraints()
-		constraint = AssignmentCompletionConstraint(assignments=["tag:nextthought.com,2011-10:OU-NAQ-BIO"])
-		constraints.append(constraint)
-		assert_that(constraint, has_property('__name__', is_not(none())))
+    def test_io(self):
+        constraints = LessonPublicationConstraints()
+        constraint = AssignmentCompletionConstraint(
+            assignments=["tag:nextthought.com,2011-10:OU-NAQ-BIO"])
+        constraints.append(constraint)
+        assert_that(constraint, has_property('__name__', is_not(none())))
 
-		ext_obj = to_external_object(constraints)
-		assert_that(ext_obj, has_entries('MimeType', 'application/vnd.nextthought.lesson.publicationconstraints',
-										 'Items', has_length(1)))
-		
-		factory = find_factory_for(ext_obj)
-		assert_that(factory, is_not(none()))
+        ext_obj = to_external_object(constraints)
+        assert_that(ext_obj, has_entries('MimeType', 'application/vnd.nextthought.lesson.publicationconstraints',
+                                         'Items', has_length(1)))
 
-		new_constraints = factory()
-		update_from_external_object(new_constraints, ext_obj)
-		assert_that(new_constraints, has_property('Items', has_length(1)))
-		new_constraint = new_constraints.Items[0]
-		assert_that(new_constraint, has_property('__name__', is_not(none())))
-		assert_that(new_constraint, has_property('assignments', is_(["tag:nextthought.com,2011-10:OU-NAQ-BIO"])))
+        factory = find_factory_for(ext_obj)
+        assert_that(factory, is_not(none()))
+
+        new_constraints = factory()
+        update_from_external_object(new_constraints, ext_obj)
+        assert_that(new_constraints, has_property('Items', has_length(1)))
+        new_constraint = new_constraints.Items[0]
+        assert_that(new_constraint, has_property('__name__', is_not(none())))
+        assert_that(new_constraint, has_property(
+            'assignments', is_(["tag:nextthought.com,2011-10:OU-NAQ-BIO"])))

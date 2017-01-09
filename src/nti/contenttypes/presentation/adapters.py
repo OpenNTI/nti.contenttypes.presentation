@@ -36,70 +36,77 @@ from nti.contenttypes.presentation.slide import NTISlideDeckRef
 
 from nti.contenttypes.presentation.timeline import NTITimeLineRef
 
+
 @component.adapter(INTIVideo)
 @interface.implementer(INTIVideoRef)
 def ntivideo_to_ntivideoref(video):
-	result = NTIVideoRef(target=video.ntiid,
-						 poster=video.title,
-						 label=video.title)
-	result.byline = video.byline
-	result.creator = video.creator
-	return result
+    result = NTIVideoRef(target=video.ntiid,
+                         poster=video.title,
+                         label=video.title)
+    result.byline = video.byline
+    result.creator = video.creator
+    return result
+
 
 @component.adapter(INTIAudio)
 @interface.implementer(INTIAudioRef)
 def ntiaudio_to_ntiaudioref(audio):
-	result = NTIAudioRef(target=audio.ntiid)
-	result.byline = audio.byline
-	result.creator = audio.creator
-	return result
+    result = NTIAudioRef(target=audio.ntiid)
+    result.byline = audio.byline
+    result.creator = audio.creator
+    return result
+
 
 @component.adapter(INTIMedia)
 @interface.implementer(INTIMediaRef)
 def ntimedia_to_ntimediaref(media):
-	if INTIAudio.providedBy(media):
-		result = INTIAudioRef(media)
-	else:
-		result = INTIVideoRef(media)
-	return result
+    if INTIAudio.providedBy(media):
+        result = INTIAudioRef(media)
+    else:
+        result = INTIVideoRef(media)
+    return result
+
 
 @component.adapter(INTISlideDeck)
 @interface.implementer(INTISlideDeckRef)
 def slideck_to_ntislideckref(slideck):
-	result = NTISlideDeckRef(target=slideck.ntiid)
-	result.byline = slideck.byline
-	result.creator = slideck.creator
-	return result
+    result = NTISlideDeckRef(target=slideck.ntiid)
+    result.byline = slideck.byline
+    result.creator = slideck.creator
+    return result
+
 
 @component.adapter(INTITimeline)
 @interface.implementer(INTITimelineRef)
 def timeline_to_ntitimelineref(timeline):
-	result = NTITimeLineRef(target=timeline.ntiid)
-	result.byline = timeline.byline
-	result.creator = timeline.creator
-	return result
+    result = NTITimeLineRef(target=timeline.ntiid)
+    result.byline = timeline.byline
+    result.creator = timeline.creator
+    return result
+
 
 @component.adapter(INTIRelatedWorkRef)
 @interface.implementer(INTIRelatedWorkRefPointer)
 def relatedworkref_to_relatedworkrefpointer(context):
-	result = NTIRelatedWorkRefPointer(target=context.ntiid)
-	result.byline = context.byline
-	result.creator = context.creator
-	return result
+    result = NTIRelatedWorkRefPointer(target=context.ntiid)
+    result.byline = context.byline
+    result.creator = context.creator
+    return result
+
 
 @interface.implementer(IAssetRef)
 @component.adapter(IConcreteAsset)
 def concrete_to_reference(context):
-	if INTIRelatedWorkRef.providedBy(context):
-		result = INTIRelatedWorkRefPointer(context)
-	elif INTITimeline.providedBy(context):
-		result = INTITimelineRef(context)
-	elif INTISlideDeck.providedBy(context):
-		result = INTISlideDeckRef(context)
-	elif INTIAudio.providedBy(context):
-		result = INTIAudioRef(context)
-	elif INTIVideo.providedBy(context):
-		result = INTIVideoRef(context)
-	else:
-		result = None
-	return result
+    if INTIRelatedWorkRef.providedBy(context):
+        result = INTIRelatedWorkRefPointer(context)
+    elif INTITimeline.providedBy(context):
+        result = INTITimelineRef(context)
+    elif INTISlideDeck.providedBy(context):
+        result = INTISlideDeckRef(context)
+    elif INTIAudio.providedBy(context):
+        result = INTIAudioRef(context)
+    elif INTIVideo.providedBy(context):
+        result = INTIVideoRef(context)
+    else:
+        result = None
+    return result

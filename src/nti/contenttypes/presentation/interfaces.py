@@ -73,10 +73,12 @@ from nti.schema.jsonschema import TAG_REQUIRED_IN_UI
 SBV_TRANSCRIPT_TYPE = u'sbv'
 SRT_TRANSCRIPT_TYPE = u'srt'
 VTT_TRANSCRIPT_TYPE = u'vtt'
-TRANSCRIPT_TYPES = (SBV_TRANSCRIPT_TYPE, SRT_TRANSCRIPT_TYPE, VTT_TRANSCRIPT_TYPE)
+TRANSCRIPT_TYPES = (
+    SBV_TRANSCRIPT_TYPE, SRT_TRANSCRIPT_TYPE, VTT_TRANSCRIPT_TYPE)
 
 TRANSCRIPT_TYPE_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in TRANSCRIPT_TYPES])
+    vocabulary.SimpleVocabulary(
+        [vocabulary.SimpleTerm(x) for x in TRANSCRIPT_TYPES])
 
 # Transcript MimeTypes
 
@@ -84,10 +86,11 @@ SBV_TRANSCRIPT_MIMETYPE = u'text/sbv'
 SRT_TRANSCRIPT_MIMETYPE = u'text/srt'
 VTT_TRANSCRIPT_MIMETYPE = u'text/vtt'
 TRANSCRIPT_MIMETYPES = (SBV_TRANSCRIPT_MIMETYPE, SRT_TRANSCRIPT_MIMETYPE,
-						VTT_TRANSCRIPT_MIMETYPE)
+                        VTT_TRANSCRIPT_MIMETYPE)
 
 TRANSCRIPT_MIMETYPE_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in TRANSCRIPT_MIMETYPES])
+    vocabulary.SimpleVocabulary(
+        [vocabulary.SimpleTerm(x) for x in TRANSCRIPT_MIMETYPES])
 
 # Video Services
 
@@ -96,10 +99,11 @@ VIMEO_VIDEO_SERVICE = u'vimeo'
 YOUTUBE_VIDEO_SERVICE = u'youtube'
 KALTURA_VIDEO_SERVICE = u'kaltura'
 VIDEO_SERVICES = (HTML5_VIDEO_SERVICE, VIMEO_VIDEO_SERVICE, YOUTUBE_VIDEO_SERVICE,
-				  KALTURA_VIDEO_SERVICE)
+                  KALTURA_VIDEO_SERVICE)
 
 VIDEO_SERVICES_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VIDEO_SERVICES])
+    vocabulary.SimpleVocabulary(
+        [vocabulary.SimpleTerm(x) for x in VIDEO_SERVICES])
 
 # Video Service Types
 
@@ -110,11 +114,12 @@ YOUTUBE_VIDEO_SERVICE_TYPE = u'video/youtube'
 KALTURA_VIDEO_SERVICE_TYPE = u'video/kaltura'
 
 VIDEO_SERVICE_TYPES = (MP4_VIDEO_SERVICE_TYPE, WEBM_VIDEO_SERVICE_TYPE,
-					   YOUTUBE_VIDEO_SERVICE_TYPE, VIMEO_VIDEO_SERVICE_TYPE,
-					   KALTURA_VIDEO_SERVICE_TYPE)
+                       YOUTUBE_VIDEO_SERVICE_TYPE, VIMEO_VIDEO_SERVICE_TYPE,
+                       KALTURA_VIDEO_SERVICE_TYPE)
 
 VIDEO_SERVICE_TYPES_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VIDEO_SERVICE_TYPES])
+    vocabulary.SimpleVocabulary(
+        [vocabulary.SimpleTerm(x) for x in VIDEO_SERVICE_TYPES])
 
 # Video Service Sources
 
@@ -124,7 +129,8 @@ OTHER_VIDEO_SOURCE = u'other'
 VIDEO_SOURCES = (MP4_VIDEO_SOURCE, WEBM_VIDEO_SOURCE, OTHER_VIDEO_SOURCE)
 
 VIDEO_SOURCES_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in VIDEO_SOURCES])
+    vocabulary.SimpleVocabulary(
+        [vocabulary.SimpleTerm(x) for x in VIDEO_SOURCES])
 
 # Audio Services
 
@@ -132,7 +138,8 @@ HTML5_AUDIO_SERVICE = u'html5'
 AUDIO_SERVICES = (HTML5_AUDIO_SERVICE,)
 
 AUDIO_SERVICES_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SERVICES])
+    vocabulary.SimpleVocabulary(
+        [vocabulary.SimpleTerm(x) for x in AUDIO_SERVICES])
 
 # Audio Service Types
 
@@ -142,7 +149,8 @@ WAV_AUDIO_SERVICE_TYPE = u'audio/wav'
 AUDIO_SERVICE_TYPES = (MP3_AUDIO_SERVICE_TYPE, WAV_AUDIO_SERVICE_TYPE)
 
 AUDIO_SERVICE_TYPES_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SERVICE_TYPES])
+    vocabulary.SimpleVocabulary(
+        [vocabulary.SimpleTerm(x) for x in AUDIO_SERVICE_TYPES])
 
 # Audio Service Sources
 
@@ -152,7 +160,8 @@ OTHER_AUDIO_SOURCE = u'other'
 AUDIO_SOURCES = (MP3_AUDIO_SOURCE, WAV_AUDIO_SOURCE, OTHER_AUDIO_SOURCE)
 
 AUDIO_SOURCES_VOCABULARY = \
-	vocabulary.SimpleVocabulary([vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
+    vocabulary.SimpleVocabulary(
+        [vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
 
 #: OU Visibility
 OU = "OU"
@@ -169,192 +178,224 @@ EVERYONE = u'everyone'
 #: Purchased Visibility
 PURCHASED = "Purchased"
 
+
 def byline_schema_field(required=False):
-	return Variant((ValidTextLine(title="Creator name"),
-					Object(interface.Interface, title="Creator object")),
-					required=required)
+    return Variant((ValidTextLine(title="Creator name"),
+                    Object(interface.Interface, title="Creator object")),
+                   required=required)
+
 
 def href_schema_field(title=u'', required=False, default=None):
-	return Variant((ValidTextLine(title="href name"),
-					ValidURI(title="href source uri"),
-					Object(INamedFile, title="href file")),
-					title=title,
-					default=default,
-					required=required)
+    return Variant((ValidTextLine(title="href name"),
+                    ValidURI(title="href source uri"),
+                    Object(INamedFile, title="href file")),
+                   title=title,
+                   default=default,
+                   required=required)
+
 
 class ITaggedContent(interface.Interface):
-	"""
-	Something that can contain tags.
-	"""
+    """
+    Something that can contain tags.
+    """
 
-	tags = IndexedIterable(title="Tags applied by the user.",
-					  	   value_type=ValidTextLine(min_length=1, title="A single tag"),
-					   	   unique=True,
-					   	   default=(),
-					  	   required=False)
+    tags = IndexedIterable(title="Tags applied by the user.",
+                           value_type=ValidTextLine(
+                               min_length=1, title="A single tag"),
+                           unique=True,
+                           default=(),
+                           required=False)
+
 
 class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnotatable):
-	"""
-	marker interface for all presentation assests
-	"""
+    """
+    marker interface for all presentation assests
+    """
 IPresentationAsset.setTaggedValue('_ext_jsonschema', u'')
 
+
 class IConcreteAsset(IPresentationAsset):
-	"""
-	Marker interface for non-ref (concrete) types
-	"""
+    """
+    Marker interface for non-ref (concrete) types
+    """
 IConcreteAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+
 class IUserCreatedAsset(interface.Interface):
-	"""
-	Marker interface for user created asset
-	"""
+    """
+    Marker interface for user created asset
+    """
 IUserCreatedAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+
 class IPackagePresentationAsset(IConcreteAsset):
-	"""
-	Marker interface for assets whose home are content packages
-	"""
+    """
+    Marker interface for assets whose home are content packages
+    """
 IPackagePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+
 class ICoursePresentationAsset(IPresentationAsset):
-	"""
-	Marker interface for assets whose home are courses
-	"""
+    """
+    Marker interface for assets whose home are courses
+    """
 ICoursePresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+
 class ILegacyPresentationAsset(IPresentationAsset):
-	"""
-	Marker interface for assets that come from legacy courses/packages
-	"""
+    """
+    Marker interface for assets that come from legacy courses/packages
+    """
 ILegacyPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
+
 class IContentBackedPresentationAsset(interface.Interface):
-	"""
-	Marker interface for assets that come from content backed sources
-	"""
-IContentBackedPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
+    """
+    Marker interface for assets that come from content backed sources
+    """
+IContentBackedPresentationAsset.setTaggedValue(
+    '_ext_is_marker_interface', True)
+
 
 class IPointer(interface.Interface):
-	"""
-	Marker interface for objects that point to another"
-	"""
-	target = interface.Attribute("target object id")
+    """
+    Marker interface for objects that point to another"
+    """
+    target = interface.Attribute("target object id")
 IPointer.setTaggedValue('_ext_is_marker_interface', True)
 
+
 class IAssetRef(IPresentationAsset, IPointer):
-	"""
-	Marker interface for pointer-presentation assets
-	"""
+    """
+    Marker interface for pointer-presentation assets
+    """
 IAssetRef.setTaggedValue('_ext_is_marker_interface', True)
 
+
 class IItemAssetContainer(interface.Interface):
-	"""
-	Base interface for assets that containt other assets
-	"""
+    """
+    Base interface for assets that containt other assets
+    """
 
-	Items = interface.Attribute("Items in this container")
+    Items = interface.Attribute("Items in this container")
 
-	def append(item):
-		"""
-		Add an item
-		"""
+    def append(item):
+        """
+        Add an item
+        """
 
-	def remove(item):
-		"""
-		remove the specified item
+    def remove(item):
+        """
+        remove the specified item
 
-		:return True if object was removed
-		"""
+        :return True if object was removed
+        """
 
-	def __contains__(item):
-		"""
-		return is the specified item is in this container
-		"""
+    def __contains__(item):
+        """
+        return is the specified item is in this container
+        """
+
 
 class IGroupOverViewable(interface.Interface):
-	"""
-	marker interface for things that can be part of a course overview group
-	"""
+    """
+    marker interface for things that can be part of a course overview group
+    """
 IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
+
 class INTITranscript(ILastModified, IContained):
-	src = href_schema_field(title="Transcript source", required=True)
-	srcjsonp = href_schema_field(title="Transcript source jsonp", required=False)
-	lang = ValidTextLine(title="Transcript language", required=True, default='en')
-	type = Choice(vocabulary=TRANSCRIPT_MIMETYPE_VOCABULARY, title='Transcript mimetype',
-				  required=True, default=VTT_TRANSCRIPT_MIMETYPE)
-	purpose = ValidTextLine(title="Transcript purpose", required=True, default='normal')
+    src = href_schema_field(title="Transcript source", required=True)
+    srcjsonp = href_schema_field(
+        title="Transcript source jsonp", required=False)
+    lang = ValidTextLine(
+        title="Transcript language", required=True, default='en')
+    type = Choice(vocabulary=TRANSCRIPT_MIMETYPE_VOCABULARY, title='Transcript mimetype',
+                  required=True, default=VTT_TRANSCRIPT_MIMETYPE)
+    purpose = ValidTextLine(
+        title="Transcript purpose", required=True, default='normal')
+
 
 class INTIIDIdentifiable(interface.Interface):
-	ntiid = ValidNTIID(title="Item NTIID", required=False, default=None)
+    ntiid = ValidNTIID(title="Item NTIID", required=False, default=None)
+
 
 class INTIMediaSource(ILastModified, IContained):
-	service = ValidTextLine(title="Source service", required=True)
-	thumbnail = href_schema_field(title="Source thumbnail", required=False)
+    service = ValidTextLine(title="Source service", required=True)
+    thumbnail = href_schema_field(title="Source thumbnail", required=False)
+
 
 class IVisibilityOptionsProvider(interface.Interface):
-	"""
-	Utility for an asset visibility options
-	"""
+    """
+    Utility for an asset visibility options
+    """
 
-	def iter_options(self):
-		"""
-		Return an iterable of visibility options
-		"""
+    def iter_options(self):
+        """
+        Return an iterable of visibility options
+        """
+
 
 class IVisible(interface.Interface):
-	"""
-	marker interface for things that have visibility
-	"""
-	visibility = VisibilityField(title='Media ref visibility',
-					 	         required=False)
+    """
+    marker interface for things that have visibility
+    """
+    visibility = VisibilityField(title='Media ref visibility',
+                                 required=False)
+
 
 class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-				   ICoursePresentationAsset, IVisible):
-	target = ValidNTIID(title="Target NTIID", required=False)
+                   ICoursePresentationAsset, IVisible):
+    target = ValidNTIID(title="Target NTIID", required=False)
 IMediaRef = INTIMediaRef  # BWC
 
-class IAssetTitled( interface.Interface ):
-	title = ValidTextLine(title="Asset title", required=False)
 
-class IAssetTitleDescribed( IAssetTitled, IDCDescriptiveProperties ):
-	# IDCDescriptiveProperties marker needed for ext adapter.
-	title = copy(IAssetTitled['title'])
-	title.default = u''
-	description = ValidTextLine(title="Media description", required=False, default=u'')
+class IAssetTitled(interface.Interface):
+    title = ValidTextLine(title="Asset title", required=False)
+
+
+class IAssetTitleDescribed(IAssetTitled, IDCDescriptiveProperties):
+    # IDCDescriptiveProperties marker needed for ext adapter.
+    title = copy(IAssetTitled['title'])
+    title.default = u''
+    description = ValidTextLine(
+        title="Media description", required=False, default=u'')
+
 
 class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
-				ICreated, IPackagePresentationAsset, IFileConstrained):
+                ICreated, IPackagePresentationAsset, IFileConstrained):
 
-	byline = byline_schema_field(required=False)
+    byline = byline_schema_field(required=False)
+
 
 class INTIVideoSource(INTIMediaSource):
-	width = Int(title="Video width", required=False)
-	height = Int(title="Video height", required=False)
-	poster = ValidTextLine(title="Video poster", required=False)
-	service = Choice(vocabulary=VIDEO_SERVICES_VOCABULARY, title='Video service',
-					 required=True, default=HTML5_VIDEO_SERVICE)
+    width = Int(title="Video width", required=False)
+    height = Int(title="Video height", required=False)
+    poster = ValidTextLine(title="Video poster", required=False)
+    service = Choice(vocabulary=VIDEO_SERVICES_VOCABULARY, title='Video service',
+                     required=True, default=HTML5_VIDEO_SERVICE)
 
-	source = IndexedIterable(Variant((Choice(vocabulary=VIDEO_SOURCES_VOCABULARY),
-								  	  ValidTextLine())),
-						 	 title='Video source', required=True, min_length=1)
+    source = IndexedIterable(Variant((Choice(vocabulary=VIDEO_SOURCES_VOCABULARY),
+                                      ValidTextLine())),
+                             title='Video source', required=True, min_length=1)
 
-	type = IndexedIterable(Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
-					  	   title='Video service types', required=True, min_length=1)
+    type = IndexedIterable(Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
+                           title='Video service types', required=True, min_length=1)
 
 INTIVideoSource.setTaggedValue('_ext_jsonschema', u'videosource')
 
+
 class INTIVideo(INTIMedia):
-	subtitle = Bool(title="Subtitle flag", required=False, default=None)
+    subtitle = Bool(title="Subtitle flag", required=False, default=None)
 
-	closed_caption = Bool(title="Close caption flag", required=False, default=None)
+    closed_caption = Bool(
+        title="Close caption flag", required=False, default=None)
 
-	sources = IndexedIterable(value_type=Object(INTIVideoSource),
-						 	  title="The video sources", required=False, min_length=0)
+    sources = IndexedIterable(value_type=Object(INTIVideoSource),
+                              title="The video sources", required=False, min_length=0)
 
-	transcripts = IndexedIterable(value_type=Object(INTITranscript),
-							  	  title="The transcripts", required=False, min_length=0)
+    transcripts = IndexedIterable(value_type=Object(INTITranscript),
+                                  title="The transcripts", required=False, min_length=0)
 
 INTIVideo.setTaggedValue('_ext_jsonschema', u'video')
 
@@ -363,34 +404,37 @@ INTIVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTIVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTIVideoRef(INTIMediaRef):
-	label = ValidText(title="Video label", required=False)
-	poster = ValidTextLine(title="Video poster", required=False)
+    label = ValidText(title="Video label", required=False)
+    poster = ValidTextLine(title="Video poster", required=False)
 
 INTIVideoRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIVideoRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTIAudioSource(INTIMediaSource):
-	service = Choice(vocabulary=AUDIO_SERVICES_VOCABULARY, title='Audio service',
-					 required=True, default=HTML5_AUDIO_SERVICE)
+    service = Choice(vocabulary=AUDIO_SERVICES_VOCABULARY, title='Audio service',
+                     required=True, default=HTML5_AUDIO_SERVICE)
 
-	source = IndexedIterable(Variant((Choice(vocabulary=AUDIO_SOURCES_VOCABULARY),
-								 	  ValidTextLine())),
-						 	 title='Audio source', required=True, min_length=1)
+    source = IndexedIterable(Variant((Choice(vocabulary=AUDIO_SOURCES_VOCABULARY),
+                                      ValidTextLine())),
+                             title='Audio source', required=True, min_length=1)
 
-	type = IndexedIterable(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
-					   	   title='Audio service types', required=True, min_length=1)
+    type = IndexedIterable(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
+                           title='Audio service types', required=True, min_length=1)
 
 INTIAudioSource.setTaggedValue('_ext_jsonschema', u'audiosource')
 
-class INTIAudio(INTIMedia):
-	sources = IndexedIterable(value_type=Object(INTIAudioSource),
-						  	  title="The audio sources",
-						  	  required=False, min_length=1)
 
-	transcripts = IndexedIterable(value_type=Object(INTITranscript),
-							  	  title="The transcripts",
-							  	  required=False, min_length=0)
+class INTIAudio(INTIMedia):
+    sources = IndexedIterable(value_type=Object(INTIAudioSource),
+                              title="The audio sources",
+                              required=False, min_length=1)
+
+    transcripts = IndexedIterable(value_type=Object(INTITranscript),
+                                  title="The transcripts",
+                                  required=False, min_length=0)
 
 INTIAudio.setTaggedValue('_ext_jsonschema', u'audio')
 
@@ -399,65 +443,74 @@ INTIAudio['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTIAudio['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIAudio['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTIAudioRef(INTIMediaRef):
-	pass
+    pass
+
 
 class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
-					ICreated, ICoursePresentationAsset, IIterable, IConcreteAsset,
-					IFiniteSequence):
+                    ICreated, ICoursePresentationAsset, IIterable, IConcreteAsset,
+                    IFiniteSequence):
 
-	Items = IndexedIterable(value_type=Object(INTIMediaRef),
-							title="The media sources", required=False, min_length=0)
+    Items = IndexedIterable(value_type=Object(INTIMediaRef),
+                            title="The media sources", required=False, min_length=0)
 
-	def pop(idx):
-		"""
-		remove the item at the specified index
-		"""
+    def pop(idx):
+        """
+        remove the item at the specified index
+        """
 INTIMediaRoll.setTaggedValue('_ext_jsonschema', u'mediaroll')
 
+
 class INTIAudioRoll(INTIMediaRoll):
-	Items = IndexedIterable(value_type=Object(INTIAudioRef),
-							title="The audio sources", required=False, min_length=0)
+    Items = IndexedIterable(value_type=Object(INTIAudioRef),
+                            title="The audio sources", required=False, min_length=0)
 INTIAudioRoll.setTaggedValue('_ext_jsonschema', u'audioroll')
 
+
 class INTIVideoRoll(INTIMediaRoll):
-	Items = IndexedIterable(value_type=Object(INTIVideoRef),
-							title="The audio sources", required=False, min_length=0)
+    Items = IndexedIterable(value_type=Object(INTIVideoRef),
+                            title="The audio sources", required=False, min_length=0)
 INTIVideoRoll.setTaggedValue('_ext_jsonschema', u'videoroll')
 
+
 class INTISlide(INTIIDIdentifiable, IPackagePresentationAsset):
-	slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)
-	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
-	slidevideostart = Number(title="Video start", required=False, default=0)
-	slidevideoend = Number(title="Video end", required=False, default=0)
-	slideimage = href_schema_field(title="Slide image source", required=False)
-	slidenumber = Int(title="Slide number", required=True, default=1)
+    slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)
+    slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
+    slidevideostart = Number(title="Video start", required=False, default=0)
+    slidevideoend = Number(title="Video end", required=False, default=0)
+    slideimage = href_schema_field(title="Slide image source", required=False)
+    slidenumber = Int(title="Slide number", required=True, default=1)
+
 
 class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable, ICreated, IPackagePresentationAsset):
-	byline = byline_schema_field(required=False)
-	video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
-	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
-	thumbnail = href_schema_field(title="Slide video thumbnail", required=False)
+    byline = byline_schema_field(required=False)
+    video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
+    slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
+    thumbnail = href_schema_field(
+        title="Slide video thumbnail", required=False)
 
 INTISlideVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTISlideDeck(IItemAssetContainer, INTIMedia):
 
-	Slides = IndexedIterable(value_type=Object(INTISlide),
-						 	 title="The slides", required=False, min_length=1)
+    Slides = IndexedIterable(value_type=Object(INTISlide),
+                             title="The slides", required=False, min_length=1)
 
-	Videos = IndexedIterable(value_type=Object(INTISlideVideo),
-						 	 title="The slide videos", required=False, min_length=1)
+    Videos = IndexedIterable(value_type=Object(INTISlideVideo),
+                             title="The slide videos", required=False, min_length=1)
 
-	slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
+    slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 
-	byline = byline_schema_field(required=False)
+    byline = byline_schema_field(required=False)
 
-	Items = Iterable(title='All items in the slide deck', readonly=True, required=False)
-	Items.setTaggedValue('_ext_excluded_out', True)
+    Items = Iterable(
+        title='All items in the slide deck', readonly=True, required=False)
+    Items.setTaggedValue('_ext_excluded_out', True)
 
 INTISlideDeck.setTaggedValue('_ext_jsonschema', u'slidedeck')
 
@@ -466,86 +519,100 @@ INTISlideDeck['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideDeck['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTISlideDeckRef(INTIMediaRef):
-	target = ValidNTIID(title="Target NTIID", required=False)
+    target = ValidNTIID(title="Target NTIID", required=False)
 ISlideDeckRef = INTISlideDeckRef  # BWC
 
+
 class INTITimelineRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-				   	  ICoursePresentationAsset):
-	target = ValidNTIID(title="Target NTIID", required=False)
+                      ICoursePresentationAsset):
+    target = ValidNTIID(title="Target NTIID", required=False)
 ITimelineRef = INTITimelineRef  # BWC
 
+
 class INTIRelatedWorkRefPointer(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-				   	 			ICoursePresentationAsset):
-	target = ValidNTIID(title="Target NTIID", required=False)
+                                ICoursePresentationAsset):
+    target = ValidNTIID(title="Target NTIID", required=False)
+
 
 class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable, IPointer):
-	label = ValidTextLine(title="The label", required=True, default=u'')
-	href = href_schema_field(title="Resource href", required=False, default=u'')
-	icon = href_schema_field(title="Icon href", required=False)
-	target = ValidNTIID(title="Target NTIID", required=False)
+    label = ValidTextLine(title="The label", required=True, default=u'')
+    href = href_schema_field(
+        title="Resource href", required=False, default=u'')
+    icon = href_schema_field(title="Icon href", required=False)
+    target = ValidNTIID(title="Target NTIID", required=False)
 INTIDocketMixin = INTIDocketAsset
 
+
 class INTITimeline(INTIDocketAsset, IGroupOverViewable, IFileConstrained):
-	description = ValidTextLine(title="Timeline description", required=False)
-	suggested_inline = Bool("Suggested inline flag", required=False, default=False)
+    description = ValidTextLine(title="Timeline description", required=False)
+    suggested_inline = Bool(
+        "Suggested inline flag", required=False, default=False)
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
+
 class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible, IFileConstrained):
-	byline = byline_schema_field(required=False)
-	section = ValidTextLine(title="Section", required=False)
-	description = ValidText(title="Slide video description", required=False)
-	type = ValidTextLine(title="The target mimetype", required=False)
-	ntiid = Variant((ValidTextLine(title="Related content ntiid"),
-					 ValidNTIID(title="Related content ntiid")), required=False, default=None)
-	target = ValidTextLine(title="Related work target", required=False)
+    byline = byline_schema_field(required=False)
+    section = ValidTextLine(title="Section", required=False)
+    description = ValidText(title="Slide video description", required=False)
+    type = ValidTextLine(title="The target mimetype", required=False)
+    ntiid = Variant((ValidTextLine(title="Related content ntiid"),
+                     ValidNTIID(title="Related content ntiid")), required=False, default=None)
+    target = ValidTextLine(title="Related work target", required=False)
+
 
 class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-						ITitled, ICoursePresentationAsset, IFileConstrained):
-	title = ValidTextLine(title="Discussion title", required=False)
-	icon = href_schema_field(title="Discussion icon href", required=False)
-	label = ValidTextLine(title="The label", required=False, default=u'')
-	ntiid = Variant((ValidTextLine(title="Discussion NTIID"),
-					 ValidNTIID(title="Discussion NTIID")), required=False, default=None)
-	target = Variant((ValidTextLine(title="Target NTIID"),
-					  ValidNTIID(title="Target NTIID")), required=False)
+                        ITitled, ICoursePresentationAsset, IFileConstrained):
+    title = ValidTextLine(title="Discussion title", required=False)
+    icon = href_schema_field(title="Discussion icon href", required=False)
+    label = ValidTextLine(title="The label", required=False, default=u'')
+    ntiid = Variant((ValidTextLine(title="Discussion NTIID"),
+                     ValidNTIID(title="Discussion NTIID")), required=False, default=None)
+    target = Variant((ValidTextLine(title="Target NTIID"),
+                      ValidNTIID(title="Target NTIID")), required=False)
 
-	id = ValidTextLine(title="Discussion identifier", required=True)
-	id.setTaggedValue('__external_accept_id__', True)
+    id = ValidTextLine(title="Discussion identifier", required=True)
+    id.setTaggedValue('__external_accept_id__', True)
 
-	def isCourseBundle():
-		"""
-		return if this DiscussionRef refers to a course bundle
-		"""
+    def isCourseBundle():
+        """
+        return if this DiscussionRef refers to a course bundle
+        """
+    is_course_bundle = isCourseBundle
 
 INTIDiscussionRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIDiscussionRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTIDiscussionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIDiscussionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICoursePresentationAsset):
-	target = ValidNTIID(title="Target NTIID", required=True)
-	label = ValidTextLine(title="The label", required=False, default=u'')
+    target = ValidNTIID(title="Target NTIID", required=True)
+    label = ValidTextLine(title="The label", required=False, default=u'')
 IAssessmentRef = INTIAssessmentRef
 
 INTIAssessmentRef['target'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
+
 class INTIQuestionSetRef(INTIAssessmentRef):
-	question_count = Int(title="Question count", required=False)
+    question_count = Int(title="Question count", required=False)
 IQuestionSetRef = INTIQuestionSetRef
 
 INTIQuestionSetRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIQuestionSetRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTIQuestionRef(INTIAssessmentRef):
-	pass
+    pass
 IQuestionRef = INTIQuestionRef
 
 INTIQuestionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIQuestionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTIAssignmentRef(INTIAssessmentRef, IAssetTitled):
-	containerId = ValidNTIID(title="Container NTIID", required=False)
+    containerId = ValidNTIID(title="Container NTIID", required=False)
 IAssignmentRef = INTIAssignment = INTIAssignmentRef
 
 INTIAssignmentRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -553,247 +620,277 @@ INTIAssignmentRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTIAssignmentRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIAssignmentRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTIInquiryRef(INTIAssessmentRef):
-	pass
+    pass
+
 
 class INTIPollRef(INTIInquiryRef):
-	pass
+    pass
 IPollRef = INTIPollRef
 
 INTIPollRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIPollRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTISurveyRef(INTIInquiryRef):
-	containerId = ValidNTIID(title="Container NTIID", required=False)
-	question_count = Int(title="Question count", required=False)
+    containerId = ValidNTIID(title="Container NTIID", required=False)
+    question_count = Int(title="Question count", required=False)
 ISurveyRef = INTISurveyRef
 
 INTISurveyRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, ICoursePresentationAsset):
-	pass
+    pass
+
 
 class INTICourseOverviewGroup(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
-							  ICoursePresentationAsset, IFiniteSequence, IIterable,
-							  IRecordableContainer, IConcreteAsset):
+                              ICoursePresentationAsset, IFiniteSequence, IIterable,
+                              IRecordableContainer, IConcreteAsset):
 
-	Items = IndexedIterable(value_type=Object(IGroupOverViewable),
-						 	title="The overview items", required=False, min_length=0)
-	accentColor = ValidTextLine(title="Overview color", required=False)
+    Items = IndexedIterable(value_type=Object(IGroupOverViewable),
+                            title="The overview items", required=False, min_length=0)
+    accentColor = ValidTextLine(title="Overview color", required=False)
 
 INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
 
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
-INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(
+    TAG_REQUIRED_IN_UI, False)
+
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
-						 ICoursePresentationAsset, IFiniteSequence, IIterable,
-						 IRecordableContainer, ICalendarPublishable, IConcreteAsset):
+                         ICoursePresentationAsset, IFiniteSequence, IIterable,
+                         IRecordableContainer, ICalendarPublishable, IConcreteAsset):
 
-	Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
-						 	title="The overview items", required=False, min_length=0)
-	lesson = ValidTextLine(title="Lesson NTIID", required=False)
+    Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
+                            title="The overview items", required=False, min_length=0)
+    lesson = ValidTextLine(title="Lesson NTIID", required=False)
 
-	def pop(idx):
-		"""
-		remove the group at the specified index
-		"""
+    def pop(idx):
+        """
+        remove the group at the specified index
+        """
 INTILessonOverview.setTaggedValue('_ext_jsonschema', u'lesson')
 
 INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTILessonOverview['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
+
 class ILessonPublicationConstraints(IMapping,
-									ICreated,
-									ILastModified):
-	"""
-	Defines a container for lesson publication constraints
-	"""
+                                    ICreated,
+                                    ILastModified):
+    """
+    Defines a container for lesson publication constraints
+    """
 
-	contains(str('.ILessonPublicationConstraint'))
-	__setitem__.__doc__ = None
+    contains(str('.ILessonPublicationConstraint'))
+    __setitem__.__doc__ = None
 
-	Items = IndexedIterable(title="The contained constraint items", readonly=True)
-	Items.setTaggedValue('_ext_excluded_out', True)
+    Items = IndexedIterable(
+        title="The contained constraint items", readonly=True)
+    Items.setTaggedValue('_ext_excluded_out', True)
 
-	def append(constraint):
-		"""
-		Add the specified contraint to this container
-		"""
+    def append(constraint):
+        """
+        Add the specified contraint to this container
+        """
 
-	def extend(constraints):
-		"""
-		Add the specified contraints to this container
-		"""
+    def extend(constraints):
+        """
+        Add the specified contraints to this container
+        """
+
 
 class ILessonPublicationConstraint(ICreated, ILastModified):
-	"""
-	Defines a constraint for determining whether a lesson
-	is publishable or not
-	"""
+    """
+    Defines a constraint for determining whether a lesson
+    is publishable or not
+    """
+
 
 class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
-	"""
-	A publication constraint that is satisfied if all its
-	referenced assignments are either completed or closed.
-	"""
-	assignments = IndexedIterable(title="Assignments NTIIDs.",
-					  	   		  value_type=ValidNTIID(min_length=1, title="A single NTIID"),
-					   	   		  unique=True,
-					  	   		  required=True,
-					  	   		  min_length=1)
+    """
+    A publication constraint that is satisfied if all its
+    referenced assignments are either completed or closed.
+    """
+    assignments = IndexedIterable(title="Assignments NTIIDs.",
+                                  value_type=ValidNTIID(
+                                      min_length=1, title="A single NTIID"),
+                                  unique=True,
+                                  required=True,
+                                  min_length=1)
+
 
 class ISurveyCompletionConstraint(ILessonPublicationConstraint):
-	"""
-	A publication constraint that is satisfied if all its
-	referenced surveys are either completed or closed.
-	"""
-	surveys = IndexedIterable(title='Survey NTIIDs',
-							  value_type=ValidNTIID(min_length=1, title='A single NTIID'),
-							  unique=True,
-							  required=True,
-							  min_length=1)
+    """
+    A publication constraint that is satisfied if all its
+    referenced surveys are either completed or closed.
+    """
+    surveys = IndexedIterable(title='Survey NTIIDs',
+                              value_type=ValidNTIID(
+                                  min_length=1, title='A single NTIID'),
+                              unique=True,
+                              required=True,
+                              min_length=1)
+
 
 class IPresentationVisibility(interface.Interface):
-	"""
-	marker interface to return the visibility for an object.
+    """
+    marker interface to return the visibility for an object.
 
-	Register as an adapter
-	"""
+    Register as an adapter
+    """
 
-	def visibility():
-		pass
+    def visibility():
+        pass
+
 
 class IPresentationAssetContainer(IMapping):
-	"""
-	Something that is an unordered bag of presentation asset items
+    """
+    Something that is an unordered bag of presentation asset items
 
-	This package provides no implementation of this interface. (But
-	something like the content library package may be adaptable to this,
-	typically with annotations).
-	"""
+    This package provides no implementation of this interface. (But
+    something like the content library package may be adaptable to this,
+    typically with annotations).
+    """
 
-	def append(item):
-		"""
-		Add an item to this container
-		"""
+    def append(item):
+        """
+        Add an item to this container
+        """
 
-	def extend(items):
-		"""
-		Add the specified items to this container
-		"""
+    def extend(items):
+        """
+        Add the specified items to this container
+        """
 
-	def assets():
-		"""
-		return an iterable with all assets this container
-		"""
+    def assets():
+        """
+        return an iterable with all assets this container
+        """
 
-	def pop(k, *args):
-		"""
-		remove specified key and return the corresponding value
-		*args may contain a single default value, or may not be supplied.
-		If key is not found, default is returned if given, otherwise
-		KeyError is raised
-		"""
+    def pop(k, *args):
+        """
+        remove specified key and return the corresponding value
+        *args may contain a single default value, or may not be supplied.
+        If key is not found, default is returned if given, otherwise
+        KeyError is raised
+        """
+
 
 class IPresentationAssetAffiliations(interface.Interface):
-	"""
-	subscriber for a presentation asset containers
-	"""
+    """
+    subscriber for a presentation asset containers
+    """
 
-	def containers(item):
-		"""
-		return the containers that refer to specified item
-		"""
+    def containers(item):
+        """
+        return the containers that refer to specified item
+        """
+
 
 class IPresentationAssetJsonSchemaMaker(IObjectJsonSchemaMaker):
-	"""
-	Marker interface for a presentation asset Json Schema maker utility
-	"""
+    """
+    Marker interface for a presentation asset Json Schema maker utility
+    """
 
-	def make_schema(schema=IPresentationAsset, user=None):
-		pass
+    def make_schema(schema=IPresentationAsset, user=None):
+        pass
+
 
 class IPresentationAssetCreatedEvent(IObjectCreatedEvent):
-	principal = interface.Attribute("Creator principal")
-	externalValue = interface.Attribute("External object")
+    principal = interface.Attribute("Creator principal")
+    externalValue = interface.Attribute("External object")
+
 
 @interface.implementer(IPresentationAssetCreatedEvent)
 class PresentationAssetCreatedEvent(ObjectCreatedEvent):
 
-	def __init__(self, obj, principal=None, externalValue=None):
-		super(PresentationAssetCreatedEvent, self).__init__(obj)
-		self.principal = principal
-		self.externalValue = externalValue
+    def __init__(self, obj, principal=None, externalValue=None):
+        super(PresentationAssetCreatedEvent, self).__init__(obj)
+        self.principal = principal
+        self.externalValue = externalValue
+
 
 class IWillUpdatePresentationAssetEvent(IObjectEvent):
-	principal = interface.Attribute("Updater principal")
-	externalValue = interface.Attribute("External object")
+    principal = interface.Attribute("Updater principal")
+    externalValue = interface.Attribute("External object")
+
 
 @interface.implementer(IWillUpdatePresentationAssetEvent)
 class WillUpdatePresentationAssetEvent(ObjectEvent):
 
-	def __init__(self, obj, principal=None, externalValue=None):
-		super(WillUpdatePresentationAssetEvent, self).__init__(obj)
-		self.principal = principal
-		self.externalValue = externalValue
+    def __init__(self, obj, principal=None, externalValue=None):
+        super(WillUpdatePresentationAssetEvent, self).__init__(obj)
+        self.principal = principal
+        self.externalValue = externalValue
+
 
 class IWillRemovePresentationAssetEvent(IObjectEvent):
-	pass
+    pass
+
 
 @interface.implementer(IWillRemovePresentationAssetEvent)
 class WillRemovePresentationAssetEvent(ObjectEvent):
-	pass
+    pass
 
 #: Asset removed from item asset container
 TRX_ASSET_REMOVED_FROM_ITEM_ASSET_CONTAINER = u'assetremovedfromitemcontainer'
 
+
 class IItemRemovedFromItemAssetContainerEvent(IObjectModifiedEvent):
-	pass
+    pass
+
 
 @interface.implementer(IItemRemovedFromItemAssetContainerEvent)
 class ItemRemovedFromItemAssetContainerEvent(ObjectModifiedEvent):
-	pass
+    pass
 
 #: Overview group moved recorder transaction type.
 TRX_OVERVIEW_GROUP_MOVE_TYPE = u'overviewgroupmoved'
 
+
 class IOverviewGroupMovedEvent(IObjectEvent):
-	pass
+    pass
+
 
 @interface.implementer(IOverviewGroupMovedEvent)
 class OverviewGroupMovedEvent(ObjectEvent):
 
-	group = alias('object')
+    group = alias('object')
 
-	def __init__(self, obj, principal=None, index=None, old_parent_ntiid=None):
-		super(OverviewGroupMovedEvent, self).__init__(obj)
-		self.index = index
-		self.principal = principal
-		self.old_parent_ntiid = old_parent_ntiid
+    def __init__(self, obj, principal=None, index=None, old_parent_ntiid=None):
+        super(OverviewGroupMovedEvent, self).__init__(obj)
+        self.index = index
+        self.principal = principal
+        self.old_parent_ntiid = old_parent_ntiid
 
 #: Asset moved recorder transaction type.
 TRX_ASSET_MOVE_TYPE = u'presentationassetmoved'
 
+
 class IPresentationAssetMovedEvent(IObjectEvent):
-	pass
+    pass
+
 
 @interface.implementer(IPresentationAssetMovedEvent)
 class PresentationAssetMovedEvent(ObjectEvent):
 
-	asset = alias('object')
+    asset = alias('object')
 
-	def __init__(self, obj, principal=None, index=None, old_parent_ntiid=None):
-		super(PresentationAssetMovedEvent, self).__init__(obj)
-		self.index = index
-		self.principal = principal
-		self.old_parent_ntiid = old_parent_ntiid
+    def __init__(self, obj, principal=None, index=None, old_parent_ntiid=None):
+        super(PresentationAssetMovedEvent, self).__init__(obj)
+        self.index = index
+        self.principal = principal
+        self.old_parent_ntiid = old_parent_ntiid
 
 import zope.deferredimport
 zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
-	"Import from INTIRelatedWorkRef instead",
-	INTIRelatedWork='nnti.contenttypes.presentation.interfaces:INTIRelatedWorkRef')
+    "Import from INTIRelatedWorkRef instead",
+    INTIRelatedWork='nnti.contenttypes.presentation.interfaces:INTIRelatedWorkRef')

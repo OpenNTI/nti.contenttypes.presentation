@@ -12,6 +12,7 @@ from nti.testing.layers import ConfiguringLayerMixin
 
 import zope.testing.cleanup
 
+
 class SharedConfiguringTestLayer(ZopeComponentLayer,
                                  ConfiguringLayerMixin):
 
@@ -35,6 +36,7 @@ class SharedConfiguringTestLayer(ZopeComponentLayer,
         pass
 
 import unittest
+
 
 class ContentTypesMediaLayerTest(unittest.TestCase):
     layer = SharedConfiguringTestLayer

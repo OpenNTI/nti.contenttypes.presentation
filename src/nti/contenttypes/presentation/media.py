@@ -59,282 +59,296 @@ from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
+
 def compute_part_ntiid(part, nttype, field):
-	parent = part.__parent__
-	base_ntiid = getattr(parent, 'ntiid', None)
-	parent_parts = getattr(parent, field, None) or None
-	if base_ntiid and parent_parts:
-		# Gather all child parts ntiids.
-		parent_part_ids = set()
-		for child_part in parent_parts or ():
-			child_part_ntiid = child_part.__dict__.get('ntiid')
-			parent_part_ids.add(child_part_ntiid)
-		parent_part_ids.discard(None)
+    parent = part.__parent__
+    base_ntiid = getattr(parent, 'ntiid', None)
+    parent_parts = getattr(parent, field, None) or None
+    if base_ntiid and parent_parts:
+        # Gather all child parts ntiids.
+        parent_part_ids = set()
+        for child_part in parent_parts or ():
+            child_part_ntiid = child_part.__dict__.get('ntiid')
+            parent_part_ids.add(child_part_ntiid)
+        parent_part_ids.discard(None)
 
-		uid = make_specific_safe(str(0))
-		parts = get_parts(base_ntiid)
+        uid = make_specific_safe(str(0))
+        parts = get_parts(base_ntiid)
 
-		# Iterate until we find an ntiid that does not collide.
-		idx = 0
-		while True:
-			specific = "%s.%s" % (parts.specific, uid)
-			result = make_ntiid(parts.date,
-								parts.provider,
-								nttype,
-								specific)
-			if result not in parent_part_ids:
-				break
-			idx += 1
-			uid = idx
-		return result
-	return None
+        # Iterate until we find an ntiid that does not collide.
+        idx = 0
+        while True:
+            specific = "%s.%s" % (parts.specific, uid)
+            result = make_ntiid(parts.date,
+                                parts.provider,
+                                nttype,
+                                specific)
+            if result not in parent_part_ids:
+                break
+            idx += 1
+            uid = idx
+        return result
+    return None
+
 
 @interface.implementer(INTITranscript, IContentTypeAware)
 class NTITranscript(PersistentMixin, Contained):
-	createDirectFieldProperties(INTITranscript)
+    createDirectFieldProperties(INTITranscript)
 
-	__external_class_name__ = u"Transcript"
-	mime_type = mimeType = u'application/vnd.nextthought.ntitranscript'
+    __external_class_name__ = u"Transcript"
+    mime_type = mimeType = u'application/vnd.nextthought.ntitranscript'
 
-	@Lazy
-	def ntiid(self):
-		return compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
+    @Lazy
+    def ntiid(self):
+        return compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
 
-	def schema(self):
-		result = make_schema(schema=INTITranscript)
-		return result
+    def schema(self):
+        result = make_schema(schema=INTITranscript)
+        return result
+
 
 @interface.implementer(INTIAudioSource, IContentTypeAware)
 class NTIAudioSource(PersistentMixin, Contained):
-	createDirectFieldProperties(INTIAudioSource)
+    createDirectFieldProperties(INTIAudioSource)
 
-	__external_class_name__ = u"VideoSource"
-	mime_type = mimeType = u'application/vnd.nextthought.ntiaudiosource'
+    __external_class_name__ = u"VideoSource"
+    mime_type = mimeType = u'application/vnd.nextthought.ntiaudiosource'
 
-	@Lazy
-	def ntiid(self):
-		return compute_part_ntiid(self, NTI_AUDIO_SOURCE, 'sources')
+    @Lazy
+    def ntiid(self):
+        return compute_part_ntiid(self, NTI_AUDIO_SOURCE, 'sources')
 
-	def schema(self):
-		result = make_schema(schema=INTIAudioSource)
-		return result
+    def schema(self):
+        result = make_schema(schema=INTIAudioSource)
+        return result
+
 
 @interface.implementer(INTIVideoSource, IContentTypeAware)
 class NTIVideoSource(PersistentMixin, Contained):
-	createDirectFieldProperties(INTIVideoSource)
+    createDirectFieldProperties(INTIVideoSource)
 
-	__external_class_name__ = u"VideoSource"
-	mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
+    __external_class_name__ = u"VideoSource"
+    mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
 
-	@Lazy
-	def ntiid(self):
-		return compute_part_ntiid(self, NTI_VIDEO_SOURCE, 'sources')
+    @Lazy
+    def ntiid(self):
+        return compute_part_ntiid(self, NTI_VIDEO_SOURCE, 'sources')
 
-	def schema(self):
-		result = make_schema(schema=INTIVideoSource)
-		return result
+    def schema(self):
+        result = make_schema(schema=INTIVideoSource)
+        return result
+
 
 @total_ordering
 @interface.implementer(INTIMedia)
 class NTIMedia(PersistentPresentationAsset):
-	createDirectFieldProperties(INTIMedia)
+    createDirectFieldProperties(INTIMedia)
 
-	__external_class_name__ = u"Media"
-	mime_type = mimeType = u'application/vnd.nextthought.ntimedia'
+    __external_class_name__ = u"Media"
+    mime_type = mimeType = u'application/vnd.nextthought.ntimedia'
 
-	Creator = alias('creator')
+    Creator = alias('creator')
 
-	nttype = 'NTIMedia'
+    nttype = 'NTIMedia'
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(self.nttype)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(self.nttype)
+        return self.ntiid
 
-	def __lt__(self, other):
-		try:
-			return (self.mimeType, self.title) < (other.mimeType, other.title)
-		except AttributeError:
-			return NotImplemented
+    def __lt__(self, other):
+        try:
+            return (self.mimeType, self.title) < (other.mimeType, other.title)
+        except AttributeError:
+            return NotImplemented
 
-	def __gt__(self, other):
-		try:
-			return (self.mimeType, self.title) > (other.mimeType, other.title)
-		except AttributeError:
-			return NotImplemented
+    def __gt__(self, other):
+        try:
+            return (self.mimeType, self.title) > (other.mimeType, other.title)
+        except AttributeError:
+            return NotImplemented
+
 
 @interface.implementer(INTIMediaRef)
 class NTIMediaRef(PersistentPresentationAsset):
-	createDirectFieldProperties(INTIMediaRef)
+    createDirectFieldProperties(INTIMediaRef)
 
-	__external_class_name__ = u"MediaRef"
-	mime_type = mimeType = u'application/vnd.nextthought.ntimediaref'
+    __external_class_name__ = u"MediaRef"
+    mime_type = mimeType = u'application/vnd.nextthought.ntimediaref'
 
-	nttype = 'NTIMediaRef'
-	visibility = EVERYONE
-	Creator = alias('creator')
+    nttype = 'NTIMediaRef'
+    visibility = EVERYONE
+    Creator = alias('creator')
 
-	__name__ = alias('ntiid')
+    __name__ = alias('ntiid')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(self.nttype)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(self.nttype)
+        return self.ntiid
 
-	@readproperty
-	def target(self):
-		return self.ntiid
+    @readproperty
+    def target(self):
+        return self.ntiid
+
 
 @interface.implementer(INTIVideo)
 class NTIVideo(NTIMedia):
-	createDirectFieldProperties(INTIVideo)
+    createDirectFieldProperties(INTIVideo)
 
-	__external_class_name__ = u"Video"
-	mime_type = mimeType = u'application/vnd.nextthought.ntivideo'
+    __external_class_name__ = u"Video"
+    mime_type = mimeType = u'application/vnd.nextthought.ntivideo'
 
-	closedCaption = closedCaptions = alias('closed_caption')
+    closedCaption = closedCaptions = alias('closed_caption')
 
-	nttype = NTI_VIDEO
+    nttype = NTI_VIDEO
 
-	def __setattr__(self, name, value):
-		super(NTIVideo, self).__setattr__(name, value)
-		if name in ("sources", "transcripts"):
-			for x in getattr(self, name, None) or ():
-				x.__parent__ = self  # take ownership
+    def __setattr__(self, name, value):
+        super(NTIVideo, self).__setattr__(name, value)
+        if name in ("sources", "transcripts"):
+            for x in getattr(self, name, None) or ():
+                x.__parent__ = self  # take ownership
+
 
 @interface.implementer(INTIVideoRef)
 class NTIVideoRef(NTIMediaRef):
-	createDirectFieldProperties(INTIVideoRef)
+    createDirectFieldProperties(INTIVideoRef)
 
-	__external_class_name__ = u"Video"
-	mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
+    __external_class_name__ = u"Video"
+    mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
 
-	nttype = NTI_VIDEO_REF
+    nttype = NTI_VIDEO_REF
+
 
 @interface.implementer(INTIAudio)
 class NTIAudio(NTIMedia):
-	createDirectFieldProperties(INTIAudio)
+    createDirectFieldProperties(INTIAudio)
 
-	__external_class_name__ = u"Audio"
-	mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
+    __external_class_name__ = u"Audio"
+    mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
 
-	nttype = NTI_AUDIO
+    nttype = NTI_AUDIO
 
-	def __setattr__(self, name, value):
-		super(NTIAudio, self).__setattr__(name, value)
-		if name in ("sources", "transcripts"):
-			for x in getattr(self, name, None) or ():
-				x.__parent__ = self  # take ownership
+    def __setattr__(self, name, value):
+        super(NTIAudio, self).__setattr__(name, value)
+        if name in ("sources", "transcripts"):
+            for x in getattr(self, name, None) or ():
+                x.__parent__ = self  # take ownership
+
 
 @interface.implementer(INTIAudioRef)
 class NTIAudioRef(NTIMediaRef):
-	createDirectFieldProperties(INTIAudioRef)
+    createDirectFieldProperties(INTIAudioRef)
 
-	__external_class_name__ = u"Audio"
-	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
+    __external_class_name__ = u"Audio"
+    mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
 
-	nttype = NTI_AUDIO_REF
+    nttype = NTI_AUDIO_REF
+
 
 @interface.implementer(INTIMediaRoll)
 class NTIMediaRoll(PersistentPresentationAsset):
-	createDirectFieldProperties(INTIMediaRoll)
+    createDirectFieldProperties(INTIMediaRoll)
 
-	__external_class_name__ = u"MediaRoll"
-	mime_type = mimeType = u'application/vnd.nextthought.ntimediaroll'
+    __external_class_name__ = u"MediaRoll"
+    mime_type = mimeType = u'application/vnd.nextthought.ntimediaroll'
 
-	jsonschema = u'mediaroll'
+    jsonschema = u'mediaroll'
 
-	items = alias('Items')
-	Creator = alias('creator')
+    items = alias('Items')
+    Creator = alias('creator')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(self.nttype)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(self.nttype)
+        return self.ntiid
 
-	def __getitem__(self, index):
-		item = self.items[index]
-		return item
+    def __getitem__(self, index):
+        item = self.items[index]
+        return item
 
-	def __setitem__(self, index, item):
-		assert INTIMediaRef.providedBy(item)
-		item.__parent__ = self  # take ownership
-		self.items[index] = item
+    def __setitem__(self, index, item):
+        assert INTIMediaRef.providedBy(item)
+        item.__parent__ = self  # take ownership
+        self.items[index] = item
 
-	def __len__(self):
-		result = len(self.items or ())  # include weak refs
-		return result
+    def __len__(self):
+        result = len(self.items or ())  # include weak refs
+        return result
 
-	def __iter__(self):
-		return iter(self.items or ())
+    def __iter__(self):
+        return iter(self.items or ())
 
-	def __contains__(self, obj):
-		ntiid = getattr(obj, 'ntiid', None) or str(obj)
-		for item in self:
-			if item.ntiid == ntiid:
-				return True
-		return False
+    def __contains__(self, obj):
+        ntiid = getattr(obj, 'ntiid', None) or str(obj)
+        for item in self:
+            if item.ntiid == ntiid:
+                return True
+        return False
 
-	def append(self, item):
-		assert INTIMediaRef.providedBy(item)
-		item.__parent__ = self  # take ownership
-		self.items = PersistentList() if self.items is None else self.items
-		self.items.append(item)
-	add = append
+    def append(self, item):
+        assert INTIMediaRef.providedBy(item)
+        item.__parent__ = self  # take ownership
+        self.items = PersistentList() if self.items is None else self.items
+        self.items.append(item)
+    add = append
 
-	def pop(self, index):
-		self.items.pop(index)
+    def pop(self, index):
+        self.items.pop(index)
 
-	def insert(self, index, obj):
-		# Remove from our list if it exists, and then insert at.
-		self.remove(obj)
-		if index is None or index >= len(self):
-			# Default to append.
-			self.append(obj)
-		else:
-			obj.__parent__ = self  # take ownership
-			self.items.insert(index, obj)
+    def insert(self, index, obj):
+        # Remove from our list if it exists, and then insert at.
+        self.remove(obj)
+        if index is None or index >= len(self):
+            # Default to append.
+            self.append(obj)
+        else:
+            obj.__parent__ = self  # take ownership
+            self.items.insert(index, obj)
 
-	def remove(self, item):
-		try:
-			self.items.remove(item)
-			return True
-		except (AttributeError, ValueError):
-			pass
-		return False
+    def remove(self, item):
+        try:
+            self.items.remove(item)
+            return True
+        except (AttributeError, ValueError):
+            pass
+        return False
 
-	def reset(self, *args, **kwargs):
-		result = len(self)
-		if self.items:
-			del self.items[:]
-		return result
-	clear = reset
+    def reset(self, *args, **kwargs):
+        result = len(self)
+        if self.items:
+            del self.items[:]
+        return result
+    clear = reset
+
 
 @interface.implementer(INTIAudioRoll)
 class NTIAudioRoll(NTIMediaRoll):
-	createDirectFieldProperties(INTIAudioRoll)
+    createDirectFieldProperties(INTIAudioRoll)
 
-	nttype = NTI_AUDIO_ROLL
-	__external_class_name__ = u"AudioRoll"
-	mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
+    nttype = NTI_AUDIO_ROLL
+    __external_class_name__ = u"AudioRoll"
+    mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
 
-	jsonschema = u'audioroll'
+    jsonschema = u'audioroll'
+
 
 @interface.implementer(INTIVideoRoll)
 class NTIVideoRoll(NTIMediaRoll):
-	createDirectFieldProperties(INTIVideoRoll)
+    createDirectFieldProperties(INTIVideoRoll)
 
-	nttype = NTI_VIDEO_ROLL
-	# For legacy reasons, these are the classes need for IPAD
-	# and mimetype needed for the webapp to match up.
-	__external_class_name__ = u"ContentVideoCollection"
-	mime_type = mimeType = u'application/vnd.nextthought.videoroll'
+    nttype = NTI_VIDEO_ROLL
+    # For legacy reasons, these are the classes need for IPAD
+    # and mimetype needed for the webapp to match up.
+    __external_class_name__ = u"ContentVideoCollection"
+    mime_type = mimeType = u'application/vnd.nextthought.videoroll'
 
-	jsonschema = u'videoroll'
+    jsonschema = u'videoroll'
+
 
 def media_to_mediaref(media):
-	if INTIAudio.providedBy(media):
-		result = INTIAudioRef(media)
-	else:
-		result = INTIVideoRef(media)
-	return result
+    if INTIAudio.providedBy(media):
+        result = INTIAudioRef(media)
+    else:
+        result = INTIVideoRef(media)
+    return result

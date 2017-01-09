@@ -39,127 +39,133 @@ from nti.schema.eqhash import EqHash
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
+
 @interface.implementer(INTISlide)
 class NTISlide(PersistentPresentationAsset):
-	createDirectFieldProperties(INTISlide)
+    createDirectFieldProperties(INTISlide)
 
-	__external_class_name__ = u"Slide"
-	mime_type = mimeType = u'application/vnd.nextthought.slide'
+    __external_class_name__ = u"Slide"
+    mime_type = mimeType = u'application/vnd.nextthought.slide'
 
-	image = alias('slideimage')
-	number = alias('slidenumber')
-	video = alias('slidevideoid')
-	slide_deck = deck = alias('slidedeckid')
-	end = video_end = alias('slidevideoend')
-	start = video_start = alias('slidevideostart')
+    image = alias('slideimage')
+    number = alias('slidenumber')
+    video = alias('slidevideoid')
+    slide_deck = deck = alias('slidedeckid')
+    end = video_end = alias('slidevideoend')
+    start = video_start = alias('slidevideostart')
 
-	__name__ = alias('ntiid')
+    __name__ = alias('ntiid')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(NTI_SLIDE)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(NTI_SLIDE)
+        return self.ntiid
+
 
 @interface.implementer(INTISlideVideo)
 class NTISlideVideo(PersistentPresentationAsset):
-	createDirectFieldProperties(INTISlideVideo)
+    createDirectFieldProperties(INTISlideVideo)
 
-	__external_class_name__ = u"NTISlideVideo"
-	mime_type = mimeType = u'application/vnd.nextthought.ntislidevideo'
+    __external_class_name__ = u"NTISlideVideo"
+    mime_type = mimeType = u'application/vnd.nextthought.ntislidevideo'
 
-	Creator = alias('creator')
-	video = alias('video_ntiid')
-	slide_deck = deck = alias('slidedeckid')
+    Creator = alias('creator')
+    video = alias('video_ntiid')
+    slide_deck = deck = alias('slidedeckid')
 
-	__name__ = alias('ntiid')
+    __name__ = alias('ntiid')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(NTI_SLIDE_VIDEO)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(NTI_SLIDE_VIDEO)
+        return self.ntiid
+
 
 @total_ordering
 @interface.implementer(INTISlideDeck)
 class NTISlideDeck(PersistentPresentationAsset):
-	createDirectFieldProperties(INTISlideDeck)
+    createDirectFieldProperties(INTISlideDeck)
 
-	__external_class_name__ = u"NTISlideDeck"
-	mime_type = mimeType = u'application/vnd.nextthought.ntislidedeck'
+    __external_class_name__ = u"NTISlideDeck"
+    mime_type = mimeType = u'application/vnd.nextthought.ntislidedeck'
 
-	jsonschema = u'slidedeck'
+    jsonschema = u'slidedeck'
 
-	slides = alias('Slides')
-	videos = alias('Videos')
-	Creator = alias('creator')
-	id = alias('slidedeckid')
+    slides = alias('Slides')
+    videos = alias('Videos')
+    Creator = alias('creator')
+    id = alias('slidedeckid')
 
-	__name__ = alias('ntiid')
+    __name__ = alias('ntiid')
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(NTI_SLIDE_DECK)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(NTI_SLIDE_DECK)
+        return self.ntiid
 
-	@CachedProperty("lastModified")
-	def Items(self):
-		result = list(chain(self.slides or (), self.videos or ()))
-		return result
+    @CachedProperty("lastModified")
+    def Items(self):
+        result = list(chain(self.slides or (), self.videos or ()))
+        return result
 
-	def append(self, item):
-		item.__parent__ = self  # take owership
-		if INTISlide.providedBy(item):
-			self.slides = PersistentList() if self.slides is None else self.slides
-			self.slides.append(item)
-		elif INTISlideVideo.providedBy(item):
-			self.videos = PersistentList() if self.videos is None else self.videos
-			self.videos.append(item)
-	add = append
+    def append(self, item):
+        item.__parent__ = self  # take owership
+        if INTISlide.providedBy(item):
+            self.slides = PersistentList(
+            ) if self.slides is None else self.slides
+            self.slides.append(item)
+        elif INTISlideVideo.providedBy(item):
+            self.videos = PersistentList(
+            ) if self.videos is None else self.videos
+            self.videos.append(item)
+    add = append
 
-	def remove(self, item):
-		result = True
-		try:
-			if INTISlide.providedBy(item) and self.slides:
-				self.slides.remove(item)
-			elif INTISlideVideo.providedBy(item) and self.videos:
-				self.videos.remove(item)
-			else:
-				result = False
-		except (AttributeError, ValueError):
-			result = False
-		return result
+    def remove(self, item):
+        result = True
+        try:
+            if INTISlide.providedBy(item) and self.slides:
+                self.slides.remove(item)
+            elif INTISlideVideo.providedBy(item) and self.videos:
+                self.videos.remove(item)
+            else:
+                result = False
+        except (AttributeError, ValueError):
+            result = False
+        return result
 
-	def __contains__(self, obj):
-		ntiid = getattr(obj, 'ntiid', None) or str(obj)
-		for item in self.Items:
-			if item.ntiid == ntiid:
-				return True
-		return False
+    def __contains__(self, obj):
+        ntiid = getattr(obj, 'ntiid', None) or str(obj)
+        for item in self.Items:
+            if item.ntiid == ntiid:
+                return True
+        return False
 
-	def __lt__(self, other):
-		try:
-			return (self.mimeType, self.title) < (other.mimeType, other.title)
-		except AttributeError:
-			return NotImplemented
+    def __lt__(self, other):
+        try:
+            return (self.mimeType, self.title) < (other.mimeType, other.title)
+        except AttributeError:
+            return NotImplemented
 
-	def __gt__(self, other):
-		try:
-			return (self.mimeType, self.title) > (other.mimeType, other.title)
-		except AttributeError:
-			return NotImplemented
+    def __gt__(self, other):
+        try:
+            return (self.mimeType, self.title) > (other.mimeType, other.title)
+        except AttributeError:
+            return NotImplemented
+
 
 @EqHash('target')
 @interface.implementer(INTISlideDeckRef)
 class NTISlideDeckRef(PersistentPresentationAsset):
-	createDirectFieldProperties(INTISlideDeckRef)
+    createDirectFieldProperties(INTISlideDeckRef)
 
-	__external_class_name__ = u"SlideDeckRef"
-	mime_type = mimeType = u'application/vnd.nextthought.ntislideckref'
+    __external_class_name__ = u"SlideDeckRef"
+    mime_type = mimeType = u'application/vnd.nextthought.ntislideckref'
 
-	__name__ = alias('ntiid')
+    __name__ = alias('ntiid')
 
-	visibility = EVERYONE
+    visibility = EVERYONE
 
-	@readproperty
-	def ntiid(self):
-		self.ntiid = self.generate_ntiid(NTI_SLIDE_DECK_REF)
-		return self.ntiid
+    @readproperty
+    def ntiid(self):
+        self.ntiid = self.generate_ntiid(NTI_SLIDE_DECK_REF)
+        return self.ntiid
