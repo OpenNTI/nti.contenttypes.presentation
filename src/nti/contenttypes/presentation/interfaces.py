@@ -200,14 +200,15 @@ class ITaggedContent(interface.Interface):
     """
 
     tags = IndexedIterable(title="Tags applied by the user.",
-                           value_type=ValidTextLine(
-                               min_length=1, title="A single tag"),
+                           value_type=ValidTextLine(min_length=1, 
+                                                    title="A single tag"),
                            unique=True,
                            default=(),
                            required=False)
 
 
-class IPresentationAsset(ILastModified, IContained, IRecordable, IAttributeAnnotatable):
+class IPresentationAsset(ILastModified, IContained, IRecordable,
+                         IAttributeAnnotatable):
     """
     marker interface for all presentation assests
     """
@@ -253,8 +254,7 @@ class IContentBackedPresentationAsset(interface.Interface):
     """
     Marker interface for assets that come from content backed sources
     """
-IContentBackedPresentationAsset.setTaggedValue(
-    '_ext_is_marker_interface', True)
+IContentBackedPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 
 class IPointer(interface.Interface):
@@ -306,14 +306,18 @@ IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
 class INTITranscript(ILastModified, IContained):
     src = href_schema_field(title="Transcript source", required=True)
-    srcjsonp = href_schema_field(
-        title="Transcript source jsonp", required=False)
-    lang = ValidTextLine(
-        title="Transcript language", required=True, default='en')
-    type = Choice(vocabulary=TRANSCRIPT_MIMETYPE_VOCABULARY, title='Transcript mimetype',
-                  required=True, default=VTT_TRANSCRIPT_MIMETYPE)
-    purpose = ValidTextLine(
-        title="Transcript purpose", required=True, default='normal')
+    srcjsonp = href_schema_field(title="Transcript source jsonp",
+                                required=False)
+    lang = ValidTextLine(title="Transcript language", 
+                        required=True,
+                        default='en')
+    type = Choice(vocabulary=TRANSCRIPT_MIMETYPE_VOCABULARY, 
+                  title='Transcript mimetype',
+                  required=True, 
+                  default=VTT_TRANSCRIPT_MIMETYPE)
+    purpose = ValidTextLine(title="Transcript purpose",
+                            required=True, 
+                            default='normal')
 
 
 class INTIIDIdentifiable(interface.Interface):
@@ -372,15 +376,21 @@ class INTIVideoSource(INTIMediaSource):
     width = Int(title="Video width", required=False)
     height = Int(title="Video height", required=False)
     poster = ValidTextLine(title="Video poster", required=False)
-    service = Choice(vocabulary=VIDEO_SERVICES_VOCABULARY, title='Video service',
-                     required=True, default=HTML5_VIDEO_SERVICE)
+    service = Choice(vocabulary=VIDEO_SERVICES_VOCABULARY,
+                     title='Video service',
+                     required=True,
+                    default=HTML5_VIDEO_SERVICE)
 
     source = IndexedIterable(Variant((Choice(vocabulary=VIDEO_SOURCES_VOCABULARY),
                                       ValidTextLine())),
-                             title='Video source', required=True, min_length=1)
+                             title='Video source',
+                             required=True, 
+                             min_length=1)
 
     type = IndexedIterable(Choice(vocabulary=VIDEO_SERVICE_TYPES_VOCABULARY),
-                           title='Video service types', required=True, min_length=1)
+                           title='Video service types', 
+                           required=True, 
+                           min_length=1)
 
 INTIVideoSource.setTaggedValue('_ext_jsonschema', u'videosource')
 
@@ -388,14 +398,19 @@ INTIVideoSource.setTaggedValue('_ext_jsonschema', u'videosource')
 class INTIVideo(INTIMedia):
     subtitle = Bool(title="Subtitle flag", required=False, default=None)
 
-    closed_caption = Bool(
-        title="Close caption flag", required=False, default=None)
+    closed_caption = Bool(title="Close caption flag", 
+                          required=False, 
+                          default=None)
 
     sources = IndexedIterable(value_type=Object(INTIVideoSource),
-                              title="The video sources", required=False, min_length=0)
+                              title="The video sources", 
+                              required=False,
+                              min_length=0)
 
     transcripts = IndexedIterable(value_type=Object(INTITranscript),
-                                  title="The transcripts", required=False, min_length=0)
+                                  title="The transcripts",
+                                  required=False, 
+                                  min_length=0)
 
 INTIVideo.setTaggedValue('_ext_jsonschema', u'video')
 
@@ -414,15 +429,21 @@ INTIVideoRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
 class INTIAudioSource(INTIMediaSource):
-    service = Choice(vocabulary=AUDIO_SERVICES_VOCABULARY, title='Audio service',
-                     required=True, default=HTML5_AUDIO_SERVICE)
+    service = Choice(vocabulary=AUDIO_SERVICES_VOCABULARY, 
+                     title='Audio service',
+                     required=True, 
+                     default=HTML5_AUDIO_SERVICE)
 
     source = IndexedIterable(Variant((Choice(vocabulary=AUDIO_SOURCES_VOCABULARY),
                                       ValidTextLine())),
-                             title='Audio source', required=True, min_length=1)
+                             title='Audio source',
+                            required=True, 
+                            min_length=1)
 
     type = IndexedIterable(Choice(vocabulary=AUDIO_SERVICE_TYPES_VOCABULARY),
-                           title='Audio service types', required=True, min_length=1)
+                           title='Audio service types', 
+                           required=True, 
+                           min_length=1)
 
 INTIAudioSource.setTaggedValue('_ext_jsonschema', u'audiosource')
 
@@ -430,11 +451,13 @@ INTIAudioSource.setTaggedValue('_ext_jsonschema', u'audiosource')
 class INTIAudio(INTIMedia):
     sources = IndexedIterable(value_type=Object(INTIAudioSource),
                               title="The audio sources",
-                              required=False, min_length=1)
+                              required=False,
+                              min_length=1)
 
     transcripts = IndexedIterable(value_type=Object(INTITranscript),
                                   title="The transcripts",
-                                  required=False, min_length=0)
+                                  required=False, 
+                                  min_length=0)
 
 INTIAudio.setTaggedValue('_ext_jsonschema', u'audio')
 
@@ -464,13 +487,17 @@ INTIMediaRoll.setTaggedValue('_ext_jsonschema', u'mediaroll')
 
 class INTIAudioRoll(INTIMediaRoll):
     Items = IndexedIterable(value_type=Object(INTIAudioRef),
-                            title="The audio sources", required=False, min_length=0)
+                            title="The audio sources", 
+                            required=False, 
+                            min_length=0)
 INTIAudioRoll.setTaggedValue('_ext_jsonschema', u'audioroll')
 
 
 class INTIVideoRoll(INTIMediaRoll):
     Items = IndexedIterable(value_type=Object(INTIVideoRef),
-                            title="The audio sources", required=False, min_length=0)
+                            title="The audio sources", 
+                            required=False, 
+                            min_length=0)
 INTIVideoRoll.setTaggedValue('_ext_jsonschema', u'videoroll')
 
 
@@ -483,12 +510,13 @@ class INTISlide(INTIIDIdentifiable, IPackagePresentationAsset):
     slidenumber = Int(title="Slide number", required=True, default=1)
 
 
-class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable, ICreated, IPackagePresentationAsset):
+class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable, 
+                     ICreated, IPackagePresentationAsset):
     byline = byline_schema_field(required=False)
     video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
     slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
-    thumbnail = href_schema_field(
-        title="Slide video thumbnail", required=False)
+    thumbnail = href_schema_field(title="Slide video thumbnail",
+                                  required=False)
 
 INTISlideVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -499,17 +527,22 @@ INTISlideVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTISlideDeck(IItemAssetContainer, INTIMedia):
 
     Slides = IndexedIterable(value_type=Object(INTISlide),
-                             title="The slides", required=False, min_length=1)
+                             title="The slides", 
+                             required=False,
+                              min_length=1)
 
     Videos = IndexedIterable(value_type=Object(INTISlideVideo),
-                             title="The slide videos", required=False, min_length=1)
+                             title="The slide videos", 
+                             required=False,
+                             min_length=1)
 
     slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
 
     byline = byline_schema_field(required=False)
 
-    Items = Iterable(
-        title='All items in the slide deck', readonly=True, required=False)
+    Items = Iterable(title='All items in the slide deck', 
+                     readonly=True, 
+                     required=False)
     Items.setTaggedValue('_ext_excluded_out', True)
 
 INTISlideDeck.setTaggedValue('_ext_jsonschema', u'slidedeck')
@@ -536,10 +569,12 @@ class INTIRelatedWorkRefPointer(IAssetRef, IGroupOverViewable, INTIIDIdentifiabl
     target = ValidNTIID(title="Target NTIID", required=False)
 
 
-class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable, IGroupOverViewable, IPointer):
+class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable,
+                      IGroupOverViewable, IPointer):
     label = ValidTextLine(title="The label", required=True, default=u'')
-    href = href_schema_field(
-        title="Resource href", required=False, default=u'')
+    href = href_schema_field(title="Resource href", 
+                             required=False, 
+                             default=u'')
     icon = href_schema_field(title="Icon href", required=False)
     target = ValidNTIID(title="Target NTIID", required=False)
 INTIDocketMixin = INTIDocketAsset
@@ -547,8 +582,9 @@ INTIDocketMixin = INTIDocketAsset
 
 class INTITimeline(INTIDocketAsset, IGroupOverViewable, IFileConstrained):
     description = ValidTextLine(title="Timeline description", required=False)
-    suggested_inline = Bool(
-        "Suggested inline flag", required=False, default=False)
+    suggested_inline = Bool("Suggested inline flag",
+                            required=False, 
+                            default=False)
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 
@@ -558,7 +594,9 @@ class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible, IFileConstrained):
     description = ValidText(title="Slide video description", required=False)
     type = ValidTextLine(title="The target mimetype", required=False)
     ntiid = Variant((ValidTextLine(title="Related content ntiid"),
-                     ValidNTIID(title="Related content ntiid")), required=False, default=None)
+                     ValidNTIID(title="Related content ntiid")),
+                     required=False,
+                    default=None)
     target = ValidTextLine(title="Related work target", required=False)
 
 
@@ -568,9 +606,12 @@ class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
     icon = href_schema_field(title="Discussion icon href", required=False)
     label = ValidTextLine(title="The label", required=False, default=u'')
     ntiid = Variant((ValidTextLine(title="Discussion NTIID"),
-                     ValidNTIID(title="Discussion NTIID")), required=False, default=None)
+                     ValidNTIID(title="Discussion NTIID")), 
+                    required=False, 
+                    default=None)
     target = Variant((ValidTextLine(title="Target NTIID"),
-                      ValidNTIID(title="Target NTIID")), required=False)
+                      ValidNTIID(title="Target NTIID")), 
+                     required=False)
 
     id = ValidTextLine(title="Discussion identifier", required=True)
     id.setTaggedValue('__external_accept_id__', True)
@@ -587,7 +628,8 @@ INTIDiscussionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIDiscussionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
-class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, ICoursePresentationAsset):
+class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable, 
+                        ICoursePresentationAsset):
     target = ValidNTIID(title="Target NTIID", required=True)
     label = ValidTextLine(title="The label", required=False, default=u'')
 IAssessmentRef = INTIAssessmentRef
@@ -642,7 +684,8 @@ INTISurveyRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
-class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, ICoursePresentationAsset):
+class INTICourseOverviewSpacer(IGroupOverViewable, INTIIDIdentifiable, 
+                               ICoursePresentationAsset):
     pass
 
 
@@ -651,7 +694,9 @@ class INTICourseOverviewGroup(IItemAssetContainer, IAssetTitled, INTIIDIdentifia
                               IRecordableContainer, IConcreteAsset):
 
     Items = IndexedIterable(value_type=Object(IGroupOverViewable),
-                            title="The overview items", required=False, min_length=0)
+                            title="The overview items",
+                            required=False, 
+                            min_length=0)
     accentColor = ValidTextLine(title="Overview color", required=False)
 
 INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
@@ -659,8 +704,7 @@ INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
-INTICourseOverviewGroup['accentColor'].setTaggedValue(
-    TAG_REQUIRED_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
@@ -668,7 +712,9 @@ class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
                          IRecordableContainer, ICalendarPublishable, IConcreteAsset):
 
     Items = IndexedIterable(value_type=Object(INTICourseOverviewGroup),
-                            title="The overview items", required=False, min_length=0)
+                            title="The overview items", 
+                            required=False, 
+                            min_length=0)
     lesson = ValidTextLine(title="Lesson NTIID", required=False)
 
     def pop(idx):
@@ -719,8 +765,8 @@ class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
     referenced assignments are either completed or closed.
     """
     assignments = IndexedIterable(title="Assignments NTIIDs.",
-                                  value_type=ValidNTIID(
-                                      min_length=1, title="A single NTIID"),
+                                  value_type=ValidNTIID(min_length=1,
+                                                        title="A single NTIID"),
                                   unique=True,
                                   required=True,
                                   min_length=1)
@@ -732,8 +778,8 @@ class ISurveyCompletionConstraint(ILessonPublicationConstraint):
     referenced surveys are either completed or closed.
     """
     surveys = IndexedIterable(title='Survey NTIIDs',
-                              value_type=ValidNTIID(
-                                  min_length=1, title='A single NTIID'),
+                              value_type=ValidNTIID(min_length=1,
+                                                    title='A single NTIID'),
                               unique=True,
                               required=True,
                               min_length=1)

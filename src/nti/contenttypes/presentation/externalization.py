@@ -14,6 +14,8 @@ from collections import Mapping
 from zope import component
 from zope import interface
 
+from nti.contenttypes.presentation import PUBLICATION_CONSTRAINTS as PC
+
 from nti.contenttypes.presentation.interfaces import IPointer
 from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
@@ -108,8 +110,7 @@ class _LessonOverviewExporter(object):
             result[ITEMS] = []
         constraints = constraints_for_lesson(self.lesson, False)
         if constraints:
-            result['PublicationConstraints'] = to_external_object(
-                constraints, **mod_args)
+            result[PC] = to_external_object(constraints, **mod_args)
         # process groups
         for group, ext_obj in zip(self.lesson, result.get(ITEMS) or ()):
             self._process_group(group, ext_obj, mod_args)
@@ -125,7 +126,8 @@ class _LessonPublicationConstraintsExternalizer(object):
 
     def toExternalObject(self, **kwargs):
         result = InterfaceObjectIO(
-            self.context, ILessonPublicationConstraints).toExternalObject(**kwargs)
+                    self.context,
+                    ILessonPublicationConstraints).toExternalObject(**kwargs)
         items = result[ITEMS] = []
         for constraint in self.context.Items:
             ext_obj = to_external_object(constraint, **kwargs)

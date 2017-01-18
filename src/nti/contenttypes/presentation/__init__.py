@@ -155,13 +155,15 @@ NTI_LESSON_OVERVIEW = u'NTILessonOverview'
 
 NTI_LESSON_COMPLETION_CONSTRAINT = u'NTILessonCompletionConstraint'
 
+PUBLICATION_CONSTRAINTS = u'PublicationConstraints'
+
 SLIDE_MIMETYES = ('application/vnd.nextthought.slide',)
 SLIDE_DECK_MIMETYES = ('application/vnd.nextthought.ntislidedeck',)
 SLIDE_VIDEO_MIMETYES = ('application/vnd.nextthought.ntislidevideo',)
 SLIDE_DECK_REF_MIMETYES = ('application/vnd.nextthought.ntislideckref',)
 
-TIMELINE_MIMETYES = (
-    'application/vnd.nextthought.ntitimeline', 'application/vnd.nextthought.timeline')
+TIMELINE_MIMETYES = ('application/vnd.nextthought.ntitimeline', 
+                     'application/vnd.nextthought.timeline')
 TIMELINE_REF_MIMETYES = ('application/vnd.nextthought.ntitimelineref',)
 
 AUDIO_MIMETYES = ('application/vnd.nextthought.ntiaudio',)
@@ -170,34 +172,32 @@ AUDIO_REF_MIMETYES = ('application/vnd.nextthought.ntiaudioref',)
 VIDEO_REF_MIMETYES = ('application/vnd.nextthought.ntivideoref',)
 
 RELATED_WORK_REF_MIMETYES = ('application/vnd.nextthought.relatedworkref',)
-RELATED_WORK_REF_POINTER_MIMETYES = (
-    'application/vnd.nextthought.relatedworkrefpointer',)
+RELATED_WORK_REF_POINTER_MIMETYES = ('application/vnd.nextthought.relatedworkrefpointer',)
 
 LESSON_OVERVIEW_MIMETYES = ('application/vnd.nextthought.ntilessonoverview',)
-COURSE_OVERVIEW_GROUP_MIMETYES = (
-    'application/vnd.nextthought.nticourseoverviewgroup',)
+COURSE_OVERVIEW_GROUP_MIMETYES = ('application/vnd.nextthought.nticourseoverviewgroup',)
 
-AUDIO_ROLL_MIMETYES = (
-    'application/vnd.nextthought.ntiaudioroll', 'application/vnd.nextthought.audioroll')
-VIDEO_ROLL_MIMETYES = (
-    'application/vnd.nextthought.videoroll', 'application/vnd.nextthought.ntivideoroll')
+AUDIO_ROLL_MIMETYES = ('application/vnd.nextthought.ntiaudioroll', 
+                       'application/vnd.nextthought.audioroll')
+VIDEO_ROLL_MIMETYES = ('application/vnd.nextthought.videoroll', 
+                       'application/vnd.nextthought.ntivideoroll')
 ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIMETYES + VIDEO_ROLL_MIMETYES
 
-POLL_REF_MIMETYES = (
-    'application/vnd.nextthought.pollref', 'application/vnd.nextthought.napoll')
-SURVEY_REF_MIMETYES = (
-    'application/vnd.nextthought.surveyref', 'application/vnd.nextthought.surveyref')
-QUESTION_REF_MIMETYES = (
-    'application/vnd.nextthought.questionref', 'application/vnd.nextthought.naquestion')
-ASSIGNMENT_REF_MIMETYES = (
-    'application/vnd.nextthought.assignmentref', 'application/vnd.nextthought.assignment')
-DISCUSSION_REF_MIMETYES = (
-    'application/vnd.nextthought.discussionref', 'application/vnd.nextthought.discussion')
-QUESTIONSET_REF_MIMETYES = (
-    'application/vnd.nextthought.questionsetref', 'application/vnd.nextthought.naquestionset')
+POLL_REF_MIMETYES = ('application/vnd.nextthought.pollref',
+                    'application/vnd.nextthought.napoll')
+SURVEY_REF_MIMETYES = ('application/vnd.nextthought.surveyref', 
+                       'application/vnd.nextthought.surveyref')
+QUESTION_REF_MIMETYES = ('application/vnd.nextthought.questionref',
+                        'application/vnd.nextthought.naquestion')
+ASSIGNMENT_REF_MIMETYES = ('application/vnd.nextthought.assignmentref', 
+                           'application/vnd.nextthought.assignment')
+DISCUSSION_REF_MIMETYES = ('application/vnd.nextthought.discussionref', 
+                           'application/vnd.nextthought.discussion')
+QUESTIONSET_REF_MIMETYES = ('application/vnd.nextthought.questionsetref', 
+                            'application/vnd.nextthought.naquestionset')
 
-ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef, INTIVideoRef,
-                        INTIVideoRoll, INTIAudioRoll)
+ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef,
+                        INTIVideoRef, INTIVideoRoll, INTIAudioRoll)
 
 MEDIA_REF_INTERFACES = (INTIAudioRef, INTIVideoRef)
 
