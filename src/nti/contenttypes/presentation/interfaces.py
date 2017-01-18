@@ -737,8 +737,8 @@ class ILessonPublicationConstraints(IMapping,
     contains(str('.ILessonPublicationConstraint'))
     __setitem__.__doc__ = None
 
-    Items = IndexedIterable(
-        title="The contained constraint items", readonly=True)
+    Items = IndexedIterable(title="The contained constraint items",
+                            readonly=True)
     Items.setTaggedValue('_ext_excluded_out', True)
 
     def append(constraint):
