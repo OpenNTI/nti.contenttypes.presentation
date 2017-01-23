@@ -69,16 +69,16 @@ class MediaSourceJsonSchemafier(BaseJsonSchemafier):
             name, field, item_schema)
 
         # handle type field
-        if 		name == 'type' \
-                and IList.providedBy(field) \
-                and IChoice.providedBy(field.value_type):
+        if      name == 'type' \
+            and IList.providedBy(field) \
+            and IChoice.providedBy(field.value_type):
             choices, _ = self.get_data_from_choice_field(field.value_type)
             item_schema['choices'] = sorted(choices)
 
         # handle source field
-        if 		name == 'source' \
-                and IList.providedBy(field) \
-                and IVariant.providedBy(field.value_type):
+        if      name == 'source' \
+            and IList.providedBy(field) \
+            and IVariant.providedBy(field.value_type):
             for x in field.value_type.fields:
                 if IChoice.providedBy(x):
                     choices, _ = self.get_data_from_choice_field(x)

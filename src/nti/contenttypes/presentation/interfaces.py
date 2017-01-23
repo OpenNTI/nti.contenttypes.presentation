@@ -596,7 +596,7 @@ class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible, IFileConstrained):
     ntiid = Variant((ValidTextLine(title="Related content ntiid"),
                      ValidNTIID(title="Related content ntiid")),
                      required=False,
-                    default=None)
+                     default=None)
     target = ValidTextLine(title="Related work target", required=False)
 
 
