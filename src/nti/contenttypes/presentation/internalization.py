@@ -110,8 +110,8 @@ class _AssetUpdater(InterfaceObjectIO):
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
         self.fixAll(parsed)
-        result = super(_AssetUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
+        result = super(_AssetUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
         return result
 
 
@@ -123,8 +123,7 @@ class _NTIMediaUpdater(_AssetUpdater):
             if not isinstance(transcript, Mapping):
                 continue
             if MIMETYPE not in transcript:
-                transcript[
-                    MIMETYPE] = u'application/vnd.nextthought.ntitranscript'
+                transcript[MIMETYPE] = u'application/vnd.nextthought.ntitranscript'
             obj = find_factory_for(transcript)()
             transcripts[idx] = update_from_external_object(obj, transcript)
         return self
@@ -134,10 +133,10 @@ class _NTIMediaUpdater(_AssetUpdater):
         return parsed
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTIMediaUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
-        self.takeOwnership(
-            self._ext_self, getattr(self._ext_self, 'transcripts', None))
+        result = super(_NTIMediaUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        self.takeOwnership(self._ext_self,
+                           getattr(self._ext_self, 'transcripts', None))
         return result
 
 
@@ -152,8 +151,7 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
             if not isinstance(source, Mapping):
                 continue
             if MIMETYPE not in source:
-                source[
-                    MIMETYPE] = u'application/vnd.nextthought.ntivideosource'
+                source[MIMETYPE] = u'application/vnd.nextthought.ntivideosource'
             obj = find_factory_for(source)()
             sources[idx] = update_from_external_object(obj, source)
         return self
@@ -171,10 +169,10 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
         return parsed
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTIVideoUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
-        self.takeOwnership(
-            self._ext_self, getattr(self._ext_self, 'sources', None))
+        result = super(_NTIVideoUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        self.takeOwnership(self._ext_self,
+                           getattr(self._ext_self, 'sources', None))
         return result
 
 
@@ -189,8 +187,7 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
             if not isinstance(source, Mapping):
                 continue
             if MIMETYPE not in source:
-                source[
-                    MIMETYPE] = u'application/vnd.nextthought.ntiaudiosource'
+                source[MIMETYPE] = u'application/vnd.nextthought.ntiaudiosource'
             obj = find_factory_for(source)()
             sources[idx] = update_from_external_object(obj, source)
         return self
@@ -200,10 +197,10 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
         return parsed
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTIAudioUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
-        self.takeOwnership(
-            self._ext_self, getattr(self._ext_self, 'sources', None))
+        result = super(_NTIAudioUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        self.takeOwnership(self._ext_self, 
+                           getattr(self._ext_self, 'sources', None))
         return result
 
 
@@ -381,7 +378,8 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
         if not target:
             self.popTargets(parsed)
         # complete
-        return super(_NTIDiscussionRefUpdater, self).fixTarget(parsed, transfer=transfer)
+        return super(_NTIDiscussionRefUpdater, 
+                     self).fixTarget(parsed, transfer=transfer)
 
     def fixAll(self, parsed):
         self.fixTarget(parsed, transfer=True)
@@ -408,8 +406,8 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
         self.fixAll(parsed)
-        result = super(_NTIAssignmentRefUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
+        result = super(_NTIAssignmentRefUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
         return result
 
 
@@ -493,8 +491,8 @@ class _NTICourseOverviewSpacerUpdater(_AssetUpdater):
     _ext_iface_upper_bound = INTICourseOverviewSpacer
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTICourseOverviewSpacerUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
+        result = super(_NTICourseOverviewSpacerUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
         assert self._ext_replacement().ntiid, "No NTIID provided"
         return result
 
@@ -511,8 +509,8 @@ class _NTIMediaRollUpdater(_AssetUpdater):
         return super(_NTIMediaRollUpdater, self).fixAll(parsed)
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTIMediaRollUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
+        result = super(_NTIMediaRollUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self, self._ext_self)
         return result
 
@@ -542,8 +540,8 @@ class _NTICourseOverviewGroupUpdater(_AssetUpdater):
         return self.fixCreator(parsed)
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTICourseOverviewGroupUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
+        result = super(_NTICourseOverviewGroupUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self, self._ext_self)
         assert self._ext_self.ntiid, "No NTIID provided"
         return result
@@ -574,8 +572,8 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
         return self.fixCreator(parsed)
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTILessonOverviewUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
+        result = super(_NTILessonOverviewUpdater, 
+                       self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self, self._ext_self)
         return result
 
