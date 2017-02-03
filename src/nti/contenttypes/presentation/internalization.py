@@ -559,7 +559,7 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
         lesson = parsed.get('lesson')
         # make sure we update the incoming ntiid
         # since in legacy it may the ntiid of a content unit
-        if 		not lesson \
+        if      not lesson \
             and is_valid_ntiid_string(ntiid) \
             and get_type(ntiid) != NTI_LESSON_OVERVIEW:
             lesson = make_ntiid(nttype=NTI_LESSON_OVERVIEW, base=ntiid)
@@ -669,8 +669,8 @@ def is_relatedwork_ref(x):
     if not mimeType:
         ntiid = x.get('ntiid') or x.get(
             NTIID) if isinstance(x, Mapping) else None
-        if 		ntiid \
-                and (	'.relatedworkref.' in ntiid
+        if      ntiid \
+                and (   '.relatedworkref.' in ntiid
                       or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
             result = True
     elif mimeType in RELATED_WORK_REF_MIMETYES:

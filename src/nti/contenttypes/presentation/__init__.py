@@ -237,10 +237,10 @@ def _set_ifaces():
                                            INTIMediaRoll, IConcreteAsset)
 
     def _package_item_predicate(item):
-        result = bool(	  type(item) == interface.interface.InterfaceClass
-                         and issubclass(item, IPackagePresentationAsset)
-                         and item != IPackagePresentationAsset
-                         and item not in (INTIMedia, INTIDocketAsset, IConcreteAsset))
+        result = bool(    type(item) == interface.interface.InterfaceClass
+                      and issubclass(item, IPackagePresentationAsset)
+                      and item != IPackagePresentationAsset
+                      and item not in (INTIMedia, INTIDocketAsset, IConcreteAsset))
         return result
 
     def _course_item_predicate(item):
@@ -251,22 +251,22 @@ def _set_ifaces():
         return result
 
     def _overview_item_predicate(item):
-        result = bool(	  type(item) == interface.interface.InterfaceClass
-                         and issubclass(item, IGroupOverViewable)
-                         and item != IGroupOverViewable
-                         and item not in NO_IMPL_REF_IFACES)
+        result = bool(    type(item) == interface.interface.InterfaceClass
+                      and issubclass(item, IGroupOverViewable)
+                      and item != IGroupOverViewable
+                      and item not in NO_IMPL_REF_IFACES)
         return result
 
     def _presentationasset_item_predicate(item):
-        result = bool(	  type(item) == interface.interface.InterfaceClass
-                         and issubclass(item, IPresentationAsset)
-                         and item != IPresentationAsset
-                         and item != IUserCreatedAsset
-                         and item != ICoursePresentationAsset
-                         and item != ILegacyPresentationAsset
-                         and item != IPackagePresentationAsset
-                         and item != IContentBackedPresentationAsset
-                         and item not in NO_IMPL_IFACES)
+        result = bool(    type(item) == interface.interface.InterfaceClass
+                      and issubclass(item, IPresentationAsset)
+                      and item != IPresentationAsset
+                      and item != IUserCreatedAsset
+                      and item != ICoursePresentationAsset
+                      and item != ILegacyPresentationAsset
+                      and item != IPackagePresentationAsset
+                      and item != IContentBackedPresentationAsset
+                      and item not in NO_IMPL_IFACES)
         return result
 
     for _, item in inspect.getmembers(module, _course_item_predicate):
