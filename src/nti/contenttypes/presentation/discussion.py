@@ -19,7 +19,7 @@ from zope.cachedescriptors.property import readproperty
 from nti.contenttypes.presentation import NTI_COURSE_BUNDLE
 from nti.contenttypes.presentation import NTI_DISCUSSION_REF
 
-from nti.contenttypes.presentation._base import PersistentPresentationAsset
+from nti.contenttypes.presentation._base import RecordablePresentationAsset
 
 from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 
@@ -31,7 +31,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 @total_ordering
 @interface.implementer(INTIDiscussionRef)
-class NTIDiscussionRef(PersistentPresentationAsset):
+class NTIDiscussionRef(RecordablePresentationAsset):
     createDirectFieldProperties(INTIDiscussionRef)
 
     __external_class_name__ = u"DiscussionRef"

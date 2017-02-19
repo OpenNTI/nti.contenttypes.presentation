@@ -35,6 +35,7 @@ from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_SPACER
 from nti.contenttypes.presentation import NTI_LESSON_COMPLETION_CONSTRAINT
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
+from nti.contenttypes.presentation._base import RecordablePresentationAsset
 
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
@@ -61,7 +62,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 
 @interface.implementer(INTICourseOverviewSpacer)
-class NTICourseOverViewSpacer(PersistentPresentationAsset):
+class NTICourseOverViewSpacer(PersistentPresentationAsset): # not recordable
     createDirectFieldProperties(INTICourseOverviewSpacer)
 
     __external_class_name__ = u"CourseOverviewSpacer"
@@ -78,7 +79,7 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):
 @interface.implementer(INTILessonOverview)
 class NTILessonOverView(CalendarPublishableMixin,
                         RecordableContainerMixin,
-                        PersistentPresentationAsset):
+                        RecordablePresentationAsset):
     createDirectFieldProperties(INTILessonOverview)
 
     __external_class_name__ = u"LessonOverView"

@@ -41,8 +41,8 @@ def _patch():
 
         for _, item in inspect.getmembers(module):
             try:
-                mimeType = getattr(
-                    item, 'mimeType', getattr(item, 'mime_type'))
+                mimeType = getattr(item, 'mimeType', None) \
+                        or getattr(item, 'mime_type')
                 # first interface is the externalizable object
                 interfaces = tuple(item.__implemented__.interfaces())
                 interfaces[0].setTaggedValue('_ext_mime_type', mimeType)

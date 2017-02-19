@@ -19,6 +19,7 @@ from nti.contenttypes.presentation import NTI_TIMELINE
 from nti.contenttypes.presentation import NTI_TIMELIME_REF
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
+from nti.contenttypes.presentation._base import RecordablePresentationAsset
 
 from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
@@ -32,7 +33,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 @total_ordering
 @interface.implementer(INTITimeline)
-class NTITimeLine(PersistentPresentationAsset):
+class NTITimeLine(RecordablePresentationAsset):
     createDirectFieldProperties(INTITimeline)
 
     __external_class_name__ = u"Timeline"
@@ -61,7 +62,7 @@ class NTITimeLine(PersistentPresentationAsset):
 
 @EqHash('target')
 @interface.implementer(INTITimelineRef)
-class NTITimeLineRef(PersistentPresentationAsset):
+class NTITimeLineRef(PersistentPresentationAsset): # not recordable
     createDirectFieldProperties(INTITimelineRef)
 
     __external_class_name__ = u"TimelineRef"

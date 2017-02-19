@@ -19,6 +19,7 @@ from nti.contenttypes.presentation import NTI_RELATED_WORK_REF
 from nti.contenttypes.presentation import NTI_RELATED_WORK_REF_POINTER
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
+from nti.contenttypes.presentation._base import RecordablePresentationAsset
 
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
@@ -32,7 +33,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 @total_ordering
 @interface.implementer(INTIRelatedWorkRef)
-class NTIRelatedWorkRef(PersistentPresentationAsset):
+class NTIRelatedWorkRef(RecordablePresentationAsset):
     createDirectFieldProperties(INTIRelatedWorkRef)
 
     __external_class_name__ = u"RelatedWork"
@@ -69,7 +70,7 @@ class NTIRelatedWorkRef(PersistentPresentationAsset):
 
 @EqHash('target')
 @interface.implementer(INTIRelatedWorkRefPointer)
-class NTIRelatedWorkRefPointer(PersistentPresentationAsset):
+class NTIRelatedWorkRefPointer(PersistentPresentationAsset): # not recordable
     createDirectFieldProperties(INTIRelatedWorkRefPointer)
 
     __external_class_name__ = u"RelatedWorkRefPointer"

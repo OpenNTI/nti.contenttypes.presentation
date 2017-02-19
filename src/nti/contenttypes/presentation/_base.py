@@ -19,11 +19,11 @@ from zope.container.contained import Contained
 
 from zope.mimetype.interfaces import IContentTypeAware
 
+from nti.base.interfaces import ICreated
+
 from nti.contenttypes.presentation.common import make_schema
 from nti.contenttypes.presentation.common import generate_ntiid
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
-
-from nti.coremetadata.interfaces import ICreated
 
 from nti.coremetadata.mixins import RecordableMixin
 
@@ -32,12 +32,14 @@ from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 from nti.externalization.representation import WithRepr
 
 from nti.schema.field import SchemaConfigured
+
 from nti.schema.interfaces import find_most_derived_interface
 
 
 @WithRepr
 class PersistentMixin(SchemaConfigured,
-                      PersistentCreatedModDateTrackingObject):
+                      PersistentCreatedModDateTrackingObject,
+                      Contained):  # order matters
 
     jsonschema = u''
 
@@ -48,9 +50,7 @@ class PersistentMixin(SchemaConfigured,
 
 @total_ordering
 @interface.implementer(IPresentationAsset, IContentTypeAware, ICreated)
-class PersistentPresentationAsset(PersistentMixin,
-                                  RecordableMixin,
-                                  Contained):  # order matters
+class PersistentPresentationAsset(PersistentMixin):
     title = None
     byline = None
     description = None
@@ -81,6 +81,6 @@ class PersistentPresentationAsset(PersistentMixin,
         return make_schema(schema=schema, user=user)
 
 
-class RecordablePersistentPresentationAsset(#RecordableMixin,
-                                            PersistentPresentationAsset):
+class RecordablePresentationAsset(RecordableMixin,
+                                  PersistentPresentationAsset):
     pass

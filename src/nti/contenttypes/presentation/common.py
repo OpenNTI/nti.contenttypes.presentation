@@ -43,8 +43,9 @@ def generate_ntiid(nttype, provider='NTI', now=None):
 
 
 def make_schema(schema, user=None):
-    result = core_schema_maker(
-        schema, user=user, maker=IPresentationAssetJsonSchemaMaker)
+    result = core_schema_maker(schema, 
+                               user=user, 
+                               maker=IPresentationAssetJsonSchemaMaker)
     return result
 
 

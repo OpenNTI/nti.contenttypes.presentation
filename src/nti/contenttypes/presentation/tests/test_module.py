@@ -72,7 +72,7 @@ class TestModule(unittest.TestCase):
             assert_that(iface_of_asset(obj), is_(provided))
             if not IRecordable.providedBy(obj):
                 not_recordable += 1
-        assert_that(not_recordable, is_(11))
+        assert_that(not_recordable, is_(8))
 
     def test_group(self):
         group = NTICourseOverViewGroup()

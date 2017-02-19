@@ -24,6 +24,7 @@ from nti.contenttypes.presentation import NTI_SLIDE_VIDEO
 from nti.contenttypes.presentation import NTI_SLIDE_DECK_REF
 
 from nti.contenttypes.presentation._base import PersistentPresentationAsset
+from nti.contenttypes.presentation._base import RecordablePresentationAsset
 
 from nti.contenttypes.presentation.interfaces import EVERYONE
 
@@ -41,7 +42,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 
 @interface.implementer(INTISlide)
-class NTISlide(PersistentPresentationAsset):
+class NTISlide(RecordablePresentationAsset):
     createDirectFieldProperties(INTISlide)
 
     __external_class_name__ = u"Slide"
@@ -63,7 +64,7 @@ class NTISlide(PersistentPresentationAsset):
 
 
 @interface.implementer(INTISlideVideo)
-class NTISlideVideo(PersistentPresentationAsset):
+class NTISlideVideo(RecordablePresentationAsset):
     createDirectFieldProperties(INTISlideVideo)
 
     __external_class_name__ = u"NTISlideVideo"
@@ -83,7 +84,7 @@ class NTISlideVideo(PersistentPresentationAsset):
 
 @total_ordering
 @interface.implementer(INTISlideDeck)
-class NTISlideDeck(PersistentPresentationAsset):
+class NTISlideDeck(RecordablePresentationAsset):
     createDirectFieldProperties(INTISlideDeck)
 
     __external_class_name__ = u"NTISlideDeck"
@@ -111,12 +112,12 @@ class NTISlideDeck(PersistentPresentationAsset):
     def append(self, item):
         item.__parent__ = self  # take owership
         if INTISlide.providedBy(item):
-            self.slides = PersistentList(
-            ) if self.slides is None else self.slides
+            if self.slides is None:
+                self.slides = PersistentList()
             self.slides.append(item)
         elif INTISlideVideo.providedBy(item):
-            self.videos = PersistentList(
-            ) if self.videos is None else self.videos
+            if self.slides is None:
+                self.videos = PersistentList()
             self.videos.append(item)
     add = append
 
@@ -155,7 +156,7 @@ class NTISlideDeck(PersistentPresentationAsset):
 
 @EqHash('target')
 @interface.implementer(INTISlideDeckRef)
-class NTISlideDeckRef(PersistentPresentationAsset):
+class NTISlideDeckRef(PersistentPresentationAsset): # not recordable
     createDirectFieldProperties(INTISlideDeckRef)
 
     __external_class_name__ = u"SlideDeckRef"

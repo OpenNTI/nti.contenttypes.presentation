@@ -15,8 +15,6 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
-from zope.container.contained import Contained
-
 from zope.mimetype.interfaces import IContentTypeAware
 
 from persistent.list import PersistentList
@@ -32,7 +30,7 @@ from nti.contenttypes.presentation import NTI_AUDIO_SOURCE
 from nti.contenttypes.presentation import NTI_VIDEO_SOURCE
 
 from nti.contenttypes.presentation._base import PersistentMixin
-from nti.contenttypes.presentation._base import PersistentPresentationAsset
+from nti.contenttypes.presentation._base import RecordablePresentationAsset
 
 from nti.contenttypes.presentation.common import make_schema
 
@@ -92,7 +90,7 @@ def compute_part_ntiid(part, nttype, field):
 
 
 @interface.implementer(INTITranscript, IContentTypeAware)
-class NTITranscript(PersistentMixin, Contained):
+class NTITranscript(PersistentMixin):
     createDirectFieldProperties(INTITranscript)
 
     __external_class_name__ = u"Transcript"
@@ -108,7 +106,7 @@ class NTITranscript(PersistentMixin, Contained):
 
 
 @interface.implementer(INTIAudioSource, IContentTypeAware)
-class NTIAudioSource(PersistentMixin, Contained):
+class NTIAudioSource(PersistentMixin):
     createDirectFieldProperties(INTIAudioSource)
 
     __external_class_name__ = u"VideoSource"
@@ -124,7 +122,7 @@ class NTIAudioSource(PersistentMixin, Contained):
 
 
 @interface.implementer(INTIVideoSource, IContentTypeAware)
-class NTIVideoSource(PersistentMixin, Contained):
+class NTIVideoSource(PersistentMixin):
     createDirectFieldProperties(INTIVideoSource)
 
     __external_class_name__ = u"VideoSource"
@@ -141,7 +139,7 @@ class NTIVideoSource(PersistentMixin, Contained):
 
 @total_ordering
 @interface.implementer(INTIMedia)
-class NTIMedia(PersistentPresentationAsset):
+class NTIMedia(RecordablePresentationAsset):
     createDirectFieldProperties(INTIMedia)
 
     __external_class_name__ = u"Media"
@@ -170,7 +168,7 @@ class NTIMedia(PersistentPresentationAsset):
 
 
 @interface.implementer(INTIMediaRef)
-class NTIMediaRef(PersistentPresentationAsset):
+class NTIMediaRef(RecordablePresentationAsset):
     createDirectFieldProperties(INTIMediaRef)
 
     __external_class_name__ = u"MediaRef"
@@ -211,7 +209,7 @@ class NTIVideo(NTIMedia):
 
 
 @interface.implementer(INTIVideoRef)
-class NTIVideoRef(NTIMediaRef):
+class NTIVideoRef(NTIMediaRef): # not recordable
     createDirectFieldProperties(INTIVideoRef)
 
     __external_class_name__ = u"Video"
@@ -237,7 +235,7 @@ class NTIAudio(NTIMedia):
 
 
 @interface.implementer(INTIAudioRef)
-class NTIAudioRef(NTIMediaRef):
+class NTIAudioRef(NTIMediaRef): # not recordable
     createDirectFieldProperties(INTIAudioRef)
 
     __external_class_name__ = u"Audio"
@@ -247,7 +245,7 @@ class NTIAudioRef(NTIMediaRef):
 
 
 @interface.implementer(INTIMediaRoll)
-class NTIMediaRoll(PersistentPresentationAsset):
+class NTIMediaRoll(RecordablePresentationAsset):
     createDirectFieldProperties(INTIMediaRoll)
 
     __external_class_name__ = u"MediaRoll"

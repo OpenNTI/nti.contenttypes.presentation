@@ -348,7 +348,7 @@ class IVisible(interface.Interface):
 
 
 class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-                   ICoursePresentationAsset, IVisible):
+                   ICoursePresentationAsset, IVisible, IRecordable):
     target = ValidNTIID(title="Target NTIID", required=False)
 IMediaRef = INTIMediaRef  # BWC
 

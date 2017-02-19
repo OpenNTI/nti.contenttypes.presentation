@@ -20,7 +20,7 @@ from persistent.list import PersistentList
 from nti.contenttypes.presentation import MessageFactory as _
 from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_GROUP
 
-from nti.contenttypes.presentation._base import PersistentPresentationAsset
+from nti.contenttypes.presentation._base import RecordablePresentationAsset
 
 from nti.contenttypes.presentation.interfaces import INTIMediaRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
@@ -42,7 +42,8 @@ class DuplicateReference(ValueError):
 
 @total_ordering
 @interface.implementer(INTICourseOverviewGroup)
-class NTICourseOverViewGroup(PersistentPresentationAsset, RecordableContainerMixin):
+class NTICourseOverViewGroup(RecordablePresentationAsset,
+                             RecordableContainerMixin):
     createDirectFieldProperties(INTICourseOverviewGroup)
 
     __external_class_name__ = u"CourseOverviewGroup"

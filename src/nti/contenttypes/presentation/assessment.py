@@ -33,9 +33,6 @@ from nti.property.property import alias
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 
-import zope.deferredimport
-zope.deferredimport.initialize()
-
 
 @total_ordering
 class NTIAssessmentRef(PersistentPresentationAsset):
@@ -97,10 +94,6 @@ class NTIQuestionSetRef(NTIAssessmentRef):
 
     nttype = NTI_QUESTION_SET_REF
 
-zope.deferredimport.deprecated(
-    "Import from NTIQuestionSetRef instead",
-    NTQuestionSetRef='nti.contenttypes.presentation.assessment:NTIQuestionSetRef')
-
 
 @interface.implementer(INTIQuestionRef)
 class NTIQuestionRef(NTIAssessmentRef):
@@ -110,10 +103,6 @@ class NTIQuestionRef(NTIAssessmentRef):
     mime_type = mimeType = u"application/vnd.nextthought.questionref"
 
     nttype = NTI_QUESTION_REF
-
-zope.deferredimport.deprecated(
-    "Import from NTIQuestionRef instead",
-    NTQuestionRef='nti.contenttypes.presentation.assessment:NTIQuestionRef')
 
 
 @interface.implementer(INTISurveyRef)
@@ -135,3 +124,11 @@ class NTIPollRef(NTIAssessmentRef):
     mime_type = mimeType = u"application/vnd.nextthought.pollref"
 
     nttype = NTI_POLL_REF
+
+import zope.deferredimport
+zope.deferredimport.initialize()
+
+zope.deferredimport.deprecated(
+    "Import from NTIQuestionRef instead",
+    NTQuestionRef='nti.contenttypes.presentation.assessment:NTIQuestionRef',
+    NTQuestionSetRef='nti.contenttypes.presentation.assessment:NTIQuestionSetRef')
