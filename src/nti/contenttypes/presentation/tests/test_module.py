@@ -40,6 +40,8 @@ from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
 from nti.contenttypes.presentation.lesson import NTILessonOverView
 
+from nti.coremetadata.interfaces import IRecordable
+
 from nti.schema.interfaces import find_most_derived_interface
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
@@ -62,11 +64,15 @@ class TestModule(unittest.TestCase):
     def test_asset_ifaces(self):
         class Foo(object):
             pass
+        not_recordable = 0
         for iface in ALL_PRESENTATION_ASSETS_INTERFACES:
             obj = Foo()
             interface.alsoProvides(obj, iface)
             provided = find_most_derived_interface(obj, IPresentationAsset)
             assert_that(iface_of_asset(obj), is_(provided))
+            if not IRecordable.providedBy(obj):
+                not_recordable += 1
+        assert_that(not_recordable, is_(11))
 
     def test_group(self):
         group = NTICourseOverViewGroup()
@@ -81,7 +87,7 @@ class TestModule(unittest.TestCase):
     def test_factories(self):
 
         def _ext_mime_type_predicate(item):
-            result =  bool(type(item) == interface.interface.InterfaceClass) \
+            result =  bool(isinstance(item, interface.interface.InterfaceClass)) \
                 and item.queryTaggedValue('_ext_mime_type')
             return result
 

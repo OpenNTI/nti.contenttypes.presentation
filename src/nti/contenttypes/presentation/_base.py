@@ -35,6 +35,7 @@ from nti.schema.field import SchemaConfigured
 from nti.schema.interfaces import find_most_derived_interface
 
 
+@WithRepr
 class PersistentMixin(SchemaConfigured,
                       PersistentCreatedModDateTrackingObject):
 
@@ -45,7 +46,6 @@ class PersistentMixin(SchemaConfigured,
         PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
 
 
-@WithRepr
 @total_ordering
 @interface.implementer(IPresentationAsset, IContentTypeAware, ICreated)
 class PersistentPresentationAsset(PersistentMixin,
@@ -79,3 +79,8 @@ class PersistentPresentationAsset(PersistentMixin,
     def schema(self, user=None):
         schema = find_most_derived_interface(self, IPresentationAsset)
         return make_schema(schema=schema, user=user)
+
+
+class RecordablePersistentPresentationAsset(#RecordableMixin,
+                                            PersistentPresentationAsset):
+    pass

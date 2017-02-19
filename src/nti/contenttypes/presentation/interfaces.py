@@ -207,15 +207,14 @@ class ITaggedContent(interface.Interface):
                            required=False)
 
 
-class IPresentationAsset(ILastModified, IContained, IRecordable,
-                         IAttributeAnnotatable):
+class IPresentationAsset(ILastModified, IContained, IAttributeAnnotatable):
     """
     marker interface for all presentation assests
     """
 IPresentationAsset.setTaggedValue('_ext_jsonschema', u'')
 
 
-class IConcreteAsset(IPresentationAsset):
+class IConcreteAsset(IPresentationAsset, IRecordable):
     """
     Marker interface for non-ref (concrete) types
     """
@@ -229,7 +228,7 @@ class IUserCreatedAsset(interface.Interface):
 IUserCreatedAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 
-class IPackagePresentationAsset(IConcreteAsset):
+class IPackagePresentationAsset(IPresentationAsset):
     """
     Marker interface for assets whose home are content packages
     """
@@ -259,7 +258,7 @@ IContentBackedPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 class IPointer(interface.Interface):
     """
-    Marker interface for objects that point to another"
+    Marker interface for objects that point to another
     """
     target = interface.Attribute("target object id")
 IPointer.setTaggedValue('_ext_is_marker_interface', True)
@@ -367,7 +366,8 @@ class IAssetTitleDescribed(IAssetTitled, IDCDescriptiveProperties):
 
 
 class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
-                ICreated, IPackagePresentationAsset, IFileConstrained):
+                ICreated, IPackagePresentationAsset, 
+                IRecordable, IFileConstrained):
 
     byline = byline_schema_field(required=False)
 
@@ -473,10 +473,11 @@ class INTIAudioRef(INTIMediaRef):
 
 class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
                     ICreated, ICoursePresentationAsset, IIterable, IConcreteAsset,
-                    IFiniteSequence):
+                    IFiniteSequence, IRecordable):
 
     Items = IndexedIterable(value_type=Object(INTIMediaRef),
-                            title="The media sources", required=False, min_length=0)
+                            title="The media sources", 
+                            required=False, min_length=0)
 
     def pop(idx):
         """
@@ -501,7 +502,7 @@ class INTIVideoRoll(INTIMediaRoll):
 INTIVideoRoll.setTaggedValue('_ext_jsonschema', u'videoroll')
 
 
-class INTISlide(INTIIDIdentifiable, IPackagePresentationAsset):
+class INTISlide(INTIIDIdentifiable, IPackagePresentationAsset, IRecordable):
     slidevideoid = ValidNTIID(title="Slide video NTIID", required=True)
     slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
     slidevideostart = Number(title="Video start", required=False, default=0)
@@ -511,7 +512,7 @@ class INTISlide(INTIIDIdentifiable, IPackagePresentationAsset):
 
 
 class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable, 
-                     ICreated, IPackagePresentationAsset):
+                     ICreated, IPackagePresentationAsset, IRecordable):
     byline = byline_schema_field(required=False)
     video_ntiid = ValidNTIID(title="Slide video NTIID", required=True)
     slidedeckid = ValidNTIID(title="Slide deck NTIID", required=False)
@@ -580,7 +581,8 @@ class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable,
 INTIDocketMixin = INTIDocketAsset
 
 
-class INTITimeline(INTIDocketAsset, IGroupOverViewable, IFileConstrained):
+class INTITimeline(INTIDocketAsset, IGroupOverViewable,
+                   IRecordable, IFileConstrained):
     description = ValidTextLine(title="Timeline description", required=False)
     suggested_inline = Bool("Suggested inline flag",
                             required=False, 
@@ -588,7 +590,8 @@ class INTITimeline(INTIDocketAsset, IGroupOverViewable, IFileConstrained):
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 
-class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible, IFileConstrained):
+class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible,
+                         IRecordable, IFileConstrained):
     byline = byline_schema_field(required=False)
     section = ValidTextLine(title="Section", required=False)
     description = ValidText(title="Slide video description", required=False)
@@ -601,7 +604,8 @@ class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible, IFileConstrained):
 
 
 class INTIDiscussionRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-                        ITitled, ICoursePresentationAsset, IFileConstrained):
+                        ITitled, ICoursePresentationAsset, 
+                        IRecordable, IFileConstrained):
     title = ValidTextLine(title="Discussion title", required=False)
     icon = href_schema_field(title="Discussion icon href", required=False)
     label = ValidTextLine(title="The label", required=False, default=u'')
