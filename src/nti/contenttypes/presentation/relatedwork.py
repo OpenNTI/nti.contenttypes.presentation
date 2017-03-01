@@ -43,8 +43,8 @@ class NTIRelatedWorkRef(RecordablePresentationAsset):
 
     Creator = alias('creator')
     desc = alias('description')
-    ntiRequirements = alias('nti_requirements')
     target_ntiid = alias('target')
+    ntiRequirements = alias('nti_requirements')
     targetMimeType = target_mime_type = alias('type')
 
     nttype = NTI_RELATED_WORK_REF
