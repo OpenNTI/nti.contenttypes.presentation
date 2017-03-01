@@ -43,6 +43,7 @@ class NTIRelatedWorkRef(RecordablePresentationAsset):
 
     Creator = alias('creator')
     desc = alias('description')
+    ntiRequirements = alias('nti_requirements')
     target_ntiid = alias('target')
     targetMimeType = target_mime_type = alias('type')
 
@@ -70,7 +71,7 @@ class NTIRelatedWorkRef(RecordablePresentationAsset):
 
 @EqHash('target')
 @interface.implementer(INTIRelatedWorkRefPointer)
-class NTIRelatedWorkRefPointer(PersistentPresentationAsset): # not recordable
+class NTIRelatedWorkRefPointer(PersistentPresentationAsset):  # not recordable
     createDirectFieldProperties(INTIRelatedWorkRefPointer)
 
     __external_class_name__ = u"RelatedWorkRefPointer"

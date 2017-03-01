@@ -52,7 +52,7 @@ class TestJsonSchema(unittest.TestCase):
         schema = a.schema()
         assert_that(schema, has_key(FIELDS))
         schema = schema[FIELDS]
-        assert_that(schema, has_length(10))
+        assert_that(schema, has_length(11))
         for field in ('href', 'icon'):
             assert_that(schema, has_entry(field, has_entry('type', 'Variant')))
             assert_that(
@@ -62,6 +62,8 @@ class TestJsonSchema(unittest.TestCase):
 
         assert_that(
             schema, has_entry('byline', has_entry('base_type', is_('string'))))
+        assert_that(
+            schema, has_entry('nti_requirements', has_entry('base_type', is_('string'))))
         assert_that(
             schema, has_entry('target', has_entry('min_length', is_(0))))
         assert_that(
