@@ -253,8 +253,7 @@ class IContentBackedPresentationAsset(interface.Interface):
     """
     Marker interface for assets that come from content backed sources
     """
-IContentBackedPresentationAsset.setTaggedValue(
-    '_ext_is_marker_interface', True)
+IContentBackedPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 
 class IPointer(interface.Interface):
@@ -710,8 +709,7 @@ INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
-INTICourseOverviewGroup['accentColor'].setTaggedValue(
-    TAG_REQUIRED_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
