@@ -52,6 +52,7 @@ setup(
         'nti.ntiids',
         'nti.property',
         'nti.schema',
+        'nti.wref',
         'six',
         'persistent',
         'zope.annotation',
