@@ -207,9 +207,8 @@
 	<!-- Mime factories -->
 	<ext:registerMimeFactories module=".group" />
 	
-	<!-- weak refs 
+	<!-- weak refs -->
 	<include package="nti.wref" />
 	<adapter factory=".wref.PresentationAssetWeakRef" />
-	-->
 
 </configure>
