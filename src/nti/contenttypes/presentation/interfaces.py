@@ -361,8 +361,9 @@ class IAssetTitleDescribed(IAssetTitled, IDCDescriptiveProperties):
     # IDCDescriptiveProperties marker needed for ext adapter.
     title = copy(IAssetTitled['title'])
     title.default = u''
-    description = ValidTextLine(
-        title="Media description", required=False, default=u'')
+    description = ValidTextLine(title="Media description",
+                                required=False, 
+                                default=u'')
 
 
 class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
