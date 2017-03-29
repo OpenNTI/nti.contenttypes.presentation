@@ -26,9 +26,9 @@ from nti.contenttypes.presentation.interfaces import INTIMediaRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
-from nti.coremetadata.mixins import RecordableContainerMixin
-
 from nti.property.property import alias
+
+from nti.recorder.mixins import RecordableContainerMixin
 
 from nti.schema.fieldproperty import createDirectFieldProperties
 

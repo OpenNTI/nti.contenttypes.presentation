@@ -25,11 +25,11 @@ from nti.contenttypes.presentation.common import make_schema
 from nti.contenttypes.presentation.common import generate_ntiid
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 
-from nti.coremetadata.mixins import RecordableMixin
-
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
 from nti.externalization.representation import WithRepr
+
+from nti.recorder.mixins import RecordableMixin
 
 from nti.schema.field import SchemaConfigured
 

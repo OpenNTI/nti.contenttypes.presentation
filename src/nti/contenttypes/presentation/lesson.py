@@ -48,7 +48,6 @@ from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstr
 from nti.coremetadata.interfaces import SYSTEM_USER_ID
 
 from nti.coremetadata.mixins import CalendarPublishableMixin
-from nti.coremetadata.mixins import RecordableContainerMixin
 
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
@@ -56,6 +55,8 @@ from nti.ntiids.ntiids import get_parts
 from nti.ntiids.ntiids import make_ntiid
 
 from nti.property.property import alias
+
+from nti.recorder.mixins import RecordableContainerMixin
 
 from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties

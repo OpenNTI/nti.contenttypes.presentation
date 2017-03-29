@@ -42,9 +42,7 @@ from nti.base.interfaces import ILastModified
 
 from nti.contenttypes.presentation.schema import VisibilityField
 
-from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import ICalendarPublishable
-from nti.coremetadata.interfaces import IRecordableContainer
 from nti.coremetadata.interfaces import IObjectJsonSchemaMaker
 
 from nti.namedfile.interfaces import INamedFile
@@ -53,6 +51,9 @@ from nti.namedfile.interfaces import IFileConstrained
 from nti.ntiids.schema import ValidNTIID
 
 from nti.property.property import alias
+
+from nti.recorder.interfaces import IRecordable
+from nti.recorder.interfaces import IRecordableContainer
 
 from nti.schema.field import Int
 from nti.schema.field import Bool

@@ -40,7 +40,7 @@ from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
 from nti.contenttypes.presentation.lesson import NTILessonOverView
 
-from nti.coremetadata.interfaces import IRecordable
+from nti.recorder.interfaces import IRecordable
 
 from nti.schema.interfaces import find_most_derived_interface
 

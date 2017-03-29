@@ -47,6 +47,9 @@ from nti.coremetadata.jsonschema import CoreJsonSchemafier
 from nti.externalization.interfaces import LocatedExternalDict
 from nti.externalization.interfaces import StandardExternalFields
 
+from nti.recorder.interfaces import IRecordable
+from nti.recorder.interfaces import IRecordableContainer
+
 from nti.schema.interfaces import IVariant
 
 ITEMS = StandardExternalFields.ITEMS
@@ -54,9 +57,11 @@ ITEMS = StandardExternalFields.ITEMS
 
 class BaseJsonSchemafier(CoreJsonSchemafier):
 
+    IGNORE_INTERFACES = CoreJsonSchemafier.IGNORE_INTERFACES + \
+                        (IRecordable, IRecordableContainer)
+    
     def post_process_field(self, name, field, item_schema):
-        super(BaseJsonSchemafier, self).post_process_field(
-            name, field, item_schema)
+        super(BaseJsonSchemafier, self).post_process_field(name, field, item_schema)
         if isinstance(field, VisibilityField):
             item_schema['type'] = 'Choice'
             item_schema['choices'] = sorted(get_visibility_options())
@@ -65,8 +70,7 @@ class BaseJsonSchemafier(CoreJsonSchemafier):
 class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 
     def post_process_field(self, name, field, item_schema):
-        super(MediaSourceJsonSchemafier, self).post_process_field(
-            name, field, item_schema)
+        super(MediaSourceJsonSchemafier, self).post_process_field(name, field, item_schema)
 
         # handle type field
         if      name == 'type' \

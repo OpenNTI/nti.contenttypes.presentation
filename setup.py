@@ -51,6 +51,7 @@ setup(
         'nti.namedfile',
         'nti.ntiids',
         'nti.property',
+        'nti.recorder',
         'nti.schema',
         'nti.wref',
         'six',

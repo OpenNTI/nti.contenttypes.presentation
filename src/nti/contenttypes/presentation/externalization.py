@@ -23,9 +23,7 @@ from nti.contenttypes.presentation.interfaces import ILessonPublicationConstrain
 
 from nti.contenttypes.presentation.lesson import constraints_for_lesson
 
-from nti.coremetadata.interfaces import IRecordable
 from nti.coremetadata.interfaces import IPublishable
-from nti.coremetadata.interfaces import IRecordableContainer
 
 from nti.externalization.autopackage import AutoPackageSearchingScopedInterfaceObjectIO
 
@@ -38,6 +36,9 @@ from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.interfaces import IInternalObjectExternalizer
 
 from nti.mimetype.externalization import decorateMimeType
+
+from nti.recorder.interfaces import IRecordable
+from nti.recorder.interfaces import IRecordableContainer
 
 OID = StandardExternalFields.OID
 CLASS = StandardExternalFields.CLASS
