@@ -55,19 +55,19 @@ class TestJsonSchema(unittest.TestCase):
         assert_that(schema, has_length(11))
         for field in ('href', 'icon'):
             assert_that(schema, has_entry(field, has_entry('type', 'Variant')))
-            assert_that(
-                schema, has_entry(field, has_entry('name', is_(field))))
-            assert_that(
-                schema, has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
+            assert_that(schema, 
+                        has_entry(field, has_entry('name', is_(field))))
+            assert_that(schema, 
+                        has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
 
-        assert_that(
-            schema, has_entry('byline', has_entry('base_type', is_('string'))))
-        assert_that(
-            schema, has_entry('nti_requirements', has_entry('base_type', is_('string'))))
-        assert_that(
-            schema, has_entry('target', has_entry('min_length', is_(0))))
-        assert_that(
-            schema, has_entry('section', has_entry('min_length', is_(0))))
+        assert_that(schema, 
+                    has_entry('byline', has_entry('base_type', is_('string'))))
+        assert_that(schema, 
+                    has_entry('nti_requirements', has_entry('base_type', is_('string'))))
+        assert_that(schema, 
+                    has_entry('target', has_entry('min_length', is_(0))))
+        assert_that(schema, 
+                    has_entry('section', has_entry('min_length', is_(0))))
         assert_that(schema, has_entry('visibility',
                                       has_entries('base_type', 'string',
                                                   'type', 'Choice',
@@ -80,11 +80,12 @@ class TestJsonSchema(unittest.TestCase):
         schema = schema[FIELDS]
         assert_that(schema, has_length(7))
         for field in ('href', 'icon'):
-            assert_that(schema, has_entry(field, has_entry('type', 'Variant')))
-            assert_that(
-                schema, has_entry(field, has_entry('name', is_(field))))
-            assert_that(
-                schema, has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
+            assert_that(schema, 
+                        has_entry(field, has_entry('type', 'Variant')))
+            assert_that(schema, 
+                        has_entry(field, has_entry('name', is_(field))))
+            assert_that(schema,
+                        has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
 
     def test_slide(self):
         a = NTISlide()
@@ -92,17 +93,19 @@ class TestJsonSchema(unittest.TestCase):
         assert_that(schema, has_key(FIELDS))
         schema = schema[FIELDS]
         assert_that(schema, has_length(7))
-        assert_that(
-            schema, has_entry('slideimage', has_entry('type', 'Variant')))
-        assert_that(schema, has_entry('slidenumber', has_entry('type', 'int')))
-        assert_that(
-            schema, has_entry('slidenumber', has_entry('base_type', 'int')))
-        assert_that(
-            schema, has_entry('slidevideostart', has_entry('type', 'Number')))
-        assert_that(
-            schema, has_entry('slidevideostart', has_entry('base_type', 'float')))
-        assert_that(schema, has_entry(
-            'slideimage', has_entry('base_type', [u'string', 'namedfile'])))
+        assert_that(schema, 
+                    has_entry('slideimage', has_entry('type', 'Variant')))
+        assert_that(schema, 
+                    has_entry('slidenumber', has_entry('type', 'int')))
+        assert_that(schema, 
+                    has_entry('slidenumber', has_entry('base_type', 'int')))
+        assert_that(schema, 
+                    has_entry('slidevideostart', has_entry('type', 'Number')))
+        assert_that(schema, 
+                    has_entry('slidevideostart', has_entry('base_type', 'float')))
+        assert_that(schema,
+                    has_entry('slideimage', 
+                              has_entry('base_type', [u'string', 'namedfile'])))
 
     def test_slidevideo(self):
         a = NTISlideVideo()
@@ -118,11 +121,14 @@ class TestJsonSchema(unittest.TestCase):
         fields = schema[FIELDS]
         assert_that(fields, has_length(7))
         assert_that(fields, has_entry('Slides', has_entry('type', 'List')))
-        assert_that(fields, has_entry(
-            'Slides', has_entry('base_type', 'application/vnd.nextthought.slide')))
-        assert_that(fields, has_entry('Videos', has_entry('type', 'List')))
-        assert_that(fields, has_entry(
-            'Videos', has_entry('base_type', 'application/vnd.nextthought.ntislidevideo')))
+        assert_that(fields, 
+                    has_entry('Slides',
+                              has_entry('base_type', 'application/vnd.nextthought.slide')))
+        assert_that(fields, 
+                    has_entry('Videos', has_entry('type', 'List')))
+        assert_that(fields, 
+                    has_entry('Videos', 
+                              has_entry('base_type', 'application/vnd.nextthought.ntislidevideo')))
 
         assert_that(schema, has_key(ACCEPTS))
         accepts = schema[ACCEPTS]
@@ -146,8 +152,8 @@ class TestJsonSchema(unittest.TestCase):
         assert_that(schema, has_key(FIELDS))
         schema = schema[FIELDS]
         assert_that(schema, has_length(5))
-        assert_that(
-            schema, has_entry('target', has_entry('min_length', is_(0))))
+        assert_that(schema, 
+                    has_entry('target', has_entry('min_length', is_(0))))
         assert_that(schema, has_entry('visibility',
                                       has_entries('base_type', 'string',
                                                   'choices', has_length(greater_than_or_equal_to(2)))))
@@ -171,8 +177,9 @@ class TestJsonSchema(unittest.TestCase):
         assert_that(schema, has_key(FIELDS))
         fields = schema[FIELDS]
         assert_that(fields, has_length(2))
-        assert_that(fields, has_entry('Items', has_entry('base_type',
-                                                         u'application/vnd.nextthought.ntivideoref')))
+        assert_that(fields, has_entry('Items',
+                                       has_entry('base_type',
+                                                 u'application/vnd.nextthought.ntivideoref')))
         assert_that(schema, has_key(ACCEPTS))
         accepts = schema[ACCEPTS]
         assert_that(accepts, has_length(1))
@@ -183,8 +190,8 @@ class TestJsonSchema(unittest.TestCase):
         assert_that(schema, has_key(FIELDS))
         fields = schema[FIELDS]
         assert_that(fields, has_length(4))
-        assert_that(
-            fields, has_entry('Items', has_entry('base_type', has_length(17))))
+        assert_that(fields, 
+                    has_entry('Items', has_entry('base_type', has_length(17))))
         assert_that(schema, has_key(ACCEPTS))
         accepts = schema[ACCEPTS]
         assert_that(accepts, has_length(17))
@@ -195,8 +202,10 @@ class TestJsonSchema(unittest.TestCase):
         assert_that(schema, has_key(FIELDS))
         fields = schema[FIELDS]
         assert_that(fields, has_length(7))
-        assert_that(fields, has_entry('Items', has_entry('base_type',
-                                                         'application/vnd.nextthought.nticourseoverviewgroup')))
+        assert_that(fields, 
+                    has_entry('Items', 
+                              has_entry('base_type',
+                                        'application/vnd.nextthought.nticourseoverviewgroup')))
         assert_that(schema, has_key(ACCEPTS))
         accepts = schema[ACCEPTS]
         assert_that(accepts, has_length(1))
@@ -215,8 +224,9 @@ class TestJsonSchema(unittest.TestCase):
                                       has_entries('base_type', 'string',
                                                   'choices', has_length(5),
                                                   'type', 'List')))
-        assert_that(fields, has_entry(
-            'thumbnail', has_entry('base_type', [u'string', 'namedfile'])))
+        assert_that(fields, 
+                    has_entry('thumbnail', 
+                              has_entry('base_type', [u'string', 'namedfile'])))
 
     def test_video(self):
         a = NTIVideo()

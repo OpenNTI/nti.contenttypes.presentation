@@ -21,8 +21,8 @@ from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
 from nti.externalization.externalization import to_external_object
 
-
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
+
 
 class TestCommon(unittest.TestCase):
 
@@ -30,8 +30,8 @@ class TestCommon(unittest.TestCase):
 
     def test_generate_ntiid(self):
         ntiid = generate_ntiid('FOO', now=datetime.fromtimestamp(1000))
-        assert_that(ntiid, starts_with(
-            'tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'))
+        assert_that(ntiid,
+                    starts_with('tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'))
 
     def test_related_work_ref_externalizes(self):
 
