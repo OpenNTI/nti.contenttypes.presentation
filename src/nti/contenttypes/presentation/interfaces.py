@@ -947,3 +947,48 @@ zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
     "Import from INTIRelatedWorkRef instead",
     INTIRelatedWork='nnti.contenttypes.presentation.interfaces:INTIRelatedWorkRef')
+
+
+# catalog
+
+
+class IContainedTypeAdapter(interface.Interface):
+    """
+    Adapts contained objects to their str type.
+    """
+    type = interface.Attribute("type string")
+
+
+class INamespaceAdapter(interface.Interface):
+    """
+    Adapts contained objects to their str namespace.
+    """
+    namespace = interface.Attribute("namespace string")
+
+
+class INTIIDAdapter(interface.Interface):
+    """
+    Adapts contained objects to their str NTIID.
+    """
+    ntiid = interface.Attribute("NTIID string")
+
+
+class IContainersAdapter(interface.Interface):
+    """
+    Adapts contained objects to their str containers NTIIDs.
+    """
+    containers = interface.Attribute("NTIID strings")
+
+
+class ISlideDeckAdapter(interface.Interface):
+    """
+    Adapts contained objects to their video NTIIDs
+    """
+    videos = interface.Attribute("NTIID strings")
+
+
+class ITargetAdapter(interface.Interface):
+    """
+    Adapts contained objects to their target type.
+    """
+    target = interface.Attribute("NTIID string")
