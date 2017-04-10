@@ -17,12 +17,12 @@ from datetime import datetime
 
 from nti.contenttypes.presentation.common import generate_ntiid
 
-from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
-
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
 from nti.externalization.externalization import to_external_object
 
+
+from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
 class TestCommon(unittest.TestCase):
 
