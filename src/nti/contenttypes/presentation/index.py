@@ -26,6 +26,7 @@ import BTrees
 
 from nti.base._compat import integer_types
 
+from nti.contenttypes.presentation.interfaces import ISiteAdapter
 from nti.contenttypes.presentation.interfaces import INTIIDAdapter
 from nti.contenttypes.presentation.interfaces import ITargetAdapter
 from nti.contenttypes.presentation.interfaces import INamespaceAdapter
@@ -34,10 +35,6 @@ from nti.contenttypes.presentation.interfaces import IContainersAdapter
 from nti.contenttypes.presentation.interfaces import IContainedTypeAdapter
 
 from nti.externalization.proxy import removeAllProxies
-
-from nti.site.interfaces import IHostPolicyFolder
-
-from nti.traversal.traversal import find_interface
 
 from nti.zodb.containers import bit64_int_to_time
 from nti.zodb.containers import time_to_64bit_int
@@ -137,22 +134,9 @@ class RetainSetIndex(AttributeSetIndex):
             super(RetainSetIndex, self).unindex_doc(doc_id)
 
 
-class ValidatingSiteName(object):
-
-    __slots__ = (b'site',)
-
-    def __init__(self, obj, default=None):
-        folder = find_interface(obj, IHostPolicyFolder, strict=False)
-        if folder is not None:
-            self.site = folder.__name__
-
-    def __reduce__(self):
-        raise TypeError()
-
-
 class SiteIndex(ValueIndex):
     default_field_name = 'site'
-    default_interface = ValidatingSiteName
+    default_interface = ISiteAdapter
 
 
 class TypeIndex(ValueIndex):

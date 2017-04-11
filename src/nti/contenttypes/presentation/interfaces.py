@@ -952,6 +952,13 @@ zope.deferredimport.deprecated(
 # catalog
 
 
+class ISiteAdapter(interface.Interface):
+    """
+    Adapts contained objects to their site.
+    """
+    site = interface.Attribute("site string")
+    
+
 class IContainedTypeAdapter(interface.Interface):
     """
     Adapts contained objects to their str type.
