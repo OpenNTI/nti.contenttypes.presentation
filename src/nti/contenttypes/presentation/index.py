@@ -310,6 +310,10 @@ class AssetsLibraryCatalog(Catalog):
         return result
 
 
+def get_assets_catalog():
+    return component.queryUtility(ICatalog, name=ASSETS_CATALOG_INDEX_NAME)
+
+
 def create_assets_library_catalog(catalog=None, family=None):
     catalog = AssetsLibraryCatalog() if catalog is None else catalog
     for name, clazz in ((IX_SITE, SiteIndex),
