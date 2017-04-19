@@ -363,7 +363,7 @@ class IAssetTitleDescribed(IAssetTitled, IDCDescriptiveProperties):
     title = copy(IAssetTitled['title'])
     title.default = u''
     description = ValidTextLine(title="Media description",
-                                required=False, 
+                                required=False,
                                 default=u'')
 
 
@@ -957,7 +957,7 @@ class ISiteAdapter(interface.Interface):
     Adapts contained objects to their site.
     """
     site = interface.Attribute("site string")
-    
+
 
 class IContainedTypeAdapter(interface.Interface):
     """
@@ -999,3 +999,14 @@ class ITargetAdapter(interface.Interface):
     Adapts contained objects to their target type.
     """
     target = interface.Attribute("NTIID string")
+
+
+class IUserAssetVisibilityUtility(interface.Interface):
+    """
+    Determines if the user has access to the given asset and
+    course context.
+    """
+    def is_item_visible(self, item, user=None, course=None):
+        """
+        :return: a bool if the item is visible to the user.
+        """
