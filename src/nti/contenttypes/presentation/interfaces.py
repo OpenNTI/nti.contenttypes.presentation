@@ -946,7 +946,7 @@ import zope.deferredimport
 zope.deferredimport.initialize()
 zope.deferredimport.deprecated(
     "Import from INTIRelatedWorkRef instead",
-    INTIRelatedWork='nnti.contenttypes.presentation.interfaces:INTIRelatedWorkRef')
+    INTIRelatedWork='nti.contenttypes.presentation.interfaces:INTIRelatedWorkRef')
 
 
 # catalog
