@@ -57,7 +57,7 @@ MIMETYPE = StandardExternalFields.MIMETYPE
 
 
 def prepare_json_text(s):
-    result = unicode(s, 'utf-8') if isinstance(s, bytes) else s
+    result = s.decode('utf-8') if isinstance(s, bytes) else s
     return result
 
 
