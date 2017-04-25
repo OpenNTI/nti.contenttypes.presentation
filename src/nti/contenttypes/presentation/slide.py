@@ -15,6 +15,7 @@ from functools import total_ordering
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
+from zope.cachedescriptors.property import CachedProperty
 
 from persistent.list import PersistentList
 
@@ -34,7 +35,6 @@ from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
 
 from nti.property.property import alias
-from nti.property.property import CachedProperty
 
 from nti.schema.eqhash import EqHash
 
