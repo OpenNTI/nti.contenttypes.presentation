@@ -13,6 +13,7 @@ from functools import total_ordering
 
 from zope import interface
 
+from zope.cachedescriptors.property import Lazy
 from zope.cachedescriptors.property import readproperty
 
 from zope.mimetype.interfaces import IContentTypeAware
@@ -48,7 +49,6 @@ from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
 
-from nti.property.property import Lazy
 from nti.property.property import alias
 
 from nti.ntiids.ntiids import get_parts
