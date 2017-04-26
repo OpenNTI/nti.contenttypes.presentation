@@ -47,14 +47,14 @@ from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstr
 
 from nti.coremetadata.interfaces import SYSTEM_USER_ID
 
-from nti.coremetadata.mixins import CalendarPublishableMixin
-
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
 from nti.ntiids.ntiids import get_parts
 from nti.ntiids.ntiids import make_ntiid
 
 from nti.property.property import alias
+
+from nti.publishing.mixins import CalendarPublishableMixin
 
 from nti.recorder.mixins import RecordableContainerMixin
 
