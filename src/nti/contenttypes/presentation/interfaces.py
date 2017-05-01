@@ -38,13 +38,13 @@ from dolmen.builtins.interfaces import IIterable
 
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ICreated
+from nti.base.interfaces import INamedFile
 from nti.base.interfaces import ILastModified
 
 from nti.contenttypes.presentation.schema import VisibilityField
 
 from nti.coremetadata.interfaces import IObjectJsonSchemaMaker
 
-from nti.namedfile.interfaces import INamedFile
 from nti.namedfile.interfaces import IFileConstrained
 
 from nti.ntiids.schema import ValidNTIID
