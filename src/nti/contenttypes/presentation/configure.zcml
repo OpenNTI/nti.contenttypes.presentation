@@ -11,6 +11,7 @@
 
 	<include package="nti.mimetype" />
 	<include package="nti.publishing" />
+	<include package="nti.namedfile" file="configure_named.zcml" />
 	
 	<!-- Adapters -->
 	<adapter factory=".adapters.ntivideo_to_ntivideoref"
