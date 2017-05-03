@@ -110,8 +110,7 @@ class _AssetUpdater(InterfaceObjectIO):
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
         self.fixAll(parsed)
-        result = super(_AssetUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_AssetUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         return result
 
 
@@ -133,8 +132,7 @@ class _NTIMediaUpdater(_AssetUpdater):
         return parsed
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTIMediaUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_NTIMediaUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self,
                            getattr(self._ext_self, 'transcripts', None))
         return result
@@ -164,8 +162,8 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
         return self
 
     def fixAll(self, parsed):
-        self.parseSources(parsed).parseTranscripts(
-            parsed).fixCloseCaption(parsed).fixCreator(parsed)
+        self.parseSources(parsed).parseTranscripts(parsed) \
+            .fixCloseCaption(parsed).fixCreator(parsed)
         return parsed
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -197,8 +195,7 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
         return parsed
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTIAudioUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_NTIAudioUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self, 
                            getattr(self._ext_self, 'sources', None))
         return result
@@ -315,8 +312,7 @@ class _NTISlideDeckUpdater(_AssetUpdater):
         return self.parseSlides(parsed).parseVideos(parsed)
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTISlideDeckUpdater, self).updateFromExternalObject(
-            parsed, *args, **kwargs)
+        result = super(_NTISlideDeckUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self, self._ext_self.Slides)
         self.takeOwnership(self._ext_self, self._ext_self.Videos)
         return result
@@ -378,8 +374,7 @@ class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
         if not target:
             self.popTargets(parsed)
         # complete
-        return super(_NTIDiscussionRefUpdater, 
-                     self).fixTarget(parsed, transfer=transfer)
+        return super(_NTIDiscussionRefUpdater, self).fixTarget(parsed, transfer=transfer)
 
     def fixAll(self, parsed):
         self.fixTarget(parsed, transfer=True)
@@ -406,8 +401,7 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
         self.fixAll(parsed)
-        result = super(_NTIAssignmentRefUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_NTIAssignmentRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         return result
 
 
@@ -491,8 +485,7 @@ class _NTICourseOverviewSpacerUpdater(_AssetUpdater):
     _ext_iface_upper_bound = INTICourseOverviewSpacer
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTICourseOverviewSpacerUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_NTICourseOverviewSpacerUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         assert self._ext_replacement().ntiid, "No NTIID provided"
         return result
 
@@ -509,8 +502,7 @@ class _NTIMediaRollUpdater(_AssetUpdater):
         return super(_NTIMediaRollUpdater, self).fixAll(parsed)
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTIMediaRollUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_NTIMediaRollUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self, self._ext_self)
         return result
 
@@ -540,8 +532,7 @@ class _NTICourseOverviewGroupUpdater(_AssetUpdater):
         return self.fixCreator(parsed)
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTICourseOverviewGroupUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_NTICourseOverviewGroupUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self, self._ext_self)
         assert self._ext_self.ntiid, "No NTIID provided"
         return result
@@ -572,8 +563,7 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
         return self.fixCreator(parsed)
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTILessonOverviewUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_NTILessonOverviewUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self, self._ext_self)
         return result
 
@@ -670,8 +660,8 @@ def is_relatedwork_ref(x):
         ntiid = x.get('ntiid') or x.get(
             NTIID) if isinstance(x, Mapping) else None
         if      ntiid \
-                and (   '.relatedworkref.' in ntiid
-                      or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
+                and (  '.relatedworkref.' in ntiid
+                     or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
             result = True
     elif mimeType in RELATED_WORK_REF_MIMETYES:
         result = True
@@ -769,8 +759,7 @@ class _LessonPublicationConstraintsUpdater(InterfaceObjectIO):
     _ext_iface_upper_bound = ILessonPublicationConstraints
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_LessonPublicationConstraintsUpdater,
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_LessonPublicationConstraintsUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         items = parsed.get(ITEMS)
         for ext_obj in items or ():
             if isinstance(ext_obj, Mapping):
