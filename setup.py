@@ -40,7 +40,7 @@ setup(
     ],
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    namespace_packages=['nti'],
+    namespace_packages=['nti', 'nti.contenttypes'],
     tests_require=TESTS_REQUIRE,
     install_requires=[
         'setuptools',
