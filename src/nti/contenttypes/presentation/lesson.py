@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -26,9 +26,9 @@ from zope.mimetype.interfaces import IContentTypeAware
 
 from ZODB.interfaces import IConnection
 
-from zc.dict import OrderedDict
-
 from persistent.list import PersistentList
+
+from nti.containers.dicts import OrderedDict
 
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
 from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_SPACER
@@ -63,11 +63,11 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 
 @interface.implementer(INTICourseOverviewSpacer)
-class NTICourseOverViewSpacer(PersistentPresentationAsset): # not recordable
+class NTICourseOverViewSpacer(PersistentPresentationAsset):  # not recordable
     createDirectFieldProperties(INTICourseOverviewSpacer)
 
-    __external_class_name__ = u"CourseOverviewSpacer"
-    mime_type = mimeType = u"application/vnd.nextthought.nticourseoverviewspacer"
+    __external_class_name__ = "CourseOverviewSpacer"
+    mime_type = mimeType = "application/vnd.nextthought.nticourseoverviewspacer"
 
     @readproperty
     def ntiid(self):
@@ -83,8 +83,8 @@ class NTILessonOverView(CalendarPublishableMixin,
                         RecordablePresentationAsset):
     createDirectFieldProperties(INTILessonOverview)
 
-    __external_class_name__ = u"LessonOverView"
-    mime_type = mimeType = u"application/vnd.nextthought.ntilessonoverview"
+    __external_class_name__ = "LessonOverView"
+    mime_type = mimeType = "application/vnd.nextthought.ntilessonoverview"
 
     items = alias('Items')
 
@@ -171,8 +171,8 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 
     parameters = {}  # IContentTypeAware
 
-    __external_class_name__ = u"LessonPublicationConstraints"
-    mime_type = mimeType = u"application/vnd.nextthought.lesson.publicationconstraints"
+    __external_class_name__ = "LessonPublicationConstraints"
+    mime_type = mimeType = "application/vnd.nextthought.lesson.publicationconstraints"
 
     def _get_key(self):
         count = len(self)
@@ -252,14 +252,15 @@ class LessonCompletionConstraint(PersistentCreatedModDateTrackingObject,
 class AssignmentCompletionConstraint(LessonCompletionConstraint):
     createDirectFieldProperties(IAssignmentCompletionConstraint)
 
-    mime_type = mimeType = u"application/vnd.nextthought.lesson.assignmentcompletionconstraint"
+    mime_type = mimeType = "application/vnd.nextthought.lesson.assignmentcompletionconstraint"
 
 
 @interface.implementer(ISurveyCompletionConstraint)
 class SurveyCompletionConstraint(LessonCompletionConstraint):
     createDirectFieldProperties(ISurveyCompletionConstraint)
 
-    mime_type = mimeType = u"application/vnd.nextthought.lesson.surveycompletionconstraint"
+    mime_type = mimeType = "application/vnd.nextthought.lesson.surveycompletionconstraint"
+
 
 import zope.deferredimport
 zope.deferredimport.initialize()
