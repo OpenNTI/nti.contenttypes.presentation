@@ -758,7 +758,11 @@ class ILessonPublicationConstraints(IMapping,
         """
         Add the specified contraints to this container
         """
-
+    
+    def clear():
+        """
+        Remove all contraints
+        """
 
 class ILessonPublicationConstraint(ICreated, ILastModified):
     """
