@@ -20,7 +20,9 @@ from zope.cachedescriptors.property import readproperty
 
 from zope.container.contained import Contained
 
-from zope.location.location import locate
+from zope.container.ordered import OrderedContainer
+
+from zope.deprecation import deprecated
 
 from zope.mimetype.interfaces import IContentTypeAware
 
@@ -164,10 +166,16 @@ class NTILessonOverView(CalendarPublishableMixin,
             return NotImplemented
 
 
-@component.adapter(INTILessonOverview, IContentTypeAware)
-@interface.implementer(ILessonPublicationConstraints)
+deprecated("LessonPublicationConstraints", "use new storage")
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
                                    OrderedDict):
+    pass
+
+
+@component.adapter(INTILessonOverview, IContentTypeAware)
+@interface.implementer(ILessonPublicationConstraints)
+class LessonConstraintContainer(PersistentCreatedModDateTrackingObject,
+                                OrderedContainer):
 
     parameters = {}  # IContentTypeAware
 
@@ -184,12 +192,11 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 
     def __setitem__(self, key, value):
         key = self._get_key()
-        locate(value, self, key)
-        OrderedDict.__setitem__(self, key, value)
+        OrderedContainer.__setitem__(self, key, value)
         self.updateLastMod()
 
     def __delitem__(self, key):
-        OrderedDict.__delitem__(self, key)
+        OrderedContainer.__delitem__(self, key)
         self.updateLastMod()
 
     def append(self, item):
@@ -204,19 +211,20 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
         return list(self.values())
 
 
+CONSTRAINT_ANNOTATION_KEY = 'LessonPublicationConstraints'
+        
 @component.adapter(INTILessonOverview)
 @interface.implementer(ILessonPublicationConstraints)
 def constraints_for_lesson(lesson, create=True):
     constraints = None
     annotations = IAnnotations(lesson)
     try:
-        KEY = 'LessonPublicationConstraints'
-        constraints = annotations[KEY]
+        constraints = annotations[CONSTRAINT_ANNOTATION_KEY]
     except KeyError:
         if create:
-            constraints = LessonPublicationConstraints()
-            annotations[KEY] = constraints
-            constraints.__name__ = KEY
+            constraints = LessonConstraintContainer()
+            annotations[CONSTRAINT_ANNOTATION_KEY] = constraints
+            constraints.__name__ = CONSTRAINT_ANNOTATION_KEY
             constraints.__parent__ = lesson
             connection = IConnection(lesson, None)
             if connection is not None:

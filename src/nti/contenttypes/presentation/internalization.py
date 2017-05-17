@@ -749,6 +749,7 @@ def internalization_lessonoverview_pre_hook(k, x):
             if items is not None:
                 internalization_courseoverview_pre_hook(ITEMS, items)
 
+
 # lesson constraints
 
 
