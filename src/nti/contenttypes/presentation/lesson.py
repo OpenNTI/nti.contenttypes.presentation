@@ -206,6 +206,10 @@ class LessonConstraintContainer(PersistentCreatedModDateTrackingObject,
         for item in items or ():
             self.append(item)
 
+    def clear(self):
+        for key in list(self.keys()):
+            del self[key]
+
     @property
     def Items(self):
         return list(self.values())
