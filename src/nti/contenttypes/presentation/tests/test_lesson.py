@@ -23,6 +23,7 @@ import unittest
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
 
+from nti.contenttypes.presentation.lesson import NTILessonOverView
 from nti.contenttypes.presentation.lesson import LessonConstraintContainer
 from nti.contenttypes.presentation.lesson import AssignmentCompletionConstraint
 
@@ -42,17 +43,17 @@ class TestLesson(unittest.TestCase):
 
     def test_constraints(self):
         constraints = LessonConstraintContainer()
-        assert_that(constraints, 
+        assert_that(constraints,
                     validly_provides(ILessonPublicationConstraints))
-        assert_that(constraints, 
+        assert_that(constraints,
                     verifiably_provides(ILessonPublicationConstraints))
 
     def test_assignment_completion_constraint(self):
         constraint = AssignmentCompletionConstraint(assignments=[self.ntiid])
-        assert_that(
-            constraint, validly_provides(IAssignmentCompletionConstraint))
-        assert_that(
-            constraint, verifiably_provides(IAssignmentCompletionConstraint))
+        assert_that(constraint,
+                    validly_provides(IAssignmentCompletionConstraint))
+        assert_that(constraint,
+                    verifiably_provides(IAssignmentCompletionConstraint))
 
     def test_io(self):
         constraints = LessonConstraintContainer()
@@ -73,5 +74,16 @@ class TestLesson(unittest.TestCase):
         assert_that(new_constraints, has_property('Items', has_length(1)))
         new_constraint = new_constraints.Items[0]
         assert_that(new_constraint, has_property('__name__', is_not(none())))
-        assert_that(new_constraint, 
+        assert_that(new_constraint,
                     has_property('assignments', is_(["tag:nextthought.com,2011-10:OU-NAQ-BIO"])))
+
+    def test_adapter(self):
+        lesson = NTILessonOverView()
+        lesson.ntiid = u"tag:nextthought.com,2011-10:OU-NTILessonOverview-BIO"
+        constraints = ILessonPublicationConstraints(lesson, None)
+        assert_that(constraints, is_not(none()))
+        constraint = AssignmentCompletionConstraint(assignments=[self.ntiid])
+        constraints.append(constraint)
+        assert_that(constraints, has_length(1))
+        assert_that(constraint,
+                    has_property('ntiid', is_("tag:nextthought.com,2011-10:OU-NTILessonCompletionConstraint-BIO.0")))

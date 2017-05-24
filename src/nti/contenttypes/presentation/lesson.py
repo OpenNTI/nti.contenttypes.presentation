@@ -63,6 +63,8 @@ from nti.recorder.mixins import RecordableContainerMixin
 from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
+from nti.traversal.traversal import find_interface
+
 
 @interface.implementer(INTICourseOverviewSpacer)
 class NTICourseOverViewSpacer(PersistentPresentationAsset):  # not recordable
@@ -246,7 +248,7 @@ class LessonCompletionConstraint(PersistentCreatedModDateTrackingObject,
 
     @readproperty
     def ntiid(self):
-        lesson = getattr(self.__parent__, '__parent__', None)
+        lesson = find_interface(self, INTILessonOverview, strict=False)
         base_ntiid = getattr(lesson, 'ntiid', None)
         if base_ntiid and self.__name__:
             parts = get_parts(base_ntiid)
