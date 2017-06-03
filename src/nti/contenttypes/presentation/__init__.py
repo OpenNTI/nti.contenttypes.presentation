@@ -157,50 +157,51 @@ NTI_LESSON_COMPLETION_CONSTRAINT = u'NTILessonCompletionConstraint'
 
 PUBLICATION_CONSTRAINTS = u'PublicationConstraints'
 
-SLIDE_MIMETYES = ('application/vnd.nextthought.slide',)
-SLIDE_DECK_MIMETYES = ('application/vnd.nextthought.ntislidedeck',)
-SLIDE_VIDEO_MIMETYES = ('application/vnd.nextthought.ntislidevideo',)
-SLIDE_DECK_REF_MIMETYES = ('application/vnd.nextthought.ntislideckref',)
+SLIDE_MIME_TYPES = ('application/vnd.nextthought.slide',)
+SLIDE_DECK_MIME_TYPES = ('application/vnd.nextthought.ntislidedeck',)
+SLIDE_VIDEO_MIME_TYPES = ('application/vnd.nextthought.ntislidevideo',)
+SLIDE_DECK_REF_MIME_TYPES = ('application/vnd.nextthought.ntislideckref',)
 
-TIMELINE_MIMETYES = ('application/vnd.nextthought.ntitimeline', 
+TIMELINE_MIME_TYPES = ('application/vnd.nextthought.ntitimeline',
                      'application/vnd.nextthought.timeline')
-TIMELINE_REF_MIMETYES = ('application/vnd.nextthought.ntitimelineref',)
+TIMELINE_REF_MIME_TYPES = ('application/vnd.nextthought.ntitimelineref',)
 
-AUDIO_MIMETYES = ('application/vnd.nextthought.ntiaudio',)
-VIDEO_MIMETYES = ('application/vnd.nextthought.ntivideo',)
-AUDIO_REF_MIMETYES = ('application/vnd.nextthought.ntiaudioref',)
-VIDEO_REF_MIMETYES = ('application/vnd.nextthought.ntivideoref',)
+AUDIO_MIME_TYPES = ('application/vnd.nextthought.ntiaudio',)
+VIDEO_MIME_TYPES = ('application/vnd.nextthought.ntivideo',)
+AUDIO_REF_MIME_TYPES = ('application/vnd.nextthought.ntiaudioref',)
+VIDEO_REF_MIME_TYPES = ('application/vnd.nextthought.ntivideoref',)
 
-RELATED_WORK_REF_MIMETYES = ('application/vnd.nextthought.relatedworkref',)
-RELATED_WORK_REF_POINTER_MIMETYES = ('application/vnd.nextthought.relatedworkrefpointer',)
+RELATED_WORK_REF_MIME_TYPES = ('application/vnd.nextthought.relatedworkref',)
+RELATED_WORK_REF_POINTER_MIME_TYPES = ('application/vnd.nextthought.relatedworkrefpointer',)
 
-LESSON_OVERVIEW_MIMETYES = ('application/vnd.nextthought.ntilessonoverview',)
-COURSE_OVERVIEW_GROUP_MIMETYES = ('application/vnd.nextthought.nticourseoverviewgroup',)
+LESSON_OVERVIEW_MIME_TYPES = ('application/vnd.nextthought.ntilessonoverview',)
+COURSE_OVERVIEW_GROUP_MIME_TYPES = ('application/vnd.nextthought.nticourseoverviewgroup',)
 
-AUDIO_ROLL_MIMETYES = ('application/vnd.nextthought.ntiaudioroll', 
-                       'application/vnd.nextthought.audioroll')
-VIDEO_ROLL_MIMETYES = ('application/vnd.nextthought.videoroll', 
-                       'application/vnd.nextthought.ntivideoroll')
-ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIMETYES + VIDEO_ROLL_MIMETYES
+AUDIO_ROLL_MIME_TYPES = ('application/vnd.nextthought.ntiaudioroll',
+                         'application/vnd.nextthought.audioroll')
+VIDEO_ROLL_MIME_TYPES = ('application/vnd.nextthought.videoroll',
+                         'application/vnd.nextthought.ntivideoroll')
+ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIME_TYPES + VIDEO_ROLL_MIME_TYPES
 
-POLL_REF_MIMETYES = ('application/vnd.nextthought.pollref',
-                    'application/vnd.nextthought.napoll')
-SURVEY_REF_MIMETYES = ('application/vnd.nextthought.surveyref', 
-                       'application/vnd.nextthought.surveyref')
-QUESTION_REF_MIMETYES = ('application/vnd.nextthought.questionref',
-                        'application/vnd.nextthought.naquestion')
-ASSIGNMENT_REF_MIMETYES = ('application/vnd.nextthought.assignmentref', 
-                           'application/vnd.nextthought.assignment')
-DISCUSSION_REF_MIMETYES = ('application/vnd.nextthought.discussionref', 
-                           'application/vnd.nextthought.discussion')
-QUESTIONSET_REF_MIMETYES = ('application/vnd.nextthought.questionsetref', 
-                            'application/vnd.nextthought.naquestionset')
+POLL_REF_MIME_TYPES = ('application/vnd.nextthought.pollref',
+                       'application/vnd.nextthought.napoll')
+SURVEY_REF_MIME_TYPES = ('application/vnd.nextthought.surveyref',
+                         'application/vnd.nextthought.surveyref')
+QUESTION_REF_MIME_TYPES = ('application/vnd.nextthought.questionref',
+                           'application/vnd.nextthought.naquestion')
+ASSIGNMENT_REF_MIME_TYPES = ('application/vnd.nextthought.assignmentref',
+                             'application/vnd.nextthought.assignment')
+DISCUSSION_REF_MIME_TYPES = ('application/vnd.nextthought.discussionref',
+                             'application/vnd.nextthought.discussion')
+QUESTIONSET_REF_MIME_TYPES = ('application/vnd.nextthought.questionsetref',
+                              'application/vnd.nextthought.naquestionset')
 
 ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef,
                         INTIVideoRef, INTIVideoRoll, INTIAudioRoll)
 
 MEDIA_REF_INTERFACES = (INTIAudioRef, INTIVideoRef)
 
+ALL_MIME_TYPES = None
 COURSE_CONTAINER_INTERFACES = None
 PACKAGE_CONTAINER_INTERFACES = None
 GROUP_OVERVIEWABLE_INTERFACES = None
@@ -216,11 +217,13 @@ iface_of_asset = interface_of_asset
 
 
 def _set_ifaces():
+    global ALL_MIME_TYPES
     global COURSE_CONTAINER_INTERFACES
     global PACKAGE_CONTAINER_INTERFACES
     global GROUP_OVERVIEWABLE_INTERFACES
     global ALL_PRESENTATION_ASSETS_INTERFACES
 
+    ALL_MIME_TYPES = set()
     COURSE_CONTAINER_INTERFACES = set()
     PACKAGE_CONTAINER_INTERFACES = set()
     GROUP_OVERVIEWABLE_INTERFACES = set()
@@ -237,7 +240,7 @@ def _set_ifaces():
                                            INTIMediaRoll, IConcreteAsset)
 
     def _package_item_predicate(item):
-        result = bool(    type(item) == interface.interface.InterfaceClass
+        result = bool(type(item) == interface.interface.InterfaceClass
                       and issubclass(item, IPackagePresentationAsset)
                       and item != IPackagePresentationAsset
                       and item not in (INTIMedia, INTIDocketAsset, IConcreteAsset))
@@ -251,14 +254,14 @@ def _set_ifaces():
         return result
 
     def _overview_item_predicate(item):
-        result = bool(    type(item) == interface.interface.InterfaceClass
+        result = bool(type(item) == interface.interface.InterfaceClass
                       and issubclass(item, IGroupOverViewable)
                       and item != IGroupOverViewable
                       and item not in NO_IMPL_REF_IFACES)
         return result
 
     def _presentationasset_item_predicate(item):
-        result = bool(    type(item) == interface.interface.InterfaceClass
+        result = bool(type(item) == interface.interface.InterfaceClass
                       and issubclass(item, IPresentationAsset)
                       and item != IPresentationAsset
                       and item != IUserCreatedAsset
@@ -284,8 +287,7 @@ def _set_ifaces():
     COURSE_CONTAINER_INTERFACES = tuple(COURSE_CONTAINER_INTERFACES)
     PACKAGE_CONTAINER_INTERFACES = tuple(PACKAGE_CONTAINER_INTERFACES)
     GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
-    ALL_PRESENTATION_ASSETS_INTERFACES = tuple(
-        ALL_PRESENTATION_ASSETS_INTERFACES)
+    ALL_PRESENTATION_ASSETS_INTERFACES = tuple(ALL_PRESENTATION_ASSETS_INTERFACES)
 
     # set ui settings
     for iSchema in ALL_PRESENTATION_ASSETS_INTERFACES:
@@ -293,6 +295,18 @@ def _set_ifaces():
             if IMethod.providedBy(v) or v.queryTaggedValue(TAG_HIDDEN_IN_UI) is not None:
                 continue
             iSchema[k].setTaggedValue(TAG_HIDDEN_IN_UI, True)
+
+    # capture all mime types
+    def _tuples_item_predicate(item):
+        return type(item) == tuple
+
+    frame = sys._getframe(1)
+    module = sys.modules[frame.f_globals['__name__']]
+    for name, item in inspect.getmembers(module, _tuples_item_predicate):
+        if name.endswith('MIME_TYPES'):
+            ALL_MIME_TYPES.update(str(x) for x in item)
+    ALL_MIME_TYPES = tuple(sorted(ALL_MIME_TYPES))
+
 
 _set_ifaces()
 del _set_ifaces

@@ -23,6 +23,7 @@ import unittest
 
 from zope import interface
 
+from nti.contenttypes.presentation import ALL_MIME_TYPES
 from nti.contenttypes.presentation import COURSE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import PACKAGE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
@@ -51,6 +52,10 @@ class TestModule(unittest.TestCase):
 
     layer = SharedConfiguringTestLayer
 
+    def test_mime_types(self):
+        assert_that(ALL_MIME_TYPES, is_not(none()))
+        assert_that(ALL_MIME_TYPES, has_length(30))
+        
     def test_ifaces(self):
         assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
         assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(17))

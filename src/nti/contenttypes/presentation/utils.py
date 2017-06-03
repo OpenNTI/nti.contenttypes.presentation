@@ -11,23 +11,23 @@ logger = __import__('logging').getLogger(__name__)
 
 from collections import Mapping
 
-from nti.contenttypes.presentation import AUDIO_MIMETYES
-from nti.contenttypes.presentation import VIDEO_MIMETYES
-from nti.contenttypes.presentation import POLL_REF_MIMETYES
-from nti.contenttypes.presentation import TIMELINE_MIMETYES
-from nti.contenttypes.presentation import AUDIO_REF_MIMETYES
-from nti.contenttypes.presentation import VIDEO_REF_MIMETYES
-from nti.contenttypes.presentation import SURVEY_REF_MIMETYES
-from nti.contenttypes.presentation import QUESTION_REF_MIMETYES
-from nti.contenttypes.presentation import TIMELINE_REF_MIMETYES
-from nti.contenttypes.presentation import ASSIGNMENT_REF_MIMETYES
-from nti.contenttypes.presentation import DISCUSSION_REF_MIMETYES
-from nti.contenttypes.presentation import SLIDE_DECK_REF_MIMETYES
-from nti.contenttypes.presentation import LESSON_OVERVIEW_MIMETYES
-from nti.contenttypes.presentation import QUESTIONSET_REF_MIMETYES
+from nti.contenttypes.presentation import AUDIO_MIME_TYPES
+from nti.contenttypes.presentation import VIDEO_MIME_TYPES
+from nti.contenttypes.presentation import POLL_REF_MIME_TYPES
+from nti.contenttypes.presentation import TIMELINE_MIME_TYPES
+from nti.contenttypes.presentation import AUDIO_REF_MIME_TYPES
+from nti.contenttypes.presentation import VIDEO_REF_MIME_TYPES
+from nti.contenttypes.presentation import SURVEY_REF_MIME_TYPES
+from nti.contenttypes.presentation import QUESTION_REF_MIME_TYPES
+from nti.contenttypes.presentation import TIMELINE_REF_MIME_TYPES
+from nti.contenttypes.presentation import ASSIGNMENT_REF_MIME_TYPES
+from nti.contenttypes.presentation import DISCUSSION_REF_MIME_TYPES
+from nti.contenttypes.presentation import SLIDE_DECK_REF_MIME_TYPES
+from nti.contenttypes.presentation import LESSON_OVERVIEW_MIME_TYPES
+from nti.contenttypes.presentation import QUESTIONSET_REF_MIME_TYPES
 from nti.contenttypes.presentation import ALL_MEDIA_ROLL_MIME_TYPES
-from nti.contenttypes.presentation import RELATED_WORK_REF_MIMETYES
-from nti.contenttypes.presentation import COURSE_OVERVIEW_GROUP_MIMETYES
+from nti.contenttypes.presentation import RELATED_WORK_REF_MIME_TYPES
+from nti.contenttypes.presentation import COURSE_OVERVIEW_GROUP_MIME_TYPES
 
 from nti.contenttypes.presentation.internalization import internalization_pollref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntiaudio_pre_hook
@@ -210,52 +210,52 @@ def create_lessonoverview_from_external(ext_obj, notify=True, _exec=True):
 
 def create_from_external(ext_obj, notify=True, _exec=True):
     mimeType = ext_obj.get('mimeType') or ext_obj.get(MIMETYPE)
-    if mimeType in LESSON_OVERVIEW_MIMETYES:
+    if mimeType in LESSON_OVERVIEW_MIME_TYPES:
         result = create_lessonoverview_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in COURSE_OVERVIEW_GROUP_MIMETYES:
+    elif mimeType in COURSE_OVERVIEW_GROUP_MIME_TYPES:
         result = create_courseoverview_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in TIMELINE_MIMETYES:
+    elif mimeType in TIMELINE_MIME_TYPES:
         result = create_timelime_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in TIMELINE_REF_MIMETYES:
+    elif mimeType in TIMELINE_REF_MIME_TYPES:
         result = create_timelineref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in RELATED_WORK_REF_MIMETYES:
+    elif mimeType in RELATED_WORK_REF_MIME_TYPES:
         result = create_relatedwork_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in DISCUSSION_REF_MIMETYES:
+    elif mimeType in DISCUSSION_REF_MIME_TYPES:
         result = create_discussionref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in POLL_REF_MIMETYES:
+    elif mimeType in POLL_REF_MIME_TYPES:
         result = create_pollref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in SURVEY_REF_MIMETYES:
+    elif mimeType in SURVEY_REF_MIME_TYPES:
         result = create_surveyref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in ASSIGNMENT_REF_MIMETYES:
+    elif mimeType in ASSIGNMENT_REF_MIME_TYPES:
         result = create_assignmentref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in QUESTIONSET_REF_MIMETYES:
+    elif mimeType in QUESTIONSET_REF_MIME_TYPES:
         result = create_questionsetref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in QUESTION_REF_MIMETYES:
+    elif mimeType in QUESTION_REF_MIME_TYPES:
         result = create_questionref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in SLIDE_DECK_REF_MIMETYES:
+    elif mimeType in SLIDE_DECK_REF_MIME_TYPES:
         result = create_slideckref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in VIDEO_REF_MIMETYES:
+    elif mimeType in VIDEO_REF_MIME_TYPES:
         result = create_ntivideoref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in AUDIO_REF_MIMETYES:
+    elif mimeType in AUDIO_REF_MIME_TYPES:
         result = create_ntiaudioref_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in VIDEO_MIMETYES:
+    elif mimeType in VIDEO_MIME_TYPES:
         result = create_ntivideo_from_external(
             ext_obj, notify=notify, _exec=_exec)
-    elif mimeType in AUDIO_MIMETYES:
+    elif mimeType in AUDIO_MIME_TYPES:
         result = create_ntiaudio_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in ALL_MEDIA_ROLL_MIME_TYPES:
@@ -273,37 +273,37 @@ def get_external_pre_hook(ext_obj):
     else:
         mimeType = str(ext_obj)
 
-    if mimeType in LESSON_OVERVIEW_MIMETYES:
+    if mimeType in LESSON_OVERVIEW_MIME_TYPES:
         result = internalization_lessonoverview_pre_hook
-    elif mimeType in COURSE_OVERVIEW_GROUP_MIMETYES:
+    elif mimeType in COURSE_OVERVIEW_GROUP_MIME_TYPES:
         result = internalization_courseoverview_pre_hook
-    elif mimeType in TIMELINE_MIMETYES:
+    elif mimeType in TIMELINE_MIME_TYPES:
         result = internalization_ntitimeline_pre_hook
-    elif mimeType in TIMELINE_REF_MIMETYES:
+    elif mimeType in TIMELINE_REF_MIME_TYPES:
         result = internalization_ntitimelineref_pre_hook
-    elif mimeType in RELATED_WORK_REF_MIMETYES:
+    elif mimeType in RELATED_WORK_REF_MIME_TYPES:
         result = internalization_relatedworkref_pre_hook
-    elif mimeType in SLIDE_DECK_REF_MIMETYES:
+    elif mimeType in SLIDE_DECK_REF_MIME_TYPES:
         result = internalization_slidedeckref_pre_hook
-    elif mimeType in DISCUSSION_REF_MIMETYES:
+    elif mimeType in DISCUSSION_REF_MIME_TYPES:
         result = internalization_discussionref_pre_hook
-    elif mimeType in POLL_REF_MIMETYES:
+    elif mimeType in POLL_REF_MIME_TYPES:
         result = internalization_pollref_pre_hook
-    elif mimeType in SURVEY_REF_MIMETYES:
+    elif mimeType in SURVEY_REF_MIME_TYPES:
         result = internalization_surveyref_pre_hook
-    elif mimeType in ASSIGNMENT_REF_MIMETYES:
+    elif mimeType in ASSIGNMENT_REF_MIME_TYPES:
         result = internalization_assignmentref_pre_hook
-    elif mimeType in QUESTIONSET_REF_MIMETYES:
+    elif mimeType in QUESTIONSET_REF_MIME_TYPES:
         result = internalization_questionsetref_pre_hook
-    elif mimeType in QUESTION_REF_MIMETYES:
+    elif mimeType in QUESTION_REF_MIME_TYPES:
         result = internalization_questionref_pre_hook
-    elif mimeType in VIDEO_REF_MIMETYES:
+    elif mimeType in VIDEO_REF_MIME_TYPES:
         result = internalization_ntivideoref_pre_hook
-    elif mimeType in AUDIO_REF_MIMETYES:
+    elif mimeType in AUDIO_REF_MIME_TYPES:
         result = internalization_ntiaudioref_pre_hook
-    elif mimeType in VIDEO_MIMETYES:
+    elif mimeType in VIDEO_MIME_TYPES:
         result = internalization_ntivideo_pre_hook
-    elif mimeType in AUDIO_MIMETYES:
+    elif mimeType in AUDIO_MIME_TYPES:
         result = internalization_ntiaudio_pre_hook
     elif mimeType in ALL_MEDIA_ROLL_MIME_TYPES:
         result = internalization_mediaroll_pre_hook

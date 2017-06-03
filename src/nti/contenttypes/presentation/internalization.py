@@ -23,14 +23,14 @@ from nti.contenttypes.presentation import TIMELINE
 from nti.contenttypes.presentation import RELATED_WORK
 from nti.contenttypes.presentation import JSON_TIMELINE
 from nti.contenttypes.presentation import RELATED_WORK_REF
-from nti.contenttypes.presentation import TIMELINE_MIMETYES
+from nti.contenttypes.presentation import TIMELINE_MIME_TYPES
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
-from nti.contenttypes.presentation import SLIDE_DECK_MIMETYES
-from nti.contenttypes.presentation import TIMELINE_REF_MIMETYES
-from nti.contenttypes.presentation import SLIDE_DECK_REF_MIMETYES
+from nti.contenttypes.presentation import SLIDE_DECK_MIME_TYPES
+from nti.contenttypes.presentation import TIMELINE_REF_MIME_TYPES
+from nti.contenttypes.presentation import SLIDE_DECK_REF_MIME_TYPES
 from nti.contenttypes.presentation import ALL_MEDIA_ROLL_MIME_TYPES
-from nti.contenttypes.presentation import RELATED_WORK_REF_MIMETYES
-from nti.contenttypes.presentation import RELATED_WORK_REF_POINTER_MIMETYES
+from nti.contenttypes.presentation import RELATED_WORK_REF_MIME_TYPES
+from nti.contenttypes.presentation import RELATED_WORK_REF_POINTER_MIME_TYPES
 
 from nti.contenttypes.presentation.discussion import is_nti_course_bundle
 
@@ -626,8 +626,8 @@ def internalization_discussionref_pre_hook(k, x):
 
 def internalization_slidedeckref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
-    if mimeType in SLIDE_DECK_MIMETYES:
-        x[MIMETYPE] = SLIDE_DECK_REF_MIMETYES[0]
+    if mimeType in SLIDE_DECK_MIME_TYPES:
+        x[MIMETYPE] = SLIDE_DECK_REF_MIME_TYPES[0]
 
 
 def is_time_line(x):
@@ -638,19 +638,19 @@ def is_time_line(x):
             NTIID) if isinstance(x, Mapping) else None
         if ntiid and (JSON_TIMELINE in ntiid or is_ntiid_of_type(ntiid, TIMELINE)):
             result = True
-    elif mimeType in TIMELINE_MIMETYES:
+    elif mimeType in TIMELINE_MIME_TYPES:
         result = True
     return result
 
 
 def internalization_ntitimeline_pre_hook(k, x):
     if is_time_line(x):
-        x[MIMETYPE] = TIMELINE_MIMETYES[0]
+        x[MIMETYPE] = TIMELINE_MIME_TYPES[0]
 
 
 def internalization_ntitimelineref_pre_hook(k, x):
     if is_time_line(x):
-        x[MIMETYPE] = TIMELINE_REF_MIMETYES[0]
+        x[MIMETYPE] = TIMELINE_REF_MIME_TYPES[0]
 
 
 def is_relatedwork_ref(x):
@@ -663,19 +663,19 @@ def is_relatedwork_ref(x):
                 and (  '.relatedworkref.' in ntiid
                      or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
             result = True
-    elif mimeType in RELATED_WORK_REF_MIMETYES:
+    elif mimeType in RELATED_WORK_REF_MIME_TYPES:
         result = True
     return result
 
 
 def internalization_relatedworkref_pre_hook(k, x):
     if is_relatedwork_ref(x):
-        x[MIMETYPE] = RELATED_WORK_REF_MIMETYES[0]
+        x[MIMETYPE] = RELATED_WORK_REF_MIME_TYPES[0]
 
 
 def internalization_relatedworkrefpointer_pre_hook(k, x):
     if is_relatedwork_ref(x):
-        x[MIMETYPE] = RELATED_WORK_REF_POINTER_MIMETYES[0]
+        x[MIMETYPE] = RELATED_WORK_REF_POINTER_MIME_TYPES[0]
 
 
 def internalization_mediaroll_pre_hook(k, x):
