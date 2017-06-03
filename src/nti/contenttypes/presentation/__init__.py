@@ -300,8 +300,7 @@ def _set_ifaces():
     def _tuples_item_predicate(item):
         return type(item) == tuple
 
-    frame = sys._getframe(1)
-    module = sys.modules[frame.f_globals['__name__']]
+    module = sys.modules[__name__]
     for name, item in inspect.getmembers(module, _tuples_item_predicate):
         if name.endswith('MIME_TYPES'):
             ALL_PRESENTATION_MIME_TYPES.update(str(x) for x in item)
