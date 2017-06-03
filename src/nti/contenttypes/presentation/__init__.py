@@ -201,7 +201,7 @@ ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef,
 
 MEDIA_REF_INTERFACES = (INTIAudioRef, INTIVideoRef)
 
-ALL_MIME_TYPES = None
+ALL_PRESENTATION_MIME_TYPES = None
 COURSE_CONTAINER_INTERFACES = None
 PACKAGE_CONTAINER_INTERFACES = None
 GROUP_OVERVIEWABLE_INTERFACES = None
@@ -217,13 +217,13 @@ iface_of_asset = interface_of_asset
 
 
 def _set_ifaces():
-    global ALL_MIME_TYPES
+    global ALL_PRESENTATION_MIME_TYPES
     global COURSE_CONTAINER_INTERFACES
     global PACKAGE_CONTAINER_INTERFACES
     global GROUP_OVERVIEWABLE_INTERFACES
     global ALL_PRESENTATION_ASSETS_INTERFACES
 
-    ALL_MIME_TYPES = set()
+    ALL_PRESENTATION_MIME_TYPES = set()
     COURSE_CONTAINER_INTERFACES = set()
     PACKAGE_CONTAINER_INTERFACES = set()
     GROUP_OVERVIEWABLE_INTERFACES = set()
@@ -304,8 +304,8 @@ def _set_ifaces():
     module = sys.modules[frame.f_globals['__name__']]
     for name, item in inspect.getmembers(module, _tuples_item_predicate):
         if name.endswith('MIME_TYPES'):
-            ALL_MIME_TYPES.update(str(x) for x in item)
-    ALL_MIME_TYPES = tuple(sorted(ALL_MIME_TYPES))
+            ALL_PRESENTATION_MIME_TYPES.update(str(x) for x in item)
+    ALL_PRESENTATION_MIME_TYPES = tuple(sorted(ALL_PRESENTATION_MIME_TYPES))
 
 
 _set_ifaces()
