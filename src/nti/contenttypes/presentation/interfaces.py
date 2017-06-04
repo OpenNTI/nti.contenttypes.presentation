@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -166,19 +166,19 @@ AUDIO_SOURCES_VOCABULARY = \
         [vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
 
 #: OU Visibility
-OU = "OU"
+OU = u"OU"
 
 #: Public Visibility
 PUBLIC = u'Public'
 
 #: Credit Visibility
-CREDIT = "ForCredit"
+CREDIT = u"ForCredit"
 
 #: Everyone Visibility
 EVERYONE = u'everyone'
 
 #: Purchased Visibility
-PURCHASED = "Purchased"
+PURCHASED = u"Purchased"
 
 
 def byline_schema_field(required=False):
@@ -311,14 +311,14 @@ class INTITranscript(ILastModified, IContained):
                                  required=False)
     lang = ValidTextLine(title=u"Transcript language",
                          required=True,
-                         default='en')
+                         default=u'en')
     type = Choice(vocabulary=TRANSCRIPT_MIMETYPE_VOCABULARY,
                   title=u'Transcript mimetype',
                   required=True,
                   default=VTT_TRANSCRIPT_MIMETYPE)
     purpose = ValidTextLine(title=u"Transcript purpose",
                             required=True,
-                            default='normal')
+                            default=u'normal')
 
 
 class INTIIDIdentifiable(interface.Interface):
@@ -352,6 +352,8 @@ class IVisible(interface.Interface):
 class INTIMediaRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
                    ICoursePresentationAsset, IVisible, IRecordable):
     target = ValidNTIID(title=u"Target NTIID", required=False)
+
+
 IMediaRef = INTIMediaRef  # BWC
 
 
@@ -462,6 +464,7 @@ class INTIAudio(INTIMedia):
                                   required=False,
                                   min_length=0)
 
+
 INTIAudio.setTaggedValue('_ext_jsonschema', u'audio')
 
 INTIAudio['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -486,6 +489,7 @@ class INTIMediaRoll(IItemAssetContainer, IGroupOverViewable, INTIIDIdentifiable,
         """
         remove the item at the specified index
         """
+
 INTIMediaRoll.setTaggedValue('_ext_jsonschema', u'mediaroll')
 
 
@@ -494,6 +498,8 @@ class INTIAudioRoll(INTIMediaRoll):
                             title=u"The audio sources",
                             required=False,
                             min_length=0)
+
+
 INTIAudioRoll.setTaggedValue('_ext_jsonschema', u'audioroll')
 
 
@@ -502,6 +508,8 @@ class INTIVideoRoll(INTIMediaRoll):
                             title=u"The audio sources",
                             required=False,
                             min_length=0)
+
+
 INTIVideoRoll.setTaggedValue('_ext_jsonschema', u'videoroll')
 
 
@@ -521,6 +529,7 @@ class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable,
     slidedeckid = ValidNTIID(title=u"Slide deck NTIID", required=False)
     thumbnail = href_schema_field(title=u"Slide video thumbnail",
                                   required=False)
+
 
 INTISlideVideo['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISlideVideo['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -549,6 +558,7 @@ class INTISlideDeck(IItemAssetContainer, INTIMedia):
                      required=False)
     Items.setTaggedValue('_ext_excluded_out', True)
 
+
 INTISlideDeck.setTaggedValue('_ext_jsonschema', u'slidedeck')
 
 INTISlideDeck['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -559,12 +569,16 @@ INTISlideDeck['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTISlideDeckRef(INTIMediaRef):
     target = ValidNTIID(title=u"Target NTIID", required=False)
+
+
 ISlideDeckRef = INTISlideDeckRef  # BWC
 
 
 class INTITimelineRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
                       ICoursePresentationAsset):
     target = ValidNTIID(title=u"Target NTIID", required=False)
+
+
 ITimelineRef = INTITimelineRef  # BWC
 
 
@@ -581,15 +595,16 @@ class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable,
                              default=u'')
     icon = href_schema_field(title=u"Icon href", required=False)
     target = ValidNTIID(title=u"Target NTIID", required=False)
-INTIDocketMixin = INTIDocketAsset
+INTIDocketMixin = INTIDocketAsset # BWC
 
 
 class INTITimeline(INTIDocketAsset, IGroupOverViewable,
                    IRecordable, IFileConstrained):
     description = ValidTextLine(title=u"Timeline description", required=False)
-    suggested_inline = Bool("Suggested inline flag",
+    suggested_inline = Bool(u"Suggested inline flag",
                             required=False,
                             default=False)
+
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 
@@ -640,14 +655,14 @@ class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
                         ICoursePresentationAsset):
     target = ValidNTIID(title=u"Target NTIID", required=True)
     label = ValidTextLine(title=u"The label", required=False, default=u'')
-IAssessmentRef = INTIAssessmentRef
+IAssessmentRef = INTIAssessmentRef # BWC
 
 INTIAssessmentRef['target'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 
 class INTIQuestionSetRef(INTIAssessmentRef):
     question_count = Int(title=u"Question count", required=False)
-IQuestionSetRef = INTIQuestionSetRef
+IQuestionSetRef = INTIQuestionSetRef # BWC
 
 INTIQuestionSetRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIQuestionSetRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -655,7 +670,7 @@ INTIQuestionSetRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIQuestionRef(INTIAssessmentRef):
     pass
-IQuestionRef = INTIQuestionRef
+IQuestionRef = INTIQuestionRef # BWC
 
 INTIQuestionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIQuestionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -663,7 +678,7 @@ INTIQuestionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIAssignmentRef(INTIAssessmentRef, IAssetTitled):
     containerId = ValidNTIID(title=u"Container NTIID", required=False)
-IAssignmentRef = INTIAssignment = INTIAssignmentRef
+IAssignmentRef = INTIAssignment = INTIAssignmentRef # BWC
 
 INTIAssignmentRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIAssignmentRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -677,7 +692,7 @@ class INTIInquiryRef(INTIAssessmentRef):
 
 class INTIPollRef(INTIInquiryRef):
     pass
-IPollRef = INTIPollRef
+IPollRef = INTIPollRef # BWC
 
 INTIPollRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIPollRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -686,7 +701,7 @@ INTIPollRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 class INTISurveyRef(INTIInquiryRef):
     containerId = ValidNTIID(title=u"Container NTIID", required=False)
     question_count = Int(title=u"Question count", required=False)
-ISurveyRef = INTISurveyRef
+ISurveyRef = INTISurveyRef # BWC
 
 INTISurveyRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -729,6 +744,7 @@ class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
         """
         remove the group at the specified index
         """
+
 INTILessonOverview.setTaggedValue('_ext_jsonschema', u'lesson')
 
 INTILessonOverview['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
@@ -742,7 +758,7 @@ class ILessonPublicationConstraints(IMapping,
     Defines a container for lesson publication constraints
     """
 
-    contains(str('.ILessonPublicationConstraint'))
+    contains('.ILessonPublicationConstraint')
     __setitem__.__doc__ = None
 
     Items = IndexedIterable(title=u"The contained constraint items",
@@ -758,11 +774,12 @@ class ILessonPublicationConstraints(IMapping,
         """
         Add the specified contraints to this container
         """
-    
+
     def clear():
         """
         Remove all contraints
         """
+
 
 class ILessonPublicationConstraint(ICreated, ILastModified):
     """
@@ -897,6 +914,7 @@ class IWillRemovePresentationAssetEvent(IObjectEvent):
 class WillRemovePresentationAssetEvent(ObjectEvent):
     pass
 
+
 #: Asset removed from item asset container
 TRX_ASSET_REMOVED_FROM_ITEM_ASSET_CONTAINER = u'assetremovedfromitemcontainer'
 
@@ -908,6 +926,7 @@ class IItemRemovedFromItemAssetContainerEvent(IObjectModifiedEvent):
 @interface.implementer(IItemRemovedFromItemAssetContainerEvent)
 class ItemRemovedFromItemAssetContainerEvent(ObjectModifiedEvent):
     pass
+
 
 #: Overview group moved recorder transaction type.
 TRX_OVERVIEW_GROUP_MOVE_TYPE = u'overviewgroupmoved'
@@ -928,6 +947,7 @@ class OverviewGroupMovedEvent(ObjectEvent):
         self.principal = principal
         self.old_parent_ntiid = old_parent_ntiid
 
+
 #: Asset moved recorder transaction type.
 TRX_ASSET_MOVE_TYPE = u'presentationassetmoved'
 
@@ -946,6 +966,7 @@ class PresentationAssetMovedEvent(ObjectEvent):
         self.index = index
         self.principal = principal
         self.old_parent_ntiid = old_parent_ntiid
+
 
 import zope.deferredimport
 zope.deferredimport.initialize()
@@ -1011,6 +1032,7 @@ class IUserAssetVisibilityUtility(interface.Interface):
     Determines if the user has access to the given asset and
     course context.
     """
+
     def is_item_visible(self, item, user=None, course=None):
         """
         :return: a bool if the item is visible to the user.
