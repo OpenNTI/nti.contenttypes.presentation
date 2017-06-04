@@ -54,7 +54,7 @@ class TestModule(unittest.TestCase):
 
     def test_mime_types(self):
         assert_that(ALL_PRESENTATION_MIME_TYPES, is_not(none()))
-        assert_that(ALL_PRESENTATION_MIME_TYPES, has_length(30))
+        assert_that(ALL_PRESENTATION_MIME_TYPES, has_length(31))
         
     def test_ifaces(self):
         assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
