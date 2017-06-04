@@ -155,7 +155,8 @@ NTI_LESSON_COMPLETION_CONSTRAINT = u'NTILessonCompletionConstraint'
 
 PUBLICATION_CONSTRAINTS = u'PublicationConstraints'
 
-SLIDE_MIME_TYPES = ('application/vnd.nextthought.slide',)
+SLIDE_MIME_TYPES = ('application/vnd.nextthought.slide', # legacy
+                    'application/vnd.nextthought.ntislide')
 SLIDE_DECK_MIME_TYPES = ('application/vnd.nextthought.ntislidedeck',)
 SLIDE_VIDEO_MIME_TYPES = ('application/vnd.nextthought.ntislidevideo',)
 SLIDE_DECK_REF_MIME_TYPES = ('application/vnd.nextthought.ntislideckref',)
