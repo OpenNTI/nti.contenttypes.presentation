@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -58,7 +58,7 @@ class TestJsonSchema(unittest.TestCase):
             assert_that(schema, 
                         has_entry(field, has_entry('name', is_(field))))
             assert_that(schema, 
-                        has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
+                        has_entry(field, has_entry('base_type', ['string', 'namedfile'])))
 
         assert_that(schema, 
                     has_entry('byline', has_entry('base_type', is_('string'))))
@@ -85,7 +85,7 @@ class TestJsonSchema(unittest.TestCase):
             assert_that(schema, 
                         has_entry(field, has_entry('name', is_(field))))
             assert_that(schema,
-                        has_entry(field, has_entry('base_type', [u'string', 'namedfile'])))
+                        has_entry(field, has_entry('base_type', ['string', 'namedfile'])))
 
     def test_slide(self):
         a = NTISlide()
@@ -105,7 +105,7 @@ class TestJsonSchema(unittest.TestCase):
                     has_entry('slidevideostart', has_entry('base_type', 'float')))
         assert_that(schema,
                     has_entry('slideimage', 
-                              has_entry('base_type', [u'string', 'namedfile'])))
+                              has_entry('base_type', ['string', 'namedfile'])))
 
     def test_slidevideo(self):
         a = NTISlideVideo()
@@ -144,7 +144,7 @@ class TestJsonSchema(unittest.TestCase):
         schema = schema[FIELDS]
         assert_that(schema, has_length(6))
         assert_that(
-            schema, has_entry('icon', has_entry('base_type', [u'string', 'namedfile'])))
+            schema, has_entry('icon', has_entry('base_type', ['string', 'namedfile'])))
 
     def test_videoref(self):
         a = NTIVideoRef()
@@ -165,8 +165,8 @@ class TestJsonSchema(unittest.TestCase):
         fields = schema[FIELDS]
         assert_that(fields, has_length(2))
         assert_that(fields, has_entry('Items', has_entry('base_type',
-                                                         [u'application/vnd.nextthought.ntiaudioref',
-                                                          u'application/vnd.nextthought.ntivideoref'])))
+                                                         ['application/vnd.nextthought.ntiaudioref',
+                                                          'application/vnd.nextthought.ntivideoref'])))
         assert_that(schema, has_key(ACCEPTS))
         accepts = schema[ACCEPTS]
         assert_that(accepts, has_length(2))
@@ -179,7 +179,7 @@ class TestJsonSchema(unittest.TestCase):
         assert_that(fields, has_length(2))
         assert_that(fields, has_entry('Items',
                                        has_entry('base_type',
-                                                 u'application/vnd.nextthought.ntivideoref')))
+                                                 'application/vnd.nextthought.ntivideoref')))
         assert_that(schema, has_key(ACCEPTS))
         accepts = schema[ACCEPTS]
         assert_that(accepts, has_length(1))
@@ -226,7 +226,7 @@ class TestJsonSchema(unittest.TestCase):
                                                   'type', 'List')))
         assert_that(fields, 
                     has_entry('thumbnail', 
-                              has_entry('base_type', [u'string', 'namedfile'])))
+                              has_entry('base_type', ['string', 'namedfile'])))
 
     def test_video(self):
         a = NTIVideo()

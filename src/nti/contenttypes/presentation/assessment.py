@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -21,13 +21,13 @@ from nti.contenttypes.presentation import NTI_QUESTION_REF
 from nti.contenttypes.presentation import NTI_ASSIGNMENT_REF
 from nti.contenttypes.presentation import NTI_QUESTION_SET_REF
 
-from nti.contenttypes.presentation._base import PersistentPresentationAsset
-
 from nti.contenttypes.presentation.interfaces import INTIPollRef
 from nti.contenttypes.presentation.interfaces import INTISurveyRef
 from nti.contenttypes.presentation.interfaces import INTIQuestionRef
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
+
+from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
 
 from nti.property.property import alias
 
@@ -37,7 +37,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 @total_ordering
 class NTIAssessmentRef(PersistentPresentationAsset):
 
-    nttype = 'NTIAssessmentRef'
+    nttype = u'NTIAssessmentRef'
     target_ntiid = alias('target')
 
     @readproperty
@@ -66,8 +66,8 @@ class NTIAssessmentRef(PersistentPresentationAsset):
 class NTIAssignmentRef(NTIAssessmentRef):
     createDirectFieldProperties(INTIAssignmentRef)
 
-    __external_class_name__ = u"AssignmentRef"
-    mime_type = mimeType = u"application/vnd.nextthought.assignmentref"
+    __external_class_name__ = "AssignmentRef"
+    mime_type = mimeType = "application/vnd.nextthought.assignmentref"
 
     nttype = NTI_ASSIGNMENT_REF
     ContainerId = alias('containerId')
@@ -89,8 +89,8 @@ class NTIAssignmentRef(NTIAssessmentRef):
 class NTIQuestionSetRef(NTIAssessmentRef):
     createDirectFieldProperties(INTIQuestionSetRef)
 
-    __external_class_name__ = u"QuestionSetRef"
-    mime_type = mimeType = u"application/vnd.nextthought.questionsetref"
+    __external_class_name__ = "QuestionSetRef"
+    mime_type = mimeType = "application/vnd.nextthought.questionsetref"
 
     nttype = NTI_QUESTION_SET_REF
 
@@ -99,8 +99,8 @@ class NTIQuestionSetRef(NTIAssessmentRef):
 class NTIQuestionRef(NTIAssessmentRef):
     createDirectFieldProperties(INTIQuestionRef)
 
-    __external_class_name__ = u"QuestionRef"
-    mime_type = mimeType = u"application/vnd.nextthought.questionref"
+    __external_class_name__ = "QuestionRef"
+    mime_type = mimeType = "application/vnd.nextthought.questionref"
 
     nttype = NTI_QUESTION_REF
 
@@ -109,8 +109,8 @@ class NTIQuestionRef(NTIAssessmentRef):
 class NTISurveyRef(NTIAssessmentRef):
     createDirectFieldProperties(INTISurveyRef)
 
-    __external_class_name__ = u"SurveyRef"
-    mime_type = mimeType = u"application/vnd.nextthought.surveyref"
+    __external_class_name__ = "SurveyRef"
+    mime_type = mimeType = "application/vnd.nextthought.surveyref"
 
     nttype = NTI_SURVEY_REF
     ContainerId = alias('containerId')
@@ -120,8 +120,8 @@ class NTISurveyRef(NTIAssessmentRef):
 class NTIPollRef(NTIAssessmentRef):
     createDirectFieldProperties(INTIPollRef)
 
-    __external_class_name__ = u"PollRef"
-    mime_type = mimeType = u"application/vnd.nextthought.pollref"
+    __external_class_name__ = "PollRef"
+    mime_type = mimeType = "application/vnd.nextthought.pollref"
 
     nttype = NTI_POLL_REF
 

@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -18,13 +18,14 @@ from zope.cachedescriptors.property import readproperty
 from persistent.list import PersistentList
 
 from nti.contenttypes.presentation import MessageFactory as _
-from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_GROUP
 
-from nti.contenttypes.presentation._base import RecordablePresentationAsset
+from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_GROUP
 
 from nti.contenttypes.presentation.interfaces import INTIMediaRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
+
+from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
 
 from nti.property.property import alias
 
@@ -35,9 +36,10 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 class DuplicateReference(ValueError):
 
+    msg =  _(u'Cannot have two equal refs in the same group')
+
     def __init__(self):
-        super(DuplicateReference, self).__init__(
-            _('Cannot have two equal refs in the same group'))
+        super(DuplicateReference, self).__init__(self.msg)
 
 
 @total_ordering
@@ -46,8 +48,8 @@ class NTICourseOverViewGroup(RecordablePresentationAsset,
                              RecordableContainerMixin):
     createDirectFieldProperties(INTICourseOverviewGroup)
 
-    __external_class_name__ = u"CourseOverviewGroup"
-    mime_type = mimeType = u"application/vnd.nextthought.nticourseoverviewgroup"
+    __external_class_name__ = "CourseOverviewGroup"
+    mime_type = mimeType = "application/vnd.nextthought.nticourseoverviewgroup"
 
     items = alias('Items')
     color = alias('accentColor')

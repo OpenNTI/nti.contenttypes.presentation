@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -59,9 +59,9 @@ class BaseJsonSchemafier(CoreJsonSchemafier):
 
     IGNORE_INTERFACES = CoreJsonSchemafier.IGNORE_INTERFACES + \
                         (IRecordable, IRecordableContainer)
-    
+
     def post_process_field(self, name, field, item_schema):
-        super(BaseJsonSchemafier, self).post_process_field(name, field, item_schema)
+        CoreJsonSchemafier.post_process_field(self, name, field, item_schema)
         if isinstance(field, VisibilityField):
             item_schema['type'] = 'Choice'
             item_schema['choices'] = sorted(get_visibility_options())
@@ -70,15 +70,13 @@ class BaseJsonSchemafier(CoreJsonSchemafier):
 class MediaSourceJsonSchemafier(BaseJsonSchemafier):
 
     def post_process_field(self, name, field, item_schema):
-        super(MediaSourceJsonSchemafier, self).post_process_field(name, field, item_schema)
-
+        BaseJsonSchemafier.post_process_field(self, name, field, item_schema)
         # handle type field
         if      name == 'type' \
             and IList.providedBy(field) \
             and IChoice.providedBy(field.value_type):
             choices, _ = self.get_data_from_choice_field(field.value_type)
             item_schema['choices'] = sorted(choices)
-
         # handle source field
         if      name == 'source' \
             and IList.providedBy(field) \
@@ -108,8 +106,7 @@ class ItemContainerJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
     ref_interfaces = ()
 
     def make_schema(self, schema=IPresentationAsset, user=None):
-        result = super(ItemContainerJsonSchemaMaker, self).make_schema(
-            schema, user=user)
+        result = PresentationAssetJsonSchemaMaker.make_schema(self, schema, user)
         accepts = result[ACCEPTS] = {}
         for iface in self.ref_interfaces:
             mimeType = iface.getTaggedValue('_ext_mime_type')
@@ -117,8 +114,8 @@ class ItemContainerJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
         if self.has_items:
             fields = result[FIELDS]
             base_types = sorted(accepts.keys())
-            fields[ITEMS]['base_type'] = base_types if len(
-                base_types) > 1 else base_types[0]
+            base_type = base_types if len(base_types) > 1 else base_types[0]
+            fields[ITEMS]['base_type'] = base_type
         return result
 
 
@@ -129,9 +126,7 @@ class SlideDeckJsonSchemaMaker(ItemContainerJsonSchemaMaker):
     ref_interfaces = (INTISlide, INTISlideVideo)
 
     def make_schema(self, schema=INTISlideDeck, user=None):
-        result = super(SlideDeckJsonSchemaMaker, self).make_schema(
-            INTISlideDeck, user=user)
-        return result
+        return ItemContainerJsonSchemaMaker.make_schema(self, INTISlideDeck, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -140,9 +135,7 @@ class AudioSourceJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
     maker = MediaSourceJsonSchemafier
 
     def make_schema(self, schema=INTIAudioSource, user=None):
-        result = super(AudioSourceJsonSchemaMaker, self).make_schema(
-            INTIAudioSource, user=user)
-        return result
+        return PresentationAssetJsonSchemaMaker.make_schema(self, INTIAudioSource, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -151,9 +144,7 @@ class VideoSourceJsonSchemaMaker(PresentationAssetJsonSchemaMaker):
     maker = MediaSourceJsonSchemafier
 
     def make_schema(self, schema=INTIVideoSource, user=None):
-        result = super(VideoSourceJsonSchemaMaker, self).make_schema(
-            INTIVideoSource, user=user)
-        return result
+        return PresentationAssetJsonSchemaMaker.make_schema(self, INTIVideoSource, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -163,9 +154,7 @@ class VideoJsonSchemaMaker(ItemContainerJsonSchemaMaker):
     ref_interfaces = (INTITranscript, INTIVideoSource)
 
     def make_schema(self, schema=INTIVideo, user=None):
-        result = super(VideoJsonSchemaMaker, self).make_schema(
-            INTIVideo, user=user)
-        return result
+        return ItemContainerJsonSchemaMaker.make_schema(self, INTIVideo, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -175,9 +164,7 @@ class AudioJsonSchemaMaker(ItemContainerJsonSchemaMaker):
     ref_interfaces = (INTITranscript, INTIAudioSource)
 
     def make_schema(self, schema=INTIAudio, user=None):
-        result = super(AudioJsonSchemaMaker, self).make_schema(
-            INTIAudio, user=user)
-        return result
+        return ItemContainerJsonSchemaMaker.make_schema(self, INTIAudio, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -186,9 +173,7 @@ class MediaRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
     ref_interfaces = MEDIA_REF_INTERFACES
 
     def make_schema(self, schema=INTIMediaRoll, user=None):
-        result = super(MediaRollJsonSchemaMaker, self).make_schema(
-            INTIMediaRoll, user=user)
-        return result
+        return ItemContainerJsonSchemaMaker.make_schema(self, INTIMediaRoll, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -197,9 +182,7 @@ class VideoRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
     ref_interfaces = (INTIVideoRef,)
 
     def make_schema(self, schema=INTIVideoRoll, user=None):
-        result = super(VideoRollJsonSchemaMaker, self).make_schema(
-            INTIVideoRoll, user=user)
-        return result
+        return ItemContainerJsonSchemaMaker.make_schema(self, INTIVideoRoll, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -208,9 +191,7 @@ class AudioRollJsonSchemaMaker(ItemContainerJsonSchemaMaker):
     ref_interfaces = (INTIAudioRef,)
 
     def make_schema(self, schema=INTIAudioRoll, user=None):
-        result = super(AudioRollJsonSchemaMaker, self).make_schema(
-            INTIAudioRoll, user=user)
-        return result
+        return ItemContainerJsonSchemaMaker.make_schema(self, INTIAudioRoll, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -219,9 +200,7 @@ class CourseOverviewGroupJsonSchemaMaker(ItemContainerJsonSchemaMaker):
     ref_interfaces = GROUP_OVERVIEWABLE_INTERFACES
 
     def make_schema(self, schema=INTICourseOverviewGroup, user=None):
-        result = super(CourseOverviewGroupJsonSchemaMaker, self).make_schema(
-            INTICourseOverviewGroup, user=user)
-        return result
+        return ItemContainerJsonSchemaMaker.make_schema(self, INTICourseOverviewGroup, user)
 
 
 @interface.implementer(IPresentationAssetJsonSchemaMaker)
@@ -230,6 +209,4 @@ class LessonOverviewJsonSchemaMaker(ItemContainerJsonSchemaMaker):
     ref_interfaces = (INTICourseOverviewGroup,)
 
     def make_schema(self, schema=INTILessonOverview, user=None):
-        result = super(LessonOverviewJsonSchemaMaker, self).make_schema(
-            INTILessonOverview, user=user)
-        return result
+        return ItemContainerJsonSchemaMaker.make_schema(self, INTILessonOverview, user)

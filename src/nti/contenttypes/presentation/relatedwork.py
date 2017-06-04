@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -18,11 +18,11 @@ from zope.cachedescriptors.property import readproperty
 from nti.contenttypes.presentation import NTI_RELATED_WORK_REF
 from nti.contenttypes.presentation import NTI_RELATED_WORK_REF_POINTER
 
-from nti.contenttypes.presentation._base import PersistentPresentationAsset
-from nti.contenttypes.presentation._base import RecordablePresentationAsset
-
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
+
+from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
+from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
 
 from nti.property.property import alias
 
@@ -36,8 +36,8 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 class NTIRelatedWorkRef(RecordablePresentationAsset):
     createDirectFieldProperties(INTIRelatedWorkRef)
 
-    __external_class_name__ = u"RelatedWork"
-    mime_type = mimeType = u'application/vnd.nextthought.relatedworkref'
+    __external_class_name__ = "RelatedWork"
+    mime_type = mimeType = 'application/vnd.nextthought.relatedworkref'
 
     target = None
 
@@ -74,8 +74,8 @@ class NTIRelatedWorkRef(RecordablePresentationAsset):
 class NTIRelatedWorkRefPointer(PersistentPresentationAsset):  # not recordable
     createDirectFieldProperties(INTIRelatedWorkRefPointer)
 
-    __external_class_name__ = u"RelatedWorkRefPointer"
-    mime_type = mimeType = u'application/vnd.nextthought.relatedworkrefpointer'
+    __external_class_name__ = "RelatedWorkRefPointer"
+    mime_type = mimeType = 'application/vnd.nextthought.relatedworkrefpointer'
 
     __name__ = alias('ntiid')
 
@@ -83,6 +83,7 @@ class NTIRelatedWorkRefPointer(PersistentPresentationAsset):  # not recordable
     def ntiid(self):
         self.ntiid = self.generate_ntiid(NTI_RELATED_WORK_REF_POINTER)
         return self.ntiid
+
 
 import zope.deferredimport
 zope.deferredimport.initialize()

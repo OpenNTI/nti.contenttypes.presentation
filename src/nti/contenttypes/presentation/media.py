@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -30,9 +30,6 @@ from nti.contenttypes.presentation import NTI_TRANSCRIPT
 from nti.contenttypes.presentation import NTI_AUDIO_SOURCE
 from nti.contenttypes.presentation import NTI_VIDEO_SOURCE
 
-from nti.contenttypes.presentation._base import PersistentMixin
-from nti.contenttypes.presentation._base import RecordablePresentationAsset
-
 from nti.contenttypes.presentation.common import make_schema
 
 from nti.contenttypes.presentation.interfaces import EVERYONE
@@ -48,6 +45,9 @@ from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
+
+from nti.contenttypes.presentation.mixin import PersistentMixin
+from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
 
 from nti.property.property import alias
 
@@ -93,8 +93,8 @@ def compute_part_ntiid(part, nttype, field):
 class NTITranscript(PersistentMixin):
     createDirectFieldProperties(INTITranscript)
 
-    __external_class_name__ = u"Transcript"
-    mime_type = mimeType = u'application/vnd.nextthought.ntitranscript'
+    __external_class_name__ = "Transcript"
+    mime_type = mimeType = 'application/vnd.nextthought.ntitranscript'
 
     @Lazy
     def ntiid(self):
@@ -109,8 +109,8 @@ class NTITranscript(PersistentMixin):
 class NTIAudioSource(PersistentMixin):
     createDirectFieldProperties(INTIAudioSource)
 
-    __external_class_name__ = u"VideoSource"
-    mime_type = mimeType = u'application/vnd.nextthought.ntiaudiosource'
+    __external_class_name__ = "VideoSource"
+    mime_type = mimeType = 'application/vnd.nextthought.ntiaudiosource'
 
     @Lazy
     def ntiid(self):
@@ -125,8 +125,8 @@ class NTIAudioSource(PersistentMixin):
 class NTIVideoSource(PersistentMixin):
     createDirectFieldProperties(INTIVideoSource)
 
-    __external_class_name__ = u"VideoSource"
-    mime_type = mimeType = u'application/vnd.nextthought.ntivideosource'
+    __external_class_name__ = "VideoSource"
+    mime_type = mimeType = 'application/vnd.nextthought.ntivideosource'
 
     @Lazy
     def ntiid(self):
@@ -142,12 +142,11 @@ class NTIVideoSource(PersistentMixin):
 class NTIMedia(RecordablePresentationAsset):
     createDirectFieldProperties(INTIMedia)
 
-    __external_class_name__ = u"Media"
-    mime_type = mimeType = u'application/vnd.nextthought.ntimedia'
+    __external_class_name__ = "Media"
+    mime_type = mimeType = 'application/vnd.nextthought.ntimedia'
 
+    nttype = u'NTIMedia'
     Creator = alias('creator')
-
-    nttype = 'NTIMedia'
 
     @readproperty
     def ntiid(self):
@@ -171,10 +170,10 @@ class NTIMedia(RecordablePresentationAsset):
 class NTIMediaRef(RecordablePresentationAsset):
     createDirectFieldProperties(INTIMediaRef)
 
-    __external_class_name__ = u"MediaRef"
-    mime_type = mimeType = u'application/vnd.nextthought.ntimediaref'
+    __external_class_name__ = "MediaRef"
+    mime_type = mimeType = 'application/vnd.nextthought.ntimediaref'
 
-    nttype = 'NTIMediaRef'
+    nttype = u'NTIMediaRef'
     visibility = EVERYONE
     Creator = alias('creator')
 
@@ -194,8 +193,8 @@ class NTIMediaRef(RecordablePresentationAsset):
 class NTIVideo(NTIMedia):
     createDirectFieldProperties(INTIVideo)
 
-    __external_class_name__ = u"Video"
-    mime_type = mimeType = u'application/vnd.nextthought.ntivideo'
+    __external_class_name__ = "Video"
+    mime_type = mimeType = 'application/vnd.nextthought.ntivideo'
 
     closedCaption = closedCaptions = alias('closed_caption')
 
@@ -212,8 +211,8 @@ class NTIVideo(NTIMedia):
 class NTIVideoRef(NTIMediaRef): # not recordable
     createDirectFieldProperties(INTIVideoRef)
 
-    __external_class_name__ = u"Video"
-    mime_type = mimeType = u'application/vnd.nextthought.ntivideoref'
+    __external_class_name__ = "Video"
+    mime_type = mimeType = 'application/vnd.nextthought.ntivideoref'
 
     nttype = NTI_VIDEO_REF
 
@@ -222,8 +221,8 @@ class NTIVideoRef(NTIMediaRef): # not recordable
 class NTIAudio(NTIMedia):
     createDirectFieldProperties(INTIAudio)
 
-    __external_class_name__ = u"Audio"
-    mime_type = mimeType = u'application/vnd.nextthought.ntiaudio'
+    __external_class_name__ = "Audio"
+    mime_type = mimeType = 'application/vnd.nextthought.ntiaudio'
 
     nttype = NTI_AUDIO
 
@@ -238,8 +237,8 @@ class NTIAudio(NTIMedia):
 class NTIAudioRef(NTIMediaRef): # not recordable
     createDirectFieldProperties(INTIAudioRef)
 
-    __external_class_name__ = u"Audio"
-    mime_type = mimeType = u'application/vnd.nextthought.ntiaudioref'
+    __external_class_name__ = "Audio"
+    mime_type = mimeType = 'application/vnd.nextthought.ntiaudioref'
 
     nttype = NTI_AUDIO_REF
 
@@ -248,8 +247,8 @@ class NTIAudioRef(NTIMediaRef): # not recordable
 class NTIMediaRoll(RecordablePresentationAsset):
     createDirectFieldProperties(INTIMediaRoll)
 
-    __external_class_name__ = u"MediaRoll"
-    mime_type = mimeType = u'application/vnd.nextthought.ntimediaroll'
+    __external_class_name__ = "MediaRoll"
+    mime_type = mimeType = 'application/vnd.nextthought.ntimediaroll'
 
     jsonschema = u'mediaroll'
 
@@ -325,8 +324,8 @@ class NTIAudioRoll(NTIMediaRoll):
     createDirectFieldProperties(INTIAudioRoll)
 
     nttype = NTI_AUDIO_ROLL
-    __external_class_name__ = u"AudioRoll"
-    mime_type = mimeType = u'application/vnd.nextthought.ntiaudioroll'
+    __external_class_name__ = "AudioRoll"
+    mime_type = mimeType = 'application/vnd.nextthought.ntiaudioroll'
 
     jsonschema = u'audioroll'
 
@@ -338,8 +337,8 @@ class NTIVideoRoll(NTIMediaRoll):
     nttype = NTI_VIDEO_ROLL
     # For legacy reasons, these are the classes need for IPAD
     # and mimetype needed for the webapp to match up.
-    __external_class_name__ = u"ContentVideoCollection"
-    mime_type = mimeType = u'application/vnd.nextthought.videoroll'
+    __external_class_name__ = "ContentVideoCollection"
+    mime_type = mimeType = 'application/vnd.nextthought.videoroll'
 
     jsonschema = u'videoroll'
 

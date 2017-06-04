@@ -23,6 +23,7 @@ from nti.base.interfaces import ICreated
 
 from nti.contenttypes.presentation.common import make_schema
 from nti.contenttypes.presentation.common import generate_ntiid
+
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject

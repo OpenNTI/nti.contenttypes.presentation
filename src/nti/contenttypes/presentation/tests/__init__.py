@@ -40,4 +40,5 @@ import unittest
 
 
 class ContentTypesMediaLayerTest(unittest.TestCase):
+
     layer = SharedConfiguringTestLayer

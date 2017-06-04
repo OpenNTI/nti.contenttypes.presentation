@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -18,11 +18,11 @@ from zope.cachedescriptors.property import readproperty
 from nti.contenttypes.presentation import NTI_TIMELINE
 from nti.contenttypes.presentation import NTI_TIMELIME_REF
 
-from nti.contenttypes.presentation._base import PersistentPresentationAsset
-from nti.contenttypes.presentation._base import RecordablePresentationAsset
-
 from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
+
+from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
+from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
 
 from nti.property.property import alias
 
@@ -36,8 +36,8 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 class NTITimeLine(RecordablePresentationAsset):
     createDirectFieldProperties(INTITimeline)
 
-    __external_class_name__ = u"Timeline"
-    mime_type = mimeType = u'application/vnd.nextthought.ntitimeline'
+    __external_class_name__ = "Timeline"
+    mime_type = mimeType = 'application/vnd.nextthought.ntitimeline'
 
     target = None
     desc = alias('description')
@@ -65,8 +65,8 @@ class NTITimeLine(RecordablePresentationAsset):
 class NTITimeLineRef(PersistentPresentationAsset): # not recordable
     createDirectFieldProperties(INTITimelineRef)
 
-    __external_class_name__ = u"TimelineRef"
-    mime_type = mimeType = u'application/vnd.nextthought.ntitimelineref'
+    __external_class_name__ = "TimelineRef"
+    mime_type = mimeType = 'application/vnd.nextthought.ntitimelineref'
 
     __name__ = alias('ntiid')
 

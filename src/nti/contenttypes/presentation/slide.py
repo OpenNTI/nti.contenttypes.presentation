@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -24,15 +24,15 @@ from nti.contenttypes.presentation import NTI_SLIDE_DECK
 from nti.contenttypes.presentation import NTI_SLIDE_VIDEO
 from nti.contenttypes.presentation import NTI_SLIDE_DECK_REF
 
-from nti.contenttypes.presentation._base import PersistentPresentationAsset
-from nti.contenttypes.presentation._base import RecordablePresentationAsset
-
 from nti.contenttypes.presentation.interfaces import EVERYONE
 
 from nti.contenttypes.presentation.interfaces import INTISlide
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
 from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
+
+from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
+from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
 
 from nti.property.property import alias
 
@@ -45,8 +45,8 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 class NTISlide(RecordablePresentationAsset):
     createDirectFieldProperties(INTISlide)
 
-    __external_class_name__ = u"Slide"
-    mime_type = mimeType = u'application/vnd.nextthought.slide'
+    __external_class_name__ = "Slide"
+    mime_type = mimeType = 'application/vnd.nextthought.slide'
 
     image = alias('slideimage')
     number = alias('slidenumber')
@@ -67,8 +67,8 @@ class NTISlide(RecordablePresentationAsset):
 class NTISlideVideo(RecordablePresentationAsset):
     createDirectFieldProperties(INTISlideVideo)
 
-    __external_class_name__ = u"NTISlideVideo"
-    mime_type = mimeType = u'application/vnd.nextthought.ntislidevideo'
+    __external_class_name__ = "NTISlideVideo"
+    mime_type = mimeType = 'application/vnd.nextthought.ntislidevideo'
 
     Creator = alias('creator')
     video = alias('video_ntiid')
@@ -87,8 +87,8 @@ class NTISlideVideo(RecordablePresentationAsset):
 class NTISlideDeck(RecordablePresentationAsset):
     createDirectFieldProperties(INTISlideDeck)
 
-    __external_class_name__ = u"NTISlideDeck"
-    mime_type = mimeType = u'application/vnd.nextthought.ntislidedeck'
+    __external_class_name__ = "NTISlideDeck"
+    mime_type = mimeType = 'application/vnd.nextthought.ntislidedeck'
 
     jsonschema = u'slidedeck'
 
@@ -159,8 +159,8 @@ class NTISlideDeck(RecordablePresentationAsset):
 class NTISlideDeckRef(PersistentPresentationAsset): # not recordable
     createDirectFieldProperties(INTISlideDeckRef)
 
-    __external_class_name__ = u"SlideDeckRef"
-    mime_type = mimeType = u'application/vnd.nextthought.ntislideckref'
+    __external_class_name__ = "SlideDeckRef"
+    mime_type = mimeType = 'application/vnd.nextthought.ntislideckref'
 
     __name__ = alias('ntiid')
 

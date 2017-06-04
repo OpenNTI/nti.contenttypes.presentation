@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -29,14 +29,14 @@ class TestCommon(unittest.TestCase):
     layer = SharedConfiguringTestLayer
 
     def test_generate_ntiid(self):
-        ntiid = generate_ntiid('FOO', now=datetime.fromtimestamp(1000))
+        ntiid = generate_ntiid(u'FOO', now=datetime.fromtimestamp(1000))
         assert_that(ntiid,
                     starts_with('tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'))
 
     def test_related_work_ref_externalizes(self):
 
         related_work_ref = NTIRelatedWorkRef()
-        related_work_ref.nti_requirements = 'requirement'
+        related_work_ref.nti_requirements = u'requirement'
 
         ext_obj = to_external_object(related_work_ref)
         assert_that(ext_obj, has_entry('nti_requirements', 'requirement'))

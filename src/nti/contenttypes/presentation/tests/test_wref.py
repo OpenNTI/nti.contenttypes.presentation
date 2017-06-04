@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -34,7 +34,7 @@ class TestWref(unittest.TestCase):
     def test_adapter(self, mock_call):
         for clazz in (NTICourseOverViewGroup, NTIRelatedWorkRef):
             asset = clazz()
-            asset.ntiid = 'tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'
+            asset.ntiid = u'tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'
             mock_call.is_callable().returns( asset )
             wref = IWeakRef(asset, None)
             assert_that(wref, is_not(none()))

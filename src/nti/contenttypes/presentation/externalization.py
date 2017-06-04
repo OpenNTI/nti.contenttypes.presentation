@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -64,10 +64,10 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
         return ('group',)
 
     def toExternalObject(self, *args, **kwargs):
-        result = super(_NTICourseOverviewGroupInternalObjectIO, self).toExternalObject(
-            *args, **kwargs)
+        result = super(_NTICourseOverviewGroupInternalObjectIO, self).toExternalObject(*args, **kwargs)
         result[ITEMS] = [
-            to_external_object(x, *args, **kwargs) for x in self._ext_self]
+            to_external_object(x, *args, **kwargs) for x in self._ext_self
+        ]
         return result
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
@@ -130,7 +130,7 @@ class _LessonPublicationConstraintsExternalizer(object):
                     self.context,
                     ILessonPublicationConstraints).toExternalObject(**kwargs)
         items = result[ITEMS] = []
-        for constraint in self.context.Items:
+        for constraint in self.context.Items or ():
             ext_obj = to_external_object(constraint, **kwargs)
             items.append(ext_obj)
         return result

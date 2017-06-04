@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -110,12 +110,10 @@ class RetainSetIndex(AttributeSetIndex):
             value = self.interface(value, None)
             if value is None:
                 return None
-
         value = getattr(value, self.field_name, None)
         if value is not None and self.field_callable:
             # do not eat the exception raised below
             value = value()
-
         # Do not unindex if value is None in order to
         # retain indexed values
         if value is not None:
@@ -310,11 +308,11 @@ class AssetsLibraryCatalog(Catalog):
         return result
 
 
-def get_assets_catalog():
+def get_assets_catalog(registry=component):
     return component.queryUtility(ICatalog, name=ASSETS_CATALOG_INDEX_NAME)
 
 
-def create_assets_library_catalog(catalog=None, family=None):
+def create_assets_library_catalog(catalog=None, family=BTrees.family64):
     catalog = AssetsLibraryCatalog() if catalog is None else catalog
     for name, clazz in ((IX_SITE, SiteIndex),
                         (IX_TYPE, TypeIndex),
@@ -332,18 +330,17 @@ def create_assets_library_catalog(catalog=None, family=None):
 def install_assets_library_catalog(site_manager_container, intids=None):
     lsm = site_manager_container.getSiteManager()
     intids = lsm.getUtility(IIntIds) if intids is None else intids
-    catalog = lsm.queryUtility(ICatalog, name=ASSETS_CATALOG_INDEX_NAME)
+    catalog = get_assets_catalog(lsm)
     if catalog is not None:
         return catalog
 
-    catalog = AssetsLibraryCatalog()
+    catalog = create_assets_library_catalog(family=intids.family)
     locate(catalog, site_manager_container, ASSETS_CATALOG_INDEX_NAME)
     intids.register(catalog)
     lsm.registerUtility(catalog, 
                         provided=ICatalog, 
                         name=ASSETS_CATALOG_INDEX_NAME)
 
-    catalog = create_assets_library_catalog(catalog=catalog, family=intids.family)
     for index in catalog.values():
         intids.register(index)
     return catalog

@@ -36,9 +36,6 @@ from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
 from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_SPACER
 from nti.contenttypes.presentation import NTI_LESSON_COMPLETION_CONSTRAINT
 
-from nti.contenttypes.presentation._base import PersistentPresentationAsset
-from nti.contenttypes.presentation._base import RecordablePresentationAsset
-
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
@@ -46,6 +43,9 @@ from nti.contenttypes.presentation.interfaces import ISurveyCompletionConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
+
+from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
+from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
 
 from nti.coremetadata.interfaces import SYSTEM_USER_ID
 

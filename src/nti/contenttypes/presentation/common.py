@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -31,7 +31,7 @@ from nti.ntiids.ntiids import make_specific_safe
 os.urandom(1)
 
 
-def generate_ntiid(nttype, provider='NTI', now=None):
+def generate_ntiid(nttype, provider=u'NTI', now=None):
     now = datetime.utcnow() if now is None else now
     dstr = now.strftime("%Y%m%d%H%M%S %f")
     rand = os.urandom(4).encode('hex').upper()

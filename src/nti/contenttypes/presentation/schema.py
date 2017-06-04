@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -14,9 +14,9 @@ from nti.schema.field import ValidTextLine
 
 class VisibilityField(ValidTextLine):
 
-    def __init__(self, *args, **kw):
-        kw.pop('default', None)  # don't validate on creation
-        super(VisibilityField, self).__init__(*args, **kw)
+    def __init__(self, *args, **kwargs):
+        kwargs.pop('default', None)  # don't validate on creation
+        super(VisibilityField, self).__init__(*args, **kwargs)
 
     @property
     def _options(self):
