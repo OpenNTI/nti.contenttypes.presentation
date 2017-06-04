@@ -624,7 +624,7 @@ def internalization_discussionref_pre_hook(k, x):
         x[MIMETYPE] = u"application/vnd.nextthought.discussionref"
 
 
-def internalization_slidedeckref_pre_hook(k, x):
+def internalization_ntislidedeckref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType in SLIDE_DECK_MIME_TYPES:
         x[MIMETYPE] = SLIDE_DECK_REF_MIME_TYPES[0]
@@ -693,7 +693,7 @@ def internalization_videoroll_pre_hook(k, x):
 internalization_audioroll_pre_hook = internalization_mediaroll_pre_hook
 
 
-def internalization_courseoverview_pre_hook(k, x):
+def internalization_nticourseoverviewgroup_pre_hook(k, x):
     if k == ITEMS and isinstance(x, MutableSequence):
         idx = 0
         while idx < len(x):
@@ -706,9 +706,9 @@ def internalization_courseoverview_pre_hook(k, x):
             internalization_ntiaudioref_pre_hook(None, item)
             internalization_ntivideoref_pre_hook(None, item)
             internalization_questionref_pre_hook(None, item)
-            internalization_slidedeckref_pre_hook(None, item)
             internalization_assignmentref_pre_hook(None, item)
             internalization_questionsetref_pre_hook(None, item)
+            internalization_ntislidedeckref_pre_hook(None, item)
 
             # do checks
             mimeType = item.get(MIMETYPE) if isinstance(
@@ -742,12 +742,12 @@ def internalization_courseoverview_pre_hook(k, x):
             idx += 1
 
 
-def internalization_lessonoverview_pre_hook(k, x):
+def internalization_ntilessonoverview_pre_hook(k, x):
     if k == ITEMS and isinstance(x, MutableSequence):
         for item in x:
             items = item.get(ITEMS) if isinstance(item, Mapping) else None
             if items is not None:
-                internalization_courseoverview_pre_hook(ITEMS, items)
+                internalization_nticourseoverviewgroup_pre_hook(ITEMS, items)
 
 
 # lesson constraints

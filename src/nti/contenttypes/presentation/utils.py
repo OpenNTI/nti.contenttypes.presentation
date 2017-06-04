@@ -38,14 +38,14 @@ from nti.contenttypes.presentation.internalization import internalization_ntiaud
 from nti.contenttypes.presentation.internalization import internalization_ntivideoref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntitimeline_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_questionref_pre_hook
-from nti.contenttypes.presentation.internalization import internalization_slidedeckref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_assignmentref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_discussionref_pre_hook
-from nti.contenttypes.presentation.internalization import internalization_courseoverview_pre_hook
-from nti.contenttypes.presentation.internalization import internalization_lessonoverview_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_questionsetref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_relatedworkref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntitimelineref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_ntislidedeckref_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_ntilessonoverview_pre_hook
+from nti.contenttypes.presentation.internalization import internalization_nticourseoverviewgroup_pre_hook
 
 from nti.externalization.interfaces import StandardExternalFields
 
@@ -71,8 +71,8 @@ def create_object_from_external(ext_obj, pre_hook=pre_hook, notify=True, _exec=T
         assert factory is not None, "Could not find factory for external object"
     # create and update
     result = factory()
-    update_from_external_object(
-        result, ext_obj, notify=notify, pre_hook=pre_hook)
+    update_from_external_object(result, ext_obj, 
+                                notify=notify, pre_hook=pre_hook)
     return result
 
 
@@ -152,9 +152,9 @@ def create_discussionref_from_external(ext_obj, notify=True, _exec=True):
     return result
 
 
-def create_slideckref_from_external(ext_obj, notify=True, _exec=True):
+def create_ntislideckref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
-                                         pre_hook=internalization_slidedeckref_pre_hook,
+                                         pre_hook=internalization_ntislidedeckref_pre_hook,
                                          _exec=_exec)
     return result
 
@@ -192,18 +192,18 @@ create_audioroll_from_external = create_mediaroll_from_external
 create_videoroll_from_external = create_mediaroll_from_external
 
 
-def create_courseoverview_from_external(ext_obj, notify=True, _exec=True):
+def create_nticourseoverviewgroup_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
                                          notify=notify,
-                                         pre_hook=internalization_courseoverview_pre_hook,
+                                         pre_hook=internalization_nticourseoverviewgroup_pre_hook,
                                          _exec=_exec)
     return result
 
 
-def create_lessonoverview_from_external(ext_obj, notify=True, _exec=True):
+def create_ntilessonoverview_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
                                          notify=notify,
-                                         pre_hook=internalization_lessonoverview_pre_hook,
+                                         pre_hook=internalization_ntilessonoverview_pre_hook,
                                          _exec=_exec)
     return result
 
@@ -211,10 +211,10 @@ def create_lessonoverview_from_external(ext_obj, notify=True, _exec=True):
 def create_from_external(ext_obj, notify=True, _exec=True):
     mimeType = ext_obj.get('mimeType') or ext_obj.get(MIMETYPE)
     if mimeType in LESSON_OVERVIEW_MIME_TYPES:
-        result = create_lessonoverview_from_external(
+        result = create_ntilessonoverview_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in COURSE_OVERVIEW_GROUP_MIME_TYPES:
-        result = create_courseoverview_from_external(
+        result = create_nticourseoverviewgroup_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in TIMELINE_MIME_TYPES:
         result = create_timelime_from_external(
@@ -244,7 +244,7 @@ def create_from_external(ext_obj, notify=True, _exec=True):
         result = create_questionref_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in SLIDE_DECK_REF_MIME_TYPES:
-        result = create_slideckref_from_external(
+        result = create_ntislideckref_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in VIDEO_REF_MIME_TYPES:
         result = create_ntivideoref_from_external(
@@ -274,9 +274,9 @@ def get_external_pre_hook(ext_obj):
         mimeType = str(ext_obj)
 
     if mimeType in LESSON_OVERVIEW_MIME_TYPES:
-        result = internalization_lessonoverview_pre_hook
+        result = internalization_ntilessonoverview_pre_hook
     elif mimeType in COURSE_OVERVIEW_GROUP_MIME_TYPES:
-        result = internalization_courseoverview_pre_hook
+        result = internalization_nticourseoverviewgroup_pre_hook
     elif mimeType in TIMELINE_MIME_TYPES:
         result = internalization_ntitimeline_pre_hook
     elif mimeType in TIMELINE_REF_MIME_TYPES:
@@ -284,7 +284,7 @@ def get_external_pre_hook(ext_obj):
     elif mimeType in RELATED_WORK_REF_MIME_TYPES:
         result = internalization_relatedworkref_pre_hook
     elif mimeType in SLIDE_DECK_REF_MIME_TYPES:
-        result = internalization_slidedeckref_pre_hook
+        result = internalization_ntislidedeckref_pre_hook
     elif mimeType in DISCUSSION_REF_MIME_TYPES:
         result = internalization_discussionref_pre_hook
     elif mimeType in POLL_REF_MIME_TYPES:

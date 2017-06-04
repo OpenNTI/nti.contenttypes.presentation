@@ -139,10 +139,8 @@ NTI_COURSE_BUNDLE = u'nti-course-bundle'
 NTI_COURSE_BUNDLE_TYPE = u'NTICourseBundle'
 NTI_COURSE_BUNDLE_REF = "%s://" % NTI_COURSE_BUNDLE
 
-DISCUSSION_REF_ENROLLED_COURSE_ROOT = DISCUSSION_REF + \
-    ':' + ENROLLED_COURSE_ROOT
-DISCUSSION_REF_ENROLLED_COURSE_SECTION = DISCUSSION_REF + \
-    ':' + ENROLLED_COURSE_SECTION
+DISCUSSION_REF_ENROLLED_COURSE_ROOT = DISCUSSION_REF + ':' + ENROLLED_COURSE_ROOT
+DISCUSSION_REF_ENROLLED_COURSE_SECTION = DISCUSSION_REF + ':' + ENROLLED_COURSE_SECTION
 
 COURSE_OVERVIEW_GROUP = u'CourseOverviewGroup'
 NTI_COURSE_OVERVIEW_GROUP = u'NTICourseOverviewGroup'
@@ -163,7 +161,7 @@ SLIDE_VIDEO_MIME_TYPES = ('application/vnd.nextthought.ntislidevideo',)
 SLIDE_DECK_REF_MIME_TYPES = ('application/vnd.nextthought.ntislideckref',)
 
 TIMELINE_MIME_TYPES = ('application/vnd.nextthought.ntitimeline',
-                     'application/vnd.nextthought.timeline')
+                       'application/vnd.nextthought.timeline')
 TIMELINE_REF_MIME_TYPES = ('application/vnd.nextthought.ntitimelineref',)
 
 AUDIO_MIME_TYPES = ('application/vnd.nextthought.ntiaudio',)
