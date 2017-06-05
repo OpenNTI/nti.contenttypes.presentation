@@ -152,7 +152,7 @@ def create_discussionref_from_external(ext_obj, notify=True, _exec=True):
     return result
 
 
-def create_ntislideckref_from_external(ext_obj, notify=True, _exec=True):
+def create_ntislidedeckref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
                                          pre_hook=internalization_ntislidedeckref_pre_hook,
                                          _exec=_exec)
@@ -244,7 +244,7 @@ def create_from_external(ext_obj, notify=True, _exec=True):
         result = create_questionref_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in SLIDE_DECK_REF_MIME_TYPES:
-        result = create_ntislideckref_from_external(
+        result = create_ntislidedeckref_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in VIDEO_REF_MIME_TYPES:
         result = create_ntivideoref_from_external(

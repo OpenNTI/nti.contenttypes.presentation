@@ -39,10 +39,7 @@ class TestUtils(unittest.TestCase):
 
     layer = SharedConfiguringTestLayer
 
-    def test_creators(self):
-        mod_name = 'nti.contenttypes.presentation.utils'
-        module = importlib.import_module(mod_name)
-
+    def mime_types(self):
         for data in (AUDIO_MIME_TYPES,
                      VIDEO_MIME_TYPES,
                      POLL_REF_MIME_TYPES,
@@ -61,7 +58,12 @@ class TestUtils(unittest.TestCase):
                      QUESTIONSET_REF_MIME_TYPES,
                      RELATED_WORK_REF_MIME_TYPES,
                      COURSE_OVERVIEW_GROUP_MIME_TYPES):
+            yield data
 
+    def test_creators(self):
+        mod_name = 'nti.contenttypes.presentation.utils'
+        module = importlib.import_module(mod_name)
+        for data in self.mime_types():
             found = False
             for mimeType in data:
                 s = mimeType[mimeType.rindex('.') + 1:]
@@ -69,4 +71,17 @@ class TestUtils(unittest.TestCase):
                 if func in module.__dict__:
                     found = True
                     break
-                assert_that(found, is_(True), data)
+            assert_that(found, is_(True), data)
+
+    def test_prehooks(self):
+        mod_name = 'nti.contenttypes.presentation.internalization'
+        module = importlib.import_module(mod_name)
+        for data in self.mime_types():
+            found = False
+            for mimeType in data:
+                s = mimeType[mimeType.rindex('.') + 1:]
+                func = 'internalization_%s_pre_hook' % s
+                if func in module.__dict__:
+                    found = True
+                    break
+            assert_that(found, is_(True), data)

@@ -159,7 +159,7 @@ SLIDE_MIME_TYPES = ('application/vnd.nextthought.slide', # legacy
                     'application/vnd.nextthought.ntislide')
 SLIDE_DECK_MIME_TYPES = ('application/vnd.nextthought.ntislidedeck',)
 SLIDE_VIDEO_MIME_TYPES = ('application/vnd.nextthought.ntislidevideo',)
-SLIDE_DECK_REF_MIME_TYPES = ('application/vnd.nextthought.ntislideckref',)
+SLIDE_DECK_REF_MIME_TYPES = ('application/vnd.nextthought.ntislidedeckref',)
 
 TIMELINE_MIME_TYPES = ('application/vnd.nextthought.ntitimeline',
                        'application/vnd.nextthought.timeline')

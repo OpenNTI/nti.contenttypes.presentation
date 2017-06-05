@@ -160,7 +160,7 @@ class NTISlideDeckRef(PersistentPresentationAsset): # not recordable
     createDirectFieldProperties(INTISlideDeckRef)
 
     __external_class_name__ = "SlideDeckRef"
-    mime_type = mimeType = 'application/vnd.nextthought.ntislideckref'
+    mime_type = mimeType = 'application/vnd.nextthought.ntislidedeckref'
 
     __name__ = alias('ntiid')
 
