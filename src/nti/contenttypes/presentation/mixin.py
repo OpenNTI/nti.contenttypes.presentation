@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -42,7 +42,7 @@ class PersistentMixin(SchemaConfigured,
                       PersistentCreatedModDateTrackingObject,
                       Contained):  # order matters
 
-    jsonschema = u''
+    jsonschema = ''
 
     def __init__(self, *args, **kwargs):
         SchemaConfigured.__init__(self, *args, **kwargs)
@@ -62,7 +62,7 @@ class PersistentPresentationAsset(PersistentMixin):
         return self.byline
 
     @classmethod
-    def generate_ntiid(cls, nttype, provider='NTI'):
+    def generate_ntiid(cls, nttype, provider=u'NTI'):
         return generate_ntiid(nttype, provider=provider)
 
     def __lt__(self, other):

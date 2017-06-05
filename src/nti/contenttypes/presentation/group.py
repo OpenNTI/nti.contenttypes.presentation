@@ -54,7 +54,7 @@ class NTICourseOverViewGroup(RecordablePresentationAsset,
     items = alias('Items')
     color = alias('accentColor')
 
-    jsonschema = u'overviewgroup'
+    jsonschema = 'overviewgroup'
 
     __name__ = alias('ntiid')
 

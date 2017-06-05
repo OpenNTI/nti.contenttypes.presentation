@@ -125,6 +125,7 @@ class NTIPollRef(NTIAssessmentRef):
 
     nttype = NTI_POLL_REF
 
+
 import zope.deferredimport
 zope.deferredimport.initialize()
 

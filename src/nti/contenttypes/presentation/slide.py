@@ -90,7 +90,7 @@ class NTISlideDeck(RecordablePresentationAsset):
     __external_class_name__ = "NTISlideDeck"
     mime_type = mimeType = 'application/vnd.nextthought.ntislidedeck'
 
-    jsonschema = u'slidedeck'
+    jsonschema = 'slidedeck'
 
     slides = alias('Slides')
     videos = alias('Videos')

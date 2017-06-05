@@ -184,8 +184,7 @@ ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIME_TYPES + VIDEO_ROLL_MIME_TYPES
 
 POLL_REF_MIME_TYPES = ('application/vnd.nextthought.pollref',
                        'application/vnd.nextthought.napoll')
-SURVEY_REF_MIME_TYPES = ('application/vnd.nextthought.surveyref',
-                         'application/vnd.nextthought.surveyref')
+SURVEY_REF_MIME_TYPES = ('application/vnd.nextthought.surveyref',)
 QUESTION_REF_MIME_TYPES = ('application/vnd.nextthought.questionref',
                            'application/vnd.nextthought.naquestion')
 ASSIGNMENT_REF_MIME_TYPES = ('application/vnd.nextthought.assignmentref',

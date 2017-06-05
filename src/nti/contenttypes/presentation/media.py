@@ -250,7 +250,7 @@ class NTIMediaRoll(RecordablePresentationAsset):
     __external_class_name__ = "MediaRoll"
     mime_type = mimeType = 'application/vnd.nextthought.ntimediaroll'
 
-    jsonschema = u'mediaroll'
+    jsonschema = 'mediaroll'
 
     items = alias('Items')
     Creator = alias('creator')
@@ -327,7 +327,7 @@ class NTIAudioRoll(NTIMediaRoll):
     __external_class_name__ = "AudioRoll"
     mime_type = mimeType = 'application/vnd.nextthought.ntiaudioroll'
 
-    jsonschema = u'audioroll'
+    jsonschema = 'audioroll'
 
 
 @interface.implementer(INTIVideoRoll)
@@ -340,7 +340,7 @@ class NTIVideoRoll(NTIMediaRoll):
     __external_class_name__ = "ContentVideoCollection"
     mime_type = mimeType = 'application/vnd.nextthought.videoroll'
 
-    jsonschema = u'videoroll'
+    jsonschema = 'videoroll'
 
 
 def media_to_mediaref(media):
