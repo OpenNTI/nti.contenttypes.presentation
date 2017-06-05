@@ -167,7 +167,7 @@ def create_relatedworkref_from_external(ext_obj, notify=True, _exec=True):
     return result
 
 
-def create_ntitimelime_from_external(ext_obj, notify=True, _exec=True):
+def create_ntitimeline_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
                                          notify=notify,
                                          pre_hook=internalization_ntitimeline_pre_hook,
@@ -217,7 +217,7 @@ def create_from_external(ext_obj, notify=True, _exec=True):
         result = create_nticourseoverviewgroup_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in TIMELINE_MIME_TYPES:
-        result = create_ntitimelime_from_external(
+        result = create_ntitimeline_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in TIMELINE_REF_MIME_TYPES:
         result = create_ntitimelineref_from_external(
