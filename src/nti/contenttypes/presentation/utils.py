@@ -159,7 +159,7 @@ def create_ntislideckref_from_external(ext_obj, notify=True, _exec=True):
     return result
 
 
-def create_relatedwork_from_external(ext_obj, notify=True, _exec=True):
+def create_relatedworkref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
                                          notify=notify,
                                          pre_hook=internalization_relatedworkref_pre_hook,
@@ -223,7 +223,7 @@ def create_from_external(ext_obj, notify=True, _exec=True):
         result = create_ntitimelineref_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in RELATED_WORK_REF_MIME_TYPES:
-        result = create_relatedwork_from_external(
+        result = create_relatedworkref_from_external(
             ext_obj, notify=notify, _exec=_exec)
     elif mimeType in DISCUSSION_REF_MIME_TYPES:
         result = create_discussionref_from_external(
