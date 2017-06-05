@@ -683,6 +683,8 @@ def internalization_mediaroll_pre_hook(k, x):
         for item in x:
             internalization_ntiaudioref_pre_hook(None, item)
             internalization_ntivideoref_pre_hook(None, item)
+internalization_videoroll_pre_hook = internalization_mediaroll_pre_hook
+internalization_ntiaudioroll_pre_hook = internalization_mediaroll_pre_hook
 
 
 def internalization_videoroll_pre_hook(k, x):
