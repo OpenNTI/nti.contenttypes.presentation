@@ -51,22 +51,22 @@ from nti.contenttypes.presentation.interfaces import IContentBackedPresentationA
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 
 #: Fields attribute
-FIELDS = 'Fields'
+FIELDS = u'Fields'
 
 #: Accepts attribute
-ACCEPTS = 'Accepts'
+ACCEPTS = u'Accepts'
 
 #: Audio Ref NTIID type
-NTI_AUDIO_REF = 'NTIAudioRef'
+NTI_AUDIO_REF = u'NTIAudioRef'
 
 #: Video Ref NTIID type
-NTI_VIDEO_REF = 'NTIVideoRef'
+NTI_VIDEO_REF = u'NTIVideoRef'
 
 #: Audio Roll NTIID type
-NTI_AUDIO_ROLL = 'NTIAudioRoll'
+NTI_AUDIO_ROLL = u'NTIAudioRoll'
 
 #: Video Roll NTIID type
-NTI_VIDEO_ROLL = 'NTIVideoRoll'
+NTI_VIDEO_ROLL = u'NTIVideoRoll'
 
 #: Audio NTIID type
 NTI_AUDIO = NTIAudio = u'NTIAudio'
@@ -84,19 +84,19 @@ NTI_AUDIO_SOURCE = u'NTIAudioSource'
 NTI_VIDEO_SOURCE = u'NTIVideoSource'
 
 #: Poll Ref NTIID type
-NTI_POLL_REF = 'NTIPollRef'
+NTI_POLL_REF = u'NTIPollRef'
 
 #: Survey Ref NTIID type
-NTI_SURVEY_REF = 'NTISurveyRef'
+NTI_SURVEY_REF = u'NTISurveyRef'
 
 #: Question Ref NTIID type
-NTI_QUESTION_REF = 'NTIQuestionRef'
+NTI_QUESTION_REF = u'NTIQuestionRef'
 
 #: Assigment Ref NTIID type
-NTI_ASSIGNMENT_REF = 'NTIAssignmentRef'
+NTI_ASSIGNMENT_REF = u'NTIAssignmentRef'
 
 #: QuestionSet Ref NTIID type
-NTI_QUESTION_SET_REF = 'NTIQuestionSetRef'
+NTI_QUESTION_SET_REF = u'NTIQuestionSetRef'
 
 #: Slide NTIID type
 NTI_SLIDE = NTISlide = u'NTISlide'
@@ -121,15 +121,15 @@ TIMELINE = NTITimeline = u'Timeline'
 NTI_TIMELIME_REF = u'NTITimeLineRef'
 
 #: Related Work Ref NTIID type
-RELATED_WORK_REF = 'RelatedWorkRef'
-NTI_RELATED_WORK_REF = 'NTIRelatedWorkRef'
-RELATED_WORK = NTI_RELATED_WORK = 'RelatedWork'
+RELATED_WORK_REF = u'RelatedWorkRef'
+NTI_RELATED_WORK_REF = u'NTIRelatedWorkRef'
+RELATED_WORK = NTI_RELATED_WORK = u'RelatedWork'
 
 #: Related Workf Ref Pointer NTIID type
 NTI_RELATED_WORK_REF_POINTER = u'NTIRelatedWorkRefPointer'
 
-ENROLLED_COURSE_ROOT = 'EnrolledCourseRoot'
-ENROLLED_COURSE_SECTION = 'EnrolledCourseSection'
+ENROLLED_COURSE_ROOT = u'EnrolledCourseRoot'
+ENROLLED_COURSE_SECTION = u'EnrolledCourseSection'
 
 DISCUSSION = u'discussion'
 NTI_DISCUSSION = u'NTIDiscussion'
@@ -137,7 +137,7 @@ DISCUSSION_REF = NTI_DISCUSSION_REF = u'DiscussionRef'
 
 NTI_COURSE_BUNDLE = u'nti-course-bundle'
 NTI_COURSE_BUNDLE_TYPE = u'NTICourseBundle'
-NTI_COURSE_BUNDLE_REF = "%s://" % NTI_COURSE_BUNDLE
+NTI_COURSE_BUNDLE_REF = u"%s://" % NTI_COURSE_BUNDLE
 
 DISCUSSION_REF_ENROLLED_COURSE_ROOT = DISCUSSION_REF + ':' + ENROLLED_COURSE_ROOT
 DISCUSSION_REF_ENROLLED_COURSE_SECTION = DISCUSSION_REF + ':' + ENROLLED_COURSE_SECTION
@@ -178,7 +178,7 @@ COURSE_OVERVIEW_GROUP_MIME_TYPES = ('application/vnd.nextthought.nticourseovervi
 
 AUDIO_ROLL_MIME_TYPES = ('application/vnd.nextthought.ntiaudioroll',
                          'application/vnd.nextthought.audioroll')
-VIDEO_ROLL_MIME_TYPES = ('application/vnd.nextthought.videoroll',
+VIDEO_ROLL_MIME_TYPES = ('application/vnd.nextthought.videoroll', # legacy
                          'application/vnd.nextthought.ntivideoroll')
 ALL_MEDIA_ROLL_MIME_TYPES = AUDIO_ROLL_MIME_TYPES + VIDEO_ROLL_MIME_TYPES
 

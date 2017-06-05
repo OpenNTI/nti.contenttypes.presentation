@@ -188,8 +188,8 @@ def create_mediaroll_from_external(ext_obj, notify=True, _exec=True):
                                          pre_hook=internalization_mediaroll_pre_hook,
                                          _exec=_exec)
     return result
-create_audioroll_from_external = create_mediaroll_from_external
-create_videoroll_from_external = create_mediaroll_from_external
+create_videoroll_from_external = create_mediaroll_from_external # legacy
+create_ntiaudioroll_from_external = create_mediaroll_from_external
 
 
 def create_nticourseoverviewgroup_from_external(ext_obj, notify=True, _exec=True):
