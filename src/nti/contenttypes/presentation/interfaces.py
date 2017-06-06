@@ -325,6 +325,11 @@ class INTITranscript(ILastModified, IContained):
     purpose = ValidTextLine(title=u"Transcript purpose",
                             required=True,
                             default=u'normal')
+    
+    def is_source_attached(self):
+        """
+        returns true if the transcript source is attached to this object
+        """
 
 
 class INTIIDIdentifiable(interface.Interface):

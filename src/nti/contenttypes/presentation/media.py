@@ -20,6 +20,8 @@ from zope.mimetype.interfaces import IContentTypeAware
 
 from persistent.list import PersistentList
 
+from nti.base.interfaces import IFile
+
 from nti.contenttypes.presentation import NTI_AUDIO
 from nti.contenttypes.presentation import NTI_VIDEO
 from nti.contenttypes.presentation import NTI_AUDIO_REF
@@ -103,6 +105,14 @@ class NTITranscript(PersistentMixin):
     def schema(self):
         result = make_schema(schema=INTITranscript)
         return result
+
+    def is_source_attached(self):
+        return IFile.providedBy(self.src)
+
+    def __setattr__(self, name, value):
+        PersistentMixin.__setattr__(self, name, value)
+        if name == 'src' and IFile.providedBy(value):
+            value.__parent__ = self  # take ownership
 
 
 @interface.implementer(INTIAudioSource, IContentTypeAware)
@@ -208,7 +218,7 @@ class NTIVideo(NTIMedia):
 
 
 @interface.implementer(INTIVideoRef)
-class NTIVideoRef(NTIMediaRef): # not recordable
+class NTIVideoRef(NTIMediaRef):  # not recordable
     createDirectFieldProperties(INTIVideoRef)
 
     __external_class_name__ = "Video"
@@ -234,7 +244,7 @@ class NTIAudio(NTIMedia):
 
 
 @interface.implementer(INTIAudioRef)
-class NTIAudioRef(NTIMediaRef): # not recordable
+class NTIAudioRef(NTIMediaRef):  # not recordable
     createDirectFieldProperties(INTIAudioRef)
 
     __external_class_name__ = "Audio"
