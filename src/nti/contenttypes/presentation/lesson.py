@@ -30,11 +30,7 @@ from ZODB.interfaces import IConnection
 
 from persistent.list import PersistentList
 
-from nti.app.assessment.interfaces import IUsersCourseAssignmentHistory
-
 from nti.containers.dicts import OrderedDict
-
-from nti.contenttypes.courses.interfaces import ICourseInstance
 
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
 from nti.contenttypes.presentation import NTI_COURSE_OVERVIEW_SPACER
@@ -52,8 +48,6 @@ from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
 from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
 
 from nti.coremetadata.interfaces import SYSTEM_USER_ID
-
-from nti.dataserver.users import User
 
 from nti.dublincore.datastructures import PersistentCreatedModDateTrackingObject
 
@@ -175,8 +169,6 @@ class NTILessonOverView(CalendarPublishableMixin,
 
 
 deprecated("LessonPublicationConstraints", "use new storage")
-
-
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
                                    OrderedDict):
     pass
@@ -278,24 +270,25 @@ class AssignmentCompletionConstraint(LessonCompletionConstraint):
     mime_type = mimeType = "application/vnd.nextthought.lesson.assignmentcompletionconstraint"
 
     def get_constraint_satisfied_time(self, user):
-        satisfied_time = 0
-        user = User.get_user(user)
-        course = ICourseInstance(self, None)
-        lesson = find_interface(self, INTILessonOverview, strict=False)
-        histories = component.queryMultiAdapter((course, user),
-                                                IUsersCourseAssignmentHistory)
-
-        # If we don't have any completed assignments for this constraint,
-        # we return 0 so that caching doesn't need to reload the lesson
-        # outline.
-        completed_time = 0
-
-        for assignment in self.assignments:
-            # note that these are assignment ntiids, not assignment objects
-            submission = histories.get(assignment, None)
-            if submission is not None:
-                completed_time = submission.lastModified
-        return completed_time
+        return 0
+#         satisfied_time = 0
+#         user = User.get_user(user)
+#         course = ICourseInstance(self, None)
+#         lesson = find_interface(self, INTILessonOverview, strict=False)
+#         histories = component.queryMultiAdapter((course, user),
+#                                                 IUsersCourseAssignmentHistory)
+# 
+#         # If we don't have any completed assignments for this constraint,
+#         # we return 0 so that caching doesn't need to reload the lesson
+#         # outline.
+#         completed_time = 0
+# 
+#         for assignment in self.assignments:
+#             # note that these are assignment ntiids, not assignment objects
+#             submission = histories.get(assignment, None)
+#             if submission is not None:
+#                 completed_time = submission.lastModified
+#         return completed_time
 
 
 @interface.implementer(ISurveyCompletionConstraint)
