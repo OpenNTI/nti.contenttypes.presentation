@@ -439,6 +439,7 @@ INTIVideo['description'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
 class INTIVideoRef(INTIMediaRef):
+
     label = ValidText(title=u"Video label", required=False)
 
     poster = ValidTextLine(title=u"Video poster", required=False)
@@ -766,8 +767,7 @@ INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
-INTICourseOverviewGroup['accentColor'].setTaggedValue(
-    TAG_REQUIRED_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
