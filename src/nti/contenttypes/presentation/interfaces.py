@@ -832,12 +832,6 @@ class ILessonPublicationConstraint(ICreated, ILastModified):
     is publishable or not
     """
 
-    def get_constraint_satisfied_time(user):
-        """
-        Return the most recent time that this constraint
-        was satisfied.
-        """
-
 
 class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
     """
