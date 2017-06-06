@@ -255,7 +255,8 @@ class IContentBackedPresentationAsset(interface.Interface):
     """
     Marker interface for assets that come from content backed sources
     """
-IContentBackedPresentationAsset.setTaggedValue('_ext_is_marker_interface', True)
+IContentBackedPresentationAsset.setTaggedValue(
+    '_ext_is_marker_interface', True)
 
 
 class IPointer(interface.Interface):
@@ -618,7 +619,7 @@ class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable,
     icon = href_schema_field(title=u"Icon href", required=False)
 
     target = ValidNTIID(title=u"Target NTIID", required=False)
-INTIDocketMixin = INTIDocketAsset # BWC
+INTIDocketMixin = INTIDocketAsset  # BWC
 
 
 class INTITimeline(INTIDocketAsset, IGroupOverViewable,
@@ -690,14 +691,14 @@ class INTIAssessmentRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
     target = ValidNTIID(title=u"Target NTIID", required=True)
 
     label = ValidTextLine(title=u"The label", required=False, default=u'')
-IAssessmentRef = INTIAssessmentRef # BWC
+IAssessmentRef = INTIAssessmentRef  # BWC
 
 INTIAssessmentRef['target'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 
 class INTIQuestionSetRef(INTIAssessmentRef):
     question_count = Int(title=u"Question count", required=False)
-IQuestionSetRef = INTIQuestionSetRef # BWC
+IQuestionSetRef = INTIQuestionSetRef  # BWC
 
 INTIQuestionSetRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIQuestionSetRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -705,7 +706,7 @@ INTIQuestionSetRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIQuestionRef(INTIAssessmentRef):
     pass
-IQuestionRef = INTIQuestionRef # BWC
+IQuestionRef = INTIQuestionRef  # BWC
 
 INTIQuestionRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIQuestionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -713,7 +714,7 @@ INTIQuestionRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class INTIAssignmentRef(INTIAssessmentRef, IAssetTitled):
     containerId = ValidNTIID(title=u"Container NTIID", required=False)
-IAssignmentRef = INTIAssignment = INTIAssignmentRef # BWC
+IAssignmentRef = INTIAssignment = INTIAssignmentRef  # BWC
 
 INTIAssignmentRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIAssignmentRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -727,7 +728,7 @@ class INTIInquiryRef(INTIAssessmentRef):
 
 class INTIPollRef(INTIInquiryRef):
     pass
-IPollRef = INTIPollRef # BWC
+IPollRef = INTIPollRef  # BWC
 
 INTIPollRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIPollRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -738,7 +739,7 @@ class INTISurveyRef(INTIInquiryRef):
     containerId = ValidNTIID(title=u"Container NTIID", required=False)
 
     question_count = Int(title=u"Question count", required=False)
-ISurveyRef = INTISurveyRef # BWC
+ISurveyRef = INTISurveyRef  # BWC
 
 INTISurveyRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
@@ -765,7 +766,8 @@ INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
-INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(
+    TAG_REQUIRED_IN_UI, False)
 
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
@@ -824,6 +826,12 @@ class ILessonPublicationConstraint(ICreated, ILastModified):
     Defines a constraint for determining whether a lesson
     is publishable or not
     """
+
+    def get_constraint_satisfied_time(user):
+        """
+        Return the most recent time that this constraint
+        was satisfied.
+        """
 
 
 class IAssignmentCompletionConstraint(ILessonPublicationConstraint):
