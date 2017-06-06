@@ -58,7 +58,7 @@ class TestJsonSchema(unittest.TestCase):
             assert_that(schema, 
                         has_entry(field, has_entry('name', is_(field))))
             assert_that(schema, 
-                        has_entry(field, has_entry('base_type', ['string', 'namedfile'])))
+                        has_entry(field, has_entry('base_type', ['string', 'file'])))
 
         assert_that(schema, 
                     has_entry('byline', has_entry('base_type', is_('string'))))
@@ -85,7 +85,7 @@ class TestJsonSchema(unittest.TestCase):
             assert_that(schema, 
                         has_entry(field, has_entry('name', is_(field))))
             assert_that(schema,
-                        has_entry(field, has_entry('base_type', ['string', 'namedfile'])))
+                        has_entry(field, has_entry('base_type', ['string', 'file'])))
 
     def test_slide(self):
         a = NTISlide()
@@ -105,7 +105,7 @@ class TestJsonSchema(unittest.TestCase):
                     has_entry('slidevideostart', has_entry('base_type', 'float')))
         assert_that(schema,
                     has_entry('slideimage', 
-                              has_entry('base_type', ['string', 'namedfile'])))
+                              has_entry('base_type', ['string', 'file'])))
 
     def test_slidevideo(self):
         a = NTISlideVideo()
@@ -144,7 +144,7 @@ class TestJsonSchema(unittest.TestCase):
         schema = schema[FIELDS]
         assert_that(schema, has_length(6))
         assert_that(
-            schema, has_entry('icon', has_entry('base_type', ['string', 'namedfile'])))
+            schema, has_entry('icon', has_entry('base_type', ['string', 'file'])))
 
     def test_videoref(self):
         a = NTIVideoRef()
@@ -226,7 +226,7 @@ class TestJsonSchema(unittest.TestCase):
                                                   'type', 'List')))
         assert_that(fields, 
                     has_entry('thumbnail', 
-                              has_entry('base_type', ['string', 'namedfile'])))
+                              has_entry('base_type', ['string', 'file'])))
 
     def test_video(self):
         a = NTIVideo()

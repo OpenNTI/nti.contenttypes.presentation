@@ -36,9 +36,9 @@ from zope.schema import vocabulary
 
 from dolmen.builtins.interfaces import IIterable
 
+from nti.base.interfaces import IFile
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ICreated
-from nti.base.interfaces import INamedFile
 from nti.base.interfaces import ILastModified
 
 from nti.contenttypes.presentation.schema import VisibilityField
@@ -190,7 +190,7 @@ def byline_schema_field(required=False):
 def href_schema_field(title=u'', required=False, default=None):
     return Variant((ValidTextLine(title=u"href name"),
                     ValidURI(title=u"href source uri"),
-                    Object(INamedFile, title=u"href file")),
+                    Object(IFile, title=u"href file")),
                    title=title,
                    default=default,
                    required=required)
@@ -306,6 +306,7 @@ IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
 
 class INTITranscript(ILastModified, IContained):
+
     src = href_schema_field(title=u"Transcript source", required=True)
 
     srcjsonp = href_schema_field(title=u"Transcript source jsonp",
@@ -326,11 +327,14 @@ class INTITranscript(ILastModified, IContained):
 
 
 class INTIIDIdentifiable(interface.Interface):
+
     ntiid = ValidNTIID(title=u"Item NTIID", required=False, default=None)
 
 
 class INTIMediaSource(ILastModified, IContained):
+
     service = ValidTextLine(title=u"Source service", required=True)
+
     thumbnail = href_schema_field(title=u"Source thumbnail", required=False)
 
 
@@ -525,6 +529,7 @@ INTIVideoRoll.setTaggedValue('_ext_jsonschema', u'videoroll')
 
 
 class INTISlide(INTIIDIdentifiable, IPackagePresentationAsset, IRecordable):
+
     slidevideoid = ValidNTIID(title=u"Slide video NTIID", required=True)
 
     slidedeckid = ValidNTIID(title=u"Slide deck NTIID", required=False)
@@ -540,6 +545,7 @@ class INTISlide(INTIIDIdentifiable, IPackagePresentationAsset, IRecordable):
 
 class INTISlideVideo(IAssetTitleDescribed, INTIIDIdentifiable,
                      ICreated, IPackagePresentationAsset, IRecordable):
+
     byline = byline_schema_field(required=False)
 
     video_ntiid = ValidNTIID(title=u"Slide video NTIID", required=True)
@@ -602,11 +608,15 @@ class INTIRelatedWorkRefPointer(IAssetRef, IGroupOverViewable, INTIIDIdentifiabl
 
 class INTIDocketAsset(IPackagePresentationAsset, INTIIDIdentifiable,
                       IGroupOverViewable, IPointer):
+
     label = ValidTextLine(title=u"The label", required=True, default=u'')
+
     href = href_schema_field(title=u"Resource href",
                              required=False,
                              default=u'')
+
     icon = href_schema_field(title=u"Icon href", required=False)
+
     target = ValidNTIID(title=u"Target NTIID", required=False)
 INTIDocketMixin = INTIDocketAsset # BWC
 
@@ -614,6 +624,7 @@ INTIDocketMixin = INTIDocketAsset # BWC
 class INTITimeline(INTIDocketAsset, IGroupOverViewable,
                    IRecordable, IFileConstrained):
     description = ValidTextLine(title=u"Timeline description", required=False)
+
     suggested_inline = Bool(u"Suggested inline flag",
                             required=False,
                             default=False)
@@ -723,7 +734,9 @@ INTIPollRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
 class INTISurveyRef(INTIInquiryRef):
+
     containerId = ValidNTIID(title=u"Container NTIID", required=False)
+
     question_count = Int(title=u"Question count", required=False)
 ISurveyRef = INTISurveyRef # BWC
 
@@ -905,6 +918,7 @@ class IPresentationAssetJsonSchemaMaker(IObjectJsonSchemaMaker):
 
 class IPresentationAssetCreatedEvent(IObjectCreatedEvent):
     principal = interface.Attribute("Creator principal")
+
     externalValue = interface.Attribute("External object")
 
 
