@@ -43,6 +43,7 @@ from nti.contenttypes.presentation.interfaces import ISurveyCompletionConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
+from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraintChecker
 
 from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
 from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
@@ -169,6 +170,8 @@ class NTILessonOverView(CalendarPublishableMixin,
 
 
 deprecated("LessonPublicationConstraints", "use new storage")
+
+
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
                                    OrderedDict):
     pass
@@ -283,3 +286,26 @@ zope.deferredimport.deprecatedFrom(
     "moved to nti.contenttypes.presentation.group",
     "nti.contenttypes.presentation.group",
     "NTICourseOverViewGroup")
+
+
+def get_constraint_satisfied_time(user, lesson):
+    constraints = constraints_for_lesson(lesson, False)
+    if constraints is not None:
+        satisfied_time = 0
+        for constraint in constraints.Items:
+            checker = ILessonPublicationConstraintChecker(constraint, None)
+            constraint_satisfied_time = checker.satisfied_time(user)
+            if constraint_satisfied_time is not None:
+                satisfied_time = max(satisfied_time, constraint_satisfied_time)
+            else:
+                # If we have a constraint that does not return a time,
+                # it is not satisfied, and we should break out of the
+                # loop and return None because not all constraints have
+                # been satisfied for this lesson.
+                satisfied_time = None
+                break
+    else:
+        # If we have no constraints for this lesson, return None
+        satisfied_time = None
+
+    return satisfied_time

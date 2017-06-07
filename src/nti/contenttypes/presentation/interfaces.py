@@ -325,7 +325,7 @@ class INTITranscript(ILastModified, IContained):
     purpose = ValidTextLine(title=u"Transcript purpose",
                             required=True,
                             default=u'normal')
-    
+
     def is_source_attached(self):
         """
         returns true if the transcript source is attached to this object
@@ -772,7 +772,8 @@ INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
-INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(
+    TAG_REQUIRED_IN_UI, False)
 
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
@@ -857,6 +858,14 @@ class ISurveyCompletionConstraint(ILessonPublicationConstraint):
                               unique=True,
                               required=True,
                               min_length=1)
+
+
+class ILessonPublicationConstraintChecker(interface.Interface):
+
+    def is_satisfied(constraint, principal=None):
+        """
+        Return whether or not a constraint is satisfied.
+        """
 
 
 class IPresentationVisibility(interface.Interface):
