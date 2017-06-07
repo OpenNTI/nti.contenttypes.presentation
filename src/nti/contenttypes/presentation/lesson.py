@@ -170,8 +170,6 @@ class NTILessonOverView(CalendarPublishableMixin,
 
 
 deprecated("LessonPublicationConstraints", "use new storage")
-
-
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
                                    OrderedDict):
     pass
@@ -280,21 +278,14 @@ class SurveyCompletionConstraint(LessonCompletionConstraint):
     mime_type = mimeType = "application/vnd.nextthought.lesson.surveycompletionconstraint"
 
 
-import zope.deferredimport
-zope.deferredimport.initialize()
-zope.deferredimport.deprecatedFrom(
-    "moved to nti.contenttypes.presentation.group",
-    "nti.contenttypes.presentation.group",
-    "NTICourseOverViewGroup")
-
-
-def get_constraint_satisfied_time(user, lesson):
+def get_constraint_satisfied_time(context, lesson):
+    satisfied_time = None
     constraints = constraints_for_lesson(lesson, False)
     if constraints is not None:
         satisfied_time = 0
-        for constraint in constraints.Items:
+        for constraint in constraints.Items or ():
             checker = ILessonPublicationConstraintChecker(constraint, None)
-            constraint_satisfied_time = checker.satisfied_time(user)
+            constraint_satisfied_time = checker.satisfied_time(context)
             if constraint_satisfied_time is not None:
                 satisfied_time = max(satisfied_time, constraint_satisfied_time)
             else:
@@ -304,8 +295,12 @@ def get_constraint_satisfied_time(user, lesson):
                 # been satisfied for this lesson.
                 satisfied_time = None
                 break
-    else:
-        # If we have no constraints for this lesson, return None
-        satisfied_time = None
-
     return satisfied_time
+
+
+import zope.deferredimport
+zope.deferredimport.initialize()
+zope.deferredimport.deprecatedFrom(
+    "moved to nti.contenttypes.presentation.group",
+    "nti.contenttypes.presentation.group",
+    "NTICourseOverViewGroup")
