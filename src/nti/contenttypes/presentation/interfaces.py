@@ -866,6 +866,13 @@ class ILessonPublicationConstraintChecker(interface.Interface):
         Return whether or not a constraint is satisfied.
         """
 
+    def satisfied_time(user):
+        """
+        Return the time when a constraint is satisfied,
+        0 if it is not applicable (for instructors or editors),
+        or None if the constraint has not been satisfied.
+        """
+
 
 class IPresentationVisibility(interface.Interface):
     """
