@@ -309,7 +309,7 @@ class AssetsLibraryCatalog(Catalog):
 
 
 def get_assets_catalog(registry=component):
-    return component.queryUtility(ICatalog, name=ASSETS_CATALOG_INDEX_NAME)
+    return registry.queryUtility(ICatalog, name=ASSETS_CATALOG_INDEX_NAME)
 
 
 def create_assets_library_catalog(catalog=None, family=BTrees.family64):

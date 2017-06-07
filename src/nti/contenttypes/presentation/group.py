@@ -128,7 +128,7 @@ class NTICourseOverViewGroup(RecordablePresentationAsset,
             pass
         return False
 
-    def reset(self, *args, **kwargs):
+    def reset(self):
         result = len(self)
         if self.items:
             del self.items[:]
