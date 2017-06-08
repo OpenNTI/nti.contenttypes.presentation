@@ -157,7 +157,7 @@ class _NTITranscriptExporter(object):
         if IFile.providedBy(source):
             data = base64.b64encode(zlib.compress(source.data or b''))
             result['contents'] = data
-            result['contentType'] = source.contentType
+            result['contentType'] = source.contentType or self.context.type
         else:
             result['src'] = source
         return result
