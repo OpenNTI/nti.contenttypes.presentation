@@ -21,8 +21,8 @@ from nti.base.interfaces import IFile
 from nti.contenttypes.presentation import PUBLICATION_CONSTRAINTS as PC
 
 from nti.contenttypes.presentation.interfaces import IPointer
-from nti.contenttypes.presentation.interfaces import INTIVideo 
 from nti.contenttypes.presentation.interfaces import IConcreteAsset
+from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 
@@ -142,22 +142,22 @@ class _LessonPublicationConstraintsExternalizer(object):
         return result
 
 
-@component.adapter(INTIVideo)
+@component.adapter(INTITranscript)
 @interface.implementer(IInternalObjectExternalizer)
-class _NTIVideoExporter(object):
+class _NTITranscriptExporter(object):
 
     def __init__(self, context):
         self.context = context
 
     def toExternalObject(self, *args, **kwargs):
-        exporter = InterfaceObjectIO(self.context, INTIVideo)
+        exporter = InterfaceObjectIO(self.context, INTITranscript)
         exporter._excluded_out_ivars_ = {'src'} | exporter._excluded_out_ivars_
         result = exporter.toExternalObject(*args, **kwargs)
         source = self.context.src
         if IFile.providedBy(source):
             data = base64.b64encode(zlib.compress(source.data or b''))
             result['contents'] = data
-            result['contentType'] = self.source.contentType
+            result['contentType'] = source.contentType
         else:
             result['src'] = source
         return result
