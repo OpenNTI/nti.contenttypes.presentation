@@ -9,14 +9,19 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import zlib
+import base64
 from collections import Mapping
 
 from zope import component
 from zope import interface
 
+from nti.base.interfaces import IFile
+
 from nti.contenttypes.presentation import PUBLICATION_CONSTRAINTS as PC
 
 from nti.contenttypes.presentation.interfaces import IPointer
+from nti.contenttypes.presentation.interfaces import INTIVideo 
 from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
@@ -69,8 +74,6 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
             to_external_object(x, *args, **kwargs) for x in self._ext_self
         ]
         return result
-
-
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
 
@@ -136,4 +139,25 @@ class _LessonPublicationConstraintsExternalizer(object):
         for constraint in self.context.Items or ():
             ext_obj = to_external_object(constraint, *args, **kwargs)
             items.append(ext_obj)
+        return result
+
+
+@component.adapter(INTIVideo)
+@interface.implementer(IInternalObjectExternalizer)
+class _NTIVideoExporter(object):
+
+    def __init__(self, context):
+        self.context = context
+
+    def toExternalObject(self, *args, **kwargs):
+        exporter = InterfaceObjectIO(self.context, INTIVideo)
+        exporter._excluded_out_ivars_ = {'src'} | exporter._excluded_out_ivars_
+        result = exporter.toExternalObject(*args, **kwargs)
+        source = self.context.src
+        if IFile.providedBy(source):
+            data = base64.b64encode(zlib.compress(source.data or b''))
+            result['contents'] = data
+            result['contentType'] = self.source.contentType
+        else:
+            result['src'] = source
         return result
