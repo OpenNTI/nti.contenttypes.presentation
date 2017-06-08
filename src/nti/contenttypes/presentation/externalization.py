@@ -69,6 +69,8 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
             to_external_object(x, *args, **kwargs) for x in self._ext_self
         ]
         return result
+
+
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
 
@@ -100,19 +102,20 @@ class _LessonOverviewExporter(object):
                 ext_obj = to_external_object(source, **ext_params)
                 items[idx] = ext_obj
 
-    def toExternalObject(self, **kwargs):
+    def toExternalObject(self, *args, **kwargs):
         mod_args = dict(**kwargs)
         mod_args['name'] = ''  # default
         mod_args['decorate'] = False  # no decoration
         mod_args['decorate_callback'] = self._decorate_callback
-        result = to_external_object(self.lesson, **mod_args)
+        result = to_external_object(self.lesson, *args, **mod_args)
         # make sure we have items
         if ITEMS in result and result[ITEMS] is None:
             result[ITEMS] = []
         constraints = constraints_for_lesson(self.lesson, False)
         if constraints:
-            result[PC] = to_external_object(constraints, **mod_args)
+            result[PC] = to_external_object(constraints, *args, **mod_args)
         # process groups
+        mod_args['name'] = 'exporter'  # there may be registered adapters
         for group, ext_obj in zip(self.lesson, result.get(ITEMS) or ()):
             self._process_group(group, ext_obj, mod_args)
         return result
@@ -125,12 +128,12 @@ class _LessonPublicationConstraintsExternalizer(object):
     def __init__(self, context):
         self.context = context
 
-    def toExternalObject(self, **kwargs):
+    def toExternalObject(self, *args, **kwargs):
         result = InterfaceObjectIO(
                     self.context,
-                    ILessonPublicationConstraints).toExternalObject(**kwargs)
+                    ILessonPublicationConstraints).toExternalObject(*args, **kwargs)
         items = result[ITEMS] = []
         for constraint in self.context.Items or ():
-            ext_obj = to_external_object(constraint, **kwargs)
+            ext_obj = to_external_object(constraint, *args, **kwargs)
             items.append(ext_obj)
         return result
