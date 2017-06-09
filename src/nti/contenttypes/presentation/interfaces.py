@@ -308,7 +308,8 @@ IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
 class INTITranscript(ILastModified, IContained):
 
-    src = href_schema_field(title=u"Transcript source", required=True)
+    src = href_schema_field(title=u"Transcript source", 
+                            required=False)
 
     srcjsonp = href_schema_field(title=u"Transcript source jsonp",
                                  required=False)
