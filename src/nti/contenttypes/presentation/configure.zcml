@@ -42,6 +42,10 @@
 			 for=".interfaces.IConcreteAsset"
 			 provides=".interfaces.IAssetRef" />
 
+	<adapter factory=".adapters.TranscriptContainer"
+			 for=".interfaces.INTIMedia"
+			 provides=".interfaces.ITranscriptContainer" />
+
 	<adapter factory=".lesson.constraints_for_lesson"
 			 for=".interfaces.INTILessonOverview"
 			 provides=".interfaces.ILessonPublicationConstraints" />

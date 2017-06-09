@@ -22,9 +22,11 @@ from nti.contenttypes.presentation.interfaces import INTIVideoRef
 from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import IConcreteAsset
+from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
 from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+from nti.contenttypes.presentation.interfaces import ITranscriptContainer
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 
 from nti.contenttypes.presentation.media import NTIAudioRef
@@ -76,7 +78,6 @@ def slideck_to_ntislideckref(slideck):
     return result
 
 
-
 @component.adapter(INTITimeline)
 @interface.implementer(INTITimelineRef)
 def timeline_to_ntitimelineref(timeline):
@@ -111,3 +112,33 @@ def concrete_to_reference(context):
     else:
         result = None
     return result
+
+
+@component.adapter(INTIAudio)
+@interface.implementer(ITranscriptContainer)
+class TranscriptContainer(object):
+
+    def __init__(self, context):
+        self.context = context
+
+    def clear(self):
+        for obj in self.context.transcripts or ():
+            obj.__parent__ = None
+        if self.context.transcripts:
+            del self.context.transcripts[:]
+
+    def add(self, transcript):
+        assert INTITranscript.providedBy(transcript)
+        if self.context.transcripts is None:
+            self.context.transcripts = list()
+        transcript.__parent__ = self.context
+        self.context.transcripts.append(transcript)
+
+    def __getitem__(self, index):
+        return self.context.transcripts[index]
+
+    def __len__(self):
+        return len(self.context.transcripts or ())
+
+    def __iter__(self):
+        return iter(self.context.transcripts or ())

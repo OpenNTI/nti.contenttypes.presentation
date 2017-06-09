@@ -390,6 +390,22 @@ class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
     byline = byline_schema_field(required=False)
 
 
+class ITranscriptContainer(IFiniteSequence):
+    
+    def clear():
+        """
+        clear all transcripts
+        """
+    
+    def add(transcript):
+        """
+        add a :class: `INTITranscript` object
+        """
+
+    def __iter__():
+        pass
+
+
 class INTIVideoSource(INTIMediaSource):
 
     width = Int(title=u"Video width", required=False)
