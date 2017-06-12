@@ -45,7 +45,7 @@ from nti.zope_catalog.catalog import ResultSet
 from nti.zope_catalog.index import AttributeSetIndex
 from nti.zope_catalog.index import AttributeValueIndex as ValueIndex
 
-ASSETS_CATALOG_INDEX_NAME = 'nti.dataserver.++etc++content.presentation_assets.catalog'
+ASSETS_CATALOG_INDEX_NAME = 'nti.dataserver.++etc++presentation-assets.catalog'
 
 #: Asset site catalog
 IX_SITE = 'site'
