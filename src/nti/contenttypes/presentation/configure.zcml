@@ -118,6 +118,10 @@
 			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" />
 
 	<!-- Internalization -->
+	<adapter factory=".internalization._NTITranscriptUpdater"
+			 for=".interfaces.INTITranscript"
+			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
+
 	<adapter factory=".internalization._NTIVideoUpdater"
 			 for=".interfaces.INTIVideo"
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />

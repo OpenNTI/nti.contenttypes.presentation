@@ -47,6 +47,7 @@ from nti.contenttypes.presentation.interfaces import INTISurveyRef
 from nti.contenttypes.presentation.interfaces import INTISlideDeck
 from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTISlideVideo
+from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIQuestionRef
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
 from nti.contenttypes.presentation.interfaces import INTISlideDeckRef
@@ -81,6 +82,7 @@ NTIID = StandardExternalFields.NTIID
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
 
+
 # assets
 
 
@@ -89,6 +91,20 @@ def ntiid_check(s):
     s = s[1:] if s and (s.startswith('"') or s.startswith("'")) else s
     s = s[6:] if s and s.startswith("relwk:tag:") else s
     return s
+
+
+@component.adapter(INTITranscript)
+@interface.implementer(IInternalObjectUpdater)
+class _NTITranscriptUpdater(InterfaceObjectIO):
+
+    _ext_iface_upper_bound = INTITranscript
+
+    def updateFromExternalObject(self, parsed, *args, **kwargs):
+        source = parsed.get('src')
+        result = super(_NTITranscriptUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+        if source is not None and not isinstance(source, six.string_types):
+            raise AssertionError("Source is not a string")
+        return result
 
 
 @interface.implementer(IInternalObjectUpdater)
@@ -122,7 +138,7 @@ class _NTIMediaUpdater(_AssetUpdater):
             if not isinstance(transcript, Mapping):
                 continue
             if MIMETYPE not in transcript:
-                transcript[MIMETYPE] = u'application/vnd.nextthought.ntitranscript'
+                transcript[MIMETYPE] = 'application/vnd.nextthought.ntitranscript'
             obj = find_factory_for(transcript)()
             transcripts[idx] = update_from_external_object(obj, transcript)
         return self
@@ -149,7 +165,7 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
             if not isinstance(source, Mapping):
                 continue
             if MIMETYPE not in source:
-                source[MIMETYPE] = u'application/vnd.nextthought.ntivideosource'
+                source[MIMETYPE] = 'application/vnd.nextthought.ntivideosource'
             obj = find_factory_for(source)()
             sources[idx] = update_from_external_object(obj, source)
         return self
@@ -185,7 +201,7 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
             if not isinstance(source, Mapping):
                 continue
             if MIMETYPE not in source:
-                source[MIMETYPE] = u'application/vnd.nextthought.ntiaudiosource'
+                source[MIMETYPE] = 'application/vnd.nextthought.ntiaudiosource'
             obj = find_factory_for(source)()
             sources[idx] = update_from_external_object(obj, source)
         return self
@@ -579,49 +595,49 @@ internalization_ntiaudio_pre_hook = internalization_ntivideo_pre_hook
 def internalization_assignmentref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.assessment.assignment":
-        x[MIMETYPE] = u"application/vnd.nextthought.assignmentref"
+        x[MIMETYPE] = "application/vnd.nextthought.assignmentref"
 
 
 def internalization_surveyref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.nasurvey":
-        x[MIMETYPE] = u"application/vnd.nextthought.surveyref"
+        x[MIMETYPE] = "application/vnd.nextthought.surveyref"
 
 
 def internalization_pollref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.napoll":
-        x[MIMETYPE] = u"application/vnd.nextthought.pollref"
+        x[MIMETYPE] = "application/vnd.nextthought.pollref"
 
 
 def internalization_questionsetref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.naquestionset":
-        x[MIMETYPE] = u"application/vnd.nextthought.questionsetref"
+        x[MIMETYPE] = "application/vnd.nextthought.questionsetref"
 
 
 def internalization_questionref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.naquestion":
-        x[MIMETYPE] = u"application/vnd.nextthought.questionref"
+        x[MIMETYPE] = "application/vnd.nextthought.questionref"
 
 
 def internalization_ntivideoref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.ntivideo":
-        x[MIMETYPE] = u"application/vnd.nextthought.ntivideoref"
+        x[MIMETYPE] = "application/vnd.nextthought.ntivideoref"
 
 
 def internalization_ntiaudioref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.ntiaudio":
-        x[MIMETYPE] = u"application/vnd.nextthought.ntiaudioref"
+        x[MIMETYPE] = "application/vnd.nextthought.ntiaudioref"
 
 
 def internalization_discussionref_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.discussion":
-        x[MIMETYPE] = u"application/vnd.nextthought.discussionref"
+        x[MIMETYPE] = "application/vnd.nextthought.discussionref"
 
 
 def internalization_ntislidedeckref_pre_hook(k, x):
@@ -690,7 +706,7 @@ internalization_ntiaudioroll_pre_hook = internalization_mediaroll_pre_hook
 def internalization_videoroll_pre_hook(k, x):
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if mimeType == "application/vnd.nextthought.ntivideoroll":
-        x[MIMETYPE] = u"application/vnd.nextthought.videoroll"
+        x[MIMETYPE] = "application/vnd.nextthought.videoroll"
     internalization_mediaroll_pre_hook(k, x)
 internalization_audioroll_pre_hook = internalization_mediaroll_pre_hook
 
