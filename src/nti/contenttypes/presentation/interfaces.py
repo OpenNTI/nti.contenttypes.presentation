@@ -43,6 +43,8 @@ from nti.base.interfaces import ILastModified
 
 from nti.contenttypes.presentation.schema import VisibilityField
 
+from nti.contenttypes.reports.interfaces import IReportContext
+
 from nti.coremetadata.interfaces import IObjectJsonSchemaMaker
 
 from nti.namedfile.interfaces import IFileConstrained
@@ -745,7 +747,7 @@ INTIAssignmentRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIAssignmentRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
-class INTIInquiryRef(INTIAssessmentRef):
+class INTIInquiryRef(INTIAssessmentRef, IReportContext):
     pass
 
 
