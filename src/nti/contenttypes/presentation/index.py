@@ -32,6 +32,7 @@ from nti.contenttypes.presentation.interfaces import ITargetAdapter
 from nti.contenttypes.presentation.interfaces import INamespaceAdapter
 from nti.contenttypes.presentation.interfaces import ISlideDeckAdapter
 from nti.contenttypes.presentation.interfaces import IContainersAdapter
+from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import IContainedTypeAdapter
 
 from nti.externalization.proxy import removeAllProxies
@@ -50,7 +51,7 @@ ASSETS_CATALOG_INDEX_NAME = 'nti.dataserver.++etc++presentation-assets.catalog'
 #: Asset site catalog
 IX_SITE = 'site'
 
-#: Asset type
+#: Asset type (interface name)
 IX_TYPE = 'type'
 
 #: Asset NTIID
@@ -58,6 +59,9 @@ IX_NTIID = 'ntiid'
 
 #: Asset target NTIID
 IX_TARGET = 'target'
+
+#: Asset mimeType
+IX_MIMETYPE = 'mimeType'
 
 #: Asset unique namespace
 IX_NAMESPACE = 'namespace'
@@ -167,6 +171,11 @@ class SlideDeckVideosIndex(AttributeSetIndex):
     interface = default_interface = ISlideDeckAdapter
 
 
+class MimeTypeIndex(ValueIndex):
+    default_field_name = 'mimeType'
+    default_interface = IPresentationAsset
+
+
 class AssetsLibraryCatalog(Catalog):
 
     family = BTrees.family64
@@ -262,24 +271,25 @@ class AssetsLibraryCatalog(Catalog):
                        ntiid=None,
                        sites=None,
                        target=None,
+                       mimetype=None,
                        provided=None,
                        namespace=None,
                        container_ntiids=None,
                        container_all_of=True):
         query = {}
         container_query = 'all_of' if container_all_of else 'any_of'
-
         # prepare query
-        for index, value, index_query in ((IX_SITE, sites, 'any_of'),
-                                          (IX_NTIID, ntiid, 'any_of'),
-                                          (IX_TYPE, provided, 'any_of'),
-                                          (IX_TARGET, target, 'any_of'),
-                                          (IX_NAMESPACE, namespace, 'any_of'),
-                                          (IX_CONTAINERS, container_ntiids, container_query)):
+        for index, value, index_query in (
+                            (IX_SITE, sites, 'any_of'),
+                            (IX_NTIID, ntiid, 'any_of'),
+                            (IX_TYPE, provided, 'any_of'),
+                            (IX_TARGET, target, 'any_of'),
+                            (IX_MIMETYPE, target, 'any_of'),
+                            (IX_NAMESPACE, namespace, 'any_of'),
+                            (IX_CONTAINERS, container_ntiids, container_query)):
             if value is not None:
                 value = to_iterable(value)
                 query[index] = {index_query: value}
-
         # query catalog
         result = self.apply(query)
         return result if result is not None else self.family.IF.LFSet()
@@ -288,6 +298,7 @@ class AssetsLibraryCatalog(Catalog):
                        ntiid=None,
                        sites=None,
                        target=None,
+                       mimetype=None
                        provided=None,
                        namespace=None,
                        container_ntiids=None,
@@ -298,6 +309,7 @@ class AssetsLibraryCatalog(Catalog):
             refs = self.get_references(ntiid=ntiid,
                                        sites=sites,
                                        target=target,
+                                       mimetype=mimetype,
                                        provided=provided,
                                        namespace=namespace,
                                        container_ntiids=container_ntiids,
@@ -318,6 +330,7 @@ def create_assets_library_catalog(catalog=None, family=BTrees.family64):
                         (IX_TYPE, TypeIndex),
                         (IX_NTIID, NTIIDIndex),
                         (IX_TARGET, TargetIndex),
+                        (IX_MIMETYPE, MimeTypeIndex),
                         (IX_NAMESPACE, NamespaceIndex),
                         (IX_CONTAINERS, ContainersIndex),
                         (IX_SLIDEDECK_VIDEOS, SlideDeckVideosIndex)):
