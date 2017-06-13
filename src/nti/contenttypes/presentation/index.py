@@ -284,7 +284,7 @@ class AssetsLibraryCatalog(Catalog):
                             (IX_NTIID, ntiid, 'any_of'),
                             (IX_TYPE, provided, 'any_of'),
                             (IX_TARGET, target, 'any_of'),
-                            (IX_MIMETYPE, target, 'any_of'),
+                            (IX_MIMETYPE, mimetype, 'any_of'),
                             (IX_NAMESPACE, namespace, 'any_of'),
                             (IX_CONTAINERS, container_ntiids, container_query)):
             if value is not None:
@@ -298,7 +298,7 @@ class AssetsLibraryCatalog(Catalog):
                        ntiid=None,
                        sites=None,
                        target=None,
-                       mimetype=None
+                       mimetype=None,
                        provided=None,
                        namespace=None,
                        container_ntiids=None,
