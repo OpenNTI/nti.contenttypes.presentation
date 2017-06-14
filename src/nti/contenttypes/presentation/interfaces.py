@@ -893,13 +893,13 @@ class ILessonPublicationConstraintChecker(interface.Interface):
         or None if the constraint has not been satisfied.
         """
 
-    def _get_constraint_items(self):
+    def get_constraint_items(self):
         """
         Returns a list of items that need to be satisfied for 
         this constraint to be considered satisfied.
         """
 
-    def _check_time_constraint_item(self, item_ntiid, histories):
+    def check_time_constraint_item(self, item_ntiid, histories):
         """
         Return the time when a constraint item is satisfied or 
         None if it has not been satisfied. This should be
