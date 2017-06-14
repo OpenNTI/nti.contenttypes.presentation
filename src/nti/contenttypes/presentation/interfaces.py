@@ -310,7 +310,7 @@ IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
 class INTITranscript(ILastModified, IContained):
 
-    src = href_schema_field(title=u"Transcript source", 
+    src = href_schema_field(title=u"Transcript source",
                             required=False)
 
     srcjsonp = href_schema_field(title=u"Transcript source jsonp",
@@ -394,12 +394,12 @@ class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
 
 
 class ITranscriptContainer(IFiniteSequence):
-    
+
     def clear():
         """
         clear all transcripts
         """
-    
+
     def add(transcript):
         """
         add a :class: `INTITranscript` object
@@ -791,7 +791,8 @@ INTICourseOverviewGroup.setTaggedValue('_ext_jsonschema', u'overviewgroup')
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTICourseOverviewGroup['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
-INTICourseOverviewGroup['accentColor'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTICourseOverviewGroup['accentColor'].setTaggedValue(
+    TAG_REQUIRED_IN_UI, False)
 
 
 class INTILessonOverview(IItemAssetContainer, IAssetTitled, INTIIDIdentifiable,
@@ -890,6 +891,19 @@ class ILessonPublicationConstraintChecker(interface.Interface):
         Return the time when a constraint is satisfied,
         0 if it is not applicable (for instructors or editors),
         or None if the constraint has not been satisfied.
+        """
+
+    def _get_constraint_items(self):
+        """
+        Returns a list of items that need to be satisfied for 
+        this constraint to be considered satisfied.
+        """
+
+    def _check_time_constraint_item(self, item_ntiid, histories):
+        """
+        Return the time when a constraint item is satisfied or 
+        None if it has not been satisfied. This should be
+        implemented for each type of constraint.
         """
 
 
