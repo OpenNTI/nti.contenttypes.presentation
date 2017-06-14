@@ -34,11 +34,10 @@ from zope.location.interfaces import IContained
 
 from zope.schema import vocabulary
 
-from dolmen.builtins.interfaces import IIterable
-
 from nti.base.interfaces import IFile
 from nti.base.interfaces import ITitled
 from nti.base.interfaces import ICreated
+from nti.base.interfaces import IIterable
 from nti.base.interfaces import ILastModified
 
 from nti.contenttypes.presentation.schema import VisibilityField
