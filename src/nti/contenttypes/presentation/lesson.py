@@ -170,6 +170,8 @@ class NTILessonOverView(CalendarPublishableMixin,
 
 
 deprecated("LessonPublicationConstraints", "use new storage")
+
+
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
                                    OrderedDict):
     pass
@@ -288,15 +290,15 @@ def get_constraint_satisfied_time(context, lesson):
             if checker is not None:
                 constraint_satisfied_time = checker.satisfied_time(context)
                 if constraint_satisfied_time is not None:
-                    satisfied_time = max(satisfied_time, 
+                    satisfied_time = max(satisfied_time,
                                          constraint_satisfied_time)
-            else:
-                # If we have a constraint that does not return a time,
-                # it is not satisfied, and we should break out of the
-                # loop and return None because not all constraints have
-                # been satisfied for this lesson.
-                satisfied_time = None
-                break
+                else:
+                    # If we have a constraint that does not return a time,
+                    # it is not satisfied, and we should break out of the
+                    # loop and return None because not all constraints have
+                    # been satisfied for this lesson.
+                    satisfied_time = None
+                    break
     return satisfied_time
 
 
