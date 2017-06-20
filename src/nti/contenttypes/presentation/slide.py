@@ -113,12 +113,14 @@ class NTISlideDeck(RecordablePresentationAsset):
         item.__parent__ = self  # take owership
         if INTISlide.providedBy(item):
             if self.slides is None:
-                self.slides = PersistentList()
-            self.slides.append(item)
+                self.slides = PersistentList([item])
+            else:
+                self.slides.append(item)
         elif INTISlideVideo.providedBy(item):
-            if self.slides is None:
-                self.videos = PersistentList()
-            self.videos.append(item)
+            if self.videos is None:
+                self.videos = PersistentList([item])
+            else: 
+                self.videos.append(item)
     add = append
 
     def remove(self, item):
