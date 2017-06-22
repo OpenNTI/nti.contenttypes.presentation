@@ -170,8 +170,6 @@ class NTILessonOverView(CalendarPublishableMixin,
 
 
 deprecated("LessonPublicationConstraints", "use new storage")
-
-
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
                                    OrderedDict):
     pass
