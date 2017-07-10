@@ -68,7 +68,6 @@ setup(
         'zope.container',
         'zope.deferredimport',
         'zope.dublincore',
-        'zope.file',
         'zope.i18nmessageid',
         'zope.intid',
         'zope.interface',
