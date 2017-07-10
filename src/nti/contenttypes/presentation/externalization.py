@@ -9,6 +9,7 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import six
 import zlib
 import base64
 from collections import Mapping
@@ -133,12 +134,32 @@ class _LessonPublicationConstraintsExternalizer(object):
 
     def toExternalObject(self, *args, **kwargs):
         result = InterfaceObjectIO(
-                    self.context,
+                    self.context, 
                     ILessonPublicationConstraints).toExternalObject(*args, **kwargs)
         items = result[ITEMS] = []
         for constraint in self.context.Items or ():
             ext_obj = to_external_object(constraint, *args, **kwargs)
             items.append(ext_obj)
+        return result
+
+
+@component.adapter(INTITranscript)
+@interface.implementer(IInternalObjectExternalizer)
+class _NTITranscriptExternalizer(InterfaceObjectIO):
+
+    _excluded_out_ivars_ = getattr(InterfaceObjectIO, '_excluded_out_ivars_').union({'src', 'srcjsonp'})
+
+    _ext_iface_upper_bound = INTITranscript
+
+    def toExternalObject(self, **kwargs):
+        context = self._ext_replacement()
+        result = super(_NTITranscriptExternalizer, self).toExternalObject(**kwargs)
+        for name in ('src', 'srcjsonp'):
+            if name in result:
+                continue
+            value = getattr(context, name, None)
+            if isinstance(value, six.string_types) or value is None:
+                result[name] = value
         return result
 
 
@@ -157,7 +178,7 @@ class _NTITranscriptExporter(object):
         if IFile.providedBy(source):
             data = base64.b64encode(zlib.compress(source.data or b''))
             result['contents'] = data
-            result['contentType'] = source.contentType or self.context.type
+            result['contentType'] = source.contentType
         else:
             result['src'] = source
         return result

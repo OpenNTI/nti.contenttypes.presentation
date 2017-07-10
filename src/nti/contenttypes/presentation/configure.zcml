@@ -105,12 +105,17 @@
 	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
 			 for=".interfaces.INTICourseOverviewGroup" />
 
+	<adapter factory=".externalization._NTITranscriptExternalizer"
+			 for=".interfaces.INTITranscript"
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer"  />
+
 	<adapter factory=".externalization._LessonOverviewExporter"
 			 for=".interfaces.INTILessonOverview"
 			 name="exporter" />
 
 	<adapter factory=".externalization._NTITranscriptExporter"
 			 for=".interfaces.INTITranscript"
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" 
 			 name="exporter" />
 
 	<adapter factory=".externalization._LessonPublicationConstraintsExternalizer"
