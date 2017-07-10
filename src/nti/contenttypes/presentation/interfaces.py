@@ -19,6 +19,8 @@ from zope.container.constraints import contains
 
 from zope.dublincore.interfaces import IDCDescriptiveProperties
 
+from zope.file.interfaces import IFile as IZopeFile
+
 from zope.interface.common.mapping import IMapping
 from zope.interface.common.sequence import IFiniteSequence
 
@@ -188,10 +190,10 @@ def byline_schema_field(required=False):
                    required=required)
 
 
-def href_schema_field(title=u'', required=False, default=None):
+def href_schema_field(title=u'', required=False, default=None, source=IFile):
     return Variant((ValidTextLine(title=u"href name"),
                     ValidURI(title=u"href source uri"),
-                    Object(IFile, title=u"href file")),
+                    Object(source, title=u"href file")),
                    title=title,
                    default=default,
                    required=required)
@@ -310,9 +312,11 @@ IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 class INTITranscript(ILastModified, IContained):
 
     src = href_schema_field(title=u"Transcript source",
+                            source=IZopeFile,
                             required=False)
 
     srcjsonp = href_schema_field(title=u"Transcript source jsonp",
+                                 source=IZopeFile,
                                  required=False)
 
     lang = ValidTextLine(title=u"Transcript language",
