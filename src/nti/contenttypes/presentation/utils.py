@@ -211,6 +211,14 @@ def create_ntilessonoverview_from_external(ext_obj, notify=True, _exec=True):
     return result
 
 
+def is_media_mimeType(mimeType):
+    return bool(mimeType in VIDEO_MIME_TYPES or mimeType in AUDIO_MIME_TYPES)
+
+
+def is_timeline_mimeType(mimeType):
+    return bool(mimeType in TIMELINE_MIME_TYPES)
+
+                
 def mime_types():
     for data in (AUDIO_MIME_TYPES,
                  VIDEO_MIME_TYPES,
