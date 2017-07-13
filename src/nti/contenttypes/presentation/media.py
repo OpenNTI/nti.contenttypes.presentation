@@ -31,6 +31,7 @@ from nti.contenttypes.presentation import NTI_VIDEO_ROLL
 from nti.contenttypes.presentation import NTI_TRANSCRIPT
 from nti.contenttypes.presentation import NTI_AUDIO_SOURCE
 from nti.contenttypes.presentation import NTI_VIDEO_SOURCE
+from nti.contenttypes.presentation import NTI_TRANSCRIPT_MIMETYPE
 
 from nti.contenttypes.presentation.common import make_schema
 
@@ -96,15 +97,14 @@ class NTITranscript(PersistentMixin):
     createDirectFieldProperties(INTITranscript)
 
     __external_class_name__ = "Transcript"
-    mime_type = mimeType = 'application/vnd.nextthought.ntitranscript'
+    mime_type = mimeType = NTI_TRANSCRIPT_MIMETYPE
 
     @Lazy
     def ntiid(self):
         return compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
 
     def schema(self):
-        result = make_schema(schema=INTITranscript)
-        return result
+        return make_schema(schema=INTITranscript)
 
     def is_source_attached(self):
         return IFile.providedBy(self.src)

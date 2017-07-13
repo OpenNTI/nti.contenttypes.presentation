@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -154,6 +154,8 @@ NTI_LESSON_OVERVIEW = u'NTILessonOverview'
 NTI_LESSON_COMPLETION_CONSTRAINT = u'NTILessonCompletionConstraint'
 
 PUBLICATION_CONSTRAINTS = u'PublicationConstraints'
+
+NTI_TRANSCRIPT_MIMETYPE = 'application/vnd.nextthought.ntitranscript'
 
 SLIDE_MIME_TYPES = ('application/vnd.nextthought.slide', # legacy
                     'application/vnd.nextthought.ntislide')
