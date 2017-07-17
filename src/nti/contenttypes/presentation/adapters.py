@@ -140,7 +140,7 @@ class TranscriptContainer(object):
         assert INTITranscript.providedBy(transcript)
         try:
             if self.context.transcripts is not None:
-                self.contet.transcripts.remove(transcript)
+                self.context.transcripts.remove(transcript)
                 return False
         except ValueError:
             pass
