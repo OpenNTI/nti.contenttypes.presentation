@@ -307,6 +307,13 @@ class IGroupOverViewable(interface.Interface):
 IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
 
+class IUserCreatedTranscript(interface.Interface):
+    """
+    Marker interface for user created transcript
+    """
+IUserCreatedTranscript.setTaggedValue('_ext_is_marker_interface', True)
+
+
 class INTITranscript(ILastModified, IContained):
 
     src = href_schema_field(title=u"Transcript source",
