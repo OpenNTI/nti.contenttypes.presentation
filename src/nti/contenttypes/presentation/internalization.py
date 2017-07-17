@@ -141,6 +141,9 @@ class _NTIMediaUpdater(_AssetUpdater):
                 transcript[MIMETYPE] = 'application/vnd.nextthought.ntitranscript'
             obj = find_factory_for(transcript)()
             transcripts[idx] = update_from_external_object(obj, transcript)
+        if transcripts and not isinstance(transcripts, PersistentList):
+            transcripts = PersistentList(transcripts)
+            parsed['transcripts'] = transcripts
         return self
 
     def fixAll(self, parsed):

@@ -411,6 +411,11 @@ class ITranscriptContainer(IFiniteSequence):
         add a :class: `INTITranscript` object
         """
 
+    def remove(transcript):
+        """
+        remove a :class: `INTITranscript` object
+        """
+
     def __iter__():
         pass
 
@@ -438,7 +443,6 @@ class INTIVideoSource(INTIMediaSource):
                            title=u'Video service types',
                            required=True,
                            min_length=1)
-
 INTIVideoSource.setTaggedValue('_ext_jsonschema', u'videosource')
 
 

@@ -12,6 +12,8 @@ logger = __import__('logging').getLogger(__name__)
 from zope import component
 from zope import interface
 
+from persistent.list import PersistentList
+
 from nti.contenttypes.presentation.interfaces import IAssetRef
 from nti.contenttypes.presentation.interfaces import INTIAudio
 from nti.contenttypes.presentation.interfaces import INTIMedia
@@ -130,9 +132,19 @@ class TranscriptContainer(object):
     def add(self, transcript):
         assert INTITranscript.providedBy(transcript)
         if self.context.transcripts is None:
-            self.context.transcripts = list()
+            self.context.transcripts = PersistentList()
         transcript.__parent__ = self.context
         self.context.transcripts.append(transcript)
+
+    def remove(self, transcript):
+        assert INTITranscript.providedBy(transcript)
+        try:
+            if self.context.transcripts is not None:
+                self.contet.transcripts.remove(transcript)
+                return False
+        except ValueError:
+            pass
+        return False
 
     def __getitem__(self, index):
         return self.context.transcripts[index]
