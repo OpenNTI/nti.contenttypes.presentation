@@ -307,7 +307,7 @@ class IGroupOverViewable(interface.Interface):
 IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
 
-class IUserCreatedTranscript(interface.Interface):
+class IUserCreatedTranscript(ICreated):
     """
     Marker interface for user created transcript
     """
