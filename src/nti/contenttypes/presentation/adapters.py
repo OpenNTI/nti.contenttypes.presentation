@@ -116,7 +116,7 @@ def concrete_to_reference(context):
     return result
 
 
-@component.adapter(INTIAudio)
+@component.adapter(INTIMedia)
 @interface.implementer(ITranscriptContainer)
 class TranscriptContainer(object):
 
