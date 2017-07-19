@@ -4,7 +4,7 @@
 .. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -30,6 +30,7 @@ from nti.contenttypes.presentation import RELATED_WORK_REF
 from nti.contenttypes.presentation import TIMELINE_MIME_TYPES
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
 from nti.contenttypes.presentation import SLIDE_DECK_MIME_TYPES
+from nti.contenttypes.presentation import NTI_TRANSCRIPT_MIMETYPE
 from nti.contenttypes.presentation import TIMELINE_REF_MIME_TYPES
 from nti.contenttypes.presentation import SLIDE_DECK_REF_MIME_TYPES
 from nti.contenttypes.presentation import ALL_MEDIA_ROLL_MIME_TYPES
@@ -164,7 +165,7 @@ class _NTIMediaUpdater(_AssetUpdater):
             if not isinstance(transcript, Mapping):
                 continue
             if MIMETYPE not in transcript:
-                transcript[MIMETYPE] = 'application/vnd.nextthought.ntitranscript'
+                transcript[MIMETYPE] = NTI_TRANSCRIPT_MIMETYPE
             obj = find_factory_for(transcript)()
             transcripts[idx] = update_from_external_object(obj, transcript)
         if transcripts and not isinstance(transcripts, PersistentList):
@@ -201,9 +202,9 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
 
     def fixCloseCaption(self, parsed):
         if 'closedCaptions' in parsed:
-            parsed[u'closed_caption'] = parsed['closedCaptions']
+            parsed['closed_caption'] = parsed['closedCaptions']
         elif 'closedCaption' in parsed:
-            parsed[u'closed_caption'] = parsed['closedCaption']
+            parsed['closed_caption'] = parsed['closedCaption']
         return self
 
     def fixAll(self, parsed):
@@ -212,8 +213,7 @@ class _NTIVideoUpdater(_NTIMediaUpdater):
         return parsed
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
-        result = super(_NTIVideoUpdater, 
-                       self).updateFromExternalObject(parsed, *args, **kwargs)
+        result = super(_NTIVideoUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
         self.takeOwnership(self._ext_self,
                            getattr(self._ext_self, 'sources', None))
         return result
@@ -241,7 +241,7 @@ class _NTIAudioUpdater(_NTIMediaUpdater):
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
         result = super(_NTIAudioUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-        self.takeOwnership(self._ext_self, 
+        self.takeOwnership(self._ext_self,
                            getattr(self._ext_self, 'sources', None))
         return result
 
@@ -263,9 +263,9 @@ class _TargetNTIIDUpdater(_AssetUpdater):
 
     def fixTarget(self, parsed, transfer=True):
         if NTIID in parsed:
-            parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
+            parsed['ntiid'] = ntiid_check(parsed[NTIID])
         elif 'ntiid' in parsed:
-            parsed[u'ntiid'] = ntiid_check(parsed[u'ntiid'])
+            parsed['ntiid'] = ntiid_check(parsed['ntiid'])
 
         target = self.getTargetNTIID(parsed)
         if target:
@@ -307,7 +307,6 @@ class _NTISlideUpdater(_AssetUpdater):
         for name, func in (("slidevideostart", float),
                            ("slidevideoend", float),
                            ("slidenumber", int)):
-
             value = parsed.get(name, None)
             if value is not None and isinstance(value, six.string_types):
                 try:
@@ -324,7 +323,7 @@ class _NTISlideVideoUpdater(_AssetUpdater):
 
     def fixAll(self, parsed):
         if 'video-ntiid' in parsed:
-            parsed[u'video_ntiid'] = ntiid_check(parsed.pop('video-ntiid'))
+            parsed['video_ntiid'] = ntiid_check(parsed.pop('video-ntiid'))
         return self.fixCreator(parsed)
 
 
@@ -336,23 +335,23 @@ class _NTISlideDeckUpdater(_AssetUpdater):
     def parseSlides(self, parsed):
         if 'Slides' in parsed:
             slides = PersistentList(parsed.get('Slides') or ())
-            parsed[u'Slides'] = slides
+            parsed['Slides'] = slides
         return self
 
     def parseVideos(self, parsed):
         if 'Videos' in parsed:
             videos = PersistentList(parsed.get('Videos') or ())
-            parsed[u'Videos'] = videos
+            parsed['Videos'] = videos
         return self
 
     def fixAll(self, parsed):
         self.fixCreator(parsed)
 
         if 'slidedeckid' in parsed and not parsed.get('ntiid'):
-            parsed[u'ntiid'] = ntiid_check(parsed['slidedeckid'])
+            parsed['ntiid'] = ntiid_check(parsed['slidedeckid'])
 
         if 'ntiid' in parsed and not parsed.get('slidedeckid'):
-            parsed[u'slidedeckid'] = ntiid_check(parsed['ntiid'])
+            parsed['slidedeckid'] = ntiid_check(parsed['ntiid'])
 
         return self.parseSlides(parsed).parseVideos(parsed)
 
@@ -370,11 +369,11 @@ class _NTITimelineUpdater(_AssetUpdater):
 
     def fixAll(self, parsed):
         if NTIID in parsed:
-            parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
+            parsed['ntiid'] = ntiid_check(parsed[NTIID])
         if 'desc' in parsed:
-            parsed[u'description'] = parsed.pop('desc')
+            parsed['description'] = parsed.pop('desc')
         if 'suggested-inline' in parsed:
-            parsed[u'suggested_inline'] = parsed.pop('suggested-inline')
+            parsed['suggested_inline'] = parsed.pop('suggested-inline')
         return self.fixCreator(parsed)
 
 
@@ -388,14 +387,15 @@ class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):
 
     def fixAll(self, parsed):
         if 'desc' in parsed:
-            parsed[u'description'] = parsed.pop('desc')
+            parsed['description'] = parsed.pop('desc')
 
         self.fixTarget(parsed)
 
         if 'targetMimeType' in parsed:
-            parsed[u'type'] = parsed.pop('targetMimeType')
+            parsed['type'] = parsed.pop('targetMimeType')
 
         return self.fixCreator(parsed)
+
 
 _NTIRelatedWorkUpdater = _NTIRelatedWorkRefUpdater
 
@@ -439,9 +439,9 @@ class _NTIAssignmentRefUpdater(_TargetNTIIDUpdater):
     def fixAll(self, parsed):
         self.fixTarget(parsed, transfer=True)
         if not parsed.get('title') and parsed.get('label'):
-            parsed[u'title'] = parsed['label']
+            parsed['title'] = parsed['label']
         elif not parsed.get('label') and parsed.get('title'):
-            parsed[u'label'] = parsed['title']
+            parsed['label'] = parsed['title']
         return self.fixCreator(parsed)
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
@@ -458,7 +458,7 @@ class _NTIQuestionSetRefUpdater(_TargetNTIIDUpdater):
     def fixAll(self, parsed):
         self.fixTarget(parsed, transfer=True)
         if 'question-count' in parsed:
-            parsed[u'question_count'] = int(parsed.pop('question-count'))
+            parsed['question_count'] = int(parsed.pop('question-count'))
         return self.fixCreator(parsed)
 
 
@@ -569,7 +569,7 @@ class _NTICourseOverviewGroupUpdater(_AssetUpdater):
 
     def fixAll(self, parsed):
         if NTIID in parsed:
-            parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
+            parsed['ntiid'] = ntiid_check(parsed[NTIID])
         # use persistent lists
         if ITEMS in parsed:
             items = PersistentList(parsed.get(ITEMS) or ())
@@ -590,17 +590,17 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
 
     def fixAll(self, parsed):
         if NTIID in parsed:
-            parsed[u'ntiid'] = ntiid_check(parsed[NTIID])
+            parsed['ntiid'] = ntiid_check(parsed[NTIID])
         ntiid = parsed.get('ntiid')
         lesson = parsed.get('lesson')
         # make sure we update the incoming ntiid
         # since in legacy it may the ntiid of a content unit
-        if      not lesson \
-            and is_valid_ntiid_string(ntiid) \
-            and get_type(ntiid) != NTI_LESSON_OVERVIEW:
+        if not lesson \
+                and is_valid_ntiid_string(ntiid) \
+                and get_type(ntiid) != NTI_LESSON_OVERVIEW:
             lesson = make_ntiid(nttype=NTI_LESSON_OVERVIEW, base=ntiid)
-            parsed[u'ntiid'] = lesson
-            parsed[u'lesson'] = ntiid
+            parsed['ntiid'] = lesson
+            parsed['lesson'] = ntiid
         # use persistent lists
         if ITEMS in parsed:
             items = PersistentList(parsed.get(ITEMS) or ())
@@ -679,8 +679,10 @@ def is_time_line(x):
     result = False
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if not mimeType:
-        ntiid = x.get('ntiid') or x.get(
-            NTIID) if isinstance(x, Mapping) else None
+        if isinstance(x, Mapping):
+            ntiid = x.get('ntiid') or x.get(NTIID)
+        else:
+            ntiid = None
         if ntiid and (JSON_TIMELINE in ntiid or is_ntiid_of_type(ntiid, TIMELINE)):
             result = True
     elif mimeType in TIMELINE_MIME_TYPES:
@@ -702,11 +704,14 @@ def is_relatedwork_ref(x):
     result = False
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if not mimeType:
-        ntiid = x.get('ntiid') or x.get(
-            NTIID) if isinstance(x, Mapping) else None
+        if isinstance(x, Mapping):
+            ntiid = x.get('ntiid') or x.get(NTIID)
+        else:
+            ntiid = None
+        # check ntiid
         if      ntiid \
-                and (  '.relatedworkref.' in ntiid
-                     or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
+            and (   '.relatedworkref.' in ntiid
+                 or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
             result = True
     elif mimeType in RELATED_WORK_REF_MIME_TYPES:
         result = True
