@@ -99,8 +99,8 @@ def compute_part_ntiid(part, nttype, field):
 
 @interface.implementer(INTITranscriptFile, IContained)
 class NTITranscriptFile(File):
+
     __parent__ = None
-    __name__ = alias('filename')
 
     @readproperty
     def creator(self):
