@@ -19,8 +19,6 @@ from collections import MutableSequence
 from zope import component
 from zope import interface
 
-from zope.file.file import File
-
 from persistent.list import PersistentList
 
 from nti.contenttypes.presentation import TIMELINE
@@ -68,6 +66,8 @@ from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 
+from nti.contenttypes.presentation.media import NTITranscriptFile
+
 from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.externalization.interfaces import IInternalObjectUpdater
@@ -106,7 +106,9 @@ def parse_embedded_transcript(transcript, parsed):
     contentType = contentType or "text/vtt"
     contents = base64.b64decode(contents)
     contents = zlib.decompress(contents)
-    result = File(contentType)
+    result = NTITranscriptFile(contentType)
+    with result.open("w") as fp:
+        fp.write(contents)
     result.data = contents
     result.name = result.filename = filename
     result.__parent__ = transcript

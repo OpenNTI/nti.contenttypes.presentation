@@ -16,6 +16,10 @@ from zope import interface
 from zope.cachedescriptors.property import Lazy
 from zope.cachedescriptors.property import readproperty
 
+from zope.file.file import File
+
+from zope.location.interfaces import IContained
+
 from zope.mimetype.interfaces import IContentTypeAware
 
 from persistent.list import PersistentList
@@ -48,6 +52,7 @@ from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
+from nti.contenttypes.presentation.interfaces import ITranscriptFile
 
 from nti.contenttypes.presentation.mixin import PersistentMixin
 from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
@@ -90,6 +95,12 @@ def compute_part_ntiid(part, nttype, field):
             uid = idx
         return result
     return None
+
+
+@interface.implementer(ITranscriptFile, IContained)
+class NTITranscriptFile(File):
+    __parent__ = None
+    __name__ = alias('filename')
 
 
 @interface.implementer(INTITranscript, IContentTypeAware)
@@ -143,8 +154,7 @@ class NTIVideoSource(PersistentMixin):
         return compute_part_ntiid(self, NTI_VIDEO_SOURCE, 'sources')
 
     def schema(self):
-        result = make_schema(schema=INTIVideoSource)
-        return result
+        return make_schema(schema=INTIVideoSource)
 
 
 @total_ordering
