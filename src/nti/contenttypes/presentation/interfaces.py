@@ -224,7 +224,7 @@ class IConcreteAsset(IPresentationAsset, IRecordable):
 IConcreteAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 
-class IUserCreatedAsset(ICreated):
+class IUserCreatedAsset(interface.Interface):
     """
     Marker interface for user created asset
     """
@@ -307,7 +307,7 @@ class IGroupOverViewable(interface.Interface):
 IGroupOverViewable.setTaggedValue('_ext_is_marker_interface', True)
 
 
-class IUserCreatedTranscript(ICreated):
+class IUserCreatedTranscript(interface.Interface):
     """
     Marker interface for user created transcript
     """
