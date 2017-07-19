@@ -340,7 +340,7 @@ class INTITranscript(ILastModified, IContained):
         returns true if the transcript source is attached to this object
         """
     
-    def set_auto_ntiid():
+    def compute_ntiid():
         """
         set the transcript ntiid
         """
