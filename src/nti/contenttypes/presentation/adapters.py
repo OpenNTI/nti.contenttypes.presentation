@@ -141,7 +141,8 @@ class TranscriptContainer(object):
         try:
             if self.context.transcripts is not None:
                 self.context.transcripts.remove(transcript)
-                return False
+                transcript.__parent__ = None
+                return True
         except ValueError:
             pass
         return False
