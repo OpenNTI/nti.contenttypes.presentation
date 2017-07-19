@@ -11,11 +11,15 @@ logger = __import__('logging').getLogger(__name__)
 
 import six
 import copy
+import zlib
+import base64
 from collections import Mapping
 from collections import MutableSequence
 
 from zope import component
 from zope import interface
+
+from zope.file.file import File
 
 from persistent.list import PersistentList
 
@@ -56,6 +60,7 @@ from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
+from nti.contenttypes.presentation.interfaces import IUserCreatedTranscript
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
@@ -93,6 +98,21 @@ def ntiid_check(s):
     return s
 
 
+def parse_embedded_transcript(transcript, parsed):
+    contents = transcript['contents']
+    filename = parsed.pop('filename', None) or "transcript.vtt"
+    contentType = parsed.get('contentType') or parsed.get('type')
+    contentType = contentType or "text/vtt"
+    contents = base64.b64decode(contents)
+    contents = zlib.decompress(contents)
+    result = File(contentType)
+    result.data = contents
+    result.name = result.filename = filename
+    result.__parent__ = transcript
+    interface.alsoProvides(transcript, IUserCreatedTranscript)
+    return result
+
+
 @component.adapter(INTITranscript)
 @interface.implementer(IInternalObjectUpdater)
 class _NTITranscriptUpdater(InterfaceObjectIO):
@@ -101,9 +121,15 @@ class _NTITranscriptUpdater(InterfaceObjectIO):
 
     def updateFromExternalObject(self, parsed, *args, **kwargs):
         source = parsed.get('src')
+        contents = parsed.get('contents', None)
         result = super(_NTITranscriptUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
-        if source is not None and not isinstance(source, six.string_types):
-            raise AssertionError("Source is not a string")
+        if not contents:
+            if source and not isinstance(source, six.string_types):
+                raise AssertionError("Source is not a string")
+        else:
+            transcript = self._ext_replacement()
+            parse_embedded_transcript(transcript, parsed)
+            transcript.srcjsonp = None
         return result
 
 
