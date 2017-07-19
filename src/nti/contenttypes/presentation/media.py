@@ -103,10 +103,6 @@ class NTITranscript(PersistentMixin):
     def ntiid(self):
         return compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
 
-    def compute_ntiid(self):
-        if 'ntiid' not in self.__dict__:
-            str(self.ntiid)
-
     def schema(self):
         return make_schema(schema=INTITranscript)
 

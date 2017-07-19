@@ -339,11 +339,7 @@ class INTITranscript(ILastModified, IContained):
         """
         returns true if the transcript source is attached to this object
         """
-    
-    def compute_ntiid():
-        """
-        set the transcript ntiid
-        """
+
 
 class INTIIDIdentifiable(interface.Interface):
 
