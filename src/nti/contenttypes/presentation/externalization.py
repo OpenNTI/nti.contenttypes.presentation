@@ -179,6 +179,7 @@ class _NTITranscriptExporter(object):
             data = base64.b64encode(zlib.compress(source.data or b''))
             result['contents'] = data
             result['contentType'] = source.contentType
+            result['filename'] = getattr(source, 'filename', None)
         else:
             result['src'] = source
         return result
