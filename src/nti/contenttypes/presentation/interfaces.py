@@ -224,7 +224,7 @@ class IConcreteAsset(IPresentationAsset, IRecordable):
 IConcreteAsset.setTaggedValue('_ext_is_marker_interface', True)
 
 
-class IUserCreatedAsset(interface.Interface):
+class IUserCreatedAsset(ICreated):
     """
     Marker interface for user created asset
     """
