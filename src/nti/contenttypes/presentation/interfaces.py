@@ -335,11 +335,15 @@ class INTITranscript(ILastModified, IContained):
                             required=True,
                             default=u'normal')
 
-    def is_source_attached(self):
+    def is_source_attached():
         """
         returns true if the transcript source is attached to this object
         """
-
+    
+    def set_auto_ntiid():
+        """
+        set the transcript ntiid
+        """
 
 class INTIIDIdentifiable(interface.Interface):
 
