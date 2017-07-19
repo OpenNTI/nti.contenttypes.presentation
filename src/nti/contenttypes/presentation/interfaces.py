@@ -314,7 +314,7 @@ class IUserCreatedTranscript(ICreated):
 IUserCreatedTranscript.setTaggedValue('_ext_is_marker_interface', True)
 
 
-class ITranscriptFile(IFile, IContained):
+class INTITranscriptFile(IFile, IContained):
     pass
 
 

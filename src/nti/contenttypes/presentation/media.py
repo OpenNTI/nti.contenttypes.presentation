@@ -52,7 +52,7 @@ from nti.contenttypes.presentation.interfaces import INTIVideoRoll
 from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
-from nti.contenttypes.presentation.interfaces import ITranscriptFile
+from nti.contenttypes.presentation.interfaces import INTITranscriptFile
 
 from nti.contenttypes.presentation.mixin import PersistentMixin
 from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
@@ -97,7 +97,7 @@ def compute_part_ntiid(part, nttype, field):
     return None
 
 
-@interface.implementer(ITranscriptFile, IContained)
+@interface.implementer(INTITranscriptFile, IContained)
 class NTITranscriptFile(File):
     __parent__ = None
     __name__ = alias('filename')
