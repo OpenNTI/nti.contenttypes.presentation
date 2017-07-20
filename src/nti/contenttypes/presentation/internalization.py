@@ -113,6 +113,8 @@ def parse_embedded_transcript(transcript, parsed, encoded=True):
     result.data = contents
     result.name = result.filename = filename
     result.__parent__ = transcript
+    transcript.src = result # set source
+    transcript.srcjsonp = None
     interface.alsoProvides(transcript, IUserCreatedTranscript)
     return result
 
