@@ -19,6 +19,7 @@ from zope.cachedescriptors.property import readproperty
 from zope.file.file import File
 
 from zope.location.interfaces import IContained
+from zope.location.interfaces import ISublocations
 
 from zope.mimetype.interfaces import IContentTypeAware
 
@@ -53,6 +54,7 @@ from nti.contenttypes.presentation.interfaces import INTITranscript
 from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
 from nti.contenttypes.presentation.interfaces import INTITranscriptFile
+from nti.contenttypes.presentation.interfaces import IUserCreatedTranscript
 
 from nti.contenttypes.presentation.mixin import PersistentMixin
 from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
@@ -165,7 +167,7 @@ class NTIVideoSource(PersistentMixin):
 
 
 @total_ordering
-@interface.implementer(INTIMedia)
+@interface.implementer(INTIMedia, ISublocations)
 class NTIMedia(RecordablePresentationAsset):
     createDirectFieldProperties(INTIMedia)
 
@@ -179,6 +181,11 @@ class NTIMedia(RecordablePresentationAsset):
     def ntiid(self):
         self.ntiid = self.generate_ntiid(self.nttype)
         return self.ntiid
+
+    def sublocations(self):
+        for transcript in getattr(self, 'transcripts', None) or ():
+            if IUserCreatedTranscript.providedBy(transcript):
+                yield transcript
 
     def __lt__(self, other):
         try:
