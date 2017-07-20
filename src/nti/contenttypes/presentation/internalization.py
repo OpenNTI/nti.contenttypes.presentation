@@ -99,13 +99,14 @@ def ntiid_check(s):
     return s
 
 
-def parse_embedded_transcript(transcript, parsed):
+def parse_embedded_transcript(transcript, parsed, encoded=True):
     contents = transcript['contents']
     filename = parsed.pop('filename', None) or "transcript.vtt"
     contentType = parsed.get('contentType') or parsed.get('type')
     contentType = contentType or "text/vtt"
-    contents = base64.b64decode(contents)
-    contents = zlib.decompress(contents)
+    if encoded:
+        contents = base64.b64decode(contents)
+        contents = zlib.decompress(contents)
     result = NTITranscriptFile(contentType)
     with result.open("w") as fp:
         fp.write(contents)
