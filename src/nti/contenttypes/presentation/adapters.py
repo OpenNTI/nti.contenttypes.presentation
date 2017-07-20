@@ -131,7 +131,7 @@ class TranscriptContainer(object):
 
     def add(self, transcript):
         assert INTITranscript.providedBy(transcript)
-        if self.context.transcripts is None:
+        if not self.context.transcripts:
             self.context.transcripts = PersistentList()
         transcript.__parent__ = self.context
         self.context.transcripts.append(transcript)
