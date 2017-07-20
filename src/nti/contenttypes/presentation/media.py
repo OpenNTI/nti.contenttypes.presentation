@@ -101,15 +101,8 @@ def compute_part_ntiid(part, nttype, field):
 
 @interface.implementer(INTITranscriptFile, IContained)
 class NTITranscriptFile(File):
-
     __parent__ = None
 
-    @readproperty
-    def creator(self):
-        try:
-            return self.__parent__.creator
-        except AttributeError:
-            return None
 
 
 @interface.implementer(INTITranscript, IContentTypeAware)
