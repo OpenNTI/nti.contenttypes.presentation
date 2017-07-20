@@ -62,6 +62,7 @@ setup(
         'six',
         'persistent',
         'zc.catalog',
+        'ZODB',
         'zope.annotation',
         'zope.catalog',
         'zope.component',
