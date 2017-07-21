@@ -173,7 +173,7 @@ class _NTIMediaUpdater(_AssetUpdater):
                 transcript[MIMETYPE] = NTI_TRANSCRIPT_MIMETYPE
             obj = find_factory_for(transcript)()
             transcripts[idx] = update_from_external_object(obj, transcript)
-        if transcripts is None or not isinstance(transcripts, PersistentList):
+        if transcripts:
             transcripts = PersistentList(transcripts or ())
             parsed['transcripts'] = transcripts
         return self
