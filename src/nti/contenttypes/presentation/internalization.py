@@ -108,8 +108,6 @@ def parse_embedded_transcript(transcript, parsed, encoded=True):
         contents = base64.b64decode(contents)
         contents = zlib.decompress(contents)
     result = NTITranscriptFile(contentType)
-    with result.open("w") as fp:
-        fp.write(contents)
     result.data = contents
     result.name = result.filename = filename
     result.__parent__ = transcript
