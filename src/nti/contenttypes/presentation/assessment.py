@@ -27,7 +27,7 @@ from nti.contenttypes.presentation.interfaces import INTIQuestionRef
 from nti.contenttypes.presentation.interfaces import INTIAssignmentRef
 from nti.contenttypes.presentation.interfaces import INTIQuestionSetRef
 
-from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
+from nti.contenttypes.presentation.mixins import PersistentPresentationAsset
 
 from nti.property.property import alias
 

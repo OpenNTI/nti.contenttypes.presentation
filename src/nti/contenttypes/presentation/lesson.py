@@ -45,8 +45,8 @@ from nti.contenttypes.presentation.interfaces import ILessonPublicationConstrain
 from nti.contenttypes.presentation.interfaces import IAssignmentCompletionConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraintChecker
 
-from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
-from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
+from nti.contenttypes.presentation.mixins import PersistentPresentationAsset
+from nti.contenttypes.presentation.mixins import RecordablePresentationAsset
 
 from nti.coremetadata.interfaces import SYSTEM_USER_ID
 

@@ -21,7 +21,7 @@ from nti.contenttypes.presentation import NTI_DISCUSSION_REF
 
 from nti.contenttypes.presentation.interfaces import INTIDiscussionRef
 
-from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
+from nti.contenttypes.presentation.mixins import RecordablePresentationAsset
 
 from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid

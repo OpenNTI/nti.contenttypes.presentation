@@ -21,8 +21,8 @@ from nti.contenttypes.presentation import NTI_TIMELIME_REF
 from nti.contenttypes.presentation.interfaces import INTITimeline
 from nti.contenttypes.presentation.interfaces import INTITimelineRef
 
-from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
-from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
+from nti.contenttypes.presentation.mixins import PersistentPresentationAsset
+from nti.contenttypes.presentation.mixins import RecordablePresentationAsset
 
 from nti.property.property import alias
 

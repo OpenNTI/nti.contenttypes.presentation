@@ -56,8 +56,8 @@ from nti.contenttypes.presentation.interfaces import INTIVideoSource
 from nti.contenttypes.presentation.interfaces import INTITranscriptFile
 from nti.contenttypes.presentation.interfaces import IUserCreatedTranscript
 
-from nti.contenttypes.presentation.mixin import PersistentMixin
-from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
+from nti.contenttypes.presentation.mixins import PersistentMixin
+from nti.contenttypes.presentation.mixins import RecordablePresentationAsset
 
 from nti.property.property import alias
 

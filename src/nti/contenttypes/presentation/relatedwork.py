@@ -21,8 +21,8 @@ from nti.contenttypes.presentation import NTI_RELATED_WORK_REF_POINTER
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRef
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 
-from nti.contenttypes.presentation.mixin import PersistentPresentationAsset
-from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
+from nti.contenttypes.presentation.mixins import PersistentPresentationAsset
+from nti.contenttypes.presentation.mixins import RecordablePresentationAsset
 
 from nti.property.property import alias
 

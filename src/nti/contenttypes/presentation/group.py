@@ -25,7 +25,7 @@ from nti.contenttypes.presentation.interfaces import INTIMediaRef
 from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 
-from nti.contenttypes.presentation.mixin import RecordablePresentationAsset
+from nti.contenttypes.presentation.mixins import RecordablePresentationAsset
 
 from nti.property.property import alias
 
