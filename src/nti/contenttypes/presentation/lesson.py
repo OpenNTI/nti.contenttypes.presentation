@@ -139,7 +139,7 @@ class NTILessonOverView(CalendarPublishableMixin,
             self.items.insert(index, obj)
 
     def pop(self, index):
-        self.items.pop(index)
+        return self.items.pop(index)
 
     def remove(self, group):
         try:
@@ -170,6 +170,8 @@ class NTILessonOverView(CalendarPublishableMixin,
 
 
 deprecated("LessonPublicationConstraints", "use new storage")
+
+
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
                                    OrderedDict):
     pass

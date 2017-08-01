@@ -36,7 +36,7 @@ from nti.schema.fieldproperty import createDirectFieldProperties
 
 class DuplicateReference(ValueError):
 
-    msg =  _(u'Cannot have two equal refs in the same group')
+    msg = _(u'Cannot have two equal refs in the same group')
 
     def __init__(self):
         super(DuplicateReference, self).__init__(self.msg)
@@ -118,7 +118,7 @@ class NTICourseOverViewGroup(RecordablePresentationAsset,
             self.items.insert(index, item)
 
     def pop(self, index):
-        self.items.pop(index)
+        return self.items.pop(index)
 
     def remove(self, item):
         try:
