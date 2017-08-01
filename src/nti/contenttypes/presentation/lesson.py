@@ -149,7 +149,7 @@ class NTILessonOverView(CalendarPublishableMixin,
             pass
         return False
 
-    def reset(self, *args, **kwargs):
+    def reset(self, *unused_args, **unused_kwargs):
         result = len(self)
         if self.items:
             del self.items[:]
@@ -170,8 +170,6 @@ class NTILessonOverView(CalendarPublishableMixin,
 
 
 deprecated("LessonPublicationConstraints", "use new storage")
-
-
 class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
                                    OrderedDict):
     pass
@@ -195,7 +193,7 @@ class LessonConstraintContainer(PersistentCreatedModDateTrackingObject,
             key = '%d' % count
         return key
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, unused_key, value):
         key = self._get_key()
         OrderedContainer.__setitem__(self, key, value)
         self.updateLastMod()
