@@ -22,8 +22,10 @@ from nti.base.interfaces import IFile
 from nti.contenttypes.presentation import PUBLICATION_CONSTRAINTS as PC
 
 from nti.contenttypes.presentation.interfaces import IPointer
+from nti.contenttypes.presentation.interfaces import INTIMediaRoll
 from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTITranscript
+from nti.contenttypes.presentation.interfaces import IUserCreatedAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 
@@ -105,6 +107,15 @@ class _LessonOverviewExporter(object):
                 source = IConcreteAsset(asset, asset)
                 ext_obj = to_external_object(source, **ext_params)
                 items[idx] = ext_obj
+            elif INTIMediaRoll.providedBy(asset):
+                roll_items_ext = items[idx]
+                for roll_idx, media_ref in enumerate(asset):
+                    # For user created, make sure we export the media payload
+                    # Otherwise, export the ref.
+                    media = IConcreteAsset(media_ref, media_ref)
+                    if IUserCreatedAsset.providedBy(media):
+                        media_ext = to_external_object(media, **ext_params)
+                        roll_items_ext[roll_idx] = media_ext
 
     def toExternalObject(self, *args, **kwargs):
         mod_args = dict(**kwargs)
@@ -134,7 +145,7 @@ class _LessonPublicationConstraintsExternalizer(object):
 
     def toExternalObject(self, *args, **kwargs):
         result = InterfaceObjectIO(
-                    self.context, 
+                    self.context,
                     ILessonPublicationConstraints).toExternalObject(*args, **kwargs)
         items = result[ITEMS] = []
         for constraint in self.context.Items or ():
