@@ -29,7 +29,7 @@ from nti.contenttypes.presentation import PACKAGE_CONTAINER_INTERFACES
 from nti.contenttypes.presentation import GROUP_OVERVIEWABLE_INTERFACES
 from nti.contenttypes.presentation import ALL_PRESENTATION_ASSETS_INTERFACES
 
-from nti.contenttypes.presentation import iface_of_asset
+from nti.contenttypes.presentation import interface_of_asset
 
 from nti.contenttypes.presentation.common import get_visibility_options
 
@@ -74,7 +74,7 @@ class TestModule(unittest.TestCase):
             obj = Foo()
             interface.alsoProvides(obj, iface)
             provided = find_most_derived_interface(obj, IPresentationAsset)
-            assert_that(iface_of_asset(obj), is_(provided))
+            assert_that(interface_of_asset(obj), is_(provided))
             if not IRecordable.providedBy(obj):
                 not_recordable += 1
         assert_that(not_recordable, is_(8))
