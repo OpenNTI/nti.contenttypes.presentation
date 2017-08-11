@@ -203,6 +203,7 @@ ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef,
 
 MEDIA_REF_INTERFACES = (INTIAudioRef, INTIVideoRef)
 
+MARKER_INTERFACES = None
 ALL_PRESENTATION_MIME_TYPES = None
 COURSE_CONTAINER_INTERFACES = None
 PACKAGE_CONTAINER_INTERFACES = None
@@ -221,12 +222,14 @@ iface_of_asset = interface_of_asset
 
 
 def _set_ifaces():
+    global MARKER_INTERFACES
     global ALL_PRESENTATION_MIME_TYPES
     global COURSE_CONTAINER_INTERFACES
     global PACKAGE_CONTAINER_INTERFACES
     global GROUP_OVERVIEWABLE_INTERFACES
     global ALL_PRESENTATION_ASSETS_INTERFACES
 
+    MARKER_INTERFACES = set()
     ALL_PRESENTATION_MIME_TYPES = set()
     COURSE_CONTAINER_INTERFACES = set()
     PACKAGE_CONTAINER_INTERFACES = set()
@@ -243,26 +246,33 @@ def _set_ifaces():
     NO_IMPL_IFACES = NO_IMPL_REF_IFACES + (INTIMediaSource, INTIMedia,
                                            INTIMediaRoll, IConcreteAsset)
 
+    MARKER_INTERFACES.update(NO_IMPL_REF_IFACES)
+
     def _package_item_predicate(item):
         result = bool(type(item) == interface.interface.InterfaceClass
                       and issubclass(item, IPackagePresentationAsset)
                       and item != IPackagePresentationAsset
                       and item not in (INTIMedia, INTIDocketAsset, IConcreteAsset))
         return result
-
+    MARKER_INTERFACES.add(IConcreteAsset)
+    MARKER_INTERFACES.add(INTIDocketAsset)
+    MARKER_INTERFACES.add(IPackagePresentationAsset)
+    
     def _course_item_predicate(item):
         result = bool(type(item) == interface.interface.InterfaceClass
                       and issubclass(item, ICoursePresentationAsset)
                       and item != ICoursePresentationAsset
                       and item not in NO_IMPL_REF_IFACES)
         return result
-
+    MARKER_INTERFACES.add(ICoursePresentationAsset)
+     
     def _overview_item_predicate(item):
         result = bool(type(item) == interface.interface.InterfaceClass
                       and issubclass(item, IGroupOverViewable)
                       and item != IGroupOverViewable
                       and item not in NO_IMPL_REF_IFACES)
         return result
+    MARKER_INTERFACES.add(IGroupOverViewable)
 
     def _presentationasset_item_predicate(item):
         result = bool(type(item) == interface.interface.InterfaceClass
@@ -275,7 +285,11 @@ def _set_ifaces():
                       and item != IContentBackedPresentationAsset
                       and item not in NO_IMPL_IFACES)
         return result
-
+    MARKER_INTERFACES.add(IUserCreatedAsset)
+    MARKER_INTERFACES.add(IPresentationAsset)
+    MARKER_INTERFACES.add(ILegacyPresentationAsset)
+    MARKER_INTERFACES.add(IContentBackedPresentationAsset)
+     
     for _, item in inspect.getmembers(module, _course_item_predicate):
         COURSE_CONTAINER_INTERFACES.add(item)
 
@@ -288,6 +302,7 @@ def _set_ifaces():
     for _, item in inspect.getmembers(module, _presentationasset_item_predicate):
         ALL_PRESENTATION_ASSETS_INTERFACES.add(item)
 
+    MARKER_INTERFACES = tuple(MARKER_INTERFACES)
     COURSE_CONTAINER_INTERFACES = tuple(COURSE_CONTAINER_INTERFACES)
     PACKAGE_CONTAINER_INTERFACES = tuple(PACKAGE_CONTAINER_INTERFACES)
     GROUP_OVERVIEWABLE_INTERFACES = tuple(GROUP_OVERVIEWABLE_INTERFACES)
@@ -313,6 +328,31 @@ def _set_ifaces():
 
 _set_ifaces()
 del _set_ifaces
+
+
+# registration
+
+
+def register_asset_interface(provided, mimeType):
+    if not mimeType:
+        raise ValueError('Must provided a MimeType')
+    if mimeType in ALL_PRESENTATION_MIME_TYPES:
+        raise ValueError('MimeType has already been registered')
+    if not provided.isOrExtends(IPresentationAsset):
+        raise TypeError('Not a valid interface')
+    if provided in MARKER_INTERFACES:
+        raise ValueError('Cannot register a marker interface')
+
+    ALL_PRESENTATION_MIME_TYPES += (mimeType,)
+    ALL_PRESENTATION_ASSETS_INTERFACES += (provided,)
+    
+    if provided.isOrExtends(ICoursePresentationAsset):
+        COURSE_CONTAINER_INTERFACES += (provided,)
+    if provided.isOrExtends(IPackagePresentationAsset):
+        PACKAGE_CONTAINER_INTERFACES += (provided,)
+    if provided.isOrExtends(IGroupOverViewable):
+        GROUP_OVERVIEWABLE_INTERFACES += (provided,)
+
 
 # make sure all constants have been loaded
 from nti.contenttypes.presentation._patch import patch
