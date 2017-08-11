@@ -48,6 +48,8 @@ from nti.contenttypes.presentation.interfaces import ILegacyPresentationAsset
 from nti.contenttypes.presentation.interfaces import IPackagePresentationAsset
 from nti.contenttypes.presentation.interfaces import IContentBackedPresentationAsset
 
+from nti.schema.interfaces import find_most_derived_interface
+
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 
 #: Fields attribute
@@ -212,6 +214,8 @@ def interface_of_asset(item):
     for iface in ALL_PRESENTATION_ASSETS_INTERFACES:
         if iface.providedBy(item):
             return iface
+    if IPresentationAsset.providedBy(item):
+        return find_most_derived_interface(item, IPresentationAsset)
     return None
 iface_of_asset = interface_of_asset
 
