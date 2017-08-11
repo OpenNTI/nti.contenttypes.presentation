@@ -108,7 +108,7 @@ class _LessonOverviewExporter(object):
                 ext_obj = to_external_object(source, **ext_params)
                 items[idx] = ext_obj
             elif INTIMediaRoll.providedBy(asset):
-                roll_items_ext = items[idx]
+                roll_items_ext = items[idx].get(ITEMS) or ()
                 for roll_idx, media_ref in enumerate(asset):
                     # For user created, make sure we export the media payload
                     # Otherwise, export the ref.
