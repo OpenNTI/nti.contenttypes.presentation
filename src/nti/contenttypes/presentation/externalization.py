@@ -100,6 +100,15 @@ class _LessonOverviewExporter(object):
         if isinstance(result, Mapping) and MIMETYPE not in result:
             self._decorat_object(obj, result)
 
+    def _process_media_roll(self, asset, roll_items_ext, ext_params):
+        for roll_idx, media_ref in enumerate(asset):
+            # For user created, make sure we export the media payload
+            # Otherwise, export the ref.
+            media = IConcreteAsset(media_ref, media_ref)
+            if IUserCreatedAsset.providedBy(media):
+                media_ext = to_external_object(media, **ext_params)
+                roll_items_ext[roll_idx] = media_ext
+
     def _process_group(self, group, result, ext_params):
         items = result.get(ITEMS) or ()
         for idx, asset in enumerate(group):
@@ -109,13 +118,7 @@ class _LessonOverviewExporter(object):
                 items[idx] = ext_obj
             elif INTIMediaRoll.providedBy(asset):
                 roll_items_ext = items[idx].get(ITEMS) or ()
-                for roll_idx, media_ref in enumerate(asset):
-                    # For user created, make sure we export the media payload
-                    # Otherwise, export the ref.
-                    media = IConcreteAsset(media_ref, media_ref)
-                    if IUserCreatedAsset.providedBy(media):
-                        media_ext = to_external_object(media, **ext_params)
-                        roll_items_ext[roll_idx] = media_ext
+                self._process_media_roll(asset, roll_items_ext, ext_params)
 
     def toExternalObject(self, *args, **kwargs):
         mod_args = dict(**kwargs)
