@@ -35,9 +35,12 @@ from nti.contenttypes.presentation.common import get_visibility_options
 
 from nti.contenttypes.presentation.group import NTICourseOverViewGroup
 
+from nti.contenttypes.presentation.interfaces import IUserCreatedAsset
+from nti.contenttypes.presentation.interfaces import IGroupOverViewable
 from nti.contenttypes.presentation.interfaces import IPresentationAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
+from nti.contenttypes.presentation.interfaces import IPackagePresentationAsset
 
 from nti.contenttypes.presentation.lesson import NTILessonOverView
 
@@ -78,7 +81,14 @@ class TestModule(unittest.TestCase):
             if not IRecordable.providedBy(obj):
                 not_recordable += 1
         assert_that(not_recordable, is_(8))
-
+        
+        class IExternalAsset(IPackagePresentationAsset, IUserCreatedAsset, 
+                             IGroupOverViewable):
+            pass
+        obj = Foo()
+        interface.alsoProvides(obj, IExternalAsset)
+        assert_that(interface_of_asset(obj), is_(IExternalAsset))
+         
     def test_group(self):
         group = NTICourseOverViewGroup()
         assert_that(group, validly_provides(INTICourseOverviewGroup))
