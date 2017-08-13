@@ -132,7 +132,7 @@ class NTITranscript(PersistentMixin):
 class NTIAudioSource(PersistentMixin):
     createDirectFieldProperties(INTIAudioSource)
 
-    __external_class_name__ = "VideoSource"
+    __external_class_name__ = "AudioSource"
     mime_type = mimeType = 'application/vnd.nextthought.ntiaudiosource'
 
     @Lazy
