@@ -25,6 +25,8 @@ from nti.contenttypes.presentation.interfaces import IPointer
 from nti.contenttypes.presentation.interfaces import INTIMediaRoll
 from nti.contenttypes.presentation.interfaces import IConcreteAsset
 from nti.contenttypes.presentation.interfaces import INTITranscript
+from nti.contenttypes.presentation.interfaces import INTIAudioSource
+from nti.contenttypes.presentation.interfaces import INTIVideoSource
 from nti.contenttypes.presentation.interfaces import IUserCreatedAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
@@ -39,6 +41,7 @@ from nti.externalization.externalization import to_external_object
 
 from nti.externalization.interfaces import IInternalObjectIO
 from nti.externalization.interfaces import StandardExternalFields
+from nti.externalization.interfaces import StandardInternalFields
 from nti.externalization.interfaces import IInternalObjectExternalizer
 
 from nti.mimetype.externalization import decorateMimeType
@@ -55,6 +58,8 @@ ITEMS = StandardExternalFields.ITEMS
 MIMETYPE = StandardExternalFields.MIMETYPE
 CREATED_TIME = StandardExternalFields.CREATED_TIME
 LAST_MODIFIED = StandardExternalFields.LAST_MODIFIED
+
+INTERNAL_NTIID = StandardInternalFields.NTIID
 
 
 @interface.implementer(IInternalObjectIO)
@@ -182,6 +187,34 @@ class _NTITranscriptExternalizer(InterfaceObjectIO):
         return result
 
 
+@interface.implementer(IInternalObjectExternalizer)
+class _NTIMediaSourceExporter(object):
+
+    provided = None
+
+    def __init__(self, context):
+        self.context = context
+
+    def toExternalObject(self, *args, **kwargs):
+        exporter = InterfaceObjectIO(self.context, self.provided)
+        result = exporter.toExternalObject(*args, **kwargs)
+        for name in (NTIID, INTERNAL_NTIID):
+            result.pop(name, None)
+        return result
+
+
+@component.adapter(INTIAudioSource)
+@interface.implementer(IInternalObjectExternalizer)
+class _NTIAudioSourceExporter(_NTIMediaSourceExporter):
+    provided = INTIAudioSource
+
+
+@component.adapter(INTIVideoSource)
+@interface.implementer(IInternalObjectExternalizer)
+class _NTIVideoSourceExporter(_NTIMediaSourceExporter):
+    provided = INTIVideoSource
+
+
 @component.adapter(INTITranscript)
 @interface.implementer(IInternalObjectExternalizer)
 class _NTITranscriptExporter(object):
@@ -201,4 +234,6 @@ class _NTITranscriptExporter(object):
             result['filename'] = getattr(source, 'filename', None)
         else:
             result['src'] = source
+        for name in (NTIID, INTERNAL_NTIID):
+            result.pop(name, None)
         return result

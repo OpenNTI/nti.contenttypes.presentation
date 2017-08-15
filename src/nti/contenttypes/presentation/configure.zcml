@@ -113,6 +113,16 @@
 			 for=".interfaces.INTILessonOverview"
 			 name="exporter" />
 
+	<adapter factory=".externalization._NTIAudioSourceExporter"
+			 for=".interfaces.INTIAudioSource"
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" 
+			 name="exporter" />
+
+	<adapter factory=".externalization._NTIVideoSourceExporter"
+			 for=".interfaces.INTIVideoSource"
+			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" 
+			 name="exporter" />
+
 	<adapter factory=".externalization._NTITranscriptExporter"
 			 for=".interfaces.INTITranscript"
 			 provides="nti.externalization.interfaces.IInternalObjectExternalizer" 
