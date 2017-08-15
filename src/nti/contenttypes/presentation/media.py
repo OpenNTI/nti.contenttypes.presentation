@@ -79,14 +79,13 @@ def compute_part_ntiid(part, nttype, field):
             child_part_ntiid = child_part.__dict__.get('ntiid')
             parent_part_ids.add(child_part_ntiid)
         parent_part_ids.discard(None)
-
+        # start from 0 index
         uid = make_specific_safe(str(0))
         parts = get_parts(base_ntiid)
-
         # Iterate until we find an ntiid that does not collide.
         idx = 0
         while True:
-            specific = "%s.%s" % (parts.specific, uid)
+            specific = u"%s.%s" % (parts.specific, uid)
             result = make_ntiid(parts.date,
                                 parts.provider,
                                 nttype,
@@ -102,7 +101,6 @@ def compute_part_ntiid(part, nttype, field):
 @interface.implementer(INTITranscriptFile, IContained)
 class NTITranscriptFile(File):
     __parent__ = None
-
 
 
 @interface.implementer(INTITranscript, IContentTypeAware)
@@ -338,7 +336,7 @@ class NTIMediaRoll(RecordablePresentationAsset):
             pass
         return False
 
-    def reset(self, *args, **kwargs):
+    def reset(self, *unused_args, **unused_kwargs):
         result = len(self)
         if self.items:
             del self.items[:]
