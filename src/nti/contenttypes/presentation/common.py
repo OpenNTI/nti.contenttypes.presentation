@@ -34,8 +34,8 @@ from nti.ntiids.ntiids import make_specific_safe
 def generate_ntiid(nttype, provider=NTI, now=None):
     now = datetime.utcnow() if now is None else now
     dstr = now.strftime("%Y%m%d%H%M%S %f")
-    rand = str(uuid.uuid4().get_time_low())
-    specific = make_specific_safe("%s_%s_%s" % (SYSTEM_USER_NAME, dstr, rand))
+    rand = str(uuid.uuid4().get_time_low()).upper()
+    specific = make_specific_safe(u"%s_%s_%s" % (SYSTEM_USER_NAME, dstr, rand))
     result = make_ntiid(provider=provider,
                         nttype=nttype,
                         specific=specific)
