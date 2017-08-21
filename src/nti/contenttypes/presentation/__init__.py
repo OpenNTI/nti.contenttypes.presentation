@@ -52,6 +52,9 @@ from nti.schema.interfaces import find_most_derived_interface
 
 from nti.schema.jsonschema import TAG_HIDDEN_IN_UI
 
+#: NTI provider
+NTI = u'NTI'
+
 #: Fields attribute
 FIELDS = u'Fields'
 

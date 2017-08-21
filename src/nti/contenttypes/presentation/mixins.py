@@ -21,6 +21,8 @@ from zope.mimetype.interfaces import IContentTypeAware
 
 from nti.base.interfaces import ICreated
 
+from nti.contenttypes.presentation import NTI
+
 from nti.contenttypes.presentation.common import make_schema
 from nti.contenttypes.presentation.common import generate_ntiid
 
@@ -62,7 +64,7 @@ class PersistentPresentationAsset(PersistentMixin):
         return self.byline
 
     @classmethod
-    def generate_ntiid(cls, nttype, provider=u'NTI'):
+    def generate_ntiid(cls, nttype, provider=NTI):
         return generate_ntiid(nttype, provider=provider)
 
     def __lt__(self, other):
