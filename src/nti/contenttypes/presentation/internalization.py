@@ -598,9 +598,9 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
         lesson = parsed.get('lesson')
         # make sure we update the incoming ntiid
         # since in legacy it may the ntiid of a content unit
-        if not lesson \
-                and is_valid_ntiid_string(ntiid) \
-                and get_type(ntiid) != NTI_LESSON_OVERVIEW:
+        if      not lesson \
+            and is_valid_ntiid_string(ntiid) \
+            and get_type(ntiid) != NTI_LESSON_OVERVIEW:
             lesson = make_ntiid(nttype=NTI_LESSON_OVERVIEW, base=ntiid)
             parsed['ntiid'] = lesson
             parsed['lesson'] = ntiid
