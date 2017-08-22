@@ -113,6 +113,7 @@ def create_ntiaudioref_from_external(ext_obj, notify=True, _exec=True):
 
 def create_questionref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
+                                         notify=notify,
                                          pre_hook=internalization_questionref_pre_hook,
                                          _exec=_exec)
     return result
@@ -128,6 +129,7 @@ def create_questionsetref_from_external(ext_obj, notify=True, _exec=True):
 
 def create_assignmentref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
+                                         notify=notify,
                                          pre_hook=internalization_assignmentref_pre_hook,
                                          _exec=_exec)
     return result
@@ -135,6 +137,7 @@ def create_assignmentref_from_external(ext_obj, notify=True, _exec=True):
 
 def create_surveyref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
+                                         notify=notify,
                                          pre_hook=internalization_surveyref_pre_hook,
                                          _exec=_exec)
     return result
@@ -142,6 +145,7 @@ def create_surveyref_from_external(ext_obj, notify=True, _exec=True):
 
 def create_pollref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
+                                         notify=notify,
                                          pre_hook=internalization_pollref_pre_hook,
                                          _exec=_exec)
     return result
@@ -157,6 +161,7 @@ def create_discussionref_from_external(ext_obj, notify=True, _exec=True):
 
 def create_ntislidedeckref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
+                                         notify=notify,
                                          pre_hook=internalization_ntislidedeckref_pre_hook,
                                          _exec=_exec)
     return result
@@ -180,6 +185,7 @@ def create_ntitimeline_from_external(ext_obj, notify=True, _exec=True):
 
 def create_ntitimelineref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
+                                         notify=notify,
                                          pre_hook=internalization_ntitimelineref_pre_hook,
                                          _exec=_exec)
     return result

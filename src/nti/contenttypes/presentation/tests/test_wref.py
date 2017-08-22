@@ -17,6 +17,7 @@ import fudge
 import unittest
 
 from nti.contenttypes.presentation.group import NTICourseOverViewGroup
+
 from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
 from nti.contenttypes.presentation.wref import PresentationAssetWeakRef
