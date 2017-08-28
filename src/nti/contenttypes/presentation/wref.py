@@ -18,6 +18,8 @@ from nti.contenttypes.presentation import IPresentationAsset
 
 from nti.ntiids.ntiids import validate_ntiid_string
 
+from nti.property.property import alias
+
 from nti.wref.interfaces import IWeakRef
 
 
@@ -25,6 +27,10 @@ from nti.wref.interfaces import IWeakRef
 @interface.implementer(IWeakRef)
 @component.adapter(IPresentationAsset)
 class PresentationAssetWeakRef(object):
+
+    __slots__ = ('ntiid',)
+    
+    _ntiid = alias('ntiid')
 
     def __init__(self, item):
         self.ntiid = item.ntiid

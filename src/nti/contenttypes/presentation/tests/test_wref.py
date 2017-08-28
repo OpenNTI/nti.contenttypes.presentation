@@ -12,6 +12,7 @@ from hamcrest import none
 from hamcrest import is_not
 from hamcrest import assert_that
 from hamcrest import instance_of
+from hamcrest import has_properties
 
 import fudge
 import unittest
@@ -35,9 +36,12 @@ class TestWref(unittest.TestCase):
     def test_adapter(self, mock_call):
         for clazz in (NTICourseOverViewGroup, NTIRelatedWorkRef):
             asset = clazz()
-            asset.ntiid = u'tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'
+            ntiid = asset.ntiid = u'tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'
             mock_call.is_callable().returns( asset )
             wref = IWeakRef(asset, None)
             assert_that(wref, is_not(none()))
             assert_that(wref, instance_of(PresentationAssetWeakRef))
+            assert_that(wref, 
+                    has_properties('ntiid', is_(ntiid),
+                                   '_ntiid', is_(ntiid)))
             assert_that(wref(), is_(asset))
