@@ -15,7 +15,7 @@ from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 
-from zope.container.contained import Contained
+from zope.location.interfaces import IContained
 
 from zope.mimetype.interfaces import IContentTypeAware
 
@@ -40,9 +40,12 @@ from nti.schema.interfaces import find_most_derived_interface
 
 
 @WithRepr
+@interface.implementer(IContained)
 class PersistentMixin(SchemaConfigured,
-                      PersistentCreatedModDateTrackingObject,
-                      Contained):  # order matters
+                      PersistentCreatedModDateTrackingObject):  # order matters
+
+    __name__ = None
+    __parent__ = None
 
     jsonschema = ''
 
@@ -54,9 +57,11 @@ class PersistentMixin(SchemaConfigured,
 @total_ordering
 @interface.implementer(IPresentationAsset, IContentTypeAware, ICreated)
 class PersistentPresentationAsset(PersistentMixin):
+
     title = None
     byline = None
     description = None
+
     parameters = {}  # IContentTypeAware
 
     @readproperty
