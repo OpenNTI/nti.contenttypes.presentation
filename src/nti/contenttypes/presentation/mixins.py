@@ -47,7 +47,7 @@ class PersistentMixin(SchemaConfigured,
     jsonschema = ''
 
     def __init__(self, *args, **kwargs):
-        SchemaConfigured.__init__(self, *args, **kwargs)
+        SchemaConfigured.__init__(self, **kwargs)
         PersistentCreatedModDateTrackingObject.__init__(self, *args, **kwargs)
 
 
