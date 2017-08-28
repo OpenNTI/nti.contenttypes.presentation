@@ -20,10 +20,13 @@ from nti.ntiids.ntiids import validate_ntiid_string
 
 from nti.property.property import alias
 
+from nti.schema.eqhash import EqHash
+
 from nti.wref.interfaces import IWeakRef
 
 
 @total_ordering
+@EqHash('ntiid')
 @interface.implementer(IWeakRef)
 @component.adapter(IPresentationAsset)
 class PresentationAssetWeakRef(object):
@@ -39,17 +42,6 @@ class PresentationAssetWeakRef(object):
     def __call__(self):
         # We're not a caching weak ref
         return component.queryUtility(IPresentationAsset, name=self.ntiid)
-
-    def __eq__(self, other):
-        try:
-            return self is other or self.ntiid == other.ntiid
-        except AttributeError:
-            return NotImplemented
-
-    def __hash__(self):
-        xhash = 47
-        xhash ^= hash(self.ntiid)
-        return xhash
 
     def __lt__(self, other):
         try:
