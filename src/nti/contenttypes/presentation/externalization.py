@@ -198,7 +198,7 @@ class _NTIMediaSourceExporter(object):
     def toExternalObject(self, *args, **kwargs):
         exporter = InterfaceObjectIO(self.context, self.provided)
         result = exporter.toExternalObject(*args, **kwargs)
-        for name in (NTIID, INTERNAL_NTIID):
+        for name in (NTIID, INTERNAL_NTIID, OID):
             result.pop(name, None)
         return result
 
