@@ -4,15 +4,15 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from functools import total_ordering
 
 from zope import component
 from zope import interface
+from zope import deferredimport
 
 from zope.annotation.interfaces import IAnnotations
 
@@ -65,6 +65,8 @@ from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.traversal.traversal import find_interface
+
+logger = __import__('logging').getLogger(__name__)
 
 
 @interface.implementer(INTICourseOverviewSpacer)
@@ -300,9 +302,8 @@ def get_constraint_satisfied_time(context, lesson):
     return satisfied_time
 
 
-import zope.deferredimport
-zope.deferredimport.initialize()
-zope.deferredimport.deprecatedFrom(
+deferredimport.initialize()
+deferredimport.deprecatedFrom(
     "moved to nti.contenttypes.presentation.group",
     "nti.contenttypes.presentation.group",
     "NTICourseOverViewGroup")
