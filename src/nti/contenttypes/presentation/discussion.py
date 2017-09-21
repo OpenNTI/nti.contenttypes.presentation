@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from urlparse import urlparse
 from functools import total_ordering
@@ -27,6 +26,8 @@ from nti.ntiids.ntiids import get_type
 from nti.ntiids.ntiids import make_ntiid
 
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+logger = __import__('logging').getLogger(__name__)
 
 
 @total_ordering
