@@ -8,7 +8,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-from urlparse import urlparse
+from six.moves import urllib_parse
 from functools import total_ordering
 
 from zope import interface
@@ -69,7 +69,7 @@ class NTIDiscussionRef(RecordablePresentationAsset):
 
 
 def is_nti_course_bundle(iden):
-    cmpns = urlparse(iden) if iden else None
+    cmpns = urllib_parse.urlparse(iden) if iden else None
     result = cmpns.scheme == NTI_COURSE_BUNDLE if cmpns is not None else False
     return result
 
