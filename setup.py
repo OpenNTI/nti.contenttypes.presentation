@@ -9,8 +9,8 @@ entry_points = {
 
 TESTS_REQUIRE = [
     'nti.testing',
-    'zope.testrunner',
     'zope.dottedname',
+    'zope.testrunner',
 ]
 
 
@@ -34,6 +34,8 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
@@ -84,6 +86,11 @@ setup(
     ],
     extras_require={
         'test': TESTS_REQUIRE,
+        'docs': [
+            'Sphinx',
+            'repoze.sphinx.autointerface',
+            'sphinx_rtd_theme',
+        ],
     },
     entry_points=entry_points,
 )
