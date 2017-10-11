@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import six
 import copy
@@ -21,10 +20,13 @@ from zope import interface
 
 from persistent.list import PersistentList
 
+from nti.base.interfaces import DEFAULT_CONTENT_TYPE
+
 from nti.contenttypes.presentation import TIMELINE
 from nti.contenttypes.presentation import RELATED_WORK
 from nti.contenttypes.presentation import JSON_TIMELINE
 from nti.contenttypes.presentation import RELATED_WORK_REF
+from nti.contenttypes.presentation import TEXT_VTT_MIMETYPE
 from nti.contenttypes.presentation import TIMELINE_MIME_TYPES
 from nti.contenttypes.presentation import NTI_LESSON_OVERVIEW
 from nti.contenttypes.presentation import SLIDE_DECK_MIME_TYPES
@@ -88,6 +90,8 @@ NTIID = StandardExternalFields.NTIID
 CREATOR = StandardExternalFields.CREATOR
 MIMETYPE = StandardExternalFields.MIMETYPE
 
+logger = __import__('logging').getLogger(__name__)
+
 
 # assets
 
@@ -102,11 +106,16 @@ def ntiid_check(s):
 def parse_embedded_transcript(transcript, parsed, encoded=True):
     contents = parsed['contents']
     filename = parsed.pop('filename', None) or "transcript.vtt"
+    # parse content type
     contentType = parsed.get('contentType') or parsed.get('type')
-    contentType = contentType or "text/vtt"
+    contentType = contentType or TEXT_VTT_MIMETYPE
+    if contentType == DEFAULT_CONTENT_TYPE:
+        contentType = TEXT_VTT_MIMETYPE
+    # handle content
     if encoded:
         contents = base64.b64decode(contents)
         contents = zlib.decompress(contents)
+    # create transcript
     result = NTITranscriptFile(contentType)
     result.data = contents
     result.name = result.filename = filename
@@ -285,8 +294,8 @@ class _TargetNTIIDUpdater(_AssetUpdater):
 
 class _NTIMediaRefUpdater(_TargetNTIIDUpdater):
 
-    def fixTarget(self, parsed, transfer=False):
-        return _TargetNTIIDUpdater.fixTarget(self, parsed, transfer=True)
+    def fixTarget(self, parsed, unused_transfer=False):
+        return _TargetNTIIDUpdater.fixTarget(self, parsed, True)
 
     def fixAll(self, parsed):
         self.fixTarget(parsed).fixCreator(parsed)

@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from copy import copy
 
@@ -77,11 +76,12 @@ SBV_TRANSCRIPT_TYPE = u'sbv'
 SRT_TRANSCRIPT_TYPE = u'srt'
 VTT_TRANSCRIPT_TYPE = u'vtt'
 TRANSCRIPT_TYPES = (
-    SBV_TRANSCRIPT_TYPE, SRT_TRANSCRIPT_TYPE, VTT_TRANSCRIPT_TYPE)
+    SBV_TRANSCRIPT_TYPE, SRT_TRANSCRIPT_TYPE, VTT_TRANSCRIPT_TYPE
+)
 
-TRANSCRIPT_TYPE_VOCABULARY = \
-    vocabulary.SimpleVocabulary(
-        [vocabulary.SimpleTerm(x) for x in TRANSCRIPT_TYPES])
+TRANSCRIPT_TYPE_VOCABULARY = vocabulary.SimpleVocabulary(
+    [vocabulary.SimpleTerm(x) for x in TRANSCRIPT_TYPES]
+)
 
 # Transcript MimeTypes
 
@@ -91,9 +91,9 @@ VTT_TRANSCRIPT_MIMETYPE = u'text/vtt'
 TRANSCRIPT_MIMETYPES = (SBV_TRANSCRIPT_MIMETYPE, SRT_TRANSCRIPT_MIMETYPE,
                         VTT_TRANSCRIPT_MIMETYPE)
 
-TRANSCRIPT_MIMETYPE_VOCABULARY = \
-    vocabulary.SimpleVocabulary(
-        [vocabulary.SimpleTerm(x) for x in TRANSCRIPT_MIMETYPES])
+TRANSCRIPT_MIMETYPE_VOCABULARY = vocabulary.SimpleVocabulary(
+    [vocabulary.SimpleTerm(x) for x in TRANSCRIPT_MIMETYPES]
+)
 
 # Video Services
 
@@ -104,9 +104,9 @@ KALTURA_VIDEO_SERVICE = u'kaltura'
 VIDEO_SERVICES = (HTML5_VIDEO_SERVICE, VIMEO_VIDEO_SERVICE, YOUTUBE_VIDEO_SERVICE,
                   KALTURA_VIDEO_SERVICE)
 
-VIDEO_SERVICES_VOCABULARY = \
-    vocabulary.SimpleVocabulary(
-        [vocabulary.SimpleTerm(x) for x in VIDEO_SERVICES])
+VIDEO_SERVICES_VOCABULARY = vocabulary.SimpleVocabulary(
+    [vocabulary.SimpleTerm(x) for x in VIDEO_SERVICES]
+)
 
 # Video Service Types
 
@@ -120,9 +120,9 @@ VIDEO_SERVICE_TYPES = (MP4_VIDEO_SERVICE_TYPE, WEBM_VIDEO_SERVICE_TYPE,
                        YOUTUBE_VIDEO_SERVICE_TYPE, VIMEO_VIDEO_SERVICE_TYPE,
                        KALTURA_VIDEO_SERVICE_TYPE)
 
-VIDEO_SERVICE_TYPES_VOCABULARY = \
-    vocabulary.SimpleVocabulary(
-        [vocabulary.SimpleTerm(x) for x in VIDEO_SERVICE_TYPES])
+VIDEO_SERVICE_TYPES_VOCABULARY =vocabulary.SimpleVocabulary(
+    [vocabulary.SimpleTerm(x) for x in VIDEO_SERVICE_TYPES]
+)
 
 # Video Service Sources
 
@@ -131,18 +131,18 @@ WEBM_VIDEO_SOURCE = u'webm'
 OTHER_VIDEO_SOURCE = u'other'
 VIDEO_SOURCES = (MP4_VIDEO_SOURCE, WEBM_VIDEO_SOURCE, OTHER_VIDEO_SOURCE)
 
-VIDEO_SOURCES_VOCABULARY = \
-    vocabulary.SimpleVocabulary(
-        [vocabulary.SimpleTerm(x) for x in VIDEO_SOURCES])
+VIDEO_SOURCES_VOCABULARY = vocabulary.SimpleVocabulary(
+    [vocabulary.SimpleTerm(x) for x in VIDEO_SOURCES]
+)
 
 # Audio Services
 
 HTML5_AUDIO_SERVICE = u'html5'
 AUDIO_SERVICES = (HTML5_AUDIO_SERVICE,)
 
-AUDIO_SERVICES_VOCABULARY = \
-    vocabulary.SimpleVocabulary(
-        [vocabulary.SimpleTerm(x) for x in AUDIO_SERVICES])
+AUDIO_SERVICES_VOCABULARY = vocabulary.SimpleVocabulary(
+    [vocabulary.SimpleTerm(x) for x in AUDIO_SERVICES]
+)
 
 # Audio Service Types
 
@@ -151,9 +151,9 @@ WAV_AUDIO_SERVICE_TYPE = u'audio/wav'
 
 AUDIO_SERVICE_TYPES = (MP3_AUDIO_SERVICE_TYPE, WAV_AUDIO_SERVICE_TYPE)
 
-AUDIO_SERVICE_TYPES_VOCABULARY = \
-    vocabulary.SimpleVocabulary(
-        [vocabulary.SimpleTerm(x) for x in AUDIO_SERVICE_TYPES])
+AUDIO_SERVICE_TYPES_VOCABULARY = vocabulary.SimpleVocabulary(
+    [vocabulary.SimpleTerm(x) for x in AUDIO_SERVICE_TYPES]
+)
 
 # Audio Service Sources
 
@@ -162,9 +162,9 @@ WAV_AUDIO_SOURCE = u'webm'
 OTHER_AUDIO_SOURCE = u'other'
 AUDIO_SOURCES = (MP3_AUDIO_SOURCE, WAV_AUDIO_SOURCE, OTHER_AUDIO_SOURCE)
 
-AUDIO_SOURCES_VOCABULARY = \
-    vocabulary.SimpleVocabulary(
-        [vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES])
+AUDIO_SOURCES_VOCABULARY = vocabulary.SimpleVocabulary(
+    [vocabulary.SimpleTerm(x) for x in AUDIO_SOURCES]
+)
 
 #: OU Visibility
 OU = u"OU"

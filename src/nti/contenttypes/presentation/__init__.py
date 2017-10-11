@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import zope.i18nmessageid
 MessageFactory = zope.i18nmessageid.MessageFactory(__name__)
@@ -160,6 +159,8 @@ NTI_LESSON_COMPLETION_CONSTRAINT = u'NTILessonCompletionConstraint'
 
 PUBLICATION_CONSTRAINTS = u'PublicationConstraints'
 
+TEXT_VTT_MIMETYPE = "text/vtt"
+
 NTI_TRANSCRIPT_MIMETYPE = 'application/vnd.nextthought.ntitranscript'
 
 SLIDE_MIME_TYPES = ('application/vnd.nextthought.slide', # legacy
@@ -212,6 +213,8 @@ COURSE_CONTAINER_INTERFACES = None
 PACKAGE_CONTAINER_INTERFACES = None
 GROUP_OVERVIEWABLE_INTERFACES = None
 ALL_PRESENTATION_ASSETS_INTERFACES = None
+
+logger = __import__('logging').getLogger(__name__)
 
 
 def interface_of_asset(item):
