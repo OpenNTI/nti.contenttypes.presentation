@@ -1,5 +1,6 @@
 import codecs
-from setuptools import setup, find_packages
+from setuptools import setup
+from setuptools import find_packages
 
 entry_points = {
     "z3c.autoinclude.plugin": [
@@ -8,6 +9,7 @@ entry_points = {
 }
 
 TESTS_REQUIRE = [
+    'fudge',
     'nti.testing',
     'zope.dottedname',
     'zope.testrunner',
@@ -25,7 +27,11 @@ setup(
     author='Jason Madden',
     author_email='jason@nextthought.com',
     description="NTI Presentation Content Types",
-    long_description=(_read('README.rst') + '\n\n' + _read('CHANGES.rst')),
+    long_description=(
+        _read('README.rst')
+        + '\n\n'
+        + _read("CHANGES.rst")
+    ),
     license='Apache',
     keywords='Content Presentation',
     classifiers=[
@@ -84,7 +90,7 @@ setup(
         'zope.location',
         'zope.mimetype',
         'zope.schema',
-        'zope.security'
+        'zope.security',
     ],
     extras_require={
         'test': TESTS_REQUIRE,
