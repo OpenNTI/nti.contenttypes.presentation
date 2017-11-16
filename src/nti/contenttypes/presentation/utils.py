@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import sys
 import importlib
@@ -57,6 +56,8 @@ from nti.externalization.internalization import find_factory_for
 from nti.externalization.internalization import update_from_external_object
 
 MIMETYPE = StandardExternalFields.MIMETYPE
+
+logger = __import__('logging').getLogger(__name__)
 
 
 def prepare_json_text(s):
