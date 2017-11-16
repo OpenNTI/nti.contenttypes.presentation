@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from functools import total_ordering
 
@@ -66,6 +65,8 @@ from nti.ntiids.ntiids import make_ntiid
 from nti.ntiids.ntiids import make_specific_safe
 
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+logger = __import__('logging').getLogger(__name__)
 
 
 def compute_part_ntiid(part, nttype, field):
@@ -182,13 +183,13 @@ class NTIMedia(RecordablePresentationAsset):
     def __lt__(self, other):
         try:
             return (self.mimeType, self.title) < (other.mimeType, other.title)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
     def __gt__(self, other):
         try:
             return (self.mimeType, self.title) > (other.mimeType, other.title)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
 

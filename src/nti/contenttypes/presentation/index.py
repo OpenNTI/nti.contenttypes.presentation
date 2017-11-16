@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import six
 import time
@@ -71,6 +70,8 @@ IX_CONTAINERS = 'containers'
 
 #: Asset slide deck videos
 IX_SLIDEDECK_VIDEOS = 'slideDeckVideos'
+
+logger = __import__('logging').getLogger(__name__)
 
 
 def to_iterable(value):
@@ -279,14 +280,13 @@ class AssetsLibraryCatalog(Catalog):
         query = {}
         container_query = 'all_of' if container_all_of else 'any_of'
         # prepare query
-        for index, value, index_query in (
-                            (IX_SITE, sites, 'any_of'),
-                            (IX_NTIID, ntiid, 'any_of'),
-                            (IX_TYPE, provided, 'any_of'),
-                            (IX_TARGET, target, 'any_of'),
-                            (IX_MIMETYPE, mimetype, 'any_of'),
-                            (IX_NAMESPACE, namespace, 'any_of'),
-                            (IX_CONTAINERS, container_ntiids, container_query)):
+        for index, value, index_query in ((IX_SITE, sites, 'any_of'),
+                                          (IX_NTIID, ntiid, 'any_of'),
+                                          (IX_TYPE, provided, 'any_of'),
+                                          (IX_TARGET, target, 'any_of'),
+                                          (IX_MIMETYPE, mimetype, 'any_of'),
+                                          (IX_NAMESPACE, namespace, 'any_of'),
+                                          (IX_CONTAINERS, container_ntiids, container_query)):
             if value is not None:
                 value = to_iterable(value)
                 query[index] = {index_query: value}
@@ -350,8 +350,8 @@ def install_assets_library_catalog(site_manager_container, intids=None):
     catalog = create_assets_library_catalog(family=intids.family)
     locate(catalog, site_manager_container, ASSETS_CATALOG_INDEX_NAME)
     intids.register(catalog)
-    lsm.registerUtility(catalog, 
-                        provided=ICatalog, 
+    lsm.registerUtility(catalog,
+                        provided=ICatalog,
                         name=ASSETS_CATALOG_INDEX_NAME)
 
     for index in catalog.values():

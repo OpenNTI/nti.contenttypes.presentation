@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from functools import total_ordering
 
@@ -32,6 +31,8 @@ from nti.property.property import alias
 from nti.recorder.mixins import RecordableContainerMixin
 
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+logger = __import__('logging').getLogger(__name__)
 
 
 class DuplicateReference(ValueError):
@@ -138,11 +139,11 @@ class NTICourseOverViewGroup(RecordablePresentationAsset,
     def __lt__(self, other):
         try:
             return (self.mimeType, self.title) < (other.mimeType, other.title)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
     def __gt__(self, other):
         try:
             return (self.mimeType, self.title) > (other.mimeType, other.title)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented

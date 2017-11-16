@@ -161,13 +161,13 @@ class NTILessonOverView(CalendarPublishableMixin,
     def __lt__(self, other):
         try:
             return (self.mimeType, self.title) < (other.mimeType, other.title)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
     def __gt__(self, other):
         try:
             return (self.mimeType, self.title) > (other.mimeType, other.title)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
 

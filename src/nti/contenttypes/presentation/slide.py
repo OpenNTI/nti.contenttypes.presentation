@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from itertools import chain
 from functools import total_ordering
@@ -39,6 +38,8 @@ from nti.property.property import alias
 from nti.schema.eqhash import EqHash
 
 from nti.schema.fieldproperty import createDirectFieldProperties
+
+logger = __import__('logging').getLogger(__name__)
 
 
 @interface.implementer(INTISlide)
@@ -119,7 +120,7 @@ class NTISlideDeck(RecordablePresentationAsset):
         elif INTISlideVideo.providedBy(item):
             if self.videos is None:
                 self.videos = PersistentList([item])
-            else: 
+            else:
                 self.videos.append(item)
     add = append
 
@@ -146,19 +147,19 @@ class NTISlideDeck(RecordablePresentationAsset):
     def __lt__(self, other):
         try:
             return (self.mimeType, self.title) < (other.mimeType, other.title)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
     def __gt__(self, other):
         try:
             return (self.mimeType, self.title) > (other.mimeType, other.title)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
 
 @EqHash('target')
 @interface.implementer(INTISlideDeckRef)
-class NTISlideDeckRef(PersistentPresentationAsset): # not recordable
+class NTISlideDeckRef(PersistentPresentationAsset):  # not recordable
     createDirectFieldProperties(INTISlideDeckRef)
 
     __external_class_name__ = "SlideDeckRef"

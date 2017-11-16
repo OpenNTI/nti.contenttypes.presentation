@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 from functools import total_ordering
 
@@ -37,6 +36,8 @@ from nti.recorder.mixins import RecordableMixin
 from nti.schema.field import SchemaConfigured
 
 from nti.schema.interfaces import find_most_derived_interface
+
+logger = __import__('logging').getLogger(__name__)
 
 
 @WithRepr
@@ -75,13 +76,13 @@ class PersistentPresentationAsset(PersistentMixin):
     def __lt__(self, other):
         try:
             return (self.mimeType, self.ntiid) < (other.mimeType, other.ntiid)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
     def __gt__(self, other):
         try:
             return (self.mimeType, self.ntiid) > (other.mimeType, other.ntiid)
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             return NotImplemented
 
     def schema(self, user=None):
