@@ -11,6 +11,7 @@ entry_points = {
 TESTS_REQUIRE = [
     'fudge',
     'nti.testing',
+    'zope.formlib',
     'zope.dottedname',
     'zope.testrunner',
 ]
@@ -56,6 +57,7 @@ setup(
         'setuptools',
         'BTrees',
         'nti.base',
+        'nti.containers',
         'nti.contenttypes.reports',
         'nti.coremetadata',
         'nti.dublincore',
@@ -98,6 +100,7 @@ setup(
             'Sphinx',
             'repoze.sphinx.autointerface',
             'sphinx_rtd_theme',
+            'zope.formlib',
         ],
     },
     entry_points=entry_points,
