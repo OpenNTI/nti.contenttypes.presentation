@@ -12,7 +12,7 @@
 
 	<include package="nti.mimetype" />
 	<include package="nti.publishing" />
-	
+
 	<!-- Adapters -->
 	<adapter factory=".adapters.ntivideo_to_ntivideoref"
 			 for=".interfaces.INTIVideo"

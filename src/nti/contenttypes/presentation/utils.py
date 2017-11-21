@@ -14,7 +14,6 @@ from collections import Mapping
 
 from nti.contenttypes.presentation import AUDIO_MIME_TYPES
 from nti.contenttypes.presentation import VIDEO_MIME_TYPES
-from nti.contenttypes.presentation import POLL_REF_MIME_TYPES
 from nti.contenttypes.presentation import TIMELINE_MIME_TYPES
 from nti.contenttypes.presentation import AUDIO_REF_MIME_TYPES
 from nti.contenttypes.presentation import VIDEO_REF_MIME_TYPES
@@ -229,7 +228,6 @@ def is_timeline_mimeType(mimeType):
 def mime_types():
     for data in (AUDIO_MIME_TYPES,
                  VIDEO_MIME_TYPES,
-                 POLL_REF_MIME_TYPES,
                  TIMELINE_MIME_TYPES,
                  AUDIO_REF_MIME_TYPES,
                  VIDEO_REF_MIME_TYPES,

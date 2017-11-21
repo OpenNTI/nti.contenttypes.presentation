@@ -16,7 +16,8 @@ import zope.testing.cleanup
 class SharedConfiguringTestLayer(ZopeComponentLayer,
                                  ConfiguringLayerMixin):
 
-    set_up_packages = ('nti.contenttypes.presentation',)
+    set_up_packages = ('nti.contenttypes.presentation',
+                       ('configure_legacy.zcml', 'nti.contenttypes.presentation'),)
 
     @classmethod
     def setUp(cls):

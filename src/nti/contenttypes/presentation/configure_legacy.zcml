@@ -7,9 +7,16 @@
 	<include package="zope.component" file="meta.zcml" />
 	<include package="zope.component" />
 
-	 <adapter factory=".datastructures.LegacyDiscussionFactory"
-			  for="nti.base.interfaces.IDict"
-			  provides="nti.externalization.interfaces.IMimeObjectFactory"
-			  name="application/vnd.nextthought.discussion" />
-			 
+	<adapter factory=".datastructures.LegacyPollRefFactory"
+			 for="nti.base.interfaces.IDict"
+			 provides="nti.externalization.interfaces.IMimeObjectFactory"
+			 name="application/vnd.nextthought.napoll" />
+
+	<!--
+	<adapter factory=".datastructures.LegacyDiscussionFactory"
+			 for="nti.base.interfaces.IDict"
+			 provides="nti.externalization.interfaces.IMimeObjectFactory"
+			 name="application/vnd.nextthought.discussion" />
+	-->
+	 
 </configure>
