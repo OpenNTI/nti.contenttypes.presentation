@@ -18,7 +18,6 @@ from nti.contenttypes.presentation import TIMELINE_MIME_TYPES
 from nti.contenttypes.presentation import AUDIO_REF_MIME_TYPES
 from nti.contenttypes.presentation import VIDEO_REF_MIME_TYPES
 from nti.contenttypes.presentation import AUDIO_ROLL_MIME_TYPES
-from nti.contenttypes.presentation import SURVEY_REF_MIME_TYPES
 from nti.contenttypes.presentation import VIDEO_ROLL_MIME_TYPES
 from nti.contenttypes.presentation import QUESTION_REF_MIME_TYPES
 from nti.contenttypes.presentation import TIMELINE_REF_MIME_TYPES
@@ -34,7 +33,6 @@ from nti.contenttypes.presentation.internalization import internalization_pollre
 from nti.contenttypes.presentation.internalization import internalization_ntiaudio_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntivideo_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_mediaroll_pre_hook
-from nti.contenttypes.presentation.internalization import internalization_surveyref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntiaudioref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntivideoref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntitimeline_pre_hook
@@ -135,14 +133,6 @@ def create_assignmentref_from_external(ext_obj, notify=True, _exec=True):
     return result
 
 
-def create_surveyref_from_external(ext_obj, notify=True, _exec=True):
-    result = create_object_from_external(ext_obj,
-                                         notify=notify,
-                                         pre_hook=internalization_surveyref_pre_hook,
-                                         _exec=_exec)
-    return result
-
-
 def create_pollref_from_external(ext_obj, notify=True, _exec=True):
     result = create_object_from_external(ext_obj,
                                          notify=notify,
@@ -232,7 +222,6 @@ def mime_types():
                  AUDIO_REF_MIME_TYPES,
                  VIDEO_REF_MIME_TYPES,
                  AUDIO_ROLL_MIME_TYPES,
-                 SURVEY_REF_MIME_TYPES,
                  VIDEO_ROLL_MIME_TYPES,
                  QUESTION_REF_MIME_TYPES,
                  TIMELINE_REF_MIME_TYPES,

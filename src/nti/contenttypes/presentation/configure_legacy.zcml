@@ -12,6 +12,11 @@
 			 provides="nti.externalization.interfaces.IMimeObjectFactory"
 			 name="application/vnd.nextthought.napoll" />
 
+	<adapter factory=".datastructures.LegacySurveyRefFactory"
+			 for="nti.base.interfaces.IDict"
+			 provides="nti.externalization.interfaces.IMimeObjectFactory"
+			 name="application/vnd.nextthought.nasurvey" />
+
 	<!--
 	<adapter factory=".datastructures.LegacyDiscussionFactory"
 			 for="nti.base.interfaces.IDict"

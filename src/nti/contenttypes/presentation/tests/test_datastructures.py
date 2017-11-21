@@ -16,8 +16,10 @@ from hamcrest import assert_that
 import unittest
 
 from nti.contenttypes.presentation import POLL_REF_MIME_TYPES
+from nti.contenttypes.presentation import SURVEY_REF_MIME_TYPES
 
 from nti.contenttypes.presentation.assessment import NTIPollRef
+from nti.contenttypes.presentation.assessment import NTISurveyRef
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
@@ -36,3 +38,12 @@ class TestDatastructures(unittest.TestCase):
             factory = find_factory_for(ext_obj)
             assert_that(factory, is_not(none()))
             assert_that(factory(), is_(NTIPollRef))
+
+    def test_surveyref(self):
+        for mimeType in SURVEY_REF_MIME_TYPES:
+            ext_obj = {
+                "MimeType": mimeType
+            }
+            factory = find_factory_for(ext_obj)
+            assert_that(factory, is_not(none()))
+            assert_that(factory(), is_(NTISurveyRef))

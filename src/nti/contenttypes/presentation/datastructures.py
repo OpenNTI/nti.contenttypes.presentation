@@ -9,9 +9,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 from nti.contenttypes.presentation.assessment import NTIPollRef
+from nti.contenttypes.presentation.assessment import NTISurveyRef
 
 logger = __import__('logging').getLogger(__name__)
 
 
 def LegacyPollRefFactory(unused_ext_obj):
     return NTIPollRef
+
+
+def LegacySurveyRefFactory(unused_ext_obj):
+    return NTISurveyRef
