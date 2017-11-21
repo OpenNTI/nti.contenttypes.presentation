@@ -234,7 +234,7 @@
 			 provides="nti.externalization.interfaces.IInternalObjectUpdater" />
 
 	<!-- Mime factories -->
-	<ext:registerMimeFactories module=".group" />
+	<include package="." file="configure_legacy.zcml" />
 	
 	<!-- weak refs -->
 	<include package="nti.wref" />

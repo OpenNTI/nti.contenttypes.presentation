@@ -7,21 +7,9 @@
 	<include package="zope.component" file="meta.zcml" />
 	<include package="zope.component" />
 
-	<adapter factory=".datastructures.LegacyPollRefFactory"
+	<adapter factory=".datastructures.CourseOverViewGroupFactory"
 			 for="nti.base.interfaces.IDict"
 			 provides="nti.externalization.interfaces.IMimeObjectFactory"
-			 name="application/vnd.nextthought.napoll" />
-
-	<adapter factory=".datastructures.LegacySurveyRefFactory"
-			 for="nti.base.interfaces.IDict"
-			 provides="nti.externalization.interfaces.IMimeObjectFactory"
-			 name="application/vnd.nextthought.nasurvey" />
-
-	<!--
-	<adapter factory=".datastructures.LegacyDiscussionFactory"
-			 for="nti.base.interfaces.IDict"
-			 provides="nti.externalization.interfaces.IMimeObjectFactory"
-			 name="application/vnd.nextthought.discussion" />
-	-->
+			 name="application/vnd.nextthought.nticourseoverviewgroup" />
 	 
 </configure>
