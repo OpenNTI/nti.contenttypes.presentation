@@ -53,7 +53,7 @@ class TestDatastructures(unittest.TestCase):
             factory = find_factory_for(ext_obj)
             assert_that(factory, is_not(none()))
             assert_that(factory(), is_(NTICourseOverViewGroup))
-            
+
         for mimeType in LESSON_OVERVIEW_MIME_TYPES:
             ext_obj = {
                 "MimeType": mimeType
@@ -72,7 +72,7 @@ class TestDatastructures(unittest.TestCase):
         items = ext_obj.get(ITEMS)
         assert_that(items,
                     has_length(greater_than(old_length)))
-        
+
     def test_lessongroup_transform(self):
         path = os.path.join(os.path.dirname(__file__),
                             'lessonoverview.json')
@@ -83,21 +83,21 @@ class TestDatastructures(unittest.TestCase):
         assert_that(groups, has_length(5))
 
         assert_that(groups[0],
-                    has_entry('Items', 
+                    has_entry(ITEMS,
                               contains(has_entry('MimeType', 'application/vnd.nextthought.ntivideoref'))))
 
         assert_that(groups[1],
-                    has_entry('Items', 
+                    has_entry(ITEMS,
                               contains(has_entry('MimeType', 'application/vnd.nextthought.discussionref'))))
-        
+
         assert_that(groups[2],
-                    has_entry('Items', 
+                    has_entry(ITEMS,
                               contains(has_entry('MimeType', 'application/vnd.nextthought.assignmentref'))))
 
         assert_that(groups[3],
-                    has_entry('Items', 
+                    has_entry(ITEMS,
                               contains(has_entry('MimeType', 'application/vnd.nextthought.questionsetref'))))
 
         assert_that(groups[4],
-                    has_entry('Items', 
+                    has_entry(ITEMS,
                               contains(has_entry('MimeType', 'application/vnd.nextthought.relatedworkref'))))
