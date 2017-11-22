@@ -39,6 +39,7 @@ from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.internalization import find_factory_for
 
 ITEMS = StandardExternalFields.ITEMS
+MIMETYPE = StandardExternalFields.MIMETYPE
 
 
 class TestDatastructures(unittest.TestCase):
@@ -48,7 +49,7 @@ class TestDatastructures(unittest.TestCase):
     def test_factory(self):
         for mimeType in COURSE_OVERVIEW_GROUP_MIME_TYPES:
             ext_obj = {
-                "MimeType": mimeType
+                MIMETYPE: mimeType
             }
             factory = find_factory_for(ext_obj)
             assert_that(factory, is_not(none()))
@@ -56,7 +57,7 @@ class TestDatastructures(unittest.TestCase):
 
         for mimeType in LESSON_OVERVIEW_MIME_TYPES:
             ext_obj = {
-                "MimeType": mimeType
+                MIMETYPE: mimeType
             }
             factory = find_factory_for(ext_obj)
             assert_that(factory, is_not(none()))
@@ -84,20 +85,20 @@ class TestDatastructures(unittest.TestCase):
 
         assert_that(groups[0],
                     has_entry(ITEMS,
-                              contains(has_entry('MimeType', 'application/vnd.nextthought.ntivideoref'))))
+                              contains(has_entry(MIMETYPE, 'application/vnd.nextthought.ntivideoref'))))
 
         assert_that(groups[1],
                     has_entry(ITEMS,
-                              contains(has_entry('MimeType', 'application/vnd.nextthought.discussionref'))))
+                              contains(has_entry(MIMETYPE, 'application/vnd.nextthought.discussionref'))))
 
         assert_that(groups[2],
                     has_entry(ITEMS,
-                              contains(has_entry('MimeType', 'application/vnd.nextthought.assignmentref'))))
+                              contains(has_entry(MIMETYPE, 'application/vnd.nextthought.assignmentref'))))
 
         assert_that(groups[3],
                     has_entry(ITEMS,
-                              contains(has_entry('MimeType', 'application/vnd.nextthought.questionsetref'))))
+                              contains(has_entry(MIMETYPE, 'application/vnd.nextthought.questionsetref'))))
 
         assert_that(groups[4],
                     has_entry(ITEMS,
-                              contains(has_entry('MimeType', 'application/vnd.nextthought.relatedworkref'))))
+                              contains(has_entry(MIMETYPE, 'application/vnd.nextthought.relatedworkref'))))
