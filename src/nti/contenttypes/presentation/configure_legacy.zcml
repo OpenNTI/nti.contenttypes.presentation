@@ -11,5 +11,10 @@
 			 for="nti.base.interfaces.IDict"
 			 provides="nti.externalization.interfaces.IMimeObjectFactory"
 			 name="application/vnd.nextthought.nticourseoverviewgroup" />
-	 
+ 
+ 	<adapter factory=".datastructures.LessonOverViewFactory"
+ 			 for="nti.base.interfaces.IDict"
+ 			 provides="nti.externalization.interfaces.IMimeObjectFactory"
+ 			 name="application/vnd.nextthought.ntilessonoverview" />
+
 </configure>

@@ -88,7 +88,6 @@
 						 .interfaces.INTIQuestionRef
 						 .interfaces.INTIAssignmentRef
 						 .interfaces.INTIQuestionSetRef
-						 .interfaces.INTILessonOverview
 						 .interfaces.INTISurveyRef
 						 .interfaces.INTIPollRef
 						 .interfaces.INTIMediaRoll
@@ -104,6 +103,9 @@
 
 	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
 			 for=".interfaces.INTICourseOverviewGroup" />
+
+	<adapter factory=".externalization._NTILessonOverviewInternalObjectIO"
+			 for=".interfaces.INTILessonOverview" />
 
 	<adapter factory=".externalization._NTITranscriptExternalizer"
 			 for=".interfaces.INTITranscript"

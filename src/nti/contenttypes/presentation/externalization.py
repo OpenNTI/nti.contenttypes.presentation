@@ -29,6 +29,7 @@ from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
 from nti.contenttypes.presentation.interfaces import IUserCreatedAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
+from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 
 from nti.contenttypes.presentation.lesson import constraints_for_lesson
@@ -63,6 +64,7 @@ INTERNAL_NTIID = StandardInternalFields.NTIID
 
 
 @interface.implementer(IInternalObjectIO)
+@component.adapter(INTICourseOverviewGroup)
 class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfaceObjectIO):
 
     _excluded = {ITEMS}
@@ -83,6 +85,20 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
         ]
         return result
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
+
+
+@component.adapter(INTILessonOverview)
+@interface.implementer(IInternalObjectIO)
+class _NTILessonOverviewInternalObjectIO(AutoPackageSearchingScopedInterfaceObjectIO):
+
+    @classmethod
+    def _ap_enumerate_externalizable_root_interfaces(cls, pa_interfaces):
+        return (pa_interfaces.INTILessonOverview,)
+
+    @classmethod
+    def _ap_enumerate_module_names(cls):
+        return ('lesson',)
+_NTILessonOverviewInternalObjectIO.__class_init__()
 
 
 @component.adapter(INTILessonOverview)

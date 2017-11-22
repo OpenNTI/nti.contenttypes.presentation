@@ -28,6 +28,8 @@ from nti.contenttypes.presentation.discussion import is_nti_course_bundle
 
 from nti.contenttypes.presentation.group import NTICourseOverViewGroup
 
+from nti.contenttypes.presentation.lesson import NTILessonOverView
+
 from nti.externalization.interfaces import StandardExternalFields
 
 from nti.ntiids.ntiids import is_ntiid_of_type
@@ -224,6 +226,18 @@ def legacy_nticourseoverviewgroup_transform(ext_obj):
     return ext_obj
 
 
+def legacy_ntilessonoverview_transform(ext_obj):
+    items = ext_obj.get(ITEMS)
+    if isinstance(items, MutableSequence):
+        for item in items:
+            legacy_nticourseoverviewgroup_transform(item)
+                
+
 def CourseOverViewGroupFactory(unused_ext_obj):
     # legacy_nticourseoverviewgroup_transform(ext_obj)
     return NTICourseOverViewGroup
+
+
+def LessonOverViewFactory(unused_ext_obj):
+    # legacy_ntilessonoverview_transform(ext_obj)
+    return NTILessonOverView
