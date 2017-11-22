@@ -40,61 +40,22 @@ ITEMS = StandardExternalFields.ITEMS
 NTIID = StandardExternalFields.NTIID
 MIMETYPE = StandardExternalFields.MIMETYPE
 
+LEGACY_MIMETYPE_MAPPING = {
+    # discussions
+    "application/vnd.nextthought.discussion": "application/vnd.nextthought.discussionref",
+    # assessments
+    "application/vnd.nextthought.assessment.assignment": "application/vnd.nextthought.assignmentref",
+    "application/vnd.nextthought.naquestionset": "application/vnd.nextthought.questionsetref",
+    "application/vnd.nextthought.naquestion": "application/vnd.nextthought.questionref",
+    "application/vnd.nextthought.nasurvey": "application/vnd.nextthought.surveyref",
+    "application/vnd.nextthought.napoll": "application/vnd.nextthought.pollref",
+    # media
+    "application/vnd.nextthought.ntivideoroll": "application/vnd.nextthought.videoroll",
+    "application/vnd.nextthought.ntiaudio": "application/vnd.nextthought.ntiaudioref",
+    "application/vnd.nextthought.ntivideo": "application/vnd.nextthought.ntivideoref",
+}
+
 logger = __import__('logging').getLogger(__name__)
-
-
-def legacy_ntivideo_transform(ext_obj):
-    if isinstance(ext_obj, Mapping) and 'mimeType' in ext_obj:
-        ext_obj[MIMETYPE] = ext_obj.pop('mimeType')
-legacy_ntiaudio_transform = legacy_ntivideo_transform
-
-
-def legacy_assignmentref_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.assessment.assignment":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.assignmentref"
-
-
-def legacy_surveyref_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.nasurvey":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.surveyref"
-
-
-def legacy_pollref_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.napoll":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.pollref"
-
-
-def legacy_questionsetref_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.naquestionset":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.questionsetref"
-
-
-def legacy_questionref_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.naquestion":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.questionref"
-
-
-def legacy_ntivideoref_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.ntivideo":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.ntivideoref"
-
-
-def legacy_ntiaudioref_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.ntiaudio":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.ntiaudioref"
-
-
-def legacy_discussionref_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.discussion":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.discussionref"
 
 
 def legacy_ntislidedeckref_transform(ext_obj):
@@ -103,7 +64,7 @@ def legacy_ntislidedeckref_transform(ext_obj):
         ext_obj[MIMETYPE] = SLIDE_DECK_REF_MIME_TYPES[0]
 
 
-def is_time_line(x):
+def is_timeline(x):
     result = False
     mimeType = x.get(MIMETYPE) if isinstance(x, Mapping) else None
     if not mimeType:
@@ -119,12 +80,12 @@ def is_time_line(x):
 
 
 def legacy_ntitimeline_transform(ext_obj):
-    if is_time_line(ext_obj):
+    if is_timeline(ext_obj):
         ext_obj[MIMETYPE] = TIMELINE_MIME_TYPES[0]
 
 
 def legacy_ntitimelineref_transform(ext_obj):
-    if is_time_line(ext_obj):
+    if is_timeline(ext_obj):
         ext_obj[MIMETYPE] = TIMELINE_REF_MIME_TYPES[0]
 
 
@@ -137,7 +98,7 @@ def is_relatedwork_ref(ext_obj):
         else:
             ntiid = None
         # check ntiid
-        if      ntiid \
+        if       ntiid \
             and (   '.relatedworkref.' in ntiid
                  or is_ntiid_of_types(ntiid, (RELATED_WORK, RELATED_WORK_REF))):
             result = True
@@ -159,18 +120,14 @@ def legacy_relatedworkrefpointer_transform(ext_obj):
 def legacy_mediaroll_transform(ext_obj):
     if isinstance(ext_obj, MutableSequence):
         for item in ext_obj:
-            legacy_ntiaudioref_transform(None, item)
-            legacy_ntivideoref_transform(None, item)
-legacy_videoroll_transform = legacy_mediaroll_transform
-legacy_ntiaudioroll_transform = legacy_mediaroll_transform
+            legacy_transform(None, item)
 
 
-def legacy_videoroll_transform(ext_obj):
-    mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
-    if mimeType == "application/vnd.nextthought.ntivideoroll":
-        ext_obj[MIMETYPE] = "application/vnd.nextthought.videoroll"
-    legacy_mediaroll_transform(ext_obj)
-legacy_audioroll_transform = legacy_mediaroll_transform
+def legacy_transform(ext_obj):
+    if isinstance(ext_obj, Mapping):
+        mimeType = ext_obj.get(MIMETYPE) or ext_obj.get('mimeType')
+        ext_obj[MIMETYPE] = LEGACY_MIMETYPE_MAPPING.get(mimeType, mimeType)
+        ext_obj.pop('mimeType', None)
 
 
 def legacy_nticourseoverviewgroup_transform(ext_obj):
@@ -182,13 +139,7 @@ def legacy_nticourseoverviewgroup_transform(ext_obj):
             # Swizzle out our concrete mime types for refs.
             # don't include timelineref or relatedworkrefs pointers
             # as we need the definitions during import
-            legacy_pollref_transform(item)
-            legacy_surveyref_transform(item)
-            legacy_ntiaudioref_transform(item)
-            legacy_ntivideoref_transform(item)
-            legacy_questionref_transform(item)
-            legacy_assignmentref_transform(item)
-            legacy_questionsetref_transform(item)
+            legacy_transform(item)
             legacy_ntislidedeckref_transform(item)
 
             # do checks
@@ -197,8 +148,8 @@ def legacy_nticourseoverviewgroup_transform(ext_obj):
             else:
                 mimeType = None
 
-            # handle discussions
-            if mimeType == "application/vnd.nextthought.discussion":
+            # handle discussions (mimeType has been transformed)
+            if mimeType == "application/vnd.nextthought.discussionref":
                 iden = item.get('id') or item.get(ID)
                 s = item.get(NTIID) or item.get('ntiid')
                 ntiids = s.split(' ') if s else ()
@@ -209,13 +160,13 @@ def legacy_nticourseoverviewgroup_transform(ext_obj):
                             item = copy.deepcopy(item)
                             items.insert(idx, item)
                         item[NTIID] = ntiid
-                        legacy_discussionref_transform(item)
+                        legacy_transform(item)
                 # not yet ready
                 elif not ntiids and not is_nti_course_bundle(iden):
                     del items[idx]
                     continue
                 else:
-                    legacy_discussionref_transform(item)
+                    legacy_transform(item)
 
             # handle media rolls
             if mimeType in ALL_MEDIA_ROLL_MIME_TYPES:
@@ -231,7 +182,7 @@ def legacy_ntilessonoverview_transform(ext_obj):
     if isinstance(items, MutableSequence):
         for item in items:
             legacy_nticourseoverviewgroup_transform(item)
-                
+
 
 def CourseOverViewGroupFactory(unused_ext_obj):
     # legacy_nticourseoverviewgroup_transform(ext_obj)
