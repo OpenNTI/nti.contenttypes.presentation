@@ -1,0 +1,83 @@
+{
+    "Items": [
+        {
+            "Items": [
+                {
+                    "MimeType": "application/vnd.nextthought.ntivideo",
+                    "NTIID": "tag:nextthought.com,2011-10:OU-NTIVideo-CHEM4970_Chemistry_of_Beer.ntivideo.video_unit1_1",
+                    "label": "Overview of Brewing",
+                    "poster": "//www.kaltura.com/p/1500101/thumbnail/entry_id/0_vf38ywbu/width/1280/",
+                    "visibility": "everyone"
+                }
+            ],
+            "MimeType": "application/vnd.nextthought.nticourseoverviewgroup",
+            "accentColor": "81c8dc",
+            "title": "Videos"
+        },
+        {
+            "Items": [
+                {
+                    "MimeType": "application/vnd.nextthought.discussion",
+                    "NTIID": "tag:nextthought.com,2011-10:CHEM4970.ou.nextthought.com-Topic:GeneralCommunity-In_Class_Discussions.What_is_beer_",
+                    "icon": "resources/CHEM4970_Chemistry_of_Beer/8785c6b4de2456be07325dc63373f9086354d974/fd35e23767020999111e1f49239199b4c5eff23e.png",
+                    "label": "",
+                    "title": "What is beer?"
+                }
+            ],
+            "MimeType": "application/vnd.nextthought.nticourseoverviewgroup",
+            "accentColor": "f5d420",
+            "title": "Discussions"
+        },
+        {
+            "Items": [
+                {
+                    "ContainerId": "tag:nextthought.com,2011-10:OU-HTML-CHEM4970_Chemistry_of_Beer.unit_1_quiz",
+                    "MimeType": "application/vnd.nextthought.assessment.assignment",
+                    "NTIID": "tag:nextthought.com,2011-10:OU-NAQ-CHEM4970_Chemistry_of_Beer.naq.asg.assignment:Unit1_Quiz",
+                    "Target-NTIID": "tag:nextthought.com,2011-10:OU-NAQ-CHEM4970_Chemistry_of_Beer.naq.asg.assignment:Unit1_Quiz",
+                    "label": "Unit 1 Quiz",
+                    "title": "Unit 1 Quiz"
+                }
+            ],
+            "MimeType": "application/vnd.nextthought.nticourseoverviewgroup",
+            "accentColor": "7b8cdf",
+            "title": "Assignments"
+        },
+        {
+            "Items": [
+                {
+                    "MimeType": "application/vnd.nextthought.naquestionset",
+                    "Target-NTIID": "tag:nextthought.com,2011-10:OU-NAQ-CHEM4970_Chemistry_of_Beer.naq.set.qset:01.01",
+                    "label": "Overview of Brewing Self-Assessment",
+                    "question-count": "12"
+                }
+            ],
+            "MimeType": "application/vnd.nextthought.nticourseoverviewgroup",
+            "accentColor": "a5c959",
+            "title": "Practice Questions"
+        },
+        {
+            "Items": [
+                {
+                    "MimeType": "application/vnd.nextthought.relatedworkref",
+                    "NTIID": "tag:nextthought.com,2011-10:OU-HTML-CHEM4970_Chemistry_of_Beer.relatedworkref.2",
+                    "creator": "Mark Morvant",
+                    "desc": "Learning Outcomes for Brewing",
+                    "href": "tag:nextthought.com,2011-10:OU-HTML-CHEM4970_Chemistry_of_Beer.reading:OverviewBrewing",
+                    "icon": "resources/CHEM4970_Chemistry_of_Beer/1b3a2c37c349b93da2eb36c2a91b79a1b105e6f6/fd35e23767020999111e1f49239199b4c5eff23e.png",
+                    "label": "Learning Outcomes: Overview of Brewing",
+                    "section": "required",
+                    "target-NTIID": "tag:nextthought.com,2011-10:OU-HTML-CHEM4970_Chemistry_of_Beer.reading:OverviewBrewing",
+                    "targetMimeType": "application/vnd.nextthought.content",
+                    "visibility": "everyone"
+                }
+            ],
+            "MimeType": "application/vnd.nextthought.nticourseoverviewgroup",
+            "accentColor": "f9824e",
+            "title": "Required Resources"
+        }
+    ],
+    "MimeType": "application/vnd.nextthought.ntilessonoverview",
+    "NTIID": "tag:nextthought.com,2011-10:OU-HTML-CHEM4970_Chemistry_of_Beer.lec:unit1",
+    "title": "Unit 1: Overview of Brewing"
+}

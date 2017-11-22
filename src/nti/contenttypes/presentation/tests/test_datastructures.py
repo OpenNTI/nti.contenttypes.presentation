@@ -11,6 +11,8 @@ from __future__ import absolute_import
 from hamcrest import is_
 from hamcrest import none
 from hamcrest import is_not
+from hamcrest import contains
+from hamcrest import has_entry
 from hamcrest import has_length
 from hamcrest import assert_that
 from hamcrest import greater_than
@@ -20,11 +22,15 @@ import unittest
 
 import simplejson
 
+from nti.contenttypes.presentation import LESSON_OVERVIEW_MIME_TYPES
 from nti.contenttypes.presentation import COURSE_OVERVIEW_GROUP_MIME_TYPES
 
+from nti.contenttypes.presentation.datastructures import legacy_ntilessonoverview_transform
 from nti.contenttypes.presentation.datastructures import legacy_nticourseoverviewgroup_transform
 
 from nti.contenttypes.presentation.group import NTICourseOverViewGroup
+
+from nti.contenttypes.presentation.lesson import NTILessonOverView
 
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
@@ -47,8 +53,16 @@ class TestDatastructures(unittest.TestCase):
             factory = find_factory_for(ext_obj)
             assert_that(factory, is_not(none()))
             assert_that(factory(), is_(NTICourseOverViewGroup))
+            
+        for mimeType in LESSON_OVERVIEW_MIME_TYPES:
+            ext_obj = {
+                "MimeType": mimeType
+            }
+            factory = find_factory_for(ext_obj)
+            assert_that(factory, is_not(none()))
+            assert_that(factory(), is_(NTILessonOverView))
 
-    def test_internal(self):
+    def test_courseoverviewgroup_transform(self):
         path = os.path.join(os.path.dirname(__file__),
                             'courseoverviewgroup.json')
         with open(path, "r") as fp:
@@ -58,3 +72,32 @@ class TestDatastructures(unittest.TestCase):
         items = ext_obj.get(ITEMS)
         assert_that(items,
                     has_length(greater_than(old_length)))
+        
+    def test_lessongroup_transform(self):
+        path = os.path.join(os.path.dirname(__file__),
+                            'lessonoverview.json')
+        with open(path, "r") as fp:
+            ext_obj = simplejson.load(fp)
+        legacy_ntilessonoverview_transform(ext_obj)
+        groups = ext_obj.get(ITEMS)
+        assert_that(groups, has_length(5))
+
+        assert_that(groups[0],
+                    has_entry('Items', 
+                              contains(has_entry('MimeType', 'application/vnd.nextthought.ntivideoref'))))
+
+        assert_that(groups[1],
+                    has_entry('Items', 
+                              contains(has_entry('MimeType', 'application/vnd.nextthought.discussionref'))))
+        
+        assert_that(groups[2],
+                    has_entry('Items', 
+                              contains(has_entry('MimeType', 'application/vnd.nextthought.assignmentref'))))
+
+        assert_that(groups[3],
+                    has_entry('Items', 
+                              contains(has_entry('MimeType', 'application/vnd.nextthought.questionsetref'))))
+
+        assert_that(groups[4],
+                    has_entry('Items', 
+                              contains(has_entry('MimeType', 'application/vnd.nextthought.relatedworkref'))))
