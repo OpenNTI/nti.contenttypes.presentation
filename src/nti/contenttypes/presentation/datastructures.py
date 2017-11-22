@@ -58,6 +58,11 @@ LEGACY_MIMETYPE_MAPPING = {
 logger = __import__('logging').getLogger(__name__)
 
 
+def legacy_media_transform(ext_obj):
+    if isinstance(ext_obj, Mapping) and 'mimeType' in ext_obj:
+        ext_obj[MIMETYPE] = ext_obj.pop('mimeType')
+
+
 def legacy_ntislidedeckref_transform(ext_obj):
     mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
     if mimeType in SLIDE_DECK_MIME_TYPES:
