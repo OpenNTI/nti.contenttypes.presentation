@@ -217,7 +217,7 @@ def legacy_nticourseoverviewgroup_transform(ext_obj):
 
             # handle media rolls
             if mimeType in ALL_MEDIA_ROLL_MIME_TYPES:
-                legacy_mediaroll_transform(ITEMS, item.get(ITEMS))
+                legacy_mediaroll_transform(item.get(ITEMS))
 
             # check next
             idx += 1
