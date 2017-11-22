@@ -207,13 +207,13 @@ def legacy_nticourseoverviewgroup_transform(ext_obj):
                             item = copy.deepcopy(item)
                             items.insert(idx, item)
                         item[NTIID] = ntiid
-                        legacy_discussionref_transform(None, item)
+                        legacy_discussionref_transform(item)
                 # not yet ready
                 elif not ntiids and not is_nti_course_bundle(iden):
                     del items[idx]
                     continue
                 else:
-                    legacy_discussionref_transform(None, item)
+                    legacy_discussionref_transform(item)
 
             # handle media rolls
             if mimeType in ALL_MEDIA_ROLL_MIME_TYPES:
