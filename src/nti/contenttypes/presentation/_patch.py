@@ -13,42 +13,34 @@ logger = __import__('logging').getLogger(__name__)
 
 def _patch():
     import os
-    import sys
     import inspect
     import importlib
 
-    from nti.contenttypes.presentation.interfaces import IGroupOverViewable
-    module = sys.modules[IGroupOverViewable.__module__]
-
     # main package name
-    package = '.'.join(module.__name__.split('.')[:-1])
+    package = '.'.join(__name__.split('.')[:-1])
 
     # set mimetypes on interfaces
     for name in os.listdir(os.path.dirname(__file__)):
         # ignore modules we may have trouble importing
-        if name in ('__init__.py',
-                    '_patch.py',
-                    'jsonschema.py',
-                    'externalization.py',
-                    'internalization.py') \
-                or name[-3:] != '.py':
+        if  name in ('__init__.py',
+                     '_patch.py',
+                     'jsonschema.py',
+                     'datastructures.py',
+                     'externalization.py',
+                     'internalization.py') \
+            or name[-3:] != '.py':
             continue
 
-        try:
-            module = package + '.' + name[:-3]
-            module = importlib.import_module(module)
-        except ImportError:
-            continue
+        module = package + '.' + name[:-3]
+        module = importlib.import_module(module)
 
         for _, item in inspect.getmembers(module):
-            try:
-                mimeType = getattr(item, 'mimeType', None) \
-                        or getattr(item, 'mime_type')
+            mimeType = getattr(item, 'mimeType', None) \
+                    or getattr(item, 'mime_type', None)
+            if mimeType:
                 # first interface is the externalizable object
                 interfaces = tuple(item.__implemented__.interfaces())
                 interfaces[0].setTaggedValue('_ext_mime_type', mimeType)
-            except (AttributeError, TypeError):
-                pass
 
 
 _patch()

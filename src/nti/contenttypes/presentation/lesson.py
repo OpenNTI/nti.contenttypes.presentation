@@ -12,7 +12,6 @@ from functools import total_ordering
 
 from zope import component
 from zope import interface
-from zope import deferredimport
 
 from zope.annotation.interfaces import IAnnotations
 
@@ -302,8 +301,9 @@ def get_constraint_satisfied_time(context, lesson):
     return satisfied_time
 
 
-deferredimport.initialize()
-deferredimport.deprecatedFrom(
+import zope.deferredimport
+zope.deferredimport.initialize()
+zope.deferredimport.deprecatedFrom(
     "moved to nti.contenttypes.presentation.group",
     "nti.contenttypes.presentation.group",
     "NTICourseOverViewGroup")
