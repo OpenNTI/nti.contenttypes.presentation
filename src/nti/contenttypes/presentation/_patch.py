@@ -19,16 +19,13 @@ def _patch():
     # main package name
     package = '.'.join(__name__.split('.')[:-1])
 
+    ignore_list = ('__init__.py', '_patch.py', 'jsonschema.py',
+                   'datastructures.py', 'externalization.py', 'internalization.py')
+
     # set mimetypes on interfaces
     for name in os.listdir(os.path.dirname(__file__)):
         # ignore modules we may have trouble importing
-        if  name in ('__init__.py',
-                     '_patch.py',
-                     'jsonschema.py',
-                     'datastructures.py',
-                     'externalization.py',
-                     'internalization.py') \
-            or name[-3:] != '.py':
+        if name in ignore_list or name[-3:] != '.py':
             continue
 
         module = package + '.' + name[:-3]
