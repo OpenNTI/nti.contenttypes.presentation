@@ -25,6 +25,7 @@ import simplejson
 from nti.contenttypes.presentation import LESSON_OVERVIEW_MIME_TYPES
 from nti.contenttypes.presentation import COURSE_OVERVIEW_GROUP_MIME_TYPES
 
+from nti.contenttypes.presentation.datastructures import legacy_ntimedia_transform
 from nti.contenttypes.presentation.datastructures import legacy_ntilessonoverview_transform
 from nti.contenttypes.presentation.datastructures import legacy_nticourseoverviewgroup_transform
 
@@ -62,6 +63,10 @@ class TestDatastructures(unittest.TestCase):
             factory = find_factory_for(ext_obj)
             assert_that(factory, is_not(none()))
             assert_that(factory(), is_(NTILessonOverView))
+
+    def test_ntimedia_transform(self):
+        assert_that(legacy_ntimedia_transform({'mimeType', 'application/vnd.nextthought.ntivideo'}),
+                    has_entry(MIMETYPE, 'application/vnd.nextthought.ntivideo'))
 
     def test_courseoverviewgroup_transform(self):
         path = os.path.join(os.path.dirname(__file__),

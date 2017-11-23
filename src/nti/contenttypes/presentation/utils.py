@@ -31,9 +31,10 @@ from nti.contenttypes.presentation import QUESTIONSET_REF_MIME_TYPES
 from nti.contenttypes.presentation import RELATED_WORK_REF_MIME_TYPES
 from nti.contenttypes.presentation import COURSE_OVERVIEW_GROUP_MIME_TYPES
 
+from nti.contenttypes.presentation.datastructures import legacy_ntiaudio_transform
+from nti.contenttypes.presentation.datastructures import legacy_ntivideo_transform
+
 from nti.contenttypes.presentation.internalization import internalization_pollref_pre_hook
-from nti.contenttypes.presentation.internalization import internalization_ntiaudio_pre_hook
-from nti.contenttypes.presentation.internalization import internalization_ntivideo_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_mediaroll_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_surveyref_pre_hook
 from nti.contenttypes.presentation.internalization import internalization_ntiaudioref_pre_hook
@@ -81,18 +82,14 @@ def create_object_from_external(ext_obj, pre_hook=pre_hook, notify=True, _exec=T
 
 
 def create_ntiaudio_from_external(ext_obj, notify=True, _exec=True):
-    result = create_object_from_external(ext_obj,
-                                         notify=notify,
-                                         pre_hook=internalization_ntiaudio_pre_hook,
-                                         _exec=_exec)
+    legacy_ntiaudio_transform(ext_obj)
+    result = create_object_from_external(ext_obj, notify=notify, _exec=_exec)
     return result
 
 
 def create_ntivideo_from_external(ext_obj, notify=True, _exec=True):
-    result = create_object_from_external(ext_obj,
-                                         notify=notify,
-                                         pre_hook=internalization_ntivideo_pre_hook,
-                                         _exec=_exec)
+    legacy_ntivideo_transform(ext_obj)
+    result = create_object_from_external(ext_obj, notify=notify, _exec=_exec)
     return result
 
 
@@ -296,12 +293,13 @@ def get_pre_hooks_map():
     return _pre_hooks_map
 
 
-def get_external_pre_hook(ext_obj):
+def get_external_transform(ext_obj):
     if isinstance(ext_obj, Mapping):
         mimeType = ext_obj.get('mimeType') or ext_obj.get(MIMETYPE)
     else:
         mimeType = str(ext_obj)
     result = get_pre_hooks_map().get(mimeType)
-    if result is None:
+    if not callable(result):
         result = pre_hook
     return result
+get_external_pre_hook = get_external_transform

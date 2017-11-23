@@ -58,15 +58,19 @@ LEGACY_MIMETYPE_MAPPING = {
 logger = __import__('logging').getLogger(__name__)
 
 
-def legacy_media_transform(ext_obj):
+def legacy_ntimedia_transform(ext_obj):
     if isinstance(ext_obj, Mapping) and 'mimeType' in ext_obj:
         ext_obj[MIMETYPE] = ext_obj.pop('mimeType')
+    return ext_obj
+legacy_ntiaudio_transform = legacy_ntimedia_transform
+legacy_ntivideo_transform = legacy_ntimedia_transform
 
 
 def legacy_ntislidedeckref_transform(ext_obj):
     mimeType = ext_obj.get(MIMETYPE) if isinstance(ext_obj, Mapping) else None
     if mimeType in SLIDE_DECK_MIME_TYPES:
         ext_obj[MIMETYPE] = SLIDE_DECK_REF_MIME_TYPES[0]
+    return ext_obj
 
 
 def is_timeline(x):
@@ -87,11 +91,13 @@ def is_timeline(x):
 def legacy_ntitimeline_transform(ext_obj):
     if is_timeline(ext_obj):
         ext_obj[MIMETYPE] = TIMELINE_MIME_TYPES[0]
+    return ext_obj
 
 
 def legacy_ntitimelineref_transform(ext_obj):
     if is_timeline(ext_obj):
         ext_obj[MIMETYPE] = TIMELINE_REF_MIME_TYPES[0]
+    return ext_obj
 
 
 def is_relatedwork_ref(ext_obj):
@@ -115,17 +121,20 @@ def is_relatedwork_ref(ext_obj):
 def legacy_relatedworkref_transform(ext_obj):
     if is_relatedwork_ref(ext_obj):
         ext_obj[MIMETYPE] = RELATED_WORK_REF_MIME_TYPES[0]
+    return ext_obj
 
 
 def legacy_relatedworkrefpointer_transform(ext_obj):
     if is_relatedwork_ref(ext_obj):
         ext_obj[MIMETYPE] = RELATED_WORK_REF_POINTER_MIME_TYPES[0]
+    return ext_obj
 
 
 def legacy_mediaroll_transform(ext_obj):
     if isinstance(ext_obj, MutableSequence):
         for item in ext_obj:
             legacy_transform(None, item)
+    return ext_obj
 
 
 def legacy_transform(ext_obj):
@@ -133,6 +142,7 @@ def legacy_transform(ext_obj):
         mimeType = ext_obj.get(MIMETYPE) or ext_obj.get('mimeType')
         ext_obj[MIMETYPE] = LEGACY_MIMETYPE_MAPPING.get(mimeType, mimeType)
         ext_obj.pop('mimeType', None)
+    return ext_obj
 
 
 def legacy_nticourseoverviewgroup_transform(ext_obj):
@@ -187,6 +197,7 @@ def legacy_ntilessonoverview_transform(ext_obj):
     if isinstance(items, MutableSequence):
         for item in items:
             legacy_nticourseoverviewgroup_transform(item)
+    return ext_obj
 
 
 def CourseOverViewGroupFactory(unused_ext_obj):
