@@ -65,7 +65,7 @@ class TestDatastructures(unittest.TestCase):
             assert_that(factory(), is_(NTILessonOverView))
 
     def test_ntimedia_transform(self):
-        assert_that(legacy_ntimedia_transform({'mimeType', 'application/vnd.nextthought.ntivideo'}),
+        assert_that(legacy_ntimedia_transform({'mimeType': 'application/vnd.nextthought.ntivideo'}),
                     has_entry(MIMETYPE, 'application/vnd.nextthought.ntivideo'))
 
     def test_courseoverviewgroup_transform(self):
