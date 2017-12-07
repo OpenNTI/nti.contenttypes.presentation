@@ -44,7 +44,7 @@ class NTITimeLine(RecordablePresentationAsset):
     desc = alias('description')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_TIMELINE)
         return self.ntiid
 
@@ -72,6 +72,6 @@ class NTITimeLineRef(PersistentPresentationAsset):  # not recordable
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_TIMELIME_REF)
         return self.ntiid

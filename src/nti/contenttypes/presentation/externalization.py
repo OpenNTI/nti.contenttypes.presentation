@@ -4,10 +4,9 @@
 .. $Id$
 """
 
-from __future__ import print_function, absolute_import, division
-__docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
 import six
 import zlib
@@ -62,6 +61,8 @@ LAST_MODIFIED = StandardExternalFields.LAST_MODIFIED
 
 INTERNAL_NTIID = StandardInternalFields.NTIID
 
+logger = __import__('logging').getLogger(__name__)
+
 
 @interface.implementer(IInternalObjectIO)
 @component.adapter(INTICourseOverviewGroup)
@@ -71,19 +72,20 @@ class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfac
     _excluded_out_ivars_ = _excluded | AutoPackageSearchingScopedInterfaceObjectIO._excluded_out_ivars_
 
     @classmethod
-    def _ap_enumerate_externalizable_root_interfaces(cls, pa_interfaces):
-        return (pa_interfaces.INTICourseOverviewGroup,)
+    def _ap_enumerate_externalizable_root_interfaces(cls, interfaces):
+        return (interfaces.INTICourseOverviewGroup,)
 
     @classmethod
     def _ap_enumerate_module_names(cls):
         return ('group',)
 
-    def toExternalObject(self, *args, **kwargs):
+    def toExternalObject(self, *args, **kwargs):  # pylint: disable=arguments-differ
         result = super(_NTICourseOverviewGroupInternalObjectIO, self).toExternalObject(*args, **kwargs)
         result[ITEMS] = [
             to_external_object(x, *args, **kwargs) for x in self._ext_self
         ]
         return result
+
 _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
 
@@ -92,12 +94,13 @@ _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 class _NTILessonOverviewInternalObjectIO(AutoPackageSearchingScopedInterfaceObjectIO):
 
     @classmethod
-    def _ap_enumerate_externalizable_root_interfaces(cls, pa_interfaces):
-        return (pa_interfaces.INTILessonOverview,)
+    def _ap_enumerate_externalizable_root_interfaces(cls, interfaces):
+        return (interfaces.INTILessonOverview,)
 
     @classmethod
     def _ap_enumerate_module_names(cls):
         return ('lesson',)
+
 _NTILessonOverviewInternalObjectIO.__class_init__()
 
 
@@ -191,7 +194,7 @@ class _NTITranscriptExternalizer(InterfaceObjectIO):
 
     _ext_iface_upper_bound = INTITranscript
 
-    def toExternalObject(self, **kwargs):
+    def toExternalObject(self, *unused_args, **kwargs):  # pylint: disable=arguments-differ
         context = self._ext_replacement()
         result = super(_NTITranscriptExternalizer, self).toExternalObject(**kwargs)
         for name in ('src', 'srcjsonp'):
@@ -239,6 +242,7 @@ class _NTITranscriptExporter(object):
         self.context = context
 
     def toExternalObject(self, *args, **kwargs):
+        # pylint: disable=protected-access
         exporter = InterfaceObjectIO(self.context, INTITranscript)
         exporter._excluded_out_ivars_ = {'src'} | exporter._excluded_out_ivars_
         result = exporter.toExternalObject(*args, **kwargs)

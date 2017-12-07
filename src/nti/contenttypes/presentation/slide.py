@@ -59,7 +59,7 @@ class NTISlide(RecordablePresentationAsset):
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_SLIDE)
         return self.ntiid
 
@@ -78,7 +78,7 @@ class NTISlideVideo(RecordablePresentationAsset):
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_SLIDE_VIDEO)
         return self.ntiid
 
@@ -101,7 +101,7 @@ class NTISlideDeck(RecordablePresentationAsset):
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_SLIDE_DECK)
         return self.ntiid
 
@@ -139,7 +139,7 @@ class NTISlideDeck(RecordablePresentationAsset):
 
     def __contains__(self, obj):
         ntiid = getattr(obj, 'ntiid', None) or str(obj)
-        for item in self.Items:
+        for item in self.Items:  # pylint: disable=not-an-iterable
             if item.ntiid == ntiid:
                 return True
         return False
@@ -170,6 +170,6 @@ class NTISlideDeckRef(PersistentPresentationAsset):  # not recordable
     visibility = EVERYONE
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_SLIDE_DECK_REF)
         return self.ntiid

@@ -42,7 +42,7 @@ class NTIAssessmentRef(PersistentPresentationAsset):
     target_ntiid = alias('target')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(self.nttype)
         return self.ntiid
 

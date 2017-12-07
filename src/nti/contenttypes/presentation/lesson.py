@@ -76,7 +76,7 @@ class NTICourseOverViewSpacer(PersistentPresentationAsset):  # not recordable
     mime_type = mimeType = "application/vnd.nextthought.nticourseoverviewspacer"
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         result = self.generate_ntiid(NTI_COURSE_OVERVIEW_SPACER)
         self.ntiid = result
         return result
@@ -97,7 +97,7 @@ class NTILessonOverView(CalendarPublishableMixin,
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_LESSON_OVERVIEW)
         return self.ntiid
 
@@ -237,6 +237,7 @@ def constraints_for_lesson(lesson, create=True):
             constraints.__parent__ = lesson
             connection = IConnection(lesson, None)
             if connection is not None:
+                # pylint: disable=too-many-function-args
                 connection.add(constraints)
     return constraints
 
@@ -250,7 +251,7 @@ class LessonCompletionConstraint(PersistentCreatedModDateTrackingObject,
     creator = SYSTEM_USER_ID
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         lesson = find_interface(self, INTILessonOverview, strict=False)
         base_ntiid = getattr(lesson, 'ntiid', None)
         if base_ntiid and self.__name__:
@@ -287,6 +288,7 @@ def get_constraint_satisfied_time(context, lesson):
         for constraint in constraints.Items or ():
             checker = ILessonPublicationConstraintChecker(constraint, None)
             if checker is not None:
+                # pylint: disable=too-many-function-args
                 constraint_satisfied_time = checker.satisfied_time(context)
                 if constraint_satisfied_time is not None:
                     satisfied_time = max(satisfied_time,

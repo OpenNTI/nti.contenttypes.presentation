@@ -39,7 +39,7 @@ class NTIDiscussionRef(RecordablePresentationAsset):
     mime_type = mimeType = 'application/vnd.nextthought.discussionref'
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_DISCUSSION_REF)
         return self.ntiid
 

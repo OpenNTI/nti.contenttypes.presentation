@@ -66,7 +66,7 @@ class PersistentPresentationAsset(PersistentMixin):
     parameters = {}  # IContentTypeAware
 
     @readproperty
-    def creator(self):
+    def creator(self):  # pylint: disable=method-hidden
         return self.byline
 
     @classmethod

@@ -8,6 +8,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+# pylint: disable=inherit-non-class,no-value-for-parameter
+
 from copy import copy
 
 from zope import interface

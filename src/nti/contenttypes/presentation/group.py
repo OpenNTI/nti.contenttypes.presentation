@@ -60,7 +60,7 @@ class NTICourseOverViewGroup(RecordablePresentationAsset,
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_COURSE_OVERVIEW_GROUP)
         return self.ntiid
 

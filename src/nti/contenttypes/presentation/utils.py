@@ -8,6 +8,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+# pylint: disable=global-statement,redefined-outer-name
+
 import sys
 import importlib
 from collections import Mapping
@@ -67,7 +69,7 @@ def prepare_json_text(s):
 
 
 def create_object_from_external(ext_obj, pre_hook=pre_hook, notify=True, _exec=True):
-    __traceback_info__ = ext_obj
+    __traceback_info__ = ext_obj  # pylint: disable=unused-variable
     # CS: We want to call prehook in case we can to update a single dict.
     pre_hook(None, ext_obj)
     # find factory

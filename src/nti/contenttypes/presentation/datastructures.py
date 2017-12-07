@@ -133,6 +133,7 @@ def legacy_relatedworkrefpointer_transform(ext_obj):
 def legacy_mediaroll_transform(ext_obj):
     if isinstance(ext_obj, MutableSequence):
         for item in ext_obj:
+            # pylint: disable=too-many-function-args
             legacy_transform(None, item)
     return ext_obj
 

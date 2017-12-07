@@ -53,7 +53,7 @@ class NTIRelatedWorkRef(RecordablePresentationAsset):
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(self.nttype)
         return self.ntiid
 
@@ -81,7 +81,7 @@ class NTIRelatedWorkRefPointer(PersistentPresentationAsset):  # not recordable
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(NTI_RELATED_WORK_REF_POINTER)
         return self.ntiid
 

@@ -113,7 +113,7 @@ class NTITranscript(PersistentMixin):
     mime_type = mimeType = NTI_TRANSCRIPT_MIMETYPE
 
     @Lazy
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         return compute_part_ntiid(self, NTI_TRANSCRIPT, 'transcripts')
 
     def schema(self):
@@ -136,7 +136,7 @@ class NTIAudioSource(PersistentMixin):
     mime_type = mimeType = 'application/vnd.nextthought.ntiaudiosource'
 
     @Lazy
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         return compute_part_ntiid(self, NTI_AUDIO_SOURCE, 'sources')
 
     def schema(self):
@@ -152,7 +152,7 @@ class NTIVideoSource(PersistentMixin):
     mime_type = mimeType = 'application/vnd.nextthought.ntivideosource'
 
     @Lazy
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         return compute_part_ntiid(self, NTI_VIDEO_SOURCE, 'sources')
 
     def schema(self):
@@ -171,7 +171,7 @@ class NTIMedia(RecordablePresentationAsset):
     Creator = alias('creator')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(self.nttype)
         return self.ntiid
 
@@ -207,7 +207,7 @@ class NTIMediaRef(RecordablePresentationAsset):
     __name__ = alias('ntiid')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(self.nttype)
         return self.ntiid
 
@@ -283,7 +283,7 @@ class NTIMediaRoll(RecordablePresentationAsset):
     Creator = alias('creator')
 
     @readproperty
-    def ntiid(self):
+    def ntiid(self):  # pylint: disable=method-hidden
         self.ntiid = self.generate_ntiid(self.nttype)
         return self.ntiid
 

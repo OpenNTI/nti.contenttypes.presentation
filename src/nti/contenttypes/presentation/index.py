@@ -110,7 +110,7 @@ class RetainSetIndex(AttributeSetIndex):
             return result
     index_containers = do_index_doc
 
-    def index_doc(self, doc_id, value):
+    def index_doc(self, doc_id, value):  # pylint: disable=arguments-differ
         if self.interface is not None:
             value = self.interface(value, None)
             if value is None:
@@ -263,6 +263,7 @@ class AssetsLibraryCatalog(Catalog):
     def get_namespace(self, item, intids=None):
         doc_id = get_uid(item, intids)
         if doc_id is not None:
+            # pylint: disable=no-member
             return self.namespace_index.documents_to_values.get(doc_id)
         return None
 

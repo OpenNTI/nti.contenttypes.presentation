@@ -21,7 +21,7 @@ class VisibilityField(ValidTextLine):
 
     @property
     def _options(self):
-        # XXX: avoid circular imports
+        # Avoid circular imports
         from nti.contenttypes.presentation.common import get_visibility_options
         return get_visibility_options()
 
