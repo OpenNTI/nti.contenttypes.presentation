@@ -8,6 +8,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+# pylint: disable=global-statement,no-member
+
 import zope.i18nmessageid
 MessageFactory = zope.i18nmessageid.MessageFactory(__name__)
 
@@ -340,6 +342,12 @@ del _set_ifaces
 
 
 def register_asset_interface(provided, mimeType):
+    global ALL_PRESENTATION_MIME_TYPES
+    global COURSE_CONTAINER_INTERFACES
+    global PACKAGE_CONTAINER_INTERFACES
+    global GROUP_OVERVIEWABLE_INTERFACES
+    global ALL_PRESENTATION_ASSETS_INTERFACES
+    
     if not mimeType:
         raise ValueError('Must provided a MimeType')
     if mimeType in ALL_PRESENTATION_MIME_TYPES:
