@@ -159,10 +159,9 @@ def legacy_nticourseoverviewgroup_transform(ext_obj):
             legacy_ntislidedeckref_transform(item)
 
             # do checks
+            mimeType = None
             if isinstance(item, Mapping):
                 mimeType = item.get(MIMETYPE)
-            else:
-                mimeType = None
 
             # handle discussions (mimeType has been transformed)
             if mimeType == "application/vnd.nextthought.discussionref":
