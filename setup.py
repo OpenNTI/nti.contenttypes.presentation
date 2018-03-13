@@ -58,6 +58,7 @@ setup(
         'BTrees',
         'nti.base',
         'nti.containers',
+        'nti.contenttypes.completion',
         'nti.contenttypes.reports',
         'nti.coremetadata',
         'nti.dublincore',

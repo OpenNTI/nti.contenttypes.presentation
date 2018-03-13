@@ -41,6 +41,8 @@ from nti.base.interfaces import ICreated
 from nti.base.interfaces import IIterable
 from nti.base.interfaces import ILastModified
 
+from nti.contenttypes.completion.interfaces import ICompletableItem
+
 from nti.contenttypes.presentation.schema import VisibilityField
 
 from nti.contenttypes.reports.interfaces import IReportContext
@@ -452,7 +454,7 @@ class INTIVideoSource(INTIMediaSource):
 INTIVideoSource.setTaggedValue('_ext_jsonschema', u'videosource')
 
 
-class INTIVideo(INTIMedia):
+class INTIVideo(INTIMedia, ICompletableItem):
 
     subtitle = Bool(title=u"Subtitle flag", required=False, default=None)
 
@@ -675,7 +677,7 @@ INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 
 class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible,
-                         IRecordable, IFileConstrained):
+                         IRecordable, IFileConstrained, ICompletableItem):
     byline = byline_schema_field(required=False)
 
     section = ValidTextLine(title=u"Section", required=False)
@@ -910,13 +912,13 @@ class ILessonPublicationConstraintChecker(interface.Interface):
 
     def get_constraint_items(self):
         """
-        Returns a list of items that need to be satisfied for 
+        Returns a list of items that need to be satisfied for
         this constraint to be considered satisfied.
         """
 
     def check_time_constraint_item(self, item_ntiid, histories):
         """
-        Return the time when a constraint item is satisfied or 
+        Return the time when a constraint item is satisfied or
         None if it has not been satisfied. This should be
         implemented for each type of constraint.
         """
