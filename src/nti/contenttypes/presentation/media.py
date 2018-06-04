@@ -182,13 +182,17 @@ class NTIMedia(RecordablePresentationAsset):
 
     def __lt__(self, other):
         try:
-            return (self.mimeType, self.title) < (other.mimeType, other.title)
+            title = self.title and self.title.lower()
+            other_title = other.title and other.title.lower()
+            return (self.mimeType, title) < (other.mimeType, other_title)
         except AttributeError:  # pragma: no cover
             return NotImplemented
 
     def __gt__(self, other):
         try:
-            return (self.mimeType, self.title) > (other.mimeType, other.title)
+            title = self.title and self.title.lower()
+            other_title = other.title and other.title.lower()
+            return (self.mimeType, title) > (other.mimeType, other_title)
         except AttributeError:  # pragma: no cover
             return NotImplemented
 
