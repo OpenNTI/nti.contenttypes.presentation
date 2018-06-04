@@ -285,7 +285,11 @@ class _TargetNTIIDUpdater(_AssetUpdater):
 
         if transfer:
             ntiid, target = parsed.get('ntiid'), parsed.get('target')
-            if ntiid and not target:
+            # Pop ntiid if no target or if it is equal to target (and non null)
+            # We do not want the target ntiid to match the NTIID field (leads
+            # to all sorts of possible issues). We also do not want to
+            # explicitly set target to None.
+            if ntiid and (not target or target == ntiid):
                 parsed['target'] = ntiid
                 parsed.pop('ntiid', None)
                 parsed.pop(NTIID, None)
