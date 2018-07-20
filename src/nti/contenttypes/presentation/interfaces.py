@@ -272,6 +272,13 @@ class IPointer(interface.Interface):
 IPointer.setTaggedValue('_ext_is_marker_interface', True)
 
 
+class INonExportableAsset(interface.Interface):
+    """
+    Marker interface for assets that should not be exported/imported.
+    """
+INonExportableAsset.setTaggedValue('_ext_is_marker_interface', True)
+
+
 class IAssetRef(IPresentationAsset, IPointer):
     """
     Marker interface for pointer-presentation assets
