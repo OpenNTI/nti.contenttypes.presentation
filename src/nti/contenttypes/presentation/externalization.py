@@ -28,6 +28,7 @@ from nti.contenttypes.presentation.interfaces import INTIAudioSource
 from nti.contenttypes.presentation.interfaces import INTIVideoSource
 from nti.contenttypes.presentation.interfaces import IUserCreatedAsset
 from nti.contenttypes.presentation.interfaces import INTILessonOverview
+from nti.contenttypes.presentation.interfaces import INonExportableAsset
 from nti.contenttypes.presentation.interfaces import INTICourseOverviewGroup
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
 
@@ -147,6 +148,13 @@ class _LessonOverviewExporter(object):
             elif INTIMediaRoll.providedBy(asset):
                 roll_items_ext = items[idx].get(ITEMS) or ()
                 self._process_media_roll(asset, roll_items_ext, ext_params)
+
+        exported_items = []
+        for idx, asset in enumerate(group):
+            # Remove assets we do not want exported
+            if not INonExportableAsset.providedBy(asset):
+                exported_items.append(items[idx])
+        result[ITEMS] = exported_items
 
     def toExternalObject(self, *args, **kwargs):
         mod_args = dict(**kwargs)
