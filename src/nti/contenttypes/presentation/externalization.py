@@ -40,7 +40,6 @@ from nti.externalization.datastructures import InterfaceObjectIO
 
 from nti.externalization.externalization import to_external_object
 
-from nti.externalization.interfaces import IInternalObjectIO
 from nti.externalization.interfaces import StandardExternalFields
 from nti.externalization.interfaces import StandardInternalFields
 from nti.externalization.interfaces import IInternalObjectExternalizer
@@ -65,7 +64,6 @@ INTERNAL_NTIID = StandardInternalFields.NTIID
 logger = __import__('logging').getLogger(__name__)
 
 
-@interface.implementer(IInternalObjectIO)
 @component.adapter(INTICourseOverviewGroup)
 class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfaceObjectIO):
 
@@ -91,7 +89,6 @@ _NTICourseOverviewGroupInternalObjectIO.__class_init__()
 
 
 @component.adapter(INTILessonOverview)
-@interface.implementer(IInternalObjectIO)
 class _NTILessonOverviewInternalObjectIO(AutoPackageSearchingScopedInterfaceObjectIO):
 
     @classmethod

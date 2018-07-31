@@ -54,7 +54,6 @@ from nti.contenttypes.presentation.internalization import internalization_nticou
 
 from nti.externalization.interfaces import StandardExternalFields
 
-from nti.externalization.internalization import pre_hook
 from nti.externalization.internalization import find_factory_for
 from nti.externalization.internalization import update_from_external_object
 
@@ -63,12 +62,16 @@ MIMETYPE = StandardExternalFields.MIMETYPE
 logger = __import__('logging').getLogger(__name__)
 
 
+def _pre_hook(k, v):
+    pass
+
+
 def prepare_json_text(s):
     result = s.decode('utf-8') if isinstance(s, bytes) else s
     return result
 
 
-def create_object_from_external(ext_obj, pre_hook=pre_hook, notify=True, _exec=True):
+def create_object_from_external(ext_obj, pre_hook=_pre_hook, notify=True, _exec=True):
     __traceback_info__ = ext_obj  # pylint: disable=unused-variable
     # CS: We want to call prehook in case we can to update a single dict.
     pre_hook(None, ext_obj)
@@ -224,7 +227,7 @@ def is_media_mimeType(mimeType):
 def is_timeline_mimeType(mimeType):
     return bool(mimeType in TIMELINE_MIME_TYPES)
 
-                
+
 def mime_types():
     for data in (AUDIO_MIME_TYPES,
                  VIDEO_MIME_TYPES,
@@ -289,7 +292,7 @@ def get_pre_hooks_map():
                     func = module.__dict__[func]
                     break
             if func is None:
-                func = pre_hook
+                func = _pre_hook
             for mime_type in data:
                 _pre_hooks_map[mime_type] = func
     return _pre_hooks_map
@@ -302,6 +305,6 @@ def get_external_transform(ext_obj):
         mimeType = str(ext_obj)
     result = get_pre_hooks_map().get(mimeType)
     if not callable(result):
-        result = pre_hook
+        result = _pre_hook
     return result
 get_external_pre_hook = get_external_transform
