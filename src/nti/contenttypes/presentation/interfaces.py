@@ -397,14 +397,15 @@ class IAssetTitled(interface.Interface):
     title = ValidTextLine(title=u"Asset title", required=False)
 
 
-class IAssetTitleDescribed(IAssetTitled, IDCDescriptiveProperties):
+class IAssetDescribed(interface.Interface):
+    description = ValidTextLine(title=u"Asset description",
+                                required=False,
+                                default=u'')
+
+class IAssetTitleDescribed(IAssetTitled, IAssetDescribed, IDCDescriptiveProperties):
     # IDCDescriptiveProperties marker needed for ext adapter.
     title = copy(IAssetTitled['title'])
     title.default = u''
-
-    description = ValidTextLine(title=u"Media description",
-                                required=False,
-                                default=u'')
 
 
 class INTIMedia(IAssetTitleDescribed, INTIIDIdentifiable,
@@ -673,7 +674,7 @@ INTIDocketMixin = INTIDocketAsset  # BWC
 
 
 class INTITimeline(INTIDocketAsset, IGroupOverViewable,
-                   IRecordable, IFileConstrained):
+                   IRecordable, IFileConstrained, IAssetDescribed):
     description = ValidTextLine(title=u"Timeline description", required=False)
 
     suggested_inline = Bool(u"Suggested inline flag",
@@ -683,7 +684,7 @@ class INTITimeline(INTIDocketAsset, IGroupOverViewable,
 INTITimeline['href'].setTaggedValue(TAG_REQUIRED_IN_UI, True)
 
 
-class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible,
+class INTIRelatedWorkRef(INTIDocketAsset, ICreated, IVisible, IAssetDescribed,
                          IRecordable, IFileConstrained, ICompletableItem):
     byline = byline_schema_field(required=False)
 
