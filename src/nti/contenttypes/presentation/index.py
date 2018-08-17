@@ -8,8 +8,14 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-import six
 import time
+from collections import Iterable
+
+import BTrees
+
+import six
+
+from zc.catalog.index import SetIndex as ZC_SetIndex
 
 from zope import component
 
@@ -18,12 +24,6 @@ from zope.catalog.interfaces import ICatalog
 from zope.intid.interfaces import IIntIds
 
 from zope.location import locate
-
-from zc.catalog.index import SetIndex as ZC_SetIndex
-
-import BTrees
-
-from nti.base._compat import integer_types
 
 from nti.contenttypes.presentation.interfaces import ISiteAdapter
 from nti.contenttypes.presentation.interfaces import INTIIDAdapter
@@ -74,8 +74,13 @@ IX_SLIDEDECK_VIDEOS = 'slideDeckVideos'
 logger = __import__('logging').getLogger(__name__)
 
 
+def is_nonstr_iterable(s):
+    return (hasattr(s, '__iter__') or isinstance(s, Iterable)) \
+       and not isinstance(s, six.string_types)
+
+
 def to_iterable(value):
-    if isinstance(value, (list, tuple, set)):
+    if is_nonstr_iterable(value):
         result = value
     else:
         result = (value,) if value is not None else ()
@@ -83,14 +88,14 @@ def to_iterable(value):
 
 
 def get_uid(item, intids=None):
-    if not isinstance(item, integer_types):
+    if not isinstance(item, six.integer_types):
         item = removeAllProxies(item)
         intids = component.getUtility(IIntIds) if intids is None else intids
         return intids.queryId(item)
     return item
 
 
-class RetainSetIndex(AttributeSetIndex):
+class RetainSetIndex(AttributeSetIndex): # pylint: disable=inconsistent-mro
     """
     A set index that retains the old values.
     """
@@ -162,12 +167,12 @@ class NTIIDIndex(ValueIndex):
     default_interface = INTIIDAdapter
 
 
-class ContainersIndex(RetainSetIndex):
+class ContainersIndex(RetainSetIndex):  # pylint: disable=inconsistent-mro
     default_field_name = 'containers'
     interface = default_interface = IContainersAdapter
 
 
-class SlideDeckVideosIndex(AttributeSetIndex):
+class SlideDeckVideosIndex(AttributeSetIndex):  # pylint: disable=inconsistent-mro
     default_field_name = 'videos'
     interface = default_interface = ISlideDeckAdapter
 
@@ -186,10 +191,10 @@ class AssetsLibraryCatalog(Catalog):
         self.last_modified = self.family.OI.BTree()
 
     def clear(self):
-        super(AssetsLibraryCatalog, self).clear()
         for index in self.values():
             index.clear()
         self.last_modified.clear()
+        super(AssetsLibraryCatalog, self).clear()
     reset = clear
 
     # last modified
