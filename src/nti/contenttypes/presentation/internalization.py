@@ -142,7 +142,7 @@ class _NTITranscriptUpdater(InterfaceObjectIO):
         else:
             transcript = self._ext_replacement()
             parse_embedded_transcript(transcript, parsed)
-            transcript.srcjsonp = None
+            transcript.srcjsonp = None  # pylint: disable=attribute-defined-outside-init
         return result
 
 
@@ -420,7 +420,9 @@ _NTIRelatedWorkUpdater = _NTIRelatedWorkRefUpdater
 class _NTIDiscussionRefUpdater(_TargetNTIIDUpdater):
 
     _ext_iface_upper_bound = INTIDiscussionRef
-    _excluded_in_ivars_ = InterfaceObjectIO._excluded_in_ivars_ - {'id'}
+    _excluded_in_ivars_ = frozenset(
+        InterfaceObjectIO._excluded_in_ivars_ - {'id'}  # pylint: disable=protected-access
+    )
 
     def fixTarget(self, parsed, transfer=True):
         iden = parsed.get('id') or parsed.get(ID)
@@ -749,7 +751,6 @@ def internalization_mediaroll_pre_hook(k, x):
         for item in x:
             internalization_ntiaudioref_pre_hook(None, item)
             internalization_ntivideoref_pre_hook(None, item)
-internalization_videoroll_pre_hook = internalization_mediaroll_pre_hook
 internalization_ntiaudioroll_pre_hook = internalization_mediaroll_pre_hook
 
 
