@@ -68,7 +68,9 @@ logger = __import__('logging').getLogger(__name__)
 class _NTICourseOverviewGroupInternalObjectIO(AutoPackageSearchingScopedInterfaceObjectIO):
 
     _excluded = {ITEMS}
-    _excluded_out_ivars_ = _excluded | AutoPackageSearchingScopedInterfaceObjectIO._excluded_out_ivars_
+    _excluded_out_ivars_ = frozenset(
+        _excluded | AutoPackageSearchingScopedInterfaceObjectIO._excluded_out_ivars_
+    )
 
     @classmethod
     def _ap_enumerate_externalizable_root_interfaces(cls, interfaces):
@@ -195,7 +197,9 @@ class _LessonPublicationConstraintsExternalizer(object):
 @interface.implementer(IInternalObjectExternalizer)
 class _NTITranscriptExternalizer(InterfaceObjectIO):
 
-    _excluded_out_ivars_ = getattr(InterfaceObjectIO, '_excluded_out_ivars_').union({'src', 'srcjsonp'})
+    _excluded_out_ivars_ = frozenset(
+        getattr(InterfaceObjectIO, '_excluded_out_ivars_').union({'src', 'srcjsonp'})
+    )
 
     _ext_iface_upper_bound = INTITranscript
 
