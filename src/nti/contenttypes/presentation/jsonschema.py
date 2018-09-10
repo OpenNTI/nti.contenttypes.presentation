@@ -10,8 +10,8 @@ from __future__ import absolute_import
 
 from zope import interface
 
-from zope.schema.interfaces import IList
 from zope.schema.interfaces import IChoice
+from zope.schema.interfaces import ISequence
 
 from nti.contenttypes.presentation import FIELDS
 from nti.contenttypes.presentation import ACCEPTS
@@ -74,13 +74,13 @@ class MediaSourceJsonSchemafier(BaseJsonSchemafier):
         BaseJsonSchemafier.post_process_field(self, name, field, item_schema)
         # handle type field
         if      name == 'type' \
-            and IList.providedBy(field) \
+            and ISequence.providedBy(field) \
             and IChoice.providedBy(field.value_type):
             choices, _ = self.get_data_from_choice_field(field.value_type)
             item_schema['choices'] = sorted(choices)
         # handle source field
         if      name == 'source' \
-            and IList.providedBy(field) \
+            and ISequence.providedBy(field) \
             and IVariant.providedBy(field.value_type):
             for x in field.value_type.fields:
                 if IChoice.providedBy(x):
