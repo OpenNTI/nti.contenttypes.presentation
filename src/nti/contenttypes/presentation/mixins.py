@@ -33,9 +33,9 @@ from nti.externalization.representation import WithRepr
 
 from nti.recorder.mixins import RecordableMixin
 
-from nti.schema.field import SchemaConfigured
-
 from nti.schema.interfaces import find_most_derived_interface
+
+from nti.schema.schema import SchemaConfigured
 
 logger = __import__('logging').getLogger(__name__)
 
