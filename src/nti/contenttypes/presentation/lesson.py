@@ -60,10 +60,11 @@ from nti.publishing.mixins import CalendarPublishableMixin
 
 from nti.recorder.mixins import RecordableContainerMixin
 
-from nti.schema.field import SchemaConfigured
 from nti.schema.fieldproperty import createDirectFieldProperties
 
 from nti.traversal.traversal import find_interface
+
+from nti.schema.schema import SchemaConfigured
 
 logger = __import__('logging').getLogger(__name__)
 
