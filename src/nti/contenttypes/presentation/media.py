@@ -10,6 +10,8 @@ from __future__ import absolute_import
 
 from functools import total_ordering
 
+from persistent.list import PersistentList
+
 from zope import interface
 
 from zope.cachedescriptors.property import Lazy
@@ -21,8 +23,6 @@ from zope.location.interfaces import IContained
 from zope.location.interfaces import ISublocations
 
 from zope.mimetype.interfaces import IContentTypeAware
-
-from persistent.list import PersistentList
 
 from nti.base.interfaces import IFile
 

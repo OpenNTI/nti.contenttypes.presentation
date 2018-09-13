@@ -62,7 +62,7 @@ MIMETYPE = StandardExternalFields.MIMETYPE
 logger = __import__('logging').getLogger(__name__)
 
 
-def _pre_hook(k, v):
+def _pre_hook(unused_k, unused_v):
     pass
 
 

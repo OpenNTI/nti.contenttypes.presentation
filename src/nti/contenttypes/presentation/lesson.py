@@ -10,6 +10,10 @@ from __future__ import absolute_import
 
 from functools import total_ordering
 
+from persistent.list import PersistentList
+
+from ZODB.interfaces import IConnection
+
 from zope import component
 from zope import interface
 
@@ -24,10 +28,6 @@ from zope.container.ordered import OrderedContainer
 from zope.deprecation import deprecated
 
 from zope.mimetype.interfaces import IContentTypeAware
-
-from ZODB.interfaces import IConnection
-
-from persistent.list import PersistentList
 
 from nti.containers.dicts import OrderedDict
 

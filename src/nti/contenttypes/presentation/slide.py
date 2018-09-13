@@ -11,12 +11,12 @@ from __future__ import absolute_import
 from itertools import chain
 from functools import total_ordering
 
+from persistent.list import PersistentList
+
 from zope import interface
 
 from zope.cachedescriptors.property import readproperty
 from zope.cachedescriptors.property import CachedProperty
-
-from persistent.list import PersistentList
 
 from nti.contenttypes.presentation import NTI_SLIDE
 from nti.contenttypes.presentation import NTI_SLIDE_DECK

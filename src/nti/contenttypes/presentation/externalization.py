@@ -46,10 +46,10 @@ from nti.externalization.interfaces import IInternalObjectExternalizer
 
 from nti.mimetype.externalization import decorateMimeType
 
+from nti.publishing.interfaces import IPublishable
+
 from nti.recorder.interfaces import IRecordable
 from nti.recorder.interfaces import IRecordableContainer
-
-from nti.publishing.interfaces import IPublishable
 
 OID = StandardExternalFields.OID
 CLASS = StandardExternalFields.CLASS
