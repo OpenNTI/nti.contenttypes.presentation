@@ -843,6 +843,7 @@ INTILessonOverview['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 class ILessonPublicationConstraints(IMapping,
                                     ICreated,
+                                    IContained,
                                     ILastModified):
     """
     Defines a container for lesson publication constraints
@@ -871,7 +872,7 @@ class ILessonPublicationConstraints(IMapping,
         """
 
 
-class ILessonPublicationConstraint(ICreated, ILastModified):
+class ILessonPublicationConstraint(ICreated, ILastModified, IContained):
     """
     Defines a constraint for determining whether a lesson
     is publishable or not
