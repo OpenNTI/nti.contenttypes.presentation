@@ -180,7 +180,8 @@ class LessonPublicationConstraints(PersistentCreatedModDateTrackingObject,
 @component.adapter(INTILessonOverview, IContentTypeAware)
 @interface.implementer(ILessonPublicationConstraints)
 class LessonConstraintContainer(PersistentCreatedModDateTrackingObject,
-                                OrderedContainer):
+                                OrderedContainer,
+                                Contained):
 
     parameters = {}  # IContentTypeAware
 
