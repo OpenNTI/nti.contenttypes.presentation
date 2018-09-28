@@ -221,7 +221,7 @@ class LessonConstraintContainer(PersistentCreatedModDateTrackingObject,
         return list(self.values())
 
 
-CONSTRAINT_ANNOTATION_KEY = 'LessonPublicationConstraints'
+CONSTRAINT_ANNOTATION_KEY = u'LessonPublicationConstraints'
 
 
 @component.adapter(INTILessonOverview)
