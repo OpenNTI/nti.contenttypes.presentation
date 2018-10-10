@@ -573,7 +573,7 @@ INTIAudioRoll.setTaggedValue('_ext_jsonschema', u'audioroll')
 class INTIVideoRoll(INTIMediaRoll):
 
     Items = IndexedIterable(value_type=Object(INTIVideoRef),
-                            title=u"The audio sources",
+                            title=u"The video sources",
                             required=False,
                             min_length=0)
 
