@@ -95,11 +95,12 @@
 						 .interfaces.INTIVideoRoll
 						 .interfaces.INTICourseOverviewSpacer
 						 .interfaces.INTIRelatedWorkRefPointer
+						 .interfaces.INTICalendarEventRef
 						 .interfaces.ILessonPublicationConstraint
 						 .interfaces.ILessonPublicationConstraints
 						 .interfaces.IAssignmentCompletionConstraint
 						 .interfaces.ISurveyCompletionConstraint"
-		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson" />
+		modules=".media .slide .timeline .relatedwork .discussion .assessment .lesson .calendar" />
 
 	<adapter factory=".externalization._NTICourseOverviewGroupInternalObjectIO"
 			 for=".interfaces.INTICourseOverviewGroup" />

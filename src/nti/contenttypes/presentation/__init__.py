@@ -134,6 +134,8 @@ RELATED_WORK = NTI_RELATED_WORK = u'RelatedWork'
 #: Related Workf Ref Pointer NTIID type
 NTI_RELATED_WORK_REF_POINTER = u'NTIRelatedWorkRefPointer'
 
+NTI_CALENDAR_EVENT_REF = u'NTICalendarEventRef'
+
 ENROLLED_COURSE_ROOT = u'EnrolledCourseRoot'
 ENROLLED_COURSE_SECTION = u'EnrolledCourseSection'
 
@@ -203,6 +205,8 @@ DISCUSSION_REF_MIME_TYPES = ('application/vnd.nextthought.discussionref',
                              'application/vnd.nextthought.discussion')
 QUESTIONSET_REF_MIME_TYPES = ('application/vnd.nextthought.questionsetref',
                               'application/vnd.nextthought.naquestionset')
+
+CALENDAR_EVENT_REF_MIME_TYPES = ('application/vnd.nextthought.nticalendareventref',)
 
 ALL_MEDIA_INTERFACES = (INTIAudio, INTIVideo, INTISlideDeck, INTIAudioRef,
                         INTIVideoRef, INTIVideoRoll, INTIAudioRoll)
