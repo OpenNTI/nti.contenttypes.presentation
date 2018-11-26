@@ -57,16 +57,16 @@ class TestModule(unittest.TestCase):
 
     def test_mime_types(self):
         assert_that(ALL_PRESENTATION_MIME_TYPES, is_not(none()))
-        assert_that(ALL_PRESENTATION_MIME_TYPES, has_length(31))
+        assert_that(ALL_PRESENTATION_MIME_TYPES, has_length(32))
         
     def test_ifaces(self):
         assert_that(GROUP_OVERVIEWABLE_INTERFACES, is_not(none()))
-        assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(17))
+        assert_that(GROUP_OVERVIEWABLE_INTERFACES, has_length(18))
 
         assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, is_not(none()))
-        assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(23))
+        assert_that(ALL_PRESENTATION_ASSETS_INTERFACES, has_length(24))
 
-        assert_that(COURSE_CONTAINER_INTERFACES, has_length(17))
+        assert_that(COURSE_CONTAINER_INTERFACES, has_length(18))
         assert_that(PACKAGE_CONTAINER_INTERFACES, has_length(7))
 
     def test_asset_ifaces(self):
@@ -80,7 +80,7 @@ class TestModule(unittest.TestCase):
             assert_that(interface_of_asset(obj), is_(provided))
             if not IRecordable.providedBy(obj):
                 not_recordable += 1
-        assert_that(not_recordable, is_(8))
+        assert_that(not_recordable, is_(9))
         
         class IExternalAsset(IPackagePresentationAsset, IUserCreatedAsset, 
                              IGroupOverViewable):
@@ -108,7 +108,7 @@ class TestModule(unittest.TestCase):
 
         module = sys.modules[INTILessonOverview.__module__]
         members = list(inspect.getmembers(module, _ext_mime_type_predicate))
-        assert_that(members, has_length(41))
+        assert_that(members, has_length(42))
 
     def test_visibility_options(self):
         options = get_visibility_options()
