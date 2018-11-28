@@ -412,6 +412,16 @@ class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):
 
         return self.fixCreator(parsed)
 
+    def updateFromExternalObject(self, parsed, *args, **kwargs):
+        """
+        For content backed assets, we do not want to allow `href` edits
+        of relative paths.
+        """
+        if      self._ext_self.href \
+            and self._ext_self.href.startswith('resources/'):
+            parsed.pop('href', None)
+        return super(_NTIRelatedWorkRefUpdater, self).updateFromExternalObject(parsed, *args, **kwargs)
+
 
 _NTIRelatedWorkUpdater = _NTIRelatedWorkRefUpdater
 
