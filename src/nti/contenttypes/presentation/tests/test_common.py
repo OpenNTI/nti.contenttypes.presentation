@@ -21,6 +21,8 @@ from nti.contenttypes.presentation.relatedwork import NTIRelatedWorkRef
 
 from nti.externalization.externalization import to_external_object
 
+from nti.externalization.internalization import update_from_external_object
+
 from nti.contenttypes.presentation.tests import SharedConfiguringTestLayer
 
 
@@ -37,12 +39,31 @@ class TestCommon(unittest.TestCase):
 
         related_work_ref = NTIRelatedWorkRef()
         related_work_ref.nti_requirements = u'requirement'
+        related_work_ref.href = original_href = u'resources/some.pdf'
 
         ext_obj = to_external_object(related_work_ref)
         assert_that(ext_obj, has_entry('nti_requirements', 'requirement'))
+        assert_that(ext_obj, has_entry('href', original_href))
         assert_that(ext_obj, has_key('byline'))
         assert_that(ext_obj, has_key('section'))
         assert_that(ext_obj, has_key('description'))
         assert_that(ext_obj, has_key('type'))
         assert_that(ext_obj, has_key('ntiid'))
         assert_that(ext_obj, has_key('target'))
+
+        # Cannot update relative href
+        update_from_external_object(related_work_ref, {'href': u"bad_href"})
+        ext_obj = to_external_object(related_work_ref)
+        assert_that(ext_obj, has_entry('href', original_href))
+
+        # Can update empty
+        related_work_ref.href = None
+        update_from_external_object(related_work_ref, {'href': u"bad_href"})
+        ext_obj = to_external_object(related_work_ref)
+        assert_that(ext_obj, has_entry('href', "bad_href"))
+
+        # Can update non-relative url
+        related_work_ref.href = u'http://google.com'
+        update_from_external_object(related_work_ref, {'href': u"bad_href"})
+        ext_obj = to_external_object(related_work_ref)
+        assert_that(ext_obj, has_entry('href', "bad_href"))
