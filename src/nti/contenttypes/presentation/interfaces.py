@@ -797,7 +797,8 @@ INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
 class INTICalendarEventRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
-                           ICoursePresentationAsset):
+                           ICoursePresentationAsset,
+                           INonExportableAsset):
     target = ValidNTIID(title=u"Target NTIID", required=True)
 
 
