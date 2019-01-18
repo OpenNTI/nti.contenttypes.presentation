@@ -67,6 +67,7 @@ from nti.contenttypes.presentation.interfaces import INTICourseOverviewSpacer
 from nti.contenttypes.presentation.interfaces import INTIRelatedWorkRefPointer
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraint
 from nti.contenttypes.presentation.interfaces import ILessonPublicationConstraints
+from nti.contenttypes.presentation.interfaces import IContentBackedPresentationAsset
 
 from nti.contenttypes.presentation.media import NTITranscriptFile
 
@@ -409,6 +410,13 @@ class _NTIRelatedWorkRefUpdater(_TargetNTIIDUpdater):
 
         if 'targetMimeType' in parsed:
             parsed['type'] = parsed.pop('targetMimeType')
+
+        if      IContentBackedPresentationAsset.providedBy(self._ext_self) \
+            and getattr(self._ext_self, 'type', '') == 'application/pdf':
+            # Only API created PDF refs can change their uploaded files.
+            # Import/export does not handle this case currently for
+            # content backed assets.
+            self.popTargets(parsed)
 
         return self.fixCreator(parsed)
 
