@@ -650,7 +650,10 @@ class _NTILessonOverviewUpdater(_AssetUpdater):
 
 # pre-hooks
 
-
+# Need to get rid of pre_hook usage. This should be easy, register
+# mimetype factory, for most cases. But we do some other special
+# handling too.
+# https://github.com/NextThought/nti.externalization/issues/29
 def internalization_ntivideo_pre_hook(k, x):
     if isinstance(x, Mapping) and 'mimeType' in x:
         x[MIMETYPE] = x.pop('mimeType')
