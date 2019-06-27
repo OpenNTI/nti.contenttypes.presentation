@@ -286,6 +286,17 @@ class IAssetRef(IPresentationAsset, IPointer):
 IAssetRef.setTaggedValue('_ext_is_marker_interface', True)
 
 
+class IAssetExportPostProcessor(interface.Interface):
+    """
+    A post processor of assets and their external form during export.
+    """
+
+    def process(exporter, asset, ext_obj, backup, salt):
+        """
+        Process the given asset and external json, modifying it in place.
+        """
+
+
 class IItemAssetContainer(interface.Interface):
     """
     Base interface for assets that containt other assets
