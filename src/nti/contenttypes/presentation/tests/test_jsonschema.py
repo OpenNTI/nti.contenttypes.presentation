@@ -222,7 +222,7 @@ class TestJsonSchema(unittest.TestCase):
                                                   'type', 'List')))
         assert_that(fields, has_entry('type',
                                       has_entries('base_type', 'string',
-                                                  'choices', has_length(5),
+                                                  'choices', has_length(6),
                                                   'type', 'List')))
         assert_that(fields, 
                     has_entry('thumbnail', 
