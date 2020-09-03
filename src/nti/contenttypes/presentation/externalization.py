@@ -111,7 +111,8 @@ class _LessonOverviewExporter(object):
         self.lesson = obj
 
     def _decorate_object(self, obj, result):
-        decorateMimeType(obj, result)
+        if MIMETYPE not in result:
+            decorateMimeType(obj, result)
         if IRecordable.providedBy(obj):
             result['isLocked'] = obj.isLocked()
         if IRecordableContainer.providedBy(obj):
@@ -120,8 +121,7 @@ class _LessonOverviewExporter(object):
             result['isPublished'] = obj.isPublished()
 
     def _decorate_callback(self, obj, result):
-        if isinstance(result, Mapping) and MIMETYPE not in result:
-            self._decorate_object(obj, result)
+        self._decorate_object(obj, result)
 
     def _process_media_roll(self, asset, roll_items_ext, ext_params):
         for roll_idx, media_ref in enumerate(asset):
