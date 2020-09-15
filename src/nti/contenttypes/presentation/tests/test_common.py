@@ -13,6 +13,7 @@ from hamcrest import assert_that
 from hamcrest import starts_with
 
 import unittest
+
 from datetime import datetime
 
 from nti.contenttypes.presentation.common import generate_ntiid
@@ -31,9 +32,9 @@ class TestCommon(unittest.TestCase):
     layer = SharedConfiguringTestLayer
 
     def test_generate_ntiid(self):
-        ntiid = generate_ntiid(u'FOO', now=datetime.fromtimestamp(1000))
+        ntiid = generate_ntiid(u'FOO', now=datetime.utcfromtimestamp(1000))
         assert_that(ntiid,
-                    starts_with('tag:nextthought.com,2011-10:NTI-FOO-system_19691231181640_000000'))
+                    starts_with('tag:nextthought.com,2011-10:NTI-FOO-system_19700101001640_000000'))
 
     def test_related_work_ref_externalizes(self):
 
