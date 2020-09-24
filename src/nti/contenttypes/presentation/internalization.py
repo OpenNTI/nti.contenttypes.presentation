@@ -555,6 +555,10 @@ class _NTISurveyRefUpdater(_TargetNTIIDUpdater):
 
     def fixAll(self, parsed):
         self.fixTarget(parsed, transfer=True)
+        if not parsed.get('title') and parsed.get('label'):
+            parsed['title'] = parsed['label']
+        elif not parsed.get('label') and parsed.get('title'):
+            parsed['label'] = parsed['title']
         if 'question-count' in parsed:
             parsed['question_count'] = int(parsed.pop('question-count'))
         return self.fixCreator(parsed)
