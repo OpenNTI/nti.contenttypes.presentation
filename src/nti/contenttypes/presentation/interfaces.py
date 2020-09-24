@@ -798,7 +798,7 @@ INTIPollRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTIPollRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
-class INTISurveyRef(INTIInquiryRef):
+class INTISurveyRef(INTIInquiryRef, IAssetTitled):
 
     containerId = ValidNTIID(title=u"Container NTIID", required=False)
 
@@ -807,6 +807,8 @@ ISurveyRef = INTISurveyRef  # BWC
 
 INTISurveyRef['label'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
 INTISurveyRef['label'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
+INTISurveyRef['title'].setTaggedValue(TAG_HIDDEN_IN_UI, False)
+INTISurveyRef['title'].setTaggedValue(TAG_REQUIRED_IN_UI, False)
 
 
 class INTICalendarEventRef(IAssetRef, IGroupOverViewable, INTIIDIdentifiable,
