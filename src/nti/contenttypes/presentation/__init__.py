@@ -219,6 +219,7 @@ COURSE_CONTAINER_INTERFACES = None
 PACKAGE_CONTAINER_INTERFACES = None
 GROUP_OVERVIEWABLE_INTERFACES = None
 ALL_PRESENTATION_ASSETS_INTERFACES = None
+ALL_PRESENTATION_ASSETS_MIMETYPES_INTERFACES_MAPPING = None
 
 logger = __import__('logging').getLogger(__name__)
 
@@ -376,3 +377,20 @@ def register_asset_interface(provided, mimeType):
 from nti.contenttypes.presentation._patch import patch
 patch()
 del patch
+
+
+def asset_iface_with_mimetype(mimetype):
+    return ALL_PRESENTATION_ASSETS_MIMETYPES_INTERFACES_MAPPING.get(mimetype, None)
+
+
+# mimetype -> iface mapping
+def _set_mimetypes_ifaces_mapping():
+    global ALL_PRESENTATION_ASSETS_MIMETYPES_INTERFACES_MAPPING
+    if ALL_PRESENTATION_ASSETS_MIMETYPES_INTERFACES_MAPPING is None:
+        ALL_PRESENTATION_ASSETS_MIMETYPES_INTERFACES_MAPPING = dict()
+    for iface in ALL_PRESENTATION_ASSETS_INTERFACES or ():
+        mimetype = iface.getTaggedValue('_ext_mime_type')
+        ALL_PRESENTATION_ASSETS_MIMETYPES_INTERFACES_MAPPING[mimetype] = iface
+
+_set_mimetypes_ifaces_mapping()
+del _set_mimetypes_ifaces_mapping
